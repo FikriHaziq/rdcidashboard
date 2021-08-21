@@ -15,10 +15,20 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 
 <!-- Chart JS -->
-<script src="{{ asset('theme/js/plugins/chartjs.min.js') }}"></script>
+<script src="{{ asset('theme/js/plugins/chart.min.js') }}"></script>
 
-<!--  Notifications Plugin    -->
+<!-- Notifications Plugin -->
 <script src="{{ asset('theme/js/plugins/bootstrap-notify.js') }}"></script>
+
+<!-- Advanced Form Select -->
+<script src="{{ asset('theme/js/plugins/select2.min.js') }}"></script>
 
 <!-- Control Center for Paper Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="{{ asset('theme/js/paper-dashboard.min.js?v=2.0.1') }}"></script>
+
+<!-- Additional General Script -->
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
