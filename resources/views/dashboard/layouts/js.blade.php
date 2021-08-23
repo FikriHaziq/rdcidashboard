@@ -31,4 +31,9 @@
     $(document).ready(function() {
         $('.select2').select2();
     });
+
+    // Temporary Random Number Generator
+    function intRand(max) {
+        return Math.floor(Math.random() * max);
+    }
 </script>

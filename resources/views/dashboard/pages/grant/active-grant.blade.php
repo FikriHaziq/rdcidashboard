@@ -28,19 +28,19 @@
 </div>
 <div class="row">
     <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-header">Active Research Grants Year 2021</div>
             <div class="card-body"><canvas id="bar1" width="400" height="300"></canvas></div>
         </div>
     </div>
     <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-header">Active Research Grant with Extrension</div>
             <div class="card-body"><canvas id="pie" width="400" height="300"></canvas></div>
         </div>
     </div>
     <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-header">Active Research Grant vs End Year</div>
             <div class="card-body"><canvas id="bar2" width="400" height="300"></canvas></div>
         </div>
@@ -48,13 +48,13 @@
 </div>
 <div class="row">
     <div class="col-md-8 d-flex align-items-stretch">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-header">Active Grant by Faculty</div>
             <div class="card-body"><canvas id="bar3" width="800" height="300"></canvas></div>
         </div>
     </div>
     <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-header">Active Research Grant Secured by Yearly Basis</div>
             <div class="card-body"><canvas id="line" width="400" height="300"></canvas></div>
         </div>
@@ -62,12 +62,7 @@
 </div>
 @endslot
 @section('custom-js')
-{{-- Active Research Grants Year 2021 --}}
 <script>
-    function intRand(max) {
-        return Math.floor(Math.random() * max);
-    }
-
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',

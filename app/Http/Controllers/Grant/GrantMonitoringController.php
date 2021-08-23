@@ -1,11 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Grant;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ActiveGrantController extends Controller
+class GrantMonitoringController extends Controller
 {
+
+    public function received()
+    {
+        return view('dashboard.pages.grant.monitoring-received');
+    }
+
+    public function progress()
+    {
+        return view('dashboard.pages.grant.monitoring-progress');
+    }
+
+    public function report()
+    {
+        return view('dashboard.pages.grant.monitoring-report');
+    }
+
+    public function detailed()
+    {
+        return view('dashboard.pages.grant.monitoring-detailed');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +35,7 @@ class ActiveGrantController extends Controller
      */
     public function index()
     {
-        return view('dashboard.pages.active-grant');
+        //
     }
 
     /**

@@ -1,11 +1,11 @@
 <x-menu-wrapper color="white" active="danger">
     <x-menu-item active="active-grant.*" route="active-grant.index">Active Grant in Year</x-menu-item>
-    <x-menu-item active="" route="">Overall Grant Secured</x-menu-item>
-    <x-menu-item active="" route="">Active Staff by Cohort</x-menu-item>
-    <x-menu-item active="" route="">Monitoring - Grant Received</x-menu-item>
-    <x-menu-item active="" route="">Monitoring - Grant Progress</x-menu-item>
-    <x-menu-item active="" route="">Monitoring - Report Progress</x-menu-item>
-    <x-menu-item active="" route="">Monitoring Detailed</x-menu-item>
+    <x-menu-item active="overall-secured.*" route="overall-secured.index">Overall Grant Secured</x-menu-item>
+    <x-menu-item active="staff-cohort.*" route="staff-cohort.index">Active Staff by Cohort</x-menu-item>
+    <x-menu-item active="monitoring.received" route="monitoring.received">Monitoring - Grant Received</x-menu-item>
+    <x-menu-item active="monitoring.progress" route="monitoring.progress">Monitoring - Grant Progress</x-menu-item>
+    <x-menu-item active="monitoring.report" route="monitoring.report">Monitoring - Report Progress</x-menu-item>
+    <x-menu-item active="monitoring.detailed" route="monitoring.detailed">Monitoring Detailed</x-menu-item>
     <x-menu-item active="" route="">Received-Spend by V-Series</x-menu-item>
     <x-menu-item active="" route="">Proposal in Year</x-menu-item>
     <x-menu-item active="" route="">Grant Activation in Progress</x-menu-item>
