@@ -110,6 +110,11 @@
         },
         options: {
             aspectRatio: 1.5,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            }
         }
     });
 
