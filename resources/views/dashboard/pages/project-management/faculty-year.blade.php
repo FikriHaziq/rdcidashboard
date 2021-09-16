@@ -85,9 +85,13 @@
     </div>
 </div>
 <div class="row">
+    <div class="col card card-plain">
+        Grant Approved vs Received by Sponsor
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-header">Sponsor Category</div>
             <div class="card-body"><canvas id="mixed" width="800" height="300"></canvas></div>
         </div>
     </div>
@@ -258,6 +262,5 @@
         }
     });
 </script>
-{{-- Active Research Grant with Extension --}}
 @endsection
 @endcomponent
