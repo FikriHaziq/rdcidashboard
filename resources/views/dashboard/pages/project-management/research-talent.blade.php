@@ -12,28 +12,6 @@
 @endsection
 @slot("content")
 <div class="card card-plain d-flex flex-row align-items-center">
-    <div style="font-size: 20px; font-weight: bold;">
-        <label>Filter: </label>
-    </div>
-
-    <div class="w-25 ml-2">
-        <select class="form-control select2" id="grantType">
-            <option>POSITION</option>
-            <option>SENIOR LECTURER</option>
-            <option>ASSOC. PROF.</option>
-            <option>PROF.</option>
-            <option>LECTURER</option>
-        </select>
-    </div>
-
-    <div class="w-25 ml-2">
-        <select class="form-control select2" id="status2">
-            <option>STATUS 2</option>
-            <option>PERMANENT</option>
-            <option>CONTRACT</option>
-        </select>
-    </div>
-
     <div class="w-25 ml-2">
         <select class="form-control select2" id="sponsorCategory">
             <option>FACULTY</option>
@@ -43,19 +21,30 @@
         </select>
     </div>
 
-    {{-- <div class="w-25 ml-2 card p-2">
-        <label for="ageRange" class="form-label">AGE</label>
-        <input type="range" class="form-range" min="27" max="73" id="ageRange">
-    </div> --}}
-    <div class="w-25 ml-2 d-flex flex-row justify-content-center align-items-center paper-range">
-        <span class="mr-2">AGE</span>
-        <span class="mr-2">27</span>
-        <span>
-            <form class="range-field w-25">
-                <input class="border-0" type="range" min="27" max="73" />
-            </form>
-        </span>
-        <span class="ml-2">73</span>
+    <div class="w-25 ml-2">
+        <select class="form-control select2" id="grantAcronym">
+            <option>GRANT ACRONYM</option>
+            <option>SENIOR LECTURER</option>
+            <option>ASSOC. PROF.</option>
+            <option>PROF.</option>
+            <option>LECTURER</option>
+        </select>
+    </div>
+
+    <div class="w-25 ml-2">
+        <select class="form-control select2" id="status2">
+            <option>ACTIVITY TYPE</option>
+            <option>PERMANENT</option>
+            <option>CONTRACT</option>
+        </select>
+    </div>
+
+    <div class="w-25 ml-2">
+        <select class="form-control select2" id="gender">
+            <option>GENDER</option>
+            <option>MALE</option>
+            <option>FEMALE</option>
+        </select>
     </div>
 </div>
 <div class="row">
@@ -231,6 +220,5 @@
         }
     });
 </script>
-{{-- Active Research Grant with Extension --}}
 @endsection
 @endcomponent
