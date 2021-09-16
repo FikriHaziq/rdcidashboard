@@ -11,221 +11,248 @@
 </style>
 @endsection
 @slot("content")
-<div class="card card-plain d-flex flex-row align-items-center">
-    <div style="font-size: 20px; font-weight: bold;">
-        <label>Filter: </label>
+<div class="row">
+    <div class="col-4">
+        <div class="row">
+            <div class="col-6">
+                <div class="card w-100">
+                    <div class="card-header"><small>TOTAL APPROVED, 2021</small></div>
+                    <div class="card-body h3">39.198M</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card w-100">
+                    <div class="card-header"><small>TOTAL PROJECTS</small></div>
+                    <div class="card-body h3">378</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col card card-plain">
+                <div style="font-size: 20px; font-weight: bold;">
+                    <label>Filter: </label>
+                </div>
+                <div class="w-100 mb-2">
+                    <select class="form-control select2" id="subSponsor">
+                        <option>SUBSPONSOR</option>
+                        <option>RESEARCH UNIVERSITY GRANT</option>
+                        <option>POST DOCTORAL FELLOWSHIP</option>
+                        <option>MINISTRY OF EDUCATION</option>
+                    </select>
+                </div>  
+                <div class="w-100 mb-2">
+                    <select class="form-control select2" id="faculty">
+                        <option>FACULTY</option>
+                        <option>UTMSPACE-KL</option>
+                        <option>MJIIT</option>
+                        <option>FSSH-KL</option>
+                        <option>FSSH-JB</option>
+                    </select>
+                </div>  
+                <div class="w-100 mb-2">
+                    <select class="form-control select2" id="school">
+                        <option>SCHOOL</option>
+                        <option>SEKOLAH KEJURUTERAAN KIMIA & TENAGA | J5105</option>
+                        <option>SEKOLAH KEJURUTERAAN ELEKTRIK | J5104</option>
+                        <option>FAKULTI ALAM BINA & UKUR | J5200</option>
+                    </select>
+                </div>   
+                <div class="w-100 mb-2">
+                    <select class="form-control select2" id="ra">
+                        <option>RA</option>
+                        <option>INNOVATIVE ENGINEERING</option>
+                        <option>RESOURCE SUSTAINABILITY</option>
+                        <option>SMART DIGITAL COMMUNITY</option>
+                        <option>FRONTIER MATERIALS</option>
+                    </select>
+                </div>      
+            </div>
+        </div>
     </div>
-
-    <div class="w-25 ml-2">
-        <select class="form-control select2" id="grantType">
-            <option>POSITION</option>
-            <option>SENIOR LECTURER</option>
-            <option>ASSOC. PROF.</option>
-            <option>PROF.</option>
-            <option>LECTURER</option>
-        </select>
-    </div>
-
-    <div class="w-25 ml-2">
-        <select class="form-control select2" id="status2">
-            <option>STATUS 2</option>
-            <option>PERMANENT</option>
-            <option>CONTRACT</option>
-        </select>
-    </div>
-
-    <div class="w-25 ml-2">
-        <select class="form-control select2" id="sponsorCategory">
-            <option>FACULTY</option>
-            <option>FK</option>
-            <option>FSSH-JB</option>
-            <option>FABU</option>
-        </select>
-    </div>
-
-    {{-- <div class="w-25 ml-2 card p-2">
-        <label for="ageRange" class="form-label">AGE</label>
-        <input type="range" class="form-range" min="27" max="73" id="ageRange">
-    </div> --}}
-    <div class="w-25 ml-2 d-flex flex-row justify-content-center align-items-center paper-range">
-        <span class="mr-2">AGE</span>
-        <span class="mr-2">27</span>
-        <span>
-            <form class="range-field w-25">
-                <input class="border-0" type="range" min="27" max="73" />
-            </form>
-        </span>
-        <span class="ml-2">73</span>
+    <div class="col-8">
+        <div class="row">
+            <div class="col-6 d-flex align-items-stretch">
+                <div class="card w-100">
+                    <div class="card-body"><canvas id="pie1" width="800" height="300"></canvas></div>
+                </div>
+            </div>
+            <div class="col-6 d-flex align-items-stretch">
+                <div class="card w-100">
+                    <div class="card-body"><canvas id="pie2" width="800"></canvas></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8 d-flex align-items-stretch">
+    <div class="col-md-6 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-header">Active Staff by Cohort and Faculty</div>
-            <div class="card-body"><canvas id="bar1" width="800" height="300"></canvas></div>
+            <div class="card-header">Sponsor Category</div>
+            <div class="card-body"><canvas id="mixed" width="800" height="300"></canvas></div>
         </div>
     </div>
-    <div class="col-md-4 d-flex align-items-stretch">
+    <div class="col-md-6 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-header">Active Staff Who Have Grant</div>
-            <div class="card-body"><canvas id="bar2" width="400" height="300"></canvas></div>
+            &nbsp;
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4 d-flex align-items-stretch">
+    <div class="col-md-12 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-header">Active Staff Who Have Grant by Cohort</div>
-            <div class="card-body"><canvas id="bar3" width="400" height="300"></canvas></div>
-        </div>
-    </div>
-    <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-header">ST-SS > FACULTY > STAFF</div>
-            <div class="card-body"></div>
-        </div>
-    </div>
-    <div class="col-md-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-header">ST & SS Staff</div>
-            <div class="card-body"><canvas id="bar4" width="400" height="300"></canvas></div>
+            <div class="card-body"><canvas id="bar1" width="400" height="100"></canvas></div>
         </div>
     </div>
 </div>
 @endslot
 @section('custom-js')
 <script>
+    var pie1 = document.getElementById('pie1');
+    var pieChart1 = new Chart(pie1, {
+        type: 'pie',
+        data: {
+            labels: ['PRIVATE', 'NATIONAL', 'INTERNATIONAL', 'UNIVERSITY'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['4080701.5', '14544335', '8385183.62', '12187796.2'],
+                    backgroundColor: ['rgb(106, 207, 220)', 'rgb(135, 104, 88)', 'rgb(186, 204, 128)', 'rgb(255, 107, 107)'],
+                },
+            ]
+        },
+        options: {
+            aspectRatio: 2,
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                    },
+                    position: 'right',
+                }
+            }
+        }
+    });
+
+    var pie2 = document.getElementById('pie2');
+    var pieChart2 = new Chart(pie2, {
+        type: 'pie',
+        data: {
+            labels: ['FRONTIER MATERIALS', 'SMART DIGITAL COMMUNITY', 'RESOURCE SUSTAINABILITY', 'INNOVATIVE ENGINEERING', 'HEALTH & WELLNESS'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['85', '68', '98', '90', '37'],
+                    backgroundColor: ['rgb(106, 207, 220)', 'rgb(135, 104, 88)', 'rgb(186, 204, 128)', 'rgb(255, 107, 107)', 'rgb(189, 175, 194)'],
+                },
+            ]
+        },
+        options: {
+            aspectRatio: 2,
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                    },
+                    position: 'right',
+                }
+            }
+        }
+    });
+
+    var mixed = document.getElementById('mixed');
+    var mixedChart = new Chart(mixed, {
+        data: {
+            labels: ['UNIVERSITY', 'PRIVATE', 'NATIONAL', 'INTERNATIONAL'],
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'No Of Project',
+                    yAxisID: 'project-axis',
+                    data: [194, 67, 62, 55],
+                    backgroundColor: 'rgba(135, 104, 88)',
+                    borderColor: 'rgba(135, 104, 88)',
+                },
+                {
+                    type: 'bar',
+                    label: 'Approved',
+                    data: [12187796, 4080701, 14544335, 8385183],
+                    backgroundColor: 'rgba(186, 204, 128)',
+                    borderColor: 'rgba(186, 204, 128)',
+                },
+                {
+                    type: 'bar',
+                    label: 'Received',
+                    data: [9499074, 1807967, 5682633, 3972091],
+                    backgroundColor: 'rgba(255, 107, 107)',
+                    borderColor: 'rgba(255, 107, 107)',
+                }
+            ],
+        },
+        options: {
+            scales: {
+                yAxes: [
+                    {
+                        display: true,
+                        stacked: true,
+                        beginAtZero: true
+                    },
+                    {
+                        id: 'project-axis',
+                        display: false,
+                        stacked: false,
+                        beginAtZero: true,
+                        suggestedMax: 200
+                    }
+                ]
+            }
+        }
+    });
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['FK', 'FSSH-JB', 'FABU', 'FS', 'FTIR', 'MJIIT', 'AHIBS-JB', 'UTMSPACE-KL', 'FSSH-KL', 'AHIBS-KL', 'UTMSPACE-JB', 'PENDAFTAR'],
+            labels: ['J51', 'J52', 'K43', 'J54', 'K56', 'J53', 'J55', 'K55', 'K11', 'K53'],
             datasets: [
                 {
-                    label: 'Cohort A (>50 y/o)',
-                    data: [intRand(1501), intRand(1301), intRand(1101), intRand(500), intRand(400), intRand(300), intRand(300), intRand(100), intRand(100), intRand(50), intRand(40), intRand(30),],
-                    backgroundColor: 'rgba(172, 62, 49)',
-                    borderColor: 'rgba(172, 62, 49)',
+                    label: 'UNIVERSITY',
+                    data: ['107', '20', '24', '17', '12', '8', '3', '1', '2', '0'],
+                    backgroundColor: 'rgb(255, 107, 107)',
+                    borderColor: 'rgb(255, 107, 107)',
                     borderWidth: 1
                 },
                 {
-                    label: 'Cohort B (40-50 y/o)',
-                    data: [intRand(1501), intRand(1301), intRand(1101), intRand(500), intRand(400), intRand(300), intRand(300), intRand(100), intRand(100), intRand(50), intRand(40), intRand(30),],
-                    backgroundColor: 'rgba(72, 72, 72)',
-                    borderColor: 'rgba(72, 72, 72)',
+                    label: 'PRIVATE',
+                    data: ['31', '2', '6', '4', '13', '6', '2', '3', '0', '0'],
+                    backgroundColor: 'rgb(106, 207, 220)',
+                    borderColor: 'rgb(106, 207, 220)',
                     borderWidth: 1
                 },
                 {
-                    label: 'Cohort C (<40 y/o)',
-                    data: [intRand(1501), intRand(1301), intRand(1101), intRand(500), intRand(400), intRand(300), intRand(300), intRand(100), intRand(100), intRand(50), intRand(40), intRand(30),],
-                    backgroundColor: 'rgb(216, 173, 88)',
-                    borderColor: 'rgb(216, 173, 88)',
+                    label: 'NATIONAL',
+                    data: ['32', '8', '0', '9', '6', '3', '3', '0', '0', '1'],
+                    backgroundColor: 'rgba(135, 104, 88)',
+                    borderColor: 'rgba(135, 104, 88)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'INTERNATIONAL',
+                    data: ['25', '11', '8', '7', '2', '0', '0', '2', '0', '0'],
+                    backgroundColor: 'rgba(186, 204, 128)',
+                    borderColor: 'rgba(186, 204, 128)',
                     borderWidth: 1
                 },
             ]
         },
         options: {
+            indexAxis: 'y',
             scales: {
                 y: {
+                    stacked: true,
                     beginAtZero: true
-                }
-            }
-        }
-    });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: ['TRUE', 'FALSE'],
-            datasets: [
-                {
-                    label: 'DATA',
-                    data: ['69.31', '30.69'],
-                    backgroundColor: 'rgba(32, 40, 62)',
-                    borderColor: 'rgba(32, 40, 62)',
-                    borderWidth: 1
                 },
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: ['TRUE', 'FALSE'],
-            datasets: [
-                {
-                    label: 'Cohort A (>50 y/o)',
-                    data: ['259', '235'],
-                    backgroundColor: 'rgba(172, 62, 49)',
-                    borderColor: 'rgba(172, 62, 49)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Cohort B (40-50 y/o)',
-                    data: ['480', '161'],
-                    backgroundColor: 'rgba(72, 72, 72)',
-                    borderColor: 'rgba(72, 72, 72)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Cohort C (<40 y/o)',
-                    data: ['388', '103'],
-                    backgroundColor: 'rgb(216, 173, 88)',
-                    borderColor: 'rgb(216, 173, 88)',
-                    borderWidth: 1
-                },
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: ['ST', 'SS'],
-            datasets: [
-                {
-                    label: 'DATA',
-                    data: ['1190', '436'],
-                    backgroundColor: 'rgba(72, 138, 153)',
-                    borderColor: 'rgba(72, 138, 153)',
-                    borderWidth: 1
-                },
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 1600
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
+                x: {
+                    stacked: true
                 }
             }
         }
