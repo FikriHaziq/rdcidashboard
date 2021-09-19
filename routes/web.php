@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Grant\ActiveGrantController;
 use Grant\ActiveStaffController;
 use Grant\GrantSecuredController;
+use App\Http\Controllers\Grant\FacultyAchievementController;
+use App\Http\Controllers\Grant\ResearchProcessController;
 use App\Http\Controllers\Grant\GrantMonitoringController;
 
 /*
@@ -31,4 +33,12 @@ Route::name('monitoring.')->prefix('monitoring')->group(function () {
     Route::name('progress')->get('progress', [GrantMonitoringController::class, "progress"]);
     Route::name('report')->get('report', [GrantMonitoringController::class, "report"]);
     Route::name('detailed')->get('detailed', [GrantMonitoringController::class, "detailed"]);
+});
+// Project Management
+Route::name('management.')->prefix('management')->group(function () {
+    Route::name('year')->get('year', [FacultyAchievementController::class, "by_year"]);
+    Route::name('active')->get('active', [FacultyAchievementController::class, "active_grant"]);
+    Route::name('all')->get('all', [FacultyAchievementController::class, "all_grant"]);
+    Route::name('activity')->get('activity', [ResearchProcessController::class, "activity"]);
+    Route::name('talent')->get('talent', [ResearchProcessController::class, "talent"]);
 });

@@ -1,4 +1,9 @@
 <x-menu-wrapper color="white" active="danger">
+    <x-menu-item active="management.year" route="management.year">Faculty Achievement - Year</x-menu-item>
+    <x-menu-item active="management.active" route="management.active">Faculty Achievement - Active Grant</x-menu-item>
+    <x-menu-item active="management.all" route="management.all">Faculty Achievement - All Grant</x-menu-item>
+    <x-menu-item active="management.activity" route="management.activity">Research Process - Activity</x-menu-item>
+    <x-menu-item active="management.talent" route="management.talent">Research Process - Talent</x-menu-item>
     <x-menu-item active="active-grant.*" route="active-grant.index">Active Grant in Year</x-menu-item>
     <x-menu-item active="overall-secured.*" route="overall-secured.index">Overall Grant Secured</x-menu-item>
     <x-menu-item active="staff-cohort.*" route="staff-cohort.index">Active Staff by Cohort</x-menu-item>
