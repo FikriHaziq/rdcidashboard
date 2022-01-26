@@ -22,7 +22,7 @@ use App\Http\Controllers\Grant\GrantMonitoringController;
 
 Route::resource('/', DashboardController::class, ['except' => ['create', 'store', 'show', 'update', 'destroy']]);
 
-// Grant Folder
+// Grant Folder 
 Route::resource('active-grant', ActiveGrantController::class, ['except' => ['create', 'store', 'destroy']]);
 Route::resource('overall-secured', GrantSecuredController::class, ['except' => ['create', 'store', 'destroy']]);
 Route::resource('staff-cohort', ActiveStaffController::class, ['except' => ['create', 'store', 'destroy']]);
