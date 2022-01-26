@@ -8,11 +8,11 @@
         <div class="grid grid-cols-12 gap-3">
             <div class="g-col-8 box p-5 cursor-pointer zoom-in" style="background-color: rgb(100, 181, 246)">
                 <div class="fw-medium fs-xs text-white">Total Approved, 2021</div>
-                <div class="fw-bold fs-lg text-white">39,198,016.32</div>
+                <div class="fw-bold fs-lg text-white">{{ number_format($result['total_approved'],2) }}</div>
             </div>
             <div class="g-col-4 box p-5 cursor-pointer zoom-in" style="background-color: rgb(229, 115, 115);">
                 <div class="fw-medium fs-xs text-white">Total Projects</div>
-                <div class="fw-bold fs-lg text-white">378</div>
+                <div class="fw-bold fs-lg text-white">{{ $result['total_grant'] }}</div>
             </div>
         </div>
     </div>
@@ -92,6 +92,7 @@
 @endslot
 @section('custom-js')
 <script>
+    var result = {!! json_encode($result) !!};
     var mixed = document.getElementById('mixed');
     var mixedChart = new Chart(mixed, {
         data: {
@@ -101,21 +102,21 @@
                     type: 'line',
                     label: 'No Of Project',
                     yAxisID: 'project-axis',
-                    data: [194, 67, 62, 55],
+                    data: [result.university.total, result.private.total, result.national.total, result.international.total],
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                 },
                 {
                     type: 'bar',
                     label: 'Approved',
-                    data: [12187796, 4080701, 14544335, 8385183],
+                    data: [result.university.approved, result.private.approved, result.national.approved, result.international.approved],
                     backgroundColor: 'rgba(72, 72, 72)',
                     borderColor: 'rgba(72, 72, 72)',
                 },
                 {
                     type: 'bar',
                     label: 'Received',
-                    data: [9499074, 1807967, 5682633, 3972091],
+                    data: [result.university.approved, result.private.approved, result.national.approved, result.international.approved],
                     backgroundColor: 'rgb(218, 174, 89)',
                     borderColor: 'rgb(218, 174, 89)',
                 }
@@ -145,32 +146,32 @@
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['FAKULTI KEJURUTERAAN - J51', 'FAKULTI ALAM BINA & UKUR - J52', 'MALAYSIA-JAPAN INTERNATIONAL INSTITUTE OF TECHNOLOGY- K43', 'FAKULTI SAINS - J54', 'FAKULTI TEKNOLOGI & INFORMATIK RAZAK - K56', 'FAKULTI SAINS SOSIAL DAN KEMANUSIAAN - J53', 'SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM - J55', 'SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM - K55', 'SEKOLAH PENDIDIKAN PROFESIONAL & PENDIDIKAN BERTERUSAN - K11', 'FAKULTI SAINS SOSIAL DAN KEMANUSIAAN - K53'],
+            labels: result.faculties,
             datasets: [
                 {
                     label: 'UNIVERSITY',
-                    data: ['107', '20', '24', '17', '12', '8', '3', '1', '2', '0'],
+                    data: result.university.faculty,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
                 },
                 {
                     label: 'PRIVATE',
-                    data: ['31', '2', '6', '4', '13', '6', '2', '3', '0', '0'],
+                    data: result.private.faculty,
                     backgroundColor: 'rgb(218, 174, 89)',
                     borderColor: 'rgb(218, 174, 89)',
                     borderWidth: 1
                 },
                 {
                     label: 'NATIONAL',
-                    data: ['32', '8', '0', '9', '6', '3', '3', '0', '0', '1'],
+                    data: result.national.faculty,
                     backgroundColor: 'rgba(72, 72, 72)',
                     borderColor: 'rgba(72, 72, 72)',
                     borderWidth: 1
                 },
                 {
                     label: 'INTERNATIONAL',
-                    data: ['25', '11', '8', '7', '2', '0', '0', '2', '0', '0'],
+                    data: result.international.faculty,
                     backgroundColor: 'rgba(72, 138, 153)',
                     borderColor: 'rgba(72, 138, 153)',
                     borderWidth: 1
