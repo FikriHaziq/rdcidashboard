@@ -8,16 +8,22 @@ class MenuItem extends Component
 {
     public $route;
     public $active;
+    public $type;
+    public $parent;
+    public $icon;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route = "", $active = "")
+    public function __construct($route = "", $active = "", $parent = "", $type = "", $icon = "box")
     {
         $this->route = $route;
         $this->active = $active;
+        $this->type = $type;
+        $this->parent = $parent;
+        $this->icon = $icon;
     }
 
     /**

@@ -1,31 +1,41 @@
-<style>
-    .cover {
-        object-fit: cover;
-        width: 45px;
-        height: 45px;
-        margin-left: 15px;
-    }
-</style>
-<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-    <div class="container-fluid">
-        <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-            <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-            </button>
-            </div>
-            <a class="navbar-brand" href="javascript:;">Dashboard - Grant</a>
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+<div class="top-bar">
+    <!-- BEGIN: Breadcrumb -->
+    <div class="-intro-x breadcrumb me-auto d-none d-sm-flex"> <a href="">{{ $module ?? '' }}</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i> <a href="" class="breadcrumb--active">{{ $submodule ?? '' }}</a> </div>
+    <!-- END: Breadcrumb -->
+    <!-- BEGIN: Account Menu -->
+        <div class="intro-x dropdown me-auto me-sm-6">
             Admin MC
-            <img src="{{ asset('theme/img/mike.jpg') }}" alt="" srcset="" class="rounded-circle cover">
+        </div>
+        <div class="intro-x dropdown w-8 h-8">
+        <div class="dropdown-toggle w-8 h-8 rounded-pill overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+            <img alt="Profile Pic" src="{{ asset('theme/images/profile-5.jpg') }}">
+        </div>
+        <div class="dropdown-menu w-56">
+            <ul class="dropdown-content bg-theme-26 dark-bg-dark-6 text-white">
+                <li class="p-2">
+                    <div class="fw-medium text-white">Admin MC</div>
+                    <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">Software Engineer</div>
+                </li>
+                <li>
+                    <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
+                </li>
+                <li>
+                    <a href="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="user" class="w-4 h-4 me-2"></i> Profile </a>
+                </li>
+                <li>
+                    <a href="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="lock" class="w-4 h-4 me-2"></i> Reset Password </a>
+                </li>
+                <li>
+                    <a href="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="help-circle" class="w-4 h-4 me-2"></i> Help </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
+                </li>
+                <li>
+                    <a href="{{ route('login') }}" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="toggle-right" class="w-4 h-4 me-2"></i> Logout </a>
+                </li>
+            </ul>
         </div>
     </div>
-</nav>
+    <!-- END: Account Menu -->
+</div>
