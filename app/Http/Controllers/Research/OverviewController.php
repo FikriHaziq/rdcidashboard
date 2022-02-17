@@ -19,4 +19,14 @@ class OverviewController extends Controller
     public function myra() {
         return view('dashboard.pages.research.myra');
     }
+
+    public function proposalFile() {
+        $module = "Proposal In Year";
+        return view('components.file-upload', compact('module'));
+    }
+
+    public function myRAFile() {
+        $module = "Research MyRA";
+        return view('components.file-upload', compact('module'));
+    }
 }
