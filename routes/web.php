@@ -6,13 +6,12 @@ use App\Http\Controllers\LoginController;
 
 use App\Http\Controllers\Expert\OverviewController as ExpertOverviewController;
 
-use App\Http\Controllers\Research\OverviewController as ResearchOverviewController;
-use App\Http\Controllers\Research\FacultyAchievementController;
-
 use App\Http\Controllers\MyRA\OverviewController as MyRAOverviewController;
 
 use App\Http\Controllers\Output\AnalysisController;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\Grant\OverviewController as GrantOverviewController;
+use App\Http\Controllers\Grant\FacultyAchievementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,16 +30,16 @@ Route::resource('dashboard', DashboardController::class, ['except' => ['create',
 // UTM Expert
 Route::name("expert.")->prefix("expert")->group(function () {
 });
-// UTM Research
-Route::name("research.")->prefix("research")->group(function () {
-    Route::name("overview")->get("overview", [ResearchOverviewController::class, "index"]);
+// Dashboard Grant
+Route::name("grant.")->prefix("grant")->group(function () {
+    Route::name("overview")->get("overview", [GrantOverviewController::class, "index"]);
     Route::name('faculty-year')->get('faculty-year/{year?}', [FacultyAchievementController::class, "by_year"]);
     Route::name('faculty-active')->get('faculty-active', [FacultyAchievementController::class, "active_grant"]);
     Route::name('faculty-all')->get('faculty-all', [FacultyAchievementController::class, "all_grant"]);
-    Route::name('proposal')->get('proposal', [ResearchOverviewController::class, "proposal"]);
-    Route::name('proposal.file')->get('proposal/file', [ResearchOverviewController::class, "proposalFile"]);
-    Route::name('myra')->get('myra', [ResearchOverviewController::class, "myra"]);
-    Route::name('myra.file')->get('myra/file', [ResearchOverviewController::class, "myRAFile"]);
+    Route::name('proposal')->get('proposal', [GrantOverviewController::class, "proposal"]);
+    Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
+    Route::name('myra')->get('myra', [GrantOverviewController::class, "myra"]);
+    Route::name('myra.file')->get('myra/file', [GrantOverviewController::class, "myRAFile"]);
 });
 // UTM MyRA
 Route::name("myra.")->prefix("myra")->group(function () {
@@ -69,7 +68,6 @@ Route::name('management.')->prefix('management')->group(function () {
     Route::name('activity')->get('activity', [ResearchProcessController::class, "activity"]);
     Route::name('talent')->get('talent', [ResearchProcessController::class, "talent"]);
 });
-
 Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("grant-mestec")->post('grant-mestec/', [AjaxController::class, 'getGrantMestec']);
 });

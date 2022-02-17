@@ -13,7 +13,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return redirect()->route('research.overview');
+        return redirect()->route('grant.overview');
+        // return view('dashboard.pages.dashboard.overview');
     }
 
     /**
