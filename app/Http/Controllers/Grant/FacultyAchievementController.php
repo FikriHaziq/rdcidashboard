@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Grant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\GeneralController as Api;
@@ -11,16 +11,16 @@ class FacultyAchievementController extends Controller
     public function by_year()
     {
         $result = Api::getgrantMestecc(1995);
-        return view('dashboard.pages.dashboard.faculty-year', compact('result'));
+        return view('dashboard.pages.grant.faculty-year', compact('result'));
     }
 
     public function active_grant()
     {
-        return view('dashboard.pages.dashboard.faculty-active');
+        return view('dashboard.pages.grant.faculty-active');
     }
 
     public function all_grant()
     {
-        return view('dashboard.pages.dashboard.faculty-all');
+        return view('dashboard.pages.grant.faculty-all');
     }
 }
