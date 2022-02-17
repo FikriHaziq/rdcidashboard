@@ -7,7 +7,7 @@
         <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
         <input type="text" readonly class="form-control" placeholder="Email" value="file.xlsx is selected" aria-describedby="input-group-email">
         <div class="input-group-text m-0 p-0">
-            <a href="{{ route('research.proposal.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
+            <a href="{{ route('grant.proposal.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
         </div>
     </div>
 </div>

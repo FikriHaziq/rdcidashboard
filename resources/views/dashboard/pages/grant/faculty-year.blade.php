@@ -286,7 +286,7 @@
     }
 
     $('#year-select').on('change', function() {
-        window.location.href = window.location.origin+"/research/faculty-year/"+this.value;
+        window.location.href = window.location.origin+"/grant/faculty-year/"+this.value;
     });
 
     
