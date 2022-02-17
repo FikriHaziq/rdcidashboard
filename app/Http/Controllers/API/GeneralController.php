@@ -55,7 +55,6 @@ class GeneralController extends Controller
     //     curl_close($curl);
     //     return $result;
     // }
-
     public static function getGrantMestecc($year){
         $param = [
             "system"=>"GRANTS",
@@ -65,38 +64,57 @@ class GeneralController extends Controller
 
         $data = self::getReq('grant/GetGrantMestecc', $param);
 
-        $totalGrant = count($data['GrantMesteccItems']);
+        $finalData = array_filter($data['GrantMesteccItems'], function ($var){
+            return ($var['SPONSOR_CATEGORY'] == 'UNIVERSITY'||$var['SPONSOR_CATEGORY'] == 'PRIVATE'||
+            $var['SPONSOR_CATEGORY'] == 'NATIONAL'||$var['SPONSOR_CATEGORY'] == 'INTERNATIONAL');
+        }); 
+
+        return self::processGrantMestecc($finalData);
+    }
+
+    public static function processGrantMestecc($finalData){
+        $totalGrant = count($finalData);
         $totalApproved = 0;
         $university_faculty_count = [];
         $private_faculty_count = [];
         $national_faculty_count = [];
         $international_faculty_count = [];
-        foreach ($data['GrantMesteccItems'] as $key => $grant) {
+        foreach ($finalData as $key => $grant) {
             $totalApproved += $grant['AMOUNT_APPROVED'];
         }
 
-        $faculties = array_count_values(array_filter(array_column($data['GrantMesteccItems'], "FACULTY")));
+        $faculties = array_count_values(array_filter(array_column($finalData, "FACULTY")));
         arsort($faculties);
 
-        $university = array_filter($data['GrantMesteccItems'], function ($var){
+        $staff = array_count_values(array_filter(array_column($finalData, "STAFF_NAME")));
+        arsort($staff);
+        $kp = array_keys($staff);
+        $kp_project = array_values($staff);
+        $project_leader = [];
+        $total_project_by_pl = 0;
+        foreach ($kp as $key => $value) {
+            array_push($project_leader, ["name"=>trim($value), "project"=>(int)$kp_project[$key]]);
+            $total_project_by_pl += (int)$kp_project[$key];
+        }
+        $university = array_filter($finalData, function ($var){
             return ($var['SPONSOR_CATEGORY'] == "UNIVERSITY");
         });
         $university_approved = array_sum(array_filter(array_column($university, "AMOUNT_APPROVED")));
         $university_faculties = array_count_values(array_filter(array_column($university, "FACULTY")));
 
-        $private = array_filter($data['GrantMesteccItems'], function ($var){
+        $private = array_filter($finalData, function ($var){
             return ($var['SPONSOR_CATEGORY'] == "PRIVATE");
         });
         $private_approved = array_sum(array_filter(array_column($private, "AMOUNT_APPROVED")));
         $private_faculties = array_count_values(array_filter(array_column($private, "FACULTY")));
 
-        $national = array_filter($data['GrantMesteccItems'], function ($var){
+        $national = array_filter($finalData, function ($var){
             return ($var['SPONSOR_CATEGORY'] == "NATIONAL");
         });
         $national_approved = array_sum(array_filter(array_column($national, "AMOUNT_APPROVED")));
         $national_faculties = array_count_values(array_filter(array_column($national, "FACULTY")));
 
-        $international = array_filter($data['GrantMesteccItems'], function ($var){
+        $international = array_filter($finalData, function ($var){
             return ($var['SPONSOR_CATEGORY'] == "INTERNATIONAL");
         });
         $international_approved = array_sum(array_filter(array_column($international, "AMOUNT_APPROVED")));
@@ -110,31 +128,39 @@ class GeneralController extends Controller
         }
 
         $result = [
+            "raw_data" => $finalData,
             "total_grant" => $totalGrant,
             "total_approved" => $totalApproved,
             "faculties" => array_keys($faculties),
-            "university" => [
-                "total" => count($university),
-                "approved" => $university_approved,
-                "faculty" => $university_faculty_count
-            ],
-            "private" => [
-                "total" => count($private),
-                "approved" => $private_approved,
-                "faculty" => $private_faculty_count
-            ],
-            "national" => [
-                "total" => count($national),
-                "approved" => $national_approved,
-                "faculty" => $national_faculty_count
-            ],
-            "international" => [
-                "total" => count($international),
-                "approved" => $international_approved,
-                "faculty" => $international_faculty_count
-            ],
+            "project_leader" => $project_leader,
+            "total_project_by_pl" => $total_project_by_pl,
+            "sponsor_category" =>[
+                [
+                    "sponsor" => "UNIVERSITY",
+                    "total" => count($university),
+                    "approved" => $university_approved,
+                    "faculty" => $university_faculty_count
+                ],
+                [
+                    "sponsor" => "PRIVATE",
+                    "total" => count($private),
+                    "approved" => $private_approved,
+                    "faculty" => $private_faculty_count
+                ],
+                [
+                    "sponsor" => "NATIONAL",
+                    "total" => count($national),
+                    "approved" => $national_approved,
+                    "faculty" => $national_faculty_count
+                ],
+                [
+                    "sponsor" => "INTERNATIONAL",
+                    "total" => count($international),
+                    "approved" => $international_approved,
+                    "faculty" => $international_faculty_count
+                ],
+            ]
         ];
         return $result;
     }
-
 }
