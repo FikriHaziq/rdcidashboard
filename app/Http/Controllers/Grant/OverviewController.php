@@ -9,15 +9,15 @@ class OverviewController extends Controller
 {
     // Research Overview
     public function index() {
-        return view('dashboard.pages.grant.overview');
+        return view('grant.overview');
     }
 
     public function proposal() {
-        return view('dashboard.pages.grant.proposal');
+        return view('grant.proposal');
     }
 
     public function myra() {
-        return view('dashboard.pages.grant.myra');
+        return view('grant.myra');
     }
 
     public function proposalFile() {

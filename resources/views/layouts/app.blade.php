@@ -11,23 +11,23 @@
         <title>RDCI Dashboard | {{ $submodule ?? '' }}</title>
         <!-- BEGIN: CSS Assets-->
         <link href="{{ asset('theme/css/app.css') }}" rel="stylesheet" />
-        @include('dashboard.layouts.css')
+        @include('layouts.css')
         @yield('custom-css')
         <!-- END: CSS Assets-->
     </head>
     <body class="main">
         <div class="wrapper">
 
-        @include('dashboard.layouts.mobile-menu')
+        @include('layouts.mobile-menu')
 
         <div class="d-flex">
-            @include('dashboard.layouts.menu')
+            @include('layouts.menu')
             <div class="content">
-                @include('dashboard.layouts.header')
+                @include('layouts.header')
                 {{ $content }}
             </div>
         </div>
     </body>
-    @include('dashboard.layouts.js')
+    @include('layouts.js')
     @yield('custom-js')
 </html>

@@ -1,4 +1,4 @@
-@component("dashboard.layouts.app")
+@component("layouts.app")
 @slot("module") UTM Research @endslot
 @slot("submodule") Research Overview @endslot
 @slot("content")
