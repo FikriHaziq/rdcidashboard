@@ -10,24 +10,19 @@
     </div>
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-body d-flex align-items-stretch"><canvas id="pie2" width="800"></canvas></div>
+            <div class="card-body d-flex align-items-center"><canvas id="bar1" width="800"></canvas></div>
         </div>
     </div>
     <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            {{-- <div class="card-body d-flex align-items-center"><canvas id="bar3" width="800"></canvas></div> --}}
+        <div class="card w-100">
+            <div class="card-body d-flex align-items-stretch"><canvas id="pie2" width="800"></canvas></div>
         </div>
     </div>
 </div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar1" width="800"></canvas></div>
-        </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-stretch"><canvas id="bar2" width="800"></canvas></div>
+            <div class="card-body d-flex align-items-stretch"><canvas id="bar2" width="800" height="500"></canvas></div>
         </div>
     </div>
     <div class="g-col-4 d-flex align-items-stretch">
@@ -35,13 +30,13 @@
             <div class="card-body d-flex align-items-center"><canvas id="bar3" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar4" width="800"></canvas></div>
         </div>
     </div>
+</div>
+<div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-3 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-stretch"><canvas id="bar5" width="800"></canvas></div>
@@ -57,24 +52,24 @@
             <div class="card-body d-flex align-items-center"><canvas id="bar7" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-3 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar8" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+</div>
+<div class="intro-y grid grid-cols-12 gap-3 mt-3">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar9" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar10" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar11" width="800"></canvas></div>
         </div>
@@ -87,12 +82,12 @@
     var pieChart1 = new Chart(pie1, {
         type: 'doughnut',
         data: {
-            labels: ['ACTIVE', 'END WITHOUT FINAL REPORT', 'ENDED', 'COMPLETED', 'TERMINATED'],
+            labels: ['Conference, Seminar', 'Consultancy, Lab Services', 'Endowment', 'Gifts', 'Product Comm, Tech Know-How', 'Training Courses, PG Fees'],
             datasets: [
                 {
                     label: 'DATA',
-                    data: ['2399', '187', '173', '92', '10'],
-                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(218, 174, 89)', 'rgb(72, 72, 72)', 'rgb(218, 218, 218)', 'rgb(32, 40, 62)'],
+                    data: ['2399', '187', '173', '92', '10', '10'],
+                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(243, 131, 55)', 'rgb(218, 174, 89)', 'rgb(72, 72, 72)', 'rgb(218, 218, 218)', 'rgb(32, 40, 62)'],
                 },
             ]
         },
@@ -122,12 +117,12 @@
     var pieChart2 = new Chart(pie2, {
         type: 'doughnut',
         data: {
-            labels: ['FRGS', 'UTM-TDR', 'UTMER', 'TIER 2', 'OTR', 'IIIG', 'CR DTD', 'CRG', 'PDRU', 'ETC'],
+            labels: ['Operational Expenditure', 'Operational Research Expenditure'],
             datasets: [
                 {
                     label: 'DATA',
-                    data: ['434', '247', '229', '196', '189', '186', '173', '140', '126', '941'],
-                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(72, 72, 72)', 'rgb(201, 84, 66)', 'rgb(156, 43, 34)', 'rgb(218, 174, 89)', 'rgb(252, 181, 244)', 'rgb(218, 218, 218)', 'rgb(32, 40, 62)', 'rgb(72, 138, 153)', 'rgb(136, 17, 72)'],
+                    data: ['41577027', '558825153'],
+                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(72, 138, 153)'],
                 },
             ]
         },
@@ -154,139 +149,20 @@
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['AGENCY', 'INDUSTRY', 'UNIVERSITY'],
+            labels: ['Income', 'Expenditure'],
             datasets: [
                 {
                     label: 'LOA',
-                    data: [intRand(5), intRand(1), intRand(5)],
+                    data: [49000000, 40500000],
                     backgroundColor: 'rgba(49, 89, 119)',
                     borderColor: 'rgba(49, 89, 119)',
                     borderWidth: 1
                 },
-                {
-                    label: 'MOA',
-                    data: [intRand(16), intRand(14), intRand(20)],
-                    backgroundColor: 'rgba(230, 101, 34)',
-                    borderColor: 'rgba(230, 101, 34)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'MOU',
-                    data: [intRand(10), intRand(10), intRand(10)],
-                    backgroundColor: 'rgba(148, 148, 148)',
-                    borderColor: 'rgba(148, 148, 148)',
-                    borderWidth: 1
-                },
             ]
         },
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: 'Participation in International Activities in Active Agreement'
-                }
-            }
-        }
-    });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: ['AHBS', 'FABU', 'FK', 'FS', 'FSSH', 'FTIR', 'MJIIT'],
-            datasets: [
-                {
-                    label: 'Member',
-                    data: [10, 5, 72, 18, 8, 9, 21],
-                    backgroundColor: 'rgba(49, 89, 119)',
-                    borderColor: 'rgba(49, 89, 119)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Project Leader',
-                    data: [1, 1, 29, 1, 1, 1, 16],
-                    backgroundColor: 'rgba(235, 100, 30)',
-                    borderColor: 'rgba(235, 100, 30)',
-                    borderWidth: 1
-                },
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: 'Staff Participation in International Activities in Active Agreement'
-                }
-            }
-        }
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: ['Canada', 'Finland', 'Indonesia', 'Japan', 'Singapore', 'Taiwan'],
-            datasets: [
-                {
-                    label: 'Visiting Researcher',
-                    data: [0, 0, 1, 3, 1, 0],
-                    backgroundColor: 'rgba(75, 136, 203)',
-                    borderColor: 'rgba(75, 136, 203)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Training',
-                    data: [0, 3, 0, 1, 0, 1],
-                    backgroundColor: 'rgba(246, 181, 10)',
-                    borderColor: 'rgba(246, 181, 10)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Sabatical Leave',
-                    data: [0, 0, 0, 2, 0, 0],
-                    backgroundColor: 'rgba(148, 148, 148)',
-                    borderColor: 'rgba(148, 148, 148)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Post Doctoral',
-                    data: [1, 0, 0, 1, 2, 0],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Fellowship',
-                    data: [0, 0, 0, 2, 0, 0],
-                    backgroundColor: 'rgba(53, 91, 183)',
-                    borderColor: 'rgba(53, 91, 183)',
-                    borderWidth: 1
-                },
-            ]
-        },
-        options: {
-            scales: {
-                x: {
-                    stacked: true
-                },
-                y: {
-                    stacked: true,
                     beginAtZero: true
                 }
             },
@@ -296,7 +172,74 @@
                 },
                 title: {
                     display: true,
-                    text: 'Joint Collaborations'
+                    text: 'Total Income and Expenditure from Research Activity'
+                }
+            }
+        }
+    });
+
+    var bar2 = document.getElementById('bar2');
+    var barChart2 = new Chart(bar2, {
+        type: 'bar',
+        data: {
+            labels: ['WCC', 'MTC', 'MAGIC-X', 'IBD', 'FTIR', 'FS', 'FABU', 'CRC', 'CFE', 'AB'],
+            datasets: [
+                {
+                    label: 'Member',
+                    data: [intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999), intRand(208999)],
+                    backgroundColor: 'rgba(207, 130, 130)',
+                    borderColor: 'rgba(207, 130, 130)',
+                    borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Income from Training Courses'
+                }
+            }
+        }
+    });
+
+    var bar3 = document.getElementById('bar3');
+    var barChart3 = new Chart(bar3, {
+        type: 'bar',
+        data: {
+            labels: ['AHIBS', 'FABU', 'FE', 'FS', 'FSSK', 'FTIR', 'MJIIT', 'SPS'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: [intRand(8021475), intRand(8021475), intRand(8021475), intRand(8021475), intRand(8021475), intRand(8021475), intRand(8021475), intRand(8021475)],
+                    backgroundColor: 'rgba(184, 177, 133)',
+                    borderColor: 'rgba(184, 177, 133)',
+                    borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Income from PG Fees'
                 }
             }
         }
