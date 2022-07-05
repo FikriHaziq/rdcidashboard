@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
+use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 
 // OLD
 use App\Http\Controllers\Grant\OverviewController as GrantOverviewController;
@@ -46,6 +47,18 @@ Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("section-f")->get("section-f", [MyRADashboardController::class, "sectionF"]);
     Route::name("section-g")->get("section-g", [MyRADashboardController::class, "sectionG"]);
     Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
+
+    Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
+        Route::name('section-a')->get('section-a', [RawDataController::class, 'sectionA']);
+        Route::name('section-b')->get('section-b', [RawDataController::class, 'sectionB']);
+        Route::name('section-c')->get('section-c', [RawDataController::class, 'sectionC']);
+        Route::name('section-d')->get('section-d', [RawDataController::class, 'sectionD']);
+        Route::name('section-e')->get('section-e', [RawDataController::class, 'sectionE']);
+        Route::name('section-f')->get('section-f', [RawDataController::class, 'sectionF']);
+        Route::name('section-g')->get('section-g', [RawDataController::class, 'sectionG']);
+        Route::name('section-h')->get('section-h', [RawDataController::class, 'sectionH']);
+        Route::name('summary')->get('summary', [RawDataController::class, 'summary']);
+    });
 });
 
 // Grant Folder

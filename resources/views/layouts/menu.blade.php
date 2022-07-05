@@ -55,5 +55,6 @@
         <x-menu-item active="myra.section-f" route="myra.section-f">Section F: Professional Services and Gifts </x-menu-item>
         <x-menu-item active="myra.section-g" route="myra.section-g">Section G: Networking and Linkages</x-menu-item>
         <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item>
+        <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">KPI Form</x-menu-item>
     </x-menu-item>
 </x-menu-wrapper>
