@@ -58,20 +58,22 @@ Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
 
     Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
-        Route::name('section-a')->get('section-a', [RawDataController::class, 'sectionA']);
-        Route::name('section-b')->get('section-b', [RawDataController::class, 'sectionB']);
-        Route::name('section-c')->get('section-c', [RawDataController::class, 'sectionC']);
-        Route::name('section-d')->get('section-d', [RawDataController::class, 'sectionD']);
-        Route::name('section-e')->get('section-e', [RawDataController::class, 'sectionE']);
-        Route::name('section-f')->get('section-f', [RawDataController::class, 'sectionF']);
-        Route::name('section-g')->get('section-g', [RawDataController::class, 'sectionG']);
-        Route::name('section-h')->get('section-h', [RawDataController::class, 'sectionH']);
-        Route::name('summary')->get('summary', [RawDataController::class, 'summary']);
+        Route::name('section-a')->get('section-a/{year?}', [RawDataController::class, 'sectionA']);
+        Route::name('section-b')->get('section-b/{year?}', [RawDataController::class, 'sectionB']);
+        Route::name('section-c')->get('section-c/{year?}', [RawDataController::class, 'sectionC']);
+        Route::name('section-d')->get('section-d/{year?}', [RawDataController::class, 'sectionD']);
+        Route::name('section-e')->get('section-e/{year?}', [RawDataController::class, 'sectionE']);
+        Route::name('section-f')->get('section-f/{year?}', [RawDataController::class, 'sectionF']);
+        Route::name('section-g')->get('section-g/{year?}', [RawDataController::class, 'sectionG']);
+        Route::name('section-h')->get('section-h/{year?}', [RawDataController::class, 'sectionH']);
+        Route::name('summary')->get('summary/{year?}', [RawDataController::class, 'summary']);
     });
 });
 
 Route::name("masterlist.")->prefix("masterlist")->group(function () {
-    Route::name('index')->get('/index', [MasterlistController::class, 'index']);
+    Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'index']);
+    Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "list"]);
+    Route::name("import.")->get('/import/{id}', [MasterlistController::class, "import"]);
 });
 
 // Grant Folder

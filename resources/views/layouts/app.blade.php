@@ -27,6 +27,7 @@
                 {{ $content }}
             </div>
         </div>
+        @include('alert')
     </body>
     @include('layouts.js')
     @yield('custom-js')

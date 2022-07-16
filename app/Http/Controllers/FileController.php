@@ -23,8 +23,9 @@ class FileController extends Controller
         }
         $data = new DataAttachment;
         $data->module = $request->module;
+        $data->year = $request->year;
         $data->filename = $file['filename'];
-        $data->status = 'selected';
+        $data->status = 'not-selected';
         $data->save();
 
         $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
@@ -40,7 +41,7 @@ class FileController extends Controller
 
     public function upload(Request $request)
     {
-        if($request->hasFile('file_upload')){
+        if($request->file('file_upload')){
             $file = $request->file('file_upload');
             $filename = $file->getClientOriginalName();
             $folder = uniqid() . '-' . now()->timestamp;
@@ -51,6 +52,7 @@ class FileController extends Controller
                 'filename' => $filename,
             ]);
 
+            // return '';
             return ["folder"=>$folder, "filename"=>$filename];
         }
         return '';
