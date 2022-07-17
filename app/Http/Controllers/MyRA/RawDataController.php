@@ -20,13 +20,16 @@ class RawDataController extends Controller
     public function sectionB($year = null)
     {
         if(!$year)$year = date('Y');
-        return view('myra.self-assessment.section-b', compact('year'));
+        $data = $this->myraSectionB($year);
+        return view('myra.self-assessment.section-b', compact('year', 'data'));
     }
 
     public function sectionC($year = null)
     {
         if(!$year)$year = date('Y');
-        return view('myra.self-assessment.section-c', compact('year'));
+        $data = $this->myraSectionC($year);
+        // dd($data);
+        return view('myra.self-assessment.section-c', compact('year', 'data'));
     }
 
     public function sectionD($year = null)

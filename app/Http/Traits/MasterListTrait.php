@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Traits;
 use App\Models\MasterList\MasterListStudent;
+use App\Models\MasterList\MasterListAward;
+use App\Models\MasterList\MasterListPublication;
 use App\Models\DataAttachment;
 
 trait MasterListTrait {
@@ -240,6 +242,61 @@ trait MasterListTrait {
             'doc_coursework_local_parttime' => $doc_coursework_local_parttime,
             'doc_coursework_foreign_fulltime' => $doc_coursework_foreign_fulltime,
             'doc_coursework_foreign_parttime' => $doc_coursework_foreign_parttime,
+        ];
+    }
+
+    public function myraSectionB($year) {
+        $award_int = MasterListAward::where('ml_start_year', $year)->whereNatInt('INTERNATIONAL')->whereAwardType('AWARD')->count();
+        $recog_int = MasterListAward::where('ml_start_year', $year)->whereNatInt('INTERNATIONAL')->whereIn('award_type',['RECOGNITIONS/STEWARDSHIP','FELLOWSHIP'])->count();
+        $award_nat = MasterListAward::where('ml_start_year', $year)->whereNatInt('NATIONAL')->whereAwardType('AWARD')->count();
+        $recog_nat = MasterListAward::where('ml_start_year', $year)->whereNatInt('NATIONAL')->whereIn('award_type',['RECOGNITIONS/STEWARDSHIP','FELLOWSHIP'])->count();
+        $exhibition = MasterListAward::where('ml_start_year', $year)->whereAwardType('EXHIBITION AWARD')->count();
+        $other = MasterListAward::where('ml_start_year', $year)->whereAwardType('OTHER RESEARCH AWARDS')->count();
+        return (object)[
+            'award_int' => $award_int,
+            'recog_int' => $recog_int,
+            'award_nat' => $award_nat,
+            'recog_nat' => $recog_nat,
+            'exhibition' => $exhibition,
+            'other' => $other,
+        ];
+    }
+
+    public function myraSectionC($year) {
+        $journal = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->count();
+        $proceeding = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('proceeding')->count();
+        $joint_industrial = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->whereIndustrial('Y')->count();
+        $joint_international = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->whereInternational('Y')->count();
+        $joint_national = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->whereNational('Y')->count();
+        $citation = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('citation')->count();
+        $q1_q2 = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->whereIn('quartile', ['Q1','Q2'])->count();
+        $mycite = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('mycite')->count();
+        $book_indexed = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('research_book')->whereBookStatus('INDEXED')->count();
+        $book_not_indexed = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('research_book')->whereBookStatus('NOT INDEXED')->count();
+        $book_national = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('research_book')->whereNational('Y')->count();
+        $chapter_indexed = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('chapter_research_book')->whereBookStatus('INDEXED')->count();
+        $chapter_not_indexed = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('chapter_research_book')->whereBookStatus('NOT INDEXED')->count();
+        $case_studies = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('case_studies')->count();
+        $policy_paper = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('policy_paper')->count();
+        $other = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('other')->count();
+        
+        return (object)[
+            'journal' => $journal,
+            'proceeding' => $proceeding,
+            'joint_industrial' => $joint_industrial,
+            'joint_international' => $joint_international,
+            'joint_national' => $joint_national,
+            'citation' => $citation,
+            'q1_q2' => $q1_q2,
+            'mycite' => $mycite,
+            'book_indexed' => $book_indexed,
+            'book_not_indexed' => $book_not_indexed,
+            'book_national' => $book_national,
+            'chapter_indexed' => $chapter_indexed,
+            'chapter_not_indexed' => $chapter_not_indexed,
+            'case_studies' => $case_studies,
+            'policy_paper' => $policy_paper,
+            'other' => $other,
         ];
     }
 }

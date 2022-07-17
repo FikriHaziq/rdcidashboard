@@ -52,11 +52,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. Journals </td>
-                    <td class="border border-slate-600 font-bold"><input value="2775" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->journal }}" id="journal" name="journal" onchange="percentQ1Q2Journal()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii. Conference Proceedings </td>
-                    <td class="border border-slate-600 font-bold"><input value="1027" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->proceeding }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iii. Joint Publications </td>
@@ -64,15 +64,15 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 1. Industrial Collaborations</td>
-                    <td class="border border-slate-600 font-bold"><input value="33" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->joint_industrial }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 2. International Collaborations</td>
-                    <td class="border border-slate-600 font-bold"><input value="1706" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->joint_international }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 3. National Collaborations (UA-UA, UA-US, US-US, Agencies/RI)</td>
-                    <td class="border border-slate-600 font-bold"><input value="999" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->joint_national }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Publication Impact</td>
@@ -80,19 +80,19 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. Total Citations of Publications </td>
-                    <td class="border border-slate-600 font-bold"><input value="100874" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->citation }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii. Number of Articles Published in Q1 and Q2 Journals </td>
-                    <td class="border border-slate-600 font-bold"><input value="886" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->q1_q2 }}" id="q1_q2" name="q1_q2" onchange="percentQ1Q2Journal()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iii. Percentage of Articles Published in Q1 and Q2 Journals </td>
-                    <td class="border border-slate-600 font-bold text-center">31.93</td>
+                    <td class="border border-slate-600 font-bold text-center"><div id="q1_q2_percent"></div></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Total Number of Publications in MyCite Indexed Journals </td>
-                    <td class="border border-slate-600 font-bold"><input value="489" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->mycite }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">d. Research Books and Chapters</td>
@@ -100,43 +100,43 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. No. of Research Books  </td>
-                    <td class="border border-slate-600 font-bold text-center">26</td>
+                    <td class="border border-slate-600 font-bold text-center"><div id="book"></div></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 1. Books indexed in SCOPUS/WOS</td>
-                    <td class="border border-slate-600 font-bold"><input value="1" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->book_indexed }}" name="book_indexed" id="book_indexed" onchange="totalBook()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 2. Books not indexed in SCOPUS/WOS</td>
-                    <td class="border border-slate-600 font-bold"><input value="25" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->book_not_indexed }}" name="book_not_indexed" id="book_not_indexed" onchange="totalBook()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 3. National Collaborations (UA-UA, UA-US, US-US, Agencies/RI)</td>
-                    <td class="border border-slate-600 font-bold"><input value="999" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->book_national }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii. No. of Chapters in Research Books  </td>
-                    <td class="border border-slate-600 font-bold text-center">172</td>
+                    <td class="border border-slate-600 font-bold text-center"><div id="chapter"></div></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 1. Chapters indexed in SCOPUS/WOS</td>
-                    <td class="border border-slate-600 font-bold"><input value="64" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->chapter_indexed }}" name="chapter_indexed" id="chapter_indexed" onchange="totalChapter()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600">&emsp;&emsp; 2. Chapters not indexed in SCOPUS/WOS</td>
-                    <td class="border border-slate-600 font-bold"><input value="108" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->chapter_not_indexed }}" name="chapter_not_indexed" id="chapter_not_indexed" onchange="totalChapter()" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iii. No. of Case Studies/Technical Reports</td>
-                    <td class="border border-slate-600 font-bold"><input value="56" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->case_studies }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">e. Policy Papers</td>
-                    <td class="border border-slate-600 font-bold"><input value="5" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->policy_paper }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">f. Other Publications (Publications in non-SCOPUS/WOS indexed journals, articles in magazines, newsletters, original writings and publications from conferences, digital or print media)</td>
-                    <td class="border border-slate-600 font-bold"><input value="2501" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->other }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="11">2</td>
@@ -525,13 +525,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
-    // $(document).ready(function () {
-    //     $('#sectionTable').DataTable({
-    //         "searching": false,
-    //         "lengthChange": false,
-    //         "paging": false
-    //     });
-    // });
+    $(document).ready(function () {
+        percentQ1Q2Journal();
+        totalBook();
+        totalChapter();
+    });
+
+    function percentQ1Q2Journal() {
+        var journal = parseInt($('#journal').val()||0);
+        var q1_q2 = parseInt($('#q1_q2').val()||0);
+        $('#q1_q2_percent').html((q1_q2/journal*100).toFixed(2));
+    }
+
+    function totalBook() {
+        var indexed = parseInt($('#book_indexed').val()||0);
+        var not_indexed = parseInt($('#book_not_indexed').val()||0);
+        $('#book').html(indexed+not_indexed);
+    }
+
+    function totalChapter() {
+        var indexed = parseInt($('#chapter_indexed').val()||0);
+        var not_indexed = parseInt($('#chapter_not_indexed').val()||0);
+        $('#chapter').html(indexed+not_indexed);
+    }
 </script>
 @endsection
 @endcomponent
