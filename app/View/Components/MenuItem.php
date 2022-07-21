@@ -17,7 +17,7 @@ class MenuItem extends Component
      *
      * @return void
      */
-    public function __construct($route = "", $active = "", $parent = "", $type = "", $icon = "box")
+    public function __construct($route = "", $active = "", $parent = "", $type = "", $icon = "")
     {
         $this->route = $route;
         $this->active = $active;
