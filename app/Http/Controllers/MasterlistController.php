@@ -22,10 +22,10 @@ class MasterlistController extends Controller
 {
     use MasterListTrait;
 
-    // public function __construct()
-    // {
-    //     set_time_limit(8000000);
-    // }
+    public function __construct()
+    {
+        set_time_limit(300);
+    }
 
     public function index($year = null)
     {
