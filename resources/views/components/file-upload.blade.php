@@ -65,9 +65,9 @@
                                 @else
                                 <a onclick="selectData({{$file->id}})" class="btn btn-sm btn-info" id="file_{{$file->id}}">Import Now</a>
                                 @endif
-                                <button class="btn btn-sm btn-danger">
+                                <a onclick="deleteData({{$file->id}})" class="btn btn-sm btn-danger">
                                     <i data-feather="trash" class="w-4 h-4"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         @endforeach
@@ -134,12 +134,35 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes, import it!'
             }).then((result) => {
                 if (result.value) {
                     window.location.href = window.location.origin + '/masterlist/import/' + id;
                     swal({
                         title: 'Importing',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                    });
+                    swal.showLoading();
+                }
+        })
+    }
+
+    function deleteData(id) {
+        swal({
+            title: 'Are you sure to delete?',
+            text: "Old data from this masterlist will be removed.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = window.location.origin + '/masterlist/delete/' + id;
+                    swal({
+                        title: 'Deleting',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         allowEnterKey: false,

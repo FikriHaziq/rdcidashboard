@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DataAttachment;
+use App\Models\MasterList\MasterListStudent;
+use App\Models\MasterList\MasterListAward;
+use App\Models\MasterList\MasterListPublication;
+
 use App\Imports\Student\UGStudentImport;
 use App\Imports\Student\PGStudentImport;
 use App\Imports\Student\MasterStudentImport;
@@ -17,6 +21,11 @@ use App\Http\Traits\MasterListTrait;
 class MasterlistController extends Controller
 {
     use MasterListTrait;
+
+    // public function __construct()
+    // {
+    //     set_time_limit(8000000);
+    // }
 
     public function index($year = null)
     {
@@ -144,6 +153,34 @@ class MasterlistController extends Controller
             $masterlist->status = 'selected';
             $masterlist->save();
             session()->flash('success', "Masterlist is successfully imported");
+            return back();
+        }
+        else{
+            session()->flash('error', "Something went wrong");
+            return back();
+        }
+    }
+
+    public function delete($id)
+    {
+        $masterlist = DataAttachment::find($id);
+        if($masterlist){
+            $module = $masterlist->module;
+            if(in_array($module, ['ug_student','pg_student','master_student','phd_student','doc_student'])){
+                MasterListStudent::where('ml_start_year', $masterlist->year)->whereType($module)->delete();
+            }
+            else if($module == 'award'){
+                MasterListAward::where('ml_start_year', $masterlist->year)->delete();       
+            }
+            else if($module == 'publication'){
+                MasterListPublication::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else{
+                session()->flash('error', "Something went wrong");
+                return back();
+            }
+            $masterlist->delete();
+            session()->flash('success', "Masterlist is successfully deleted");
             return back();
         }
         else{

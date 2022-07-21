@@ -74,6 +74,7 @@ Route::name("masterlist.")->prefix("masterlist")->group(function () {
     Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'index']);
     Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "list"]);
     Route::name("import.")->get('/import/{id}', [MasterlistController::class, "import"]);
+    Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "delete"]);
 });
 
 // Grant Folder
