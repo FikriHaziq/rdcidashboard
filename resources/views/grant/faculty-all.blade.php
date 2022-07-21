@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-@component("dashboard.layouts.app")
-=======
 @component("layouts.app")
->>>>>>> master
 @slot('module') UTM Research @endslot
 @slot("submodule") Faculty Achievement - All Grant @endslot
 @section('custom-css') @endsection
 @slot("content")
-<<<<<<< HEAD
-=======
 <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
         @if($file)
@@ -23,7 +17,6 @@
         </div>
     </div>
 </div>
->>>>>>> master
 <div class="intro-y row mt-5">
     <div class="col-4">
         <div class="grid grid-cols-12 gap-3">

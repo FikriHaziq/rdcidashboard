@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\GeneralController as Api;
-<<<<<<< HEAD
-=======
 use App\Models\DataAttachment;
->>>>>>> master
 
 class AjaxController extends Controller
 {
@@ -33,8 +30,6 @@ class AjaxController extends Controller
         ], 200);
     }
 
-<<<<<<< HEAD
-=======
     public function selectData($id)
     {
         $status = false;
@@ -55,5 +50,4 @@ class AjaxController extends Controller
         ], 200);
     }
 
->>>>>>> master
 }

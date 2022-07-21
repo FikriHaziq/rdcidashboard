@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-@component("dashboard.layouts.app")
-=======
 @component("layouts.app")
->>>>>>> master
 @slot("title") Active Grant In Year @endslot
 @section('custom-css') @endsection
 @slot("content")

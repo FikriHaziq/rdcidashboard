@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-@component("dashboard.layouts.app")
-=======
 @component("layouts.app")
->>>>>>> master
 @slot("module") UTM Research @endslot
 @slot("submodule") Proposal in Year @endslot
 @slot("content")
 <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
-<<<<<<< HEAD
-        <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
-        <input type="text" readonly class="form-control" placeholder="Email" value="file.xlsx is selected" aria-describedby="input-group-email">
-=======
         @if($file)
         <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
         <input type="text" readonly class="form-control" placeholder="Email" value="{{ $file->filename }} is selected" aria-describedby="input-group-email">
@@ -19,7 +11,6 @@
         <div class="input-group-text"><i class="p-1" style="color: red" data-feather="thumbs-down"></i></div>
         <input type="text" readonly class="form-control" placeholder="Email" value="No file." aria-describedby="input-group-email">
         @endif
->>>>>>> master
         <div class="input-group-text m-0 p-0">
             <a href="{{ route('grant.proposal.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
         </div>
