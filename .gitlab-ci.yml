@@ -1,0 +1,39 @@
+stages:
+  - prepare
+  
+.prepare_pull_build:
+  only:
+    - master
+  image: alpine
+  stage: prepare
+  script:
+    - apk add openssh-client
+    - echo -e "$SSHKEY" > id_rsa
+    - chmod 0600 id_rsa
+    - mkdir -p ~/.ssh/
+    - ssh-keyscan -t rsa $HOST_SERVER >> ~/.ssh/known_hosts
+    - ssh -i id_rsa devops@$HOST_SERVER "
+        cd $APPSPATH &&
+        git gc --prune=now &&
+        git remote prune origin &&
+        git fetch -v --progress origin &&
+        git reset --hard origin &&
+        git pull --progress -v --no-rebase origin &&
+        rm -rf .env &&
+        echo -e '$ENV' > .env &&
+        sudo docker exec $PRJCTNAME composer install &&
+        sudo docker exec $PRJCTNAME php artisan optimize &&
+        sudo docker exec $PRJCTNAME composer dumpautoload &&
+        sudo docker exec $PRJCTNAME composer update
+        "
+        
+prepare_prod:
+  extends: .prepare_pull_build
+  only:
+    - master
+  before_script:
+    - export PRJCTNAME="${CI_PROJECT_NAME}"
+    - export SSHKEY="${SERVER_SSHKEY_PROD}"
+    - export HOST_SERVER="${SERVER_HOST_PROD}"
+    - export ENV="${ENV_PROD}"
+    - export APPSPATH="${PATH_PROD}"
