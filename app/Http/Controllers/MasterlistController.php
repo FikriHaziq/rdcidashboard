@@ -25,6 +25,7 @@ class MasterlistController extends Controller
     public function __construct()
     {
         set_time_limit(300);
+        
     }
 
     public function index($year = null)
