@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\MasterlistController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 
@@ -25,12 +27,19 @@ use App\Http\Controllers\Grant\FacultyAchievementController;
 Route::name("login")->get("/", [LoginController::class, "index"]); 
 Route::resource('dashboard', DashboardController::class, ['except' => ['create', 'store', 'show', 'update', 'destroy']]);
 
+Route::name("data.")->prefix("data")->group(function () {
+    Route::name("store")->post("store", [FileController::class, "store"]);
+    Route::name("upload")->post("upload", [FileController::class, "upload"]);
+});
 // Dashboard Grant
 Route::name("grant.")->prefix("grant")->group(function () {
     Route::name("overview")->get("overview", [GrantOverviewController::class, "index"]);
     Route::name('faculty-year')->get('faculty-year/{year?}', [FacultyAchievementController::class, "by_year"]);
+    Route::name('faculty-year.file')->get('faculty_year/file', [FacultyAchievementController::class, "by_year_file"]);
     Route::name('faculty-active')->get('faculty-active', [FacultyAchievementController::class, "active_grant"]);
+    Route::name('faculty-active.file')->get('faculty-active/file', [FacultyAchievementController::class, "active_grant_file"]);
     Route::name('faculty-all')->get('faculty-all', [FacultyAchievementController::class, "all_grant"]);
+    Route::name('faculty-all.file')->get('faculty-all/file', [FacultyAchievementController::class, "all_grant_file"]);
     Route::name('proposal')->get('proposal', [GrantOverviewController::class, "proposal"]);
     Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
     Route::name('myra')->get('myra', [GrantOverviewController::class, "myra"]);
@@ -49,16 +58,23 @@ Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
 
     Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
-        Route::name('section-a')->get('section-a', [RawDataController::class, 'sectionA']);
-        Route::name('section-b')->get('section-b', [RawDataController::class, 'sectionB']);
-        Route::name('section-c')->get('section-c', [RawDataController::class, 'sectionC']);
-        Route::name('section-d')->get('section-d', [RawDataController::class, 'sectionD']);
-        Route::name('section-e')->get('section-e', [RawDataController::class, 'sectionE']);
-        Route::name('section-f')->get('section-f', [RawDataController::class, 'sectionF']);
-        Route::name('section-g')->get('section-g', [RawDataController::class, 'sectionG']);
-        Route::name('section-h')->get('section-h', [RawDataController::class, 'sectionH']);
-        Route::name('summary')->get('summary', [RawDataController::class, 'summary']);
+        Route::name('section-a')->get('section-a/{year?}', [RawDataController::class, 'sectionA']);
+        Route::name('section-b')->get('section-b/{year?}', [RawDataController::class, 'sectionB']);
+        Route::name('section-c')->get('section-c/{year?}', [RawDataController::class, 'sectionC']);
+        Route::name('section-d')->get('section-d/{year?}', [RawDataController::class, 'sectionD']);
+        Route::name('section-e')->get('section-e/{year?}', [RawDataController::class, 'sectionE']);
+        Route::name('section-f')->get('section-f/{year?}', [RawDataController::class, 'sectionF']);
+        Route::name('section-g')->get('section-g/{year?}', [RawDataController::class, 'sectionG']);
+        Route::name('section-h')->get('section-h/{year?}', [RawDataController::class, 'sectionH']);
+        Route::name('summary')->get('summary/{year?}', [RawDataController::class, 'summary']);
     });
+});
+
+Route::name("masterlist.")->prefix("masterlist")->group(function () {
+    Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'index']);
+    Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "list"]);
+    Route::name("import.")->get('/import/{id}', [MasterlistController::class, "import"]);
+    Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "delete"]);
 });
 
 // Grant Folder
@@ -84,4 +100,5 @@ Route::name("myra.")->prefix("myra")->group(function () {
 
 Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("grant-mestec")->post('grant-mestec/', [AjaxController::class, 'getGrantMestec']);
+    Route::name("selectData")->get('select/data/{id}', [AjaxController::class, 'selectData']);
 });

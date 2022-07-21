@@ -4,51 +4,67 @@ namespace App\Http\Controllers\MyRA;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Traits\MasterListTrait;
 
 class RawDataController extends Controller
 {
-    public function sectionA()
+    use MasterListTrait;
+
+    public function sectionA($year = null)
     {
-        return view('myra.self-assessment.section-a');
+        if(!$year)$year = date('Y');
+        $data = $this->myraSectionA($year);
+        return view('myra.self-assessment.section-a', compact('year', 'data'));
     }
 
-    public function sectionB()
+    public function sectionB($year = null)
     {
-        return view('myra.self-assessment.section-b');
+        if(!$year)$year = date('Y');
+        $data = $this->myraSectionB($year);
+        return view('myra.self-assessment.section-b', compact('year', 'data'));
     }
 
-    public function sectionC()
+    public function sectionC($year = null)
     {
-        return view('myra.self-assessment.section-c');
+        if(!$year)$year = date('Y');
+        $data = $this->myraSectionC($year);
+        // dd($data);
+        return view('myra.self-assessment.section-c', compact('year', 'data'));
     }
 
-    public function sectionD()
+    public function sectionD($year = null)
     {
-        return view('myra.self-assessment.section-d');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.section-d', compact('year'));
     }
 
-    public function sectionE()
+    public function sectionE($year = null)
     {
-        return view('myra.self-assessment.section-e');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.section-e', compact('year'));
     }
 
-    public function sectionF()
+    public function sectionF($year = null)
     {
-        return view('myra.self-assessment.section-f');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.section-f', compact('year'));
     }
 
-    public function sectionG()
+    public function sectionG($year = null)
     {
-        return view('myra.self-assessment.section-g');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.section-g', compact('year'));
     }
 
-    public function sectionH()
+    public function sectionH($year = null)
     {
-        return view('myra.self-assessment.section-h');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.section-h', compact('year'));
     }
 
-    public function summary()
+    public function summary($year = null)
     {
-        return view('myra.self-assessment.summary');
+        if(!$year)$year = date('Y');
+        return view('myra.self-assessment.summary', compact('year'));
     }
 }

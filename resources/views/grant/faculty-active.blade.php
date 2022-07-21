@@ -1,8 +1,29 @@
+<<<<<<< HEAD
 @component("dashboard.layouts.app")
+=======
+@component("layouts.app")
+>>>>>>> master
 @slot('module') UTM Research @endslot
 @slot("submodule") Faculty Achievement - Active Grant @endslot
 @section('custom-css') @endsection
 @slot("content")
+<<<<<<< HEAD
+=======
+<div class="intro-y col-6 items-center mt-8 bg-white">
+    <div class="input-group mt-2">
+        @if($file)
+        <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
+        <input type="text" readonly class="form-control" placeholder="Email" value="{{ $file->filename }} is selected" aria-describedby="input-group-email">
+        @else
+        <div class="input-group-text"><i class="p-1" style="color: red" data-feather="thumbs-down"></i></div>
+        <input type="text" readonly class="form-control" placeholder="Email" value="No file." aria-describedby="input-group-email">
+        @endif
+        <div class="input-group-text m-0 p-0">
+            <a href="{{ route('grant.faculty-active.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
+        </div>
+    </div>
+</div>
+>>>>>>> master
 <div class="intro-y row mt-5">
     <div class="col-4">
         <div class="grid grid-cols-12 gap-3">

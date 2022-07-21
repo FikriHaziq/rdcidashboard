@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\GeneralController as Api;
+<<<<<<< HEAD
+=======
+use App\Models\DataAttachment;
+>>>>>>> master
 
 class AjaxController extends Controller
 {
@@ -29,4 +33,27 @@ class AjaxController extends Controller
         ], 200);
     }
 
+<<<<<<< HEAD
+=======
+    public function selectData($id)
+    {
+        $status = false;
+        $file = DataAttachment::find($id);
+        if($file){
+            $module = $file->module;
+            $others = DataAttachment::whereModule($module)->whereNull('d_ts')->get();
+            foreach ($others as $key => $other) {
+                $other->status = 'not-selected';
+                $other->save();
+            }
+            $file->status = 'selected';
+            $file->save();
+            $status = true;
+        }
+        return response()->json([
+            "status" => $status,
+        ], 200);
+    }
+
+>>>>>>> master
 }

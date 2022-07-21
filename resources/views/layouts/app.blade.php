@@ -27,6 +27,10 @@
                 {{ $content }}
             </div>
         </div>
+<<<<<<< HEAD
+=======
+        @include('alert')
+>>>>>>> master
     </body>
     @include('layouts.js')
     @yield('custom-js')
