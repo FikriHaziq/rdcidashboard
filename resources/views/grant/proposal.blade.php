@@ -2,7 +2,7 @@
 @slot("module") UTM Research @endslot
 @slot("submodule") Proposal in Year @endslot
 @slot("content")
-<div class="intro-y col-6 items-center mt-8 bg-white">
+{{-- <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
         @if($file)
         <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
@@ -15,7 +15,7 @@
             <a href="{{ route('grant.proposal.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="intro-y grid grid-cols-12 gap-3 mt-5">
     <div class="g-col-3 box p-5 cursor-pointer zoom-in">
         <div class="fw-medium fs-xs">No of Proposal Submitted</div>

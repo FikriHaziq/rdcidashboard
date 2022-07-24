@@ -3,7 +3,7 @@
 @slot("submodule") {{ $module_name }} @endslot
 @section('custom-css')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-<link href="http://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
 @endsection
 @slot("content")
 
