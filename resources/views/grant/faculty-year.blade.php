@@ -3,7 +3,7 @@
 @slot("submodule") Faculty Achievement - Year @endslot
 @section('custom-css') @endsection
 @slot("content")
-<div class="intro-y col-6 items-center mt-8 bg-white">
+{{-- <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
         @if($file)
         <div class="input-group-text"><i class="p-1" style="color: limegreen" data-feather="thumbs-up"></i></div>
@@ -16,7 +16,7 @@
             <a href="{{ route('grant.faculty-year.file') }}" class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px">Manage File</a>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="intro-y row mt-5">
     <div class="col-4">
         <div class="grid grid-cols-12 gap-3">
