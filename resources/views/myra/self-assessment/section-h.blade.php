@@ -25,6 +25,7 @@
         </div>
     </div>
 </div>
+@include('myra.self-assessment.filter')
 <!-- BEGIN: Wizard Layout -->
 <div class="intro-y box py-10 sm:py-20 mt-5">
     @include('myra.self-assessment.tabs', compact('year'))

@@ -192,6 +192,8 @@ trait MasterListTrait {
     }
 
     public function myraSectionA($year) {
+        $faculties = MasterListStudent::where('ml_start_year', $year)->select('faculty')->whereNotNull('faculty')->distinct()->orderBy('faculty')->get();
+        $schools = MasterListStudent::where('ml_start_year', $year)->select('school')->whereNotNull('school')->distinct()->orderBy('school')->get();
         $ug_bachelor_local = MasterListStudent::where('ml_start_year', $year)->whereType('ug_student')->whereCitizenship('LOCAL')->count();
         $ug_bachelor_foreign = MasterListStudent::where('ml_start_year', $year)->whereType('ug_student')->whereCitizenship('FOREIGN')->count();
         $pg = MasterListStudent::where('ml_start_year', $year)->whereType('pg_student')->count();
@@ -218,6 +220,8 @@ trait MasterListTrait {
         $doc_coursework_foreign_parttime = MasterListStudent::where('ml_start_year', $year)->whereType('doc_student')->where('study_mode','!=','PENYELIDIKAN')->whereCitizenship('ANTARABANGSA')->whereStudyType('SEPARUH MASA')->count();
 
         return (object)[
+            'faculties' => $faculties,
+            'schools' => $schools,
             'ug_bachelor_local' => $ug_bachelor_local,
             'ug_bachelor_foreign' => $ug_bachelor_foreign,
             'pg' => $pg,
@@ -246,6 +250,8 @@ trait MasterListTrait {
     }
 
     public function myraSectionB($year) {
+        $faculties = MasterListAward::where('ml_start_year', $year)->select('faculty')->whereNotNull('faculty')->distinct()->orderBy('faculty')->get();
+        $schools = [];
         $award_int = MasterListAward::where('ml_start_year', $year)->whereNatInt('INTERNATIONAL')->whereAwardType('AWARD')->count();
         $recog_int = MasterListAward::where('ml_start_year', $year)->whereNatInt('INTERNATIONAL')->whereIn('award_type',['RECOGNITIONS/STEWARDSHIP','FELLOWSHIP'])->count();
         $award_nat = MasterListAward::where('ml_start_year', $year)->whereNatInt('NATIONAL')->whereAwardType('AWARD')->count();
@@ -253,6 +259,8 @@ trait MasterListTrait {
         $exhibition = MasterListAward::where('ml_start_year', $year)->whereAwardType('EXHIBITION AWARD')->count();
         $other = MasterListAward::where('ml_start_year', $year)->whereAwardType('OTHER RESEARCH AWARDS')->count();
         return (object)[
+            'faculties' => $faculties,
+            'schools' => $schools,
             'award_int' => $award_int,
             'recog_int' => $recog_int,
             'award_nat' => $award_nat,
@@ -263,6 +271,8 @@ trait MasterListTrait {
     }
 
     public function myraSectionC($year) {
+        $faculties = [];
+        $schools = [];
         $journal = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->count();
         $proceeding = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('proceeding')->count();
         $joint_industrial = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('journal')->whereIndustrial('Y')->count();
@@ -281,6 +291,8 @@ trait MasterListTrait {
         $other = MasterListPublication::where('ml_start_year', $year)->wherePublicationType('other')->count();
         
         return (object)[
+            'faculties' => $faculties,
+            'schools' => $schools,
             'journal' => $journal,
             'proceeding' => $proceeding,
             'joint_industrial' => $joint_industrial,

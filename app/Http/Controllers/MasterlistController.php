@@ -55,6 +55,9 @@ class MasterlistController extends Controller
         else if($module == 'award'){
             $module_name = "Award";
         }
+        else if($module == 'publication'){
+            $module_name = "Publication";
+        }
         else if($module == 'training_course'){
             $module_name = "Training Courses & PG Fees";
         }
