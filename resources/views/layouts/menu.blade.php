@@ -10,7 +10,7 @@
     <x-menu-item active="grant.*" route="" icon="book" parent="UTM Research" type="sub">
         <x-menu-item active="grant.overview" route="grant.overview">Research Overview</x-menu-item>
         {{-- <x-menu-item active="grant.faculty-year" route="grant.faculty-year">Faculty Achievement - Year, Active, All</x-menu-item> --}}
-        <x-menu-item active="grant.*" route="" parent="Project Management Division" type="sub">
+        <x-menu-item active="" route="" parent="Project Management Division" type="sub">
             <x-menu-item active="" route="">PI Achivement by Category</x-menu-item>
             <x-menu-item active="" route="">No. of PL by RM/ARM</x-menu-item>
             <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
@@ -48,14 +48,14 @@
     </x-menu-item>
     <x-menu-item active="grant.myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
         {{-- <x-menu-item active="grant.myra.*" route="grant.myra">MyRA Overview</x-menu-item>
-        <x-menu-item active="myra.emyra" route="myra.emyra">UTM eMyRA</x-menu-item>
-        <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
+        <x-menu-item active="myra.emyra" route="myra.emyra">UTM eMyRA</x-menu-item> --}}
+        <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
+        {{-- <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
         <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
         <x-menu-item active="myra.section-d" route="myra.section-d">Section D: Quantity and Quality of Postgraduates</x-menu-item>
         <x-menu-item active="myra.section-f" route="myra.section-f">Section F: Professional Services and Gifts </x-menu-item>
         <x-menu-item active="myra.section-g" route="myra.section-g">Section G: Networking and Linkages</x-menu-item>
         <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item> --}}
-        <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">KPI Form</x-menu-item>
     </x-menu-item>
     <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
     <x-menu-item active="masterlist.*" route="masterlist.index" icon="archive">Master List</x-menu-item>
