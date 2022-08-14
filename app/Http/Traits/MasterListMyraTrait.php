@@ -5,9 +5,9 @@ use App\Models\MasterList\MasterListAward;
 use App\Models\MasterList\MasterListPublication;
 use App\Models\DataAttachment;
 
-trait MasterListTrait {
+trait MasterListMyraTrait {
 
-    public function getModuleAvailability($year) {
+    public function getMyraModuleAvailability($year) {
         $ug_student = DataAttachment::whereModule('ug_student')->where('year', $year)->whereStatus('selected')->exists();
         $pg_student = DataAttachment::whereModule('pg_student')->where('year', $year)->whereStatus('selected')->exists();
         $master_student = DataAttachment::whereModule('master_student')->where('year', $year)->whereStatus('selected')->exists();

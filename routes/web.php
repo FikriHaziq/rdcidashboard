@@ -35,15 +35,15 @@ Route::name("data.")->prefix("data")->group(function () {
 Route::name("grant.")->prefix("grant")->group(function () {
     Route::name("overview")->get("overview", [GrantOverviewController::class, "index"]);
     Route::name('faculty-year')->get('faculty-year/{year?}', [FacultyAchievementController::class, "by_year"]);
-    Route::name('faculty-year.file')->get('faculty_year/file', [FacultyAchievementController::class, "by_year_file"]);
+    // Route::name('faculty-year.file')->get('faculty_year/file', [FacultyAchievementController::class, "by_year_file"]);
     Route::name('faculty-active')->get('faculty-active', [FacultyAchievementController::class, "active_grant"]);
-    Route::name('faculty-active.file')->get('faculty-active/file', [FacultyAchievementController::class, "active_grant_file"]);
+    // Route::name('faculty-active.file')->get('faculty-active/file', [FacultyAchievementController::class, "active_grant_file"]);
     Route::name('faculty-all')->get('faculty-all', [FacultyAchievementController::class, "all_grant"]);
-    Route::name('faculty-all.file')->get('faculty-all/file', [FacultyAchievementController::class, "all_grant_file"]);
+    // Route::name('faculty-all.file')->get('faculty-all/file', [FacultyAchievementController::class, "all_grant_file"]);
     Route::name('proposal')->get('proposal', [GrantOverviewController::class, "proposal"]);
-    Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
+    // Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
     Route::name('myra')->get('myra', [GrantOverviewController::class, "myra"]);
-    Route::name('myra.file')->get('myra/file', [GrantOverviewController::class, "myRAFile"]);
+    // Route::name('myra.file')->get('myra/file', [GrantOverviewController::class, "myRAFile"]);
 });
 
 // UTM MyRA
@@ -71,10 +71,18 @@ Route::name("myra.")->prefix("myra")->group(function () {
 });
 
 Route::name("masterlist.")->prefix("masterlist")->group(function () {
-    Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'index']);
-    Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "list"]);
-    Route::name("import.")->get('/import/{id}', [MasterlistController::class, "import"]);
-    Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "delete"]);
+    Route::name("myra.")->prefix("myra")->group(function () {
+        Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'myra_index']);
+        Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "myra_list"]);
+        Route::name("import.")->get('/import/{id}', [MasterlistController::class, "myra_import"]);
+        Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "myra_delete"]);
+    });
+    Route::name("project-management.")->prefix("project-management")->group(function () {
+        Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'pm_index']);
+        Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "pm_list"]);
+        Route::name("import.")->get('/import/{id}', [MasterlistController::class, "pm_import"]);
+        Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "pm_delete"]);
+    });
 });
 
 // Grant Folder

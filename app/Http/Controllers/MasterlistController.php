@@ -7,6 +7,14 @@ use App\Models\DataAttachment;
 use App\Models\MasterList\MasterListStudent;
 use App\Models\MasterList\MasterListAward;
 use App\Models\MasterList\MasterListPublication;
+use App\Models\MasterList\MasterListClaim;
+use App\Models\MasterList\MasterListElnptActivity;
+use App\Models\MasterList\MasterListElnptRaro;
+use App\Models\MasterList\MasterListElnptGrantApplication;
+use App\Models\MasterList\MasterListElnptGra;
+use App\Models\MasterList\MasterListElnptProposal;
+use App\Models\MasterList\MasterListElnptActiveGrant;
+use App\Models\MasterList\MasterListRaroProcess;
 
 use App\Imports\Student\UGStudentImport;
 use App\Imports\Student\PGStudentImport;
@@ -15,12 +23,22 @@ use App\Imports\Student\PhdStudentImport;
 use App\Imports\Student\DocStudentImport;
 use App\Imports\AwardImport;
 use App\Imports\PublicationImport;
+use App\Imports\ClaimImport;
+use App\Imports\ElnptActivityImport;
+use App\Imports\ElnptRaroImport;
+use App\Imports\ElnptGrantApplicationImport;
+use App\Imports\ElnptGraImport;
+use App\Imports\ElnptProposalImport;
+use App\Imports\ElnptActiveGrantImport;
+use App\Imports\RaroProcessImport;
+
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Traits\MasterListTrait;
+use App\Http\Traits\MasterListMyraTrait;
+use App\Http\Traits\MasterListPmTrait;
 
 class MasterlistController extends Controller
 {
-    use MasterListTrait;
+    use MasterListMyraTrait, MasterListPmTrait;
 
     public function __construct()
     {
@@ -28,14 +46,21 @@ class MasterlistController extends Controller
         ini_set('max_execution_time', 300);
     }
 
-    public function index($year = null)
+    public function myra_index($year = null)
     {
         if($year == null)$year = date('Y');
-        $modules = $this->getModuleAvailability($year);
-        return view('masterlist.index', compact('year', 'modules'));
+        $modules = $this->getMyraModuleAvailability($year);
+        return view('masterlist.myra', compact('year', 'modules'));
     }
 
-    public function list($module, $year)
+    public function pm_index($year = null)
+    {
+        if($year == null)$year = date('Y');
+        $modules = $this->getPmModuleAvailability($year);
+        return view('masterlist.project-management', compact('year', 'modules'));
+    }
+
+    public function myra_list($module, $year)
     {
         if($module == 'ug_student'){
             $module_name = "Under Graduate Student";
@@ -113,11 +138,47 @@ class MasterlistController extends Controller
             session()->flash('info', "This module will be available soon");
             return back();
         }
+        $section = 'myra';
         $files = DataAttachment::whereModule($module)->where('year', $year)->latest()->get();
-        return view('components.file-upload', compact('module', 'module_name', 'files', 'year'));
+        return view('components.file-upload', compact('section', 'module', 'module_name', 'files', 'year'));
     }
 
-    public function import($id)
+    public function pm_list($module, $year)
+    {
+        if($module == 'claim'){
+            $module_name = "Claim SPB";
+        }
+        else if($module == 'elnpt_activity'){
+            $module_name = "Activity";
+        }
+        else if($module == 'elnpt_raro'){
+            $module_name = "ARORARO";
+        }
+        else if($module == 'elnpt_grant_application'){
+            $module_name = "Grant Application";
+        }
+        else if($module == 'elnpt_spb_gra'){
+            $module_name = "SPB GRA";
+        }
+        else if($module == 'elnpt_proposal'){
+            $module_name = "Proposal";
+        }
+        else if($module == 'active_grant'){
+            $module_name = "Active Grant";
+        }
+        else if($module == 'raro_process'){
+            $module_name = "RARO Process";
+        }
+        else{
+            session()->flash('info', "This module will be available soon");
+            return back();
+        }
+        $section = 'project-management';
+        $files = DataAttachment::whereModule($module)->where('year', $year)->latest()->get();
+        return view('components.file-upload', compact('section', 'module', 'module_name', 'files', 'year'));
+    }
+
+    public function myra_import($id)
     {
         $masterlist = DataAttachment::find($id);
         if($masterlist){
@@ -165,7 +226,58 @@ class MasterlistController extends Controller
         }
     }
 
-    public function delete($id)
+    public function pm_import($id)
+    {
+        $masterlist = DataAttachment::find($id);
+        if($masterlist){
+            $mediaItems = $masterlist->getFirstMedia('dataAttachment');
+            $filepath = $mediaItems->getPath();
+            $module = $masterlist->module;
+            if($module == 'claim'){
+                Excel::import(new ClaimImport($masterlist->year), $filepath);
+            }
+            else if($module == 'elnpt_activity'){
+                Excel::import(new ElnptActivityImport($masterlist->year), $filepath);
+            }
+            else if($module == 'elnpt_raro'){
+                Excel::import(new ElnptRaroImport($masterlist->year), $filepath);
+            }
+            else if($module == 'elnpt_grant_application'){
+                Excel::import(new ElnptGrantApplicationImport($masterlist->year), $filepath);
+            }
+            else if($module == 'elnpt_spb_gra'){
+                Excel::import(new ElnptGraImport($masterlist->year), $filepath);
+            }
+            else if($module == 'elnpt_proposal'){
+                Excel::import(new ElnptProposalImport($masterlist->year), $filepath);
+            }
+            else if($module == 'active_grant'){
+                Excel::import(new ElnptActiveGrantImport($masterlist->year), $filepath);
+            }
+            else if($module == 'raro_process'){
+                Excel::import(new RaroProcessImport($masterlist->year), $filepath);
+            }
+            else{
+                session()->flash('info', "This module will be available soon");
+                return back();
+            }
+            $prev_data = DataAttachment::whereModule($module)->where('year', $masterlist->year)->whereStatus('selected')->first();
+            if($prev_data){
+                $prev_data->status = 'not-selected';
+                $prev_data->save();
+            }
+            $masterlist->status = 'selected';
+            $masterlist->save();
+            session()->flash('success', "Masterlist is successfully imported");
+            return back();
+        }
+        else{
+            session()->flash('error', "Something went wrong");
+            return back();
+        }
+    }
+
+    public function myra_delete($id)
     {
         $masterlist = DataAttachment::find($id);
         if($masterlist){
@@ -178,6 +290,49 @@ class MasterlistController extends Controller
             }
             else if($module == 'publication'){
                 MasterListPublication::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else{
+                session()->flash('error', "Something went wrong");
+                return back();
+            }
+            $masterlist->delete();
+            session()->flash('success', "Masterlist is successfully deleted");
+            return back();
+        }
+        else{
+            session()->flash('error', "Something went wrong");
+            return back();
+        }
+    }
+
+    public function pm_delete($id)
+    {
+        $masterlist = DataAttachment::find($id);
+        if($masterlist){
+            $module = $masterlist->module;
+            if($module == 'claim'){
+                MasterListClaim::where('ml_start_year', $masterlist->year)->delete();       
+            }
+            else if($module == 'elnpt_activity'){
+                MasterListElnptActivity::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'elnpt_raro'){
+                MasterListElnptRaro::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'elnpt_grant_application'){
+                MasterListElnptGrantApplication::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'elnpt_spb_gra'){
+                MasterListElnptGra::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'elnpt_proposal'){
+                MasterListElnptProposal::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'active_grant'){
+                MasterListElnptActiveGrant::where('ml_start_year', $masterlist->year)->delete();              
+            }
+            else if($module == 'raro_process'){
+                MasterListRaroProcess::where('ml_start_year', $masterlist->year)->delete();              
             }
             else{
                 session()->flash('error', "Something went wrong");

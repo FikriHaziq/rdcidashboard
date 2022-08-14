@@ -58,5 +58,8 @@
         <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">KPI Form</x-menu-item>
     </x-menu-item>
     <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
-    <x-menu-item active="masterlist.*" route="masterlist.index" icon="archive">Master List</x-menu-item>
+    <x-menu-item active="masterlist.*" route="" icon="archive" parent="Master List" type="sub">
+        <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Myra</x-menu-item>
+        <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>
+    </x-menu-item>
 </x-menu-wrapper>

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\MyRA;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Traits\MasterListTrait;
+use App\Http\Traits\MasterListMyraTrait;
 
 class RawDataController extends Controller
 {
-    use MasterListTrait;
+    use MasterListMyraTrait;
 
     public function sectionA($year = null)
     {
