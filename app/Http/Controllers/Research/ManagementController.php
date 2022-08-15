@@ -23,7 +23,19 @@ class ManagementController extends Controller
         return view('research.management.raro');
     }
 
-    public function graSRAAppointment() {
-        return view('research.management.raro');
+    public function graSraAppointment() {
+        return view('research.management.gra-sra');
+    }
+
+    public function wagesClaimManagement() {
+        return view('research.management.wages-claim');
+    }
+
+    public function grantDistribution() {
+        return view('research.management.distribution');
+    }
+
+    public function listOfAction() {
+        return view('research.management.action');
     }
 }

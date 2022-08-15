@@ -50,6 +50,13 @@ Route::name("grant.")->prefix("grant")->group(function () {
 Route::name('research.')->prefix('research')->group(function () {
     Route::name('management.')->prefix('management')->group(function () {
         Route::name('proposal')->get('proposal', [ManagementController::class, 'proposalManagement']);
+        Route::name('grant')->get('grant', [ManagementController::class, 'grantManagement']);
+        Route::name('activity')->get('activity', [ManagementController::class, 'activityManagement']);
+        Route::name('raro-appointment')->get('raro-appointment', [ManagementController::class, 'raroAppointment']);
+        Route::name('grasra-appointment')->get('grasra-appointment', [ManagementController::class, 'graSraAppointment']);
+        Route::name('wages-claim')->get('wages-claim', [ManagementController::class, 'wagesClaimManegement']);
+        Route::name('rmarm-distribution')->get('rmarm-distribution', [ManagementController::class, 'grantDistribution']);
+        Route::name('action-list')->get('action-list', [ManagementController::class, 'listOfAction']);
     });
 });
 

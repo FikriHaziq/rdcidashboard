@@ -40,8 +40,7 @@
         </x-menu-item> --}}
     </x-menu-item>
     <x-menu-item active="grant.myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
-        {{-- <x-menu-item active="grant.myra.*" route="grant.myra">MyRA Overview</x-menu-item>
-        <x-menu-item active="myra.emyra" route="myra.emyra">UTM eMyRA</x-menu-item> --}}
+        {{-- <x-menu-item active="grant.myra.*" route="grant.myra">MyRA Overview</x-menu-item> --}}
         <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
         <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
         <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
