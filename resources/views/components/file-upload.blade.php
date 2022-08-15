@@ -1,5 +1,5 @@
 @component("layouts.app")
-@slot("module") UTM Research @endslot
+@slot("module") Masterlist @endslot
 @slot("submodule") {{ $module_name }} @endslot
 @section('custom-css')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
@@ -79,7 +79,7 @@
     </div>
 </div>
 <br>
-<a class="btn btn-primary" href="{{ route('masterlist.index', $year) }}">Back</a>
+<a class="btn btn-primary" href="{{ route('masterlist.'.$section.'.index', $year) }}">Back</a>
 @endslot
 @section('custom-js')
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -137,7 +137,7 @@
             confirmButtonText: 'Yes, import it!'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = window.location.origin + '/masterlist/import/' + id;
+                    window.location.href = window.location.origin + '/masterlist/'+{!! json_encode($section) !!}+'/import/' + id;
                     swal({
                         title: 'Importing',
                         allowOutsideClick: false,
@@ -160,7 +160,7 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = window.location.origin + '/masterlist/delete/' + id;
+                    window.location.href = window.location.origin + '/masterlist/'+{!! json_encode($section) !!}+'/delete/' + id;
                     swal({
                         title: 'Deleting',
                         allowOutsideClick: false,
