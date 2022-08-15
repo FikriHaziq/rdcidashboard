@@ -6,6 +6,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MasterlistController;
+use App\Http\Controllers\Research\ManagementController as ManagementController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 
@@ -44,6 +45,12 @@ Route::name("grant.")->prefix("grant")->group(function () {
     // Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
     Route::name('myra')->get('myra', [GrantOverviewController::class, "myra"]);
     // Route::name('myra.file')->get('myra/file', [GrantOverviewController::class, "myRAFile"]);
+});
+
+Route::name('research.')->prefix('research')->group(function () {
+    Route::name('management.')->prefix('management')->group(function () {
+        Route::name('proposal')->get('proposal', [ManagementController::class, 'proposalManagement']);
+    });
 });
 
 // UTM MyRA
