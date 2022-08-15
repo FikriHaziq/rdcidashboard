@@ -10,8 +10,8 @@
     <x-menu-item active="grant.*" route="" icon="book" parent="UTM Research" type="sub">
         <x-menu-item active="grant.overview" route="grant.overview">Research Overview</x-menu-item>
         {{-- <x-menu-item active="grant.faculty-year" route="grant.faculty-year">Faculty Achievement - Year, Active, All</x-menu-item> --}}
-        <x-menu-item active="" route="" parent="Project Management Division" type="sub">
-            <x-menu-item active="" route="">PI Achivement by Category</x-menu-item>
+        <x-menu-item active="research.management.*" route="research.management.*" parent="Project Management Division" type="sub">
+            {{-- <x-menu-item active="" route="">PI Achivement by Category</x-menu-item>
             <x-menu-item active="" route="">No. of PL by RM/ARM</x-menu-item>
             <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
             <x-menu-item active="" route="">No. of Proposal</x-menu-item>
@@ -25,7 +25,15 @@
             <x-menu-item active="" route="">LNPT - Activity Process</x-menu-item>
             <x-menu-item active="" route="">LNPT - Extention Process</x-menu-item>
             <x-menu-item active="" route="">LNPT - ER/PR Process</x-menu-item>
-            <x-menu-item active="" route="">LNPT - SRA/Claim Process</x-menu-item>
+            <x-menu-item active="" route="">LNPT - SRA/Claim Process</x-menu-item> --}}
+            <x-menu-item active="research.management.proposal" route="research.management.proposal">Proposal Management</x-menu-item>
+            <x-menu-item active="" route="">Grant Management</x-menu-item>
+            <x-menu-item active="" route="">Activity Management</x-menu-item>
+            <x-menu-item active="" route="">RARO Appointment Management</x-menu-item>
+            <x-menu-item active="" route="">GRA SRA Appointment Management</x-menu-item>
+            <x-menu-item active="" route="">SPB Wages & Claim Management</x-menu-item>
+            <x-menu-item active="" route="">RM/ARM Active Grant Distribution</x-menu-item>
+            <x-menu-item active="" route="">List of Action</x-menu-item>
         </x-menu-item>
         {{-- <x-menu-item active="" route="" parent="Industrial & International Linkages Unit" type="sub">
             <x-menu-item active="" route="">PI Achievement – Year</x-menu-item>
