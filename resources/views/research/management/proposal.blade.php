@@ -1,6 +1,8 @@
 @component("layouts.app")
 @slot("module") UTM Research @endslot
-@slot("submodule") Research Overview @endslot
+@slot("submodule") Project Management Division @endslot
+@slot("trimoduleLink") research.management.proposal @endslot
+@slot("trimodule") Proposal Management @endslot
 @slot("content")
 <div class="intro-y row mt-5">
     <div class="col-md-3 col-sm-4">

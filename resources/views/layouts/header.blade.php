@@ -1,6 +1,6 @@
 <div class="top-bar">
     <!-- BEGIN: Breadcrumb -->
-    <div class="-intro-x breadcrumb me-auto d-none d-sm-flex"> <a href="">{{ $module ?? '' }}</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i> <a href="" class="breadcrumb--active">{{ $submodule ?? '' }}</a> </div>
+    <x-breadcrumb module="{{ $module ?? '' }}" moduleLink="{{ $moduleLink ?? '' }}" submodule="{{ $submodule ?? '' }}" submoduleLink="{{ $submoduleLink ?? '' }}" trimodule="{{ $trimodule ?? '' }}" trimoduleLink="{{ $trimoduleLink ?? '' }}"></x-breadcrumb>
     <!-- END: Breadcrumb -->
     <!-- BEGIN: Account Menu -->
         <div class="intro-x dropdown me-auto me-sm-6">
