@@ -18,7 +18,7 @@
             <x-menu-item active="research.management.grasra-appointment" route="research.management.grasra-appointment">GRA SRA Appointment Management</x-menu-item>
             <x-menu-item active="research.management.wages-claim" route="research.management.wages-claim">SPB Wages & Claim Management</x-menu-item>
             <x-menu-item active="research.management.rmarm-distribution" route="research.management.rmarm-distribution">RM/ARM Active Grant Distribution</x-menu-item>
-            <x-menu-item active="research.management.action-list" route="research.management.action-list">List of Action</x-menu-item>
+            {{-- <x-menu-item active="research.management.action-list" route="research.management.action-list">List of Action</x-menu-item> --}}
         </x-menu-item>
         {{-- <x-menu-item active="" route="" parent="Industrial & International Linkages Unit" type="sub">
             <x-menu-item active="" route="">PI Achievement – Year</x-menu-item>
@@ -40,8 +40,9 @@
         </x-menu-item> --}}
     </x-menu-item>
     <x-menu-item active="grant.myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
-        {{-- <x-menu-item active="grant.myra.*" route="grant.myra">MyRA Overview</x-menu-item> --}}
         <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
+        <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
+        <x-menu-item active="myra.info" route="myra.info">General Info</x-menu-item>
         <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
         <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
         <x-menu-item active="myra.section-d" route="myra.section-d">Section D: Quantity and Quality of Postgraduates</x-menu-item>
