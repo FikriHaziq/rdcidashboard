@@ -24,7 +24,7 @@ trait MyraCalculationTrait {
         $myra_year_4[3] = $important_data->recog_nat;
         $myra_year_4[4] = $important_data->exhibition;
         $myra_year_4[5] = $important_data->other;
-        $myra1_1[0] = $myra_year_1[0]/$active_acad_staff;
+        $myra1_1[0] = $active_acad_staff > 0 ? $myra_year_1[0]/$active_acad_staff : 0;
         $myra1_1[1] = 'YES';
         $myra1_1[2] = 'YES';
         $myra1_1[3] = 'YES';
@@ -41,7 +41,7 @@ trait MyraCalculationTrait {
         $myra1_4[3] = 'YES';
         $myra1_4[4] = 'YES';
         $myra1_4[5] = 'YES';
-        $myra2_1[0] = $myra_year_1[0]/$active_acad_staff;
+        $myra2_1[0] = $active_acad_staff > 0 ? $myra_year_1[0]/$active_acad_staff : 0;
         $myra2_1[1] = 'YES';
         $myra2_1[2] = 'YES';
         $myra2_1[3] = 'YES';
@@ -59,9 +59,9 @@ trait MyraCalculationTrait {
         $myra2_4[4] = 'NO';
         $myra2_4[5] = 'NO';
 
-        $u16 = (float)$myra_year_3[1]/$active_acad_staff*100;
-        $u17 = (float)$myra_year_3[2]/$active_acad_staff*100;
-        $u18 = (float)$myra_year_3[3]/$active_acad_staff*100;
+        $u16 = $active_acad_staff > 0 ? (float)$myra_year_3[1]/$active_acad_staff*100 : 0;
+        $u17 = $active_acad_staff > 0 ? (float)$myra_year_3[2]/$active_acad_staff*100 : 0;
+        $u18 = $active_acad_staff > 0 ? (float)$myra_year_3[3]/$active_acad_staff*100 : 0;
         $v16 = min(15, abs(30-$u16));
         $v17 = min(15, abs(30-$u17));
         $v18 = min(15, abs(30-$u18));
@@ -198,7 +198,7 @@ trait MyraCalculationTrait {
         $myra2_benchmark_1[0] = $myra2_benchmark_1[1]+$myra2_benchmark_1[2]+$myra2_benchmark_1[3]+$myra2_benchmark_1[4];
         $myra2_benchmark_2[0] = 70;
         $myra2_benchmark_2[1] = 25;
-        $myra2_benchmark_3[1] = 40;
+        $myra2_benchmark_3[1] = 30;
         $myra2_benchmark_3[2] = 40;
         $myra2_benchmark_3[3] = 30;
         $myra2_benchmark_3[0] = $myra2_benchmark_3[1]+$myra2_benchmark_3[2]+$myra2_benchmark_3[3];
