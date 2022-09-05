@@ -1,0 +1,60 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateMasterlistResearchExperiencesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('masterlist_research_experiences', function (Blueprint $table) {
+            $table->id();
+            $table->integer('ml_start_year')->nullable();
+            $table->integer('ml_end_year')->nullable();
+            $table->string('staff_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('faculty_code')->nullable();
+            $table->string('school_code')->nullable();
+            $table->string('institute_code')->nullable();
+            $table->string('rc_code')->nullable();
+            $table->string('position')->nullable();
+            $table->string('grade')->nullable();
+            $table->datetime('first_appointment_date')->nullable();
+            $table->datetime('current_position_appointment_date')->nullable();
+            $table->datetime('service_end_date')->nullable();
+            $table->datetime('dob')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('cohort')->nullable();
+            $table->string('acad_qualification')->nullable();
+            $table->text('professional_qualification_1')->nullable();
+            $table->text('professional_qualification_2')->nullable();
+            $table->text('reg_number')->nullable();
+            $table->string('faculty')->nullable();
+            $table->string('department')->nullable();
+            $table->string('st')->nullable();
+            $table->string('status1')->nullable();
+            $table->string('status2')->nullable();
+            $table->string('status3')->nullable();
+            $table->string('citizenship')->nullable();
+            $table->string('country')->nullable();
+            $table->text('remark')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('masterlist_research_experiences');
+    }
+}

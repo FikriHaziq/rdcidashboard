@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">Total Number of Laboratories Accredited to Good Manufacturing Practice (GMP), Good Regulatory Practice (GRP), Good Laboratory Practice (GLP), ISO17025, ISO15189, etc. </td>
-                    <td class="border border-slate-600 font-bold"><input value="6" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->support }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="4">2</td>
@@ -58,15 +58,15 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Titles of Books (Hard copy) </td>
-                    <td class="border border-slate-600 font-bold"><input value="337806" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->book }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Online Titles of Books</td>
-                    <td class="border border-slate-600 font-bold"><input value="62172" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->book_online }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Total Number of Titles of Journals Subscribed  </td>
-                    <td class="border border-slate-600 font-bold"><input value="2661387" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->journal_subscribed }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 
             
@@ -150,6 +150,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
+    function getList(that) {
+        window.location = window.location.origin + '/myra/self-assessment/section-h/' + that.val();
+    }
     // $(document).ready(function () {
     //     $('#sectionTable').DataTable({
     //         "searching": false,

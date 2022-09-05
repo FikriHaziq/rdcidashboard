@@ -49,11 +49,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Training Courses from Non-Degree Programmes </td>
-                    <td class="border border-slate-600 font-bold"><input value="1771683" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->training_course }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Postgraduate Fees from Research Programmes </td>
-                    <td class="border border-slate-600 font-bold"><input value="23003002" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->pg_fee }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">2</td>
@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total amount (RM) </td>
-                    <td class="border border-slate-600 font-bold"><input value="2115517" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->conference }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">3</td>
@@ -71,11 +71,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Product Commercialization </td>
-                    <td class="border border-slate-600 font-bold"><input value="774192" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->product_comm }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Technology Know-How Licensing / Sold Outright </td>
-                    <td class="border border-slate-600 font-bold"><input value="430100" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->tech_know_how }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="4">4</td>
@@ -84,15 +84,15 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Consultancies (excluding contract research) </td>
-                    <td class="border border-slate-600 font-bold"><input value="15326110" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->consultancy }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Hospital Recoupable Fees </td>
-                    <td class="border border-slate-600 font-bold"><input value="0" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->hospital }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Lab Services Fees </td>
-                    <td class="border border-slate-600 font-bold"><input value="2790889" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->lab_service }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">5</td>
@@ -101,11 +101,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Amount (RM) of New Endowments Received </td>
-                    <td class="border border-slate-600 font-bold"><input value="1831936" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->new_endowment }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Income/Dividends (RM) from Existing Endowments </td>
-                    <td class="border border-slate-600 font-bold"><input value="354263" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->existing_endowment }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">6</td>
@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Amount (RM) Received </td>
-                    <td class="border border-slate-600 font-bold"><input value="4061216" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->gift }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">7</td>
@@ -123,11 +123,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Operational Expenditure (OE) (RM)</td>
-                    <td class="border border-slate-600 font-bold"><input value="573657080" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->oe_expenditure }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Expenditure for R&D Development (RM) </td>
-                    <td class="border border-slate-600 font-bold"><input value="39196417" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->rd_expenditure }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 {{-- @foreach (getSection('A') as $item)
                     <tr>
@@ -309,6 +309,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
+    function getList(that) {
+        window.location = window.location.origin + '/myra/self-assessment/section-f/' + that.val();
+    }
     // $(document).ready(function () {
     //     $('#sectionTable').DataTable({
     //         "searching": false,

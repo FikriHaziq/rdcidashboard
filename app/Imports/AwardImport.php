@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\AwardFirstSheetImport;
-use App\Models\MasterList\MasterListAward;
+use App\Models\MasterList\MasterlistAward;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class AwardImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class AwardImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListAward::where('ml_start_year', $this->year)->delete();
+        MasterlistAward::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

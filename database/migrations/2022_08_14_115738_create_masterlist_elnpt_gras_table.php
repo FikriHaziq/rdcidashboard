@@ -33,9 +33,9 @@ class CreateMasterlistElnptGrasTable extends Migration
             $table->string('pk')->nullable();
             $table->string('curr_employment_status')->nullable();
             $table->string('faculty')->nullable();
-            $table->integer('rate_per_hour')->default(0);
-            $table->decimal('allowance_amt')->default(0);
-            $table->decimal('total_payment')->default(0);
+            $table->integer('rate_per_hour', 20, 2)->default(0);
+            $table->decimal('allowance_amt', 20, 2)->default(0);
+            $table->decimal('total_payment', 20, 2)->default(0);
             $table->string('project_leader_id')->nullable();
             $table->string('project_leader_name')->nullable();
             $table->string('submit_status')->nullable();

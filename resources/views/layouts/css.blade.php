@@ -4,4 +4,5 @@
 <!-- Material Kit CSS -->
 <link href="{{ asset('theme/css/app.css') }}" rel="stylesheet" />
 <link href="{{ asset('theme/css/vendor.css') }}" rel="stylesheet" />
+<link href="{{ asset('theme/css/calculation.css') }}" rel="stylesheet" />
 {{-- <link href="{{ asset('theme/css/select2.min.css') }}" rel="stylesheet" /> --}}

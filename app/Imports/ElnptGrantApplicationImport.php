@@ -14,7 +14,7 @@ class ElnptGrantApplicationImport implements WithMultipleSheets, SkipsUnknownShe
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptGrantApplication::where('ml_start_year', $this->year)->delete();
+        MasterListElnptGrantApplication::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

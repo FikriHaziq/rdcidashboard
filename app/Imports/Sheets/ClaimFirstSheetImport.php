@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListClaim;
+use App\Models\MasterList\MasterlistClaim;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ClaimFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListClaim([
+            return new MasterlistClaim([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'kerani' => $row[0],

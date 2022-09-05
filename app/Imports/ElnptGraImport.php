@@ -14,7 +14,7 @@ class ElnptGraImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptGra::where('ml_start_year', $this->year)->delete();
+        MasterListElnptGra::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

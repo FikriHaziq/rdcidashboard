@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListStudent;
+use App\Models\MasterList\MasterlistUgStudent;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,14 +22,13 @@ class UGStudentFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListStudent([
-                'type' => 'ug_student',
+            return new MasterlistUgStudent([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'matric_no' => strtoupper($row[1]),
                 'name' => $row[2],
-                'faculty' => $row[3],
-                'school' => $row[4],
+                'faculty_code' => $row[3] == '-' ? null: $row[3],
+                'school_code' => $row[4] == '-' ? null: $row[4],
                 'year_enrolled' => (int)($row[5] ?? 0),
                 'acedemic_year' => (int)($row[6] ?? 0),
                 'citizenship' => $row[7],
