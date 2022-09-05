@@ -14,7 +14,7 @@ class ElnptRaroImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptRaro::where('ml_start_year', $this->year)->delete();
+        MasterListElnptRaro::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

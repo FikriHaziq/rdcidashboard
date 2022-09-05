@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\ClaimFirstSheetImport;
-use App\Models\MasterList\MasterListClaim;
+use App\Models\MasterList\MasterlistClaim;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class ClaimImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class ClaimImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListClaim::where('ml_start_year', $this->year)->delete();
+        MasterlistClaim::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

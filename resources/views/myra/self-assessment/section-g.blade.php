@@ -49,27 +49,27 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of MoAs Signed and Stamped  </td>
-                    <td class="border border-slate-600 font-bold text-center">44</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->total_int_moa }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. Industry </td>
-                    <td class="border border-slate-600 font-bold"><input value="6" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_industry }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii. Community/ NGO </td>
-                    <td class="border border-slate-600 font-bold"><input value="0" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_community }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iii. University </td>
-                    <td class="border border-slate-600 font-bold"><input value="32" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_university }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iv. Agency/ Research Institute  </td>
-                    <td class="border border-slate-600 font-bold"><input value="6" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_agency }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Staff Involved in Joint Research Projects Under MoA</td>
-                    <td class="border border-slate-600 font-bold"><input value="166" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->total_staff_int_moa }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">2</td>
@@ -78,7 +78,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Staff Sent Abroad for Research Activities</td>
-                    <td class="border border-slate-600 font-bold"><input value="82" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->staff_sent_abroad }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">3</td>
@@ -87,11 +87,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Staff as Members in International Academic/ Professional Bodies/ Associations</td>
-                    <td class="border border-slate-600 font-bold"><input value="327" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->member_international }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Staff Appointed as Chairman/ Committee Members in International Academic/ Professional Bodies/ Associations/ NGOs</td>
-                    <td class="border border-slate-600 font-bold"><input value="8" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->other_international }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="7">4</td>
@@ -100,27 +100,27 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of MoAs Signed and Stamped  </td>
-                    <td class="border border-slate-600 font-bold text-center">57</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->total_nat_moa }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. Industry </td>
-                    <td class="border border-slate-600 font-bold"><input value="36" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_industry }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii. Community/ NGO </td>
-                    <td class="border border-slate-600 font-bold"><input value="0" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_community }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iii. University </td>
-                    <td class="border border-slate-600 font-bold"><input value="12" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_university }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;iv. Agency/ Research Institute  </td>
-                    <td class="border border-slate-600 font-bold"><input value="9" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_agency }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Staff Involved in Joint Research Projects Under MoA</td>
-                    <td class="border border-slate-600 font-bold"><input value="252" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->total_staff_nat_moa }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">5</td>
@@ -129,11 +129,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Staff as Members in National Academic/ Professional Bodies/ Associations/ Ministry/ NGOs </td>
-                    <td class="border border-slate-600 font-bold"><input value="450" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->member_national }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Staff Appointed as Chairman/ Committee Members in National Academic/ Professional Bodies/ Associations/ Ministry/ NGOs</td>
-                    <td class="border border-slate-600 font-bold"><input value="67" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->other_national }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">6</td>
@@ -142,11 +142,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of New Community-Related Projects</td>
-                    <td class="border border-slate-600 font-bold"><input value="55" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->new_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of Communities Receiving/ Benefiting from the Knowledge/ Technology Diffusion Projects</td>
-                    <td class="border border-slate-600 font-bold"><input value="69" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->benefited_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">7</td>
@@ -155,7 +155,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Number of Collaborative Projects Between Institution Assessed and a Minimum of 3 Research Universities/Public Universities/Private Universities/Industries/Agencies in Each Project</td>
-                    <td class="border border-slate-600 font-bold"><input value="14" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->joint_research_project }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">8</td>
@@ -164,7 +164,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Number of Collaborative Projects between RUs with a Minimum of 4 Research Universities in Each Project</td>
-                    <td class="border border-slate-600 font-bold"><input value="6" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->joint_research_project_ru }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 {{-- @foreach (getSection('A') as $item)
                     <tr>
@@ -330,6 +330,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
+    function getList(that) {
+        window.location = window.location.origin + '/myra/self-assessment/section-g/' + that.val();
+    }
     // $(document).ready(function () {
     //     $('#sectionTable').DataTable({
     //         "searching": false,

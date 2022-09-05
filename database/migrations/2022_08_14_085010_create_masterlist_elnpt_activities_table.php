@@ -40,7 +40,7 @@ class CreateMasterlistElnptActivitiesTable extends Migration
             $table->string('bandar')->nullable();
             $table->string('negeri')->nullable();
             $table->string('negara')->nullable();
-            $table->decimal('estimated_cost')->default(0);
+            $table->decimal('estimated_cost', 20, 2)->default(0);
             $table->datetime('act_start_date')->nullable();
             $table->datetime('act_end_date')->nullable();
             $table->text('paper_title')->nullable();

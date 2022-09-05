@@ -14,7 +14,7 @@ class RaroProcessImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListRaroProcess::where('ml_start_year', $this->year)->delete();
+        MasterListRaroProcess::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

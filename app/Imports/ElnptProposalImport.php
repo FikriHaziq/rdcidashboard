@@ -14,7 +14,7 @@ class ElnptProposalImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptProposal::where('ml_start_year', $this->year)->delete();
+        MasterListElnptProposal::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

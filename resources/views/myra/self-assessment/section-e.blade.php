@@ -49,33 +49,33 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of New Certificates of Patents Granted </td>
-                    <td class="border border-slate-600 font-bold text-center">52</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->grant }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. National </td>
-                    <td class="border border-slate-600 font-bold"><input value="51" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->grant_local }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr><tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. International </td>
-                    <td class="border border-slate-600 font-bold"><input value="1" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->grant_foreign }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Total Number of New Certificates of Patents Filed </td>
-                    <td class="border border-slate-600 font-bold text-center">49</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->file }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. National </td>
-                    <td class="border border-slate-600 font-bold"><input value="49" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->file_local }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr><tr>
                     <td class="border border-slate-600 font-bold">&emsp;i. International </td>
-                    <td class="border border-slate-600 font-bold"><input value="0" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->file_foreign }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Total Number of New Inventions (Technology/Innovations) Granted Patents</td>
-                    <td class="border border-slate-600 font-bold"><input value="52" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->grant }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">d. Total Number of New Inventions (Technology/Innovations) Filed Patents</td>
-                    <td class="border border-slate-600 font-bold"><input value="49" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->file }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">2</td>
@@ -84,7 +84,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Innovations Successfully Developed into Commercialized Products for the Market </td>
-                    <td class="border border-slate-600 font-bold"><input value="8" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->comm_product }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">3</td>
@@ -93,7 +93,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number Licensed or Sold Outright </td>
-                    <td class="border border-slate-600 font-bold"><input value="24" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->know_how_sold }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">4</td>
@@ -102,7 +102,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Other IPRs (copyrights / trademarks / industrial designs, etc) Obtained  </td>
-                    <td class="border border-slate-600 font-bold"><input value="429" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->other_ipr }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">5</td>
@@ -111,11 +111,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Number of active companies that commercialized university innovations in the year of assessment  </td>
-                    <td class="border border-slate-600 font-bold"><input value="26" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->active_company }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Number of new companies that commercialized university innovations in the year of assessment </td>
-                    <td class="border border-slate-600 font-bold"><input value="13" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->new_company }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 
                 {{-- @foreach (getSection('A') as $item)
@@ -280,6 +280,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
+    function getList(that) {
+        window.location = window.location.origin + '/myra/self-assessment/section-e/' + that.val();
+    }
     // $(document).ready(function () {
     //     $('#sectionTable').DataTable({
     //         "searching": false,

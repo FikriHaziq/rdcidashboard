@@ -12,7 +12,7 @@ use App\Imports\Sheets\PublicationSixthSheetImport;
 use App\Imports\Sheets\PublicationSeventhSheetImport;
 use App\Imports\Sheets\PublicationEighthSheetImport;
 use App\Imports\Sheets\PublicationNinethSheetImport;
-use App\Models\MasterList\MasterListPublication;
+use App\Models\MasterList\MasterlistPublication;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class PublicationImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -22,7 +22,7 @@ class PublicationImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListPublication::where('ml_start_year', $this->year)->delete();
+        MasterlistPublication::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

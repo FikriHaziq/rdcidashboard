@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListStudent;
+use App\Models\MasterList\MasterlistPgStudent;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,39 +22,41 @@ class PGStudentFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListStudent([
-                'type' => 'pg_student',
+            return new MasterlistPgStudent([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'matric_no' => strtoupper($row[1]),
-                'ic_no' => strtoupper($row[2]),
-                'name' => $row[3],
-                'bachelor_cgpa_act' => $row[4],
-                'bachelor_cgpa_eq' => $row[5],
-                'cgpa_status' => $row[6],
-                'bachelor_uni' => $row[7] == 'N/A' ? null: $row[7],
-                'master_uni' => $row[8] == 'N/A' ? null: $row[8],
-                'degree_registered_for' => $row[9],
-                'study_type' => $row[10],
-                'study_mode' => $row[11],
-                'mixed_mode_ratio' => $row[12],
-                'st' => $row[13],
-                'faculty' => $row[14],
-                'study_area' => $row[15],
-                'sponsorship' => $row[16],
-                'sponsorship_status' => $row[17],
-                'school' => null,
-                'year_enrolled' => (int)($row[18] ?? 0),
-                'acedemic_year' => (int)($row[19] ?? 0),
-                'sem_no' => (int)($row[20] ?? 0),
-                'citizenship' => $row[21],
-                'country' => $row[22],
-                'entry_date' => $row[23] ?\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[23])->format('Y-m-d') : null,
-                'senate_approval_date' =>$row[24] ?\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[24])->format('Y-m-d'): null,
-                'study_duration' => (int)($row[25] ?? 0),
-                'got' => $row[26],
-                'status' => $row[27],
-                'remark' => $row[29],
+                'name' => $row[2],
+                'faculty_code' => $row[3] == '-' ? null: $row[3],
+                'school_code' => $row[4] == '-' ? null: $row[4],
+                'institute_code' => $row[5] == '-' ? null: $row[5],
+                'rc_code' => $row[6] == '-' ? null: $row[6],
+                'bachelor_cgpa_act' => $row[7],
+                'bachelor_cgpa_eq' => $row[8],
+                'cgpa_status' => $row[9],
+                'bachelor_uni' => $row[10] == 'N/A' ? null: $row[10],
+                'master_uni' => $row[11] == 'N/A' ? null: $row[11],
+                'degree_registered_for' => $row[12],
+                'study_type' => $row[13],
+                'study_mode' => $row[14],
+                'mixed_mode_ratio' => $row[15],
+                'st' => $row[16],
+                'faculty' => $row[17],
+                'study_area' => $row[18],
+                'sponsorship' => $row[19],
+                'sponsorship_status' => $row[20],
+                'year_enrolled' => (int)($row[21] ?? 0),
+                'acedemic_year' => (int)($row[22] ?? 0),
+                'sem_no' => (int)($row[23] ?? 0),
+                'citizenship' => $row[24],
+                'country' => $row[25],
+                'entry_date' => excelDate($row[26]),
+                'senate_approval_date' =>excelDate($row[27]),
+                'study_duration' => (int)($row[28] ?? 0),
+                'got' => $row[29],
+                'status' => $row[30],
+                'remark' => $row[32],
+                'ic_no' => $row[33],
             ]);
         }
     }

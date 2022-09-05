@@ -14,7 +14,7 @@ class ProgrammeImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListProgramme::where('ml_start_year', $this->year)->delete();
+        MasterListProgramme::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Traits;
-use App\Models\MasterList\MasterListStudent;
-use App\Models\MasterList\MasterListAward;
-use App\Models\MasterList\MasterListPublication;
+use App\Models\MasterList\MasterlistUgStudent;
+use App\Models\MasterList\MasterlistAward;
+use App\Models\MasterList\MasterlistPublication;
 use App\Models\DataAttachment;
 
 trait MasterListPmTrait {
@@ -10,7 +10,6 @@ trait MasterListPmTrait {
     public function getPmModuleAvailability($year) {
         $claim = DataAttachment::whereModule('claim')->where('year', $year)->whereStatus('selected')->exists();
         $elnpt_activity = DataAttachment::whereModule('elnpt_activity')->where('year', $year)->whereStatus('selected')->exists();
-        $elnpt_raro = DataAttachment::whereModule('elnpt_raro')->where('year', $year)->whereStatus('selected')->exists();
         $elnpt_grant_application = DataAttachment::whereModule('elnpt_grant_application')->where('year', $year)->whereStatus('selected')->exists();
         $elnpt_spb_gra = DataAttachment::whereModule('elnpt_spb_gra')->where('year', $year)->whereStatus('selected')->exists();
         $elnpt_proposal = DataAttachment::whereModule('elnpt_proposal')->where('year', $year)->whereStatus('selected')->exists();
@@ -30,11 +29,6 @@ trait MasterListPmTrait {
                         'name'=>'Activity',
                         'code'=>'elnpt_activity',
                         'available'=>$elnpt_activity
-                    ],
-                    (object)[
-                        'name'=>'ARORARO',
-                        'code'=>'elnpt_raro',
-                        'available'=>$elnpt_raro
                     ],
                     (object)[
                         'name'=>'Grant Application',

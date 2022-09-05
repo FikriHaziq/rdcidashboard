@@ -49,27 +49,27 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of PhDs Graduated</td>
-                    <td class="border border-slate-600 font-bold text-center">529</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->total_phd }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;i.Total Number of Local PhDs Graduated  </td>
-                    <td class="border border-slate-600 font-bold"><input value="301" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->phd_local }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">&emsp;ii.Total Number of International PhDs Graduated  </td>
-                    <td class="border border-slate-600 font-bold"><input value="228" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->phd_foreign }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Ratio of PhDs Graduated to Active Academic Staff</td>
-                    <td class="border border-slate-600 font-bold text-center">0.33</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->phd_ratio }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Number of PhDs Graduated within 7 Semesters or 42 Months</td>
-                    <td class="border border-slate-600 font-bold"><input value="84" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->phd_graduate_7 }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">d. Percentage of PhDs Graduated within 7 Semesters or 42 Months </td>
-                    <td class="border border-slate-600 font-bold text-center">15.88</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->phd_graduate_7_percent }}</td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="2">2</td>
@@ -78,7 +78,7 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of Masters (Research Mode) Graduated</td>
-                    <td class="border border-slate-600 font-bold"><input value="279" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->total_master }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="4">3</td>
@@ -87,15 +87,15 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of PhDs Enrolled</td>
-                    <td class="border border-slate-600 font-bold text-center">5138</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->total_phd_enrolled }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Ratio of PhDs Enrolled to Active Academic Staff</td>
-                    <td class="border border-slate-600 font-bold text-center">3.23</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->phd_enrolled_ratio }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">c. Total Number of PhDs Enrolled in S&T </td>
-                    <td class="border border-slate-600 font-bold"><input value="3818" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->total_phd_st_enrolled }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">4</td>
@@ -104,11 +104,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Ratio of Postgraduates Enrolled to Active Academic Staff</td>
-                    <td class="border border-slate-600 font-bold text-center">7.09</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->pg_enrolled_ratio }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Ratio of Postgraduates Enrolled (based on research and mixed modes only) to Undergraduates Enrolled</td>
-                    <td class="border border-slate-600 font-bold text-center">0.42</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->pg_enrolled_mixed_mode_ratio }}</td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">5</td>
@@ -117,11 +117,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Total Number of International Postgraduates Enrolled</td>
-                    <td class="border border-slate-600 font-bold text-center">2790</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->int_pg_enrolled }}</td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Percentage of International Postgraduates to Total Number of Postgraduates Enrolled</td>
-                    <td class="border border-slate-600 font-bold text-center">24.69</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->int_pg_enrolled_percent }}</td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">6</td>
@@ -130,11 +130,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Number of Postgraduates Enrolled with CGPA >=3.0 or Equivalent for their First Degree</td>
-                    <td class="border border-slate-600 font-bold"><input value="9447" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->entry_enrolled }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Percentage of Postgraduates Enrolled with CGPA >=3.0 or Equivalent for their First Degree</td>
-                    <td class="border border-slate-600 font-bold text-center">83.60</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->entry_enrolled_percent }}</td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">7</td>
@@ -143,11 +143,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Number of Postgraduates Enrolled via Research Mode with Fellowships/ Grants in the Year of Assessment </td>
-                    <td class="border border-slate-600 font-bold"><input value="609" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->fellowship_enrolled }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Percentage of Postgraduates Enrolled via Research Mode with Fellowships/ Grants</td>
-                    <td class="border border-slate-600 font-bold text-center">9.11</td>
+                    <td class="border border-slate-600 font-bold text-center">{{ $data->fellowship_enrolled_percent }}</td>
                 </tr>
                 <tr>
                     <td class="align-top border border-slate-600 font-bold" rowspan="3">8</td>
@@ -156,11 +156,11 @@
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">a. Local PostDocs</td>
-                    <td class="border border-slate-600 font-bold"><input value="58" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->local_post_doc }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
                 <tr>
                     <td class="border border-slate-600 font-bold">b. Foreign PostDocs</td>
-                    <td class="border border-slate-600 font-bold"><input value="48" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                    <td class="border border-slate-600 font-bold"><input value="{{ $data->foreign_post_doc }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                 </tr>
             
                 {{-- @foreach (getSection('A') as $item)
@@ -387,6 +387,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
+    function getList(that) {
+        window.location = window.location.origin + '/myra/self-assessment/section-d/' + that.val();
+    }
     // $(document).ready(function () {
     //     $('#sectionTable').DataTable({
     //         "searching": false,
