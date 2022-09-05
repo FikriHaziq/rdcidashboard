@@ -18,7 +18,7 @@
             <x-menu-item active="research.management.grasra-appointment" route="research.management.grasra-appointment">GRA SRA Appointment Management</x-menu-item>
             <x-menu-item active="research.management.wages-claim" route="research.management.wages-claim">SPB Wages & Claim Management</x-menu-item>
             <x-menu-item active="research.management.rmarm-distribution" route="research.management.rmarm-distribution">RM/ARM Active Grant Distribution</x-menu-item>
-            <x-menu-item active="research.management.action-list" route="research.management.action-list">List of Action</x-menu-item>
+            {{-- <x-menu-item active="research.management.action-list" route="research.management.action-list">List of Action</x-menu-item> --}}
         </x-menu-item>
         {{-- <x-menu-item active="" route="" parent="Industrial & International Linkages Unit" type="sub">
             <x-menu-item active="" route="">PI Achievement – Year</x-menu-item>
