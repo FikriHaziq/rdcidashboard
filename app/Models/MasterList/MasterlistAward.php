@@ -9,5 +9,4 @@ class MasterlistAward extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    
 }
