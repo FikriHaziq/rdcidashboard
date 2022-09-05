@@ -6,6 +6,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MasterlistController;
+use App\Http\Controllers\Research\ManagementController as ManagementController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 
@@ -44,6 +45,19 @@ Route::name("grant.")->prefix("grant")->group(function () {
     // Route::name('proposal.file')->get('proposal/file', [GrantOverviewController::class, "proposalFile"]);
     Route::name('myra')->get('myra', [GrantOverviewController::class, "myra"]);
     // Route::name('myra.file')->get('myra/file', [GrantOverviewController::class, "myRAFile"]);
+});
+
+Route::name('research.')->prefix('research')->group(function () {
+    Route::name('management.')->prefix('management')->group(function () {
+        Route::name('proposal')->get('proposal', [ManagementController::class, 'proposalManagement']);
+        Route::name('grant')->get('grant', [ManagementController::class, 'grantManagement']);
+        Route::name('activity')->get('activity', [ManagementController::class, 'activityManagement']);
+        Route::name('raro-appointment')->get('raro-appointment', [ManagementController::class, 'raroAppointment']);
+        Route::name('grasra-appointment')->get('grasra-appointment', [ManagementController::class, 'graSraAppointment']);
+        Route::name('wages-claim')->get('wages-claim', [ManagementController::class, 'wagesClaimManagement']);
+        Route::name('rmarm-distribution')->get('rmarm-distribution', [ManagementController::class, 'grantDistribution']);
+        Route::name('action-list')->get('action-list', [ManagementController::class, 'listOfAction']);
+    });
 });
 
 // UTM MyRA

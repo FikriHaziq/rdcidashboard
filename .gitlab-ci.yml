@@ -21,6 +21,7 @@ stages:
         git pull --progress -v --no-rebase origin &&
         rm -rf .env &&
         echo -e '$ENV' > .env &&
+        sudo docker exec $PRJCTNAME php artisan migrate &&
         sudo docker exec $PRJCTNAME composer install &&
         sudo docker exec $PRJCTNAME php artisan optimize &&
         sudo docker exec $PRJCTNAME composer dumpautoload &&
