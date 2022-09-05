@@ -52,12 +52,12 @@ use App\Models\MasterList\MasterlistSupportFacility;
 use App\Models\MasterList\MasterlistLibraryFacility;
 
 use App\Models\MasterList\MasterlistClaim;
-use App\Models\MasterList\MasterListElnptActivity;
-use App\Models\MasterList\MasterListElnptGrantApplication;
-use App\Models\MasterList\MasterListElnptGra;
-use App\Models\MasterList\MasterListElnptProposal;
-use App\Models\MasterList\MasterListElnptActiveGrant;
-use App\Models\MasterList\MasterListRaroProcess;
+use App\Models\MasterList\MasterlistElnptActivity;
+use App\Models\MasterList\MasterlistElnptGrantApplication;
+use App\Models\MasterList\MasterlistElnptGra;
+use App\Models\MasterList\MasterlistElnptProposal;
+use App\Models\MasterList\MasterlistElnptActiveGrant;
+use App\Models\MasterList\MasterlistRaroProcess;
 
 use App\Imports\AcadStaffImport;
 use App\Imports\UGStudentImport;
@@ -707,22 +707,22 @@ class MasterlistController extends Controller
                 MasterlistClaim::where('ml_end_year', $masterlist->year)->delete();       
             }
             else if($module == 'elnpt_activity'){
-                MasterListElnptActivity::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistElnptActivity::where('ml_end_year', $masterlist->year)->delete();              
             }
             else if($module == 'elnpt_grant_application'){
-                MasterListElnptGrantApplication::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistElnptGrantApplication::where('ml_end_year', $masterlist->year)->delete();              
             }
             else if($module == 'elnpt_spb_gra'){
-                MasterListElnptGra::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistElnptGra::where('ml_end_year', $masterlist->year)->delete();              
             }
             else if($module == 'elnpt_proposal'){
-                MasterListElnptProposal::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistElnptProposal::where('ml_end_year', $masterlist->year)->delete();              
             }
             else if($module == 'active_grant'){
-                MasterListElnptActiveGrant::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistElnptActiveGrant::where('ml_end_year', $masterlist->year)->delete();              
             }
             else if($module == 'raro_process'){
-                MasterListRaroProcess::where('ml_end_year', $masterlist->year)->delete();              
+                MasterlistRaroProcess::where('ml_end_year', $masterlist->year)->delete();              
             }
             else{
                 session()->flash('error', "Something went wrong");

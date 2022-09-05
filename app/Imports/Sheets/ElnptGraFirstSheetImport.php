@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListElnptGra;
+use App\Models\MasterList\MasterlistElnptGra;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ElnptGraFirstSheetImport implements ToModel, WithStartRow, WithChunkReadin
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListElnptGra([
+            return new MasterlistElnptGra([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'vot_number' => $row[0],

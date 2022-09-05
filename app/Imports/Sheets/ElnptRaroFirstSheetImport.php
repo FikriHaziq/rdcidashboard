@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListElnptRaro;
+use App\Models\MasterList\MasterlistElnptRaro;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ElnptRaroFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListElnptRaro([
+            return new MasterlistElnptRaro([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'pusat_kos' => $row[0],

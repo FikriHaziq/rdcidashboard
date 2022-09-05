@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\ElnptProposalFirstSheetImport;
-use App\Models\MasterList\MasterListElnptProposal;
+use App\Models\MasterList\MasterlistElnptProposal;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class ElnptProposalImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class ElnptProposalImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptProposal::where('ml_end_year', $this->year)->delete();
+        MasterlistElnptProposal::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

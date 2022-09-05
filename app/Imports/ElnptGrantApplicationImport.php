@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\ElnptGrantApplicationFirstSheetImport;
-use App\Models\MasterList\MasterListElnptGrantApplication;
+use App\Models\MasterList\MasterlistElnptGrantApplication;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class ElnptGrantApplicationImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class ElnptGrantApplicationImport implements WithMultipleSheets, SkipsUnknownShe
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptGrantApplication::where('ml_end_year', $this->year)->delete();
+        MasterlistElnptGrantApplication::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array
