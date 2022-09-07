@@ -11,7 +11,7 @@
 </style>
 @endsection
 @slot('content')
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
         eMyRA Overview
     </h2>
@@ -19,7 +19,7 @@
 <!-- BEGIN: Wizard Layout -->
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <div class="w-full w-md-auto d-flex">
-        <div class="input-group ms-2 ms-sm-2 me-2 me-sm-2">
+        <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
             <select class="form-select bg-white">
                 <option value="">All</option>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
+        <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
             <select class="form-select bg-white">
                 <option value="">2021</option>
@@ -52,31 +52,466 @@
         </div>
     </div>
 </div>
-<div class="intro-y box py-10 sm:py-20 mt-5">
-    {{-- @include('myra.self-assessment.tabs', compact('year')) --}}
-    <div class="d-flex justify-content-center">
-        <a href="{{ route('myra.self-assessment.section-a', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-a')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">A</a>
-        <a href="{{ route('myra.self-assessment.section-b', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-b')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">B</a>
-        <a href="{{ route('myra.self-assessment.section-c', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-c')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">C</a>
-        <a href="{{ route('myra.self-assessment.section-d', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-d')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">D</a>
-        <a href="{{ route('myra.self-assessment.section-e', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-e')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">E</a>
-        <a href="{{ route('myra.self-assessment.section-f', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-f')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">F</a>
-        <a href="{{ route('myra.self-assessment.section-g', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-g')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">G</a>
-        <a href="{{ route('myra.self-assessment.section-h', 2022) }}" class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.section-h')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">H</a>
-        <a href="{{ route('myra.self-assessment.summary', 2022) }}"   class="intro-y w-10 h-10 rounded-circle btn @if(is_active('myra.self-assessment.summary'))   btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2"><i data-feather="file"></i></a>
+<div class="intro-y row mt-5">
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">TOTAL MARKS</span><br><canvas id="line1"></canvas></div>
     </div>
-    <div class="px-5 mt-10">
-        <div class="font-medium text-center text-lg text-uppercase">SECTION A: GENERAL INFORMATION</div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">RESEARCHERS</span><br><canvas id="line2"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">RESEARCH</span><br><canvas id="line3"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES</span><br><canvas id="line4"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">INNOVATION</span><br><canvas id="line5"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">PROFESSIONAL SERVICES & GIFTS</span><br><canvas id="line6"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">NETWORKING & LINKAGES</span><br><canvas id="line7"></canvas></div>
+    </div>
+    <div class="col-md-4 col-sm-12 mb-5">
+        <div class="box p-5"><span class="font-weight-bold">SUPPORT FACILITIES</span><br><canvas id="line8"></canvas></div>
     </div>
 </div>
-{{-- <div class="intro-y box g-col-12 g-col-xxl-6 my-4">
-    <div class="d-flex align-items-center px-5 py-5 py-sm-0 border-bottom border-gray-200 dark-border-dark-5">
-        <ul class="nav nav-link-tabs ms-auto d-none d-sm-flex" role="tablist">
-            <li class="nav-item" role="presentation"> <a href="javascript:;" class="nav-link py-5 px-0 ms-6 active" data-bs-toggle="pill" data-bs-target="#criteria" role="tab" aria-controls="criteria-tab" aria-selected="true">Criteria</a> </li>
-        </ul>
-    </div>
-</div> --}}
 @endslot
 @section('custom-js')
+<script>
+    var line1 = document.getElementById('line1');
+    var lineChart1 = new Chart(line1, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line2 = document.getElementById('line2');
+    var lineChart2 = new Chart(line2, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line3 = document.getElementById('line3');
+    var lineChart3 = new Chart(line3, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line4 = document.getElementById('line4');
+    var lineChart4 = new Chart(line4, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line5 = document.getElementById('line5');
+    var lineChart5 = new Chart(line5, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line6 = document.getElementById('line6');
+    var lineChart6 = new Chart(line6, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line7 = document.getElementById('line7');
+    var lineChart7 = new Chart(line7, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+
+    var line8 = document.getElementById('line8');
+    var lineChart8 = new Chart(line8, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'DATA',
+                    data: ['78', '80', '92', '94', '94', '93'],
+                    borderColor: ['rgb(172, 62, 49)'], 
+                    backgroundColor: ['rgb(172, 62, 49)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DATA',
+                    data: ['101', '110', '115', '117', '117', '117'],
+                    borderColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: ['rgb(72, 72, 72)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                },
+                y1: {
+                    type: 'linear',
+                    display: false,
+                    position: 'right',
+
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                },
+            }
+        },
+    });
+</script>
 @endsection
 @endcomponent
