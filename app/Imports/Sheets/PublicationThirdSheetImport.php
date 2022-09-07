@@ -57,7 +57,7 @@ class PublicationThirdSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'publisher' => null,
                 'stakeholder' => null,
                 'level' => null,
-                'year' => $row[17],
+                'year' => is_numeric($row[17]) ? $row[17]: null,
                 'issn' => $row[18],
                 'quartile' => null,
                 'quartile_link' => null,

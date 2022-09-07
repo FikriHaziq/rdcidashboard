@@ -36,7 +36,7 @@ class PatentFiledFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'date_filed' => excelDate($row[9]),
                 'faculty' => $row[10],
                 'country' => $row[11],
-                'remark' => $row[13],
+                'remark' => $row[12],
             ]);
         }
     }

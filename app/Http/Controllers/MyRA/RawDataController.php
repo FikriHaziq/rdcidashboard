@@ -21,7 +21,6 @@ class RawDataController extends Controller
     {
         if(!$year)$year = date('Y');
         $data = $this->myraSectionB($year);
-        // dd($data);
         return view('myra.self-assessment.section-b', compact('year', 'data'));
     }
 

@@ -36,8 +36,8 @@ class ConferenceFirstSheetImport implements ToModel, WithStartRow, WithChunkRead
                 'reference_no_bill' => $row[9],
                 'reference_no_journal' => $row[10],
                 'gross_income' => is_numeric($row[11]) ? $row[11] : 0,
-                'remark' => $row[13],
-                'ptj' => $row[14],
+                'remark' => $row[12],
+                'ptj' => $row[13],
             ]);
         }
     }

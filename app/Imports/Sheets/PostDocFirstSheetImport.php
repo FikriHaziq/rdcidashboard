@@ -39,9 +39,9 @@ class PostDocFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
                 'appointment_duration' => is_numeric($row[12]) ? $row[12] : null,
                 'award_institution' => $row[13],
                 'year_award' => is_numeric($row[14]) ? $row[14] : null,
-                'remark' => $row[16],
-                'sv_id' => $row[17],
-                'sv' => $row[18],
+                'remark' => $row[15],
+                'sv_id' => $row[16],
+                'sv' => $row[17],
             ]);
         }
     }

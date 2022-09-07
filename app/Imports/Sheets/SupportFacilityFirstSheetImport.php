@@ -37,7 +37,7 @@ class SupportFacilityFirstSheetImport implements ToModel, WithStartRow, WithChun
                 'first_issue_date' => excelDate($row[6]),
                 'start_date' => excelDate($row[7]),
                 'expiry_date' => excelDate($row[8]),
-                'remark' => $row[11],
+                'remark' => $row[9],
             ]);
         }
     }

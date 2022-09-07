@@ -36,8 +36,8 @@ class GiftFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
                 'date_received' => excelDate($row[9]),
                 'reference' => $row[10],
                 'value' => is_numeric($row[11]) ? $row[11] : 0,
-                'remark' => $row[13],
-                'proof_reference' => $row[14],
+                'remark' => $row[12],
+                'proof_reference' => $row[13],
             ]);
         }
     }

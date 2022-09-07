@@ -39,7 +39,7 @@ class KnowHowSoldFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'date_threshold_achieved' => excelDate($row[12]),
                 'license' => $row[13],
                 'gross_income' => is_numeric($row[14]) ? $row[14] : null,
-                'remark' => $row[16],
+                'remark' => $row[15],
             ]);
         }
     }

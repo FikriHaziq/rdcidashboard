@@ -46,9 +46,9 @@ class CriticalMassFirstSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'sponsor' => $row[19],
                 'sponsor_category' => $row[20],
                 'grant_name' => $row[21],
-                'amount_pledged' => is_numeric($row[22]) ? $row[22]: null,
-                'amount_received' => is_numeric($row[23]) ? $row[23]: null,
-                'amount_spent' => is_numeric($row[24]) ? $row[24]: null,
+                'amount_pledged' => is_numeric($row[22]) ? $row[22]: 0,
+                'amount_received' => is_numeric($row[23]) ? $row[23]: 0,
+                'amount_spent' => is_numeric($row[24]) ? $row[24]: 0,
                 'remark' => $row[26],
                 'pi' => $row[27],
             ]);

@@ -43,15 +43,13 @@ class ProfessionalQualificationFirstSheetImport implements ToModel, WithStartRow
                 'professional_qualification_1' => $row[16],
                 'professional_qualification_2' => $row[17],
                 'reg_number' => $row[18],
-                'faculty' => $row[19],
-                'department' => $row[20],
-                'st' => $row[21],
-                'status1' => $row[22],
-                'status2' => $row[23],
-                'status3' => $row[24],
-                'citizenship' => $row[25],
-                'country' => $row[26],
-                'remark' => $row[28],
+                'st' => $row[19],
+                'status1' => $row[20],
+                'status2' => $row[21],
+                'status3' => $row[22],
+                'citizenship' => $row[23],
+                'country' => $row[24],
+                'remark' => $row[26],
             ]);
         }
     }

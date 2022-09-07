@@ -34,7 +34,7 @@ class OtherIprFirstSheetImport implements ToModel, WithStartRow, WithChunkReadin
                 'ip_id' => $row[7],
                 'ip_name' => $row[8],
                 'type' => $row[9],
-                'remark' => $row[11],
+                'remark' => $row[10],
             ]);
         }
     }

@@ -57,7 +57,7 @@ class PublicationEighthSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'publisher' => null,
                 'stakeholder' => $row[11],
                 'level' => $row[12],
-                'year' => $row[13],
+                'year' => is_numeric($row[13]) ? $row[13]: null,
                 'issn' => $row[14],
                 'quartile' => null,
                 'quartile_link' => null,

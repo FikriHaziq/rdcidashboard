@@ -20,6 +20,12 @@
 .myra-yellow {
     background-color: #FFD966 !important;
 }
+.myra-bright-yellow {
+    background-color: yellow !important;
+}
+.myra-orange {
+    background-color: orange !important;
+}
 .myra-pink {
     background-color: #F4CCCC !important;
 }
@@ -28,4 +34,8 @@
 }
 .total-mark {
     background-color: #02B050 !important;
+}
+
+.table-border-black {
+    border: 1px solid black;
 }

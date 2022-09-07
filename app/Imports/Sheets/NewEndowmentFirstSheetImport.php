@@ -32,7 +32,7 @@ class NewEndowmentFirstSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'type' => $row[5],
                 'amount_endowed' => is_numeric($row[6]) ? $row[6] : 0,
                 'amount_endowed_percent_research' => is_numeric($row[7]) ? $row[7] : 0,
-                'remark' => $row[9],
+                'remark' => $row[8],
             ]);
         }
     }

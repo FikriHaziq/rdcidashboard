@@ -35,7 +35,7 @@ class LabServiceFirstSheetImport implements ToModel, WithStartRow, WithChunkRead
                 'bill_ref_no' => $row[8],
                 'receipt_ref_no' => $row[9],
                 'gross_income' => is_numeric($row[10]) ? $row[10] : 0,
-                'remark' => $row[12],
+                'remark' => $row[11],
             ]);
         }
     }

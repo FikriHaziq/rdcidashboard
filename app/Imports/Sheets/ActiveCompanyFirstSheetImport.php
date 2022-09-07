@@ -37,7 +37,7 @@ class ActiveCompanyFirstSheetImport implements ToModel, WithStartRow, WithChunkR
                 'date_incorporated' => excelDate($row[10]),
                 'equity' => $row[11],
                 'research_desc' => $row[12],
-                'remark' => $row[14],
+                'remark' => $row[13],
             ]);
         }
     }

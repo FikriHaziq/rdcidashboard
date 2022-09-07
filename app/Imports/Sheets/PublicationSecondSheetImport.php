@@ -57,7 +57,7 @@ class PublicationSecondSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'publisher' => null,
                 'stakeholder' => null,
                 'level' => null,
-                'year' => $row[20],
+                'year' => is_numeric($row[20]) ? $row[20]: null,
                 'issn' => $row[21],
                 'quartile' => null,
                 'quartile_link' => null,

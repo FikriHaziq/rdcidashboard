@@ -55,8 +55,8 @@ class PhdGraduatedFirstSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'study_duration' => is_numeric($row[28]) ? $row[28] : null,
                 'got' => $row[29],
                 'status' => $row[30],
-                'remark' => $row[32],
-                'ic_no' => $row[33],
+                'remark' => $row[31],
+                'ic_no' => $row[32],
             ]);
         }
     }
