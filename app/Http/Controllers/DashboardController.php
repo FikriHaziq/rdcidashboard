@@ -13,7 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return redirect()->route('grant.overview');
+        return redirect()->route('myra.index');
     }
 
     /**

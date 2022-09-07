@@ -3,7 +3,7 @@
 
     @if ($submodule != null)
         <i data-feather="chevron-right" class="breadcrumb__icon"></i>
-        <a href="{{ $submoduleLink != null ? route($submoduleLink) : '' }}" class="{{ $submoduleLink != null ? active($submoduleLink, '') : '' }}">{{ $submodule }}</a>
+        <a href="{{ $submoduleLink != null ? route($submoduleLink) : '' }}" class="{{ $submoduleLink != null ? active($submoduleLink, 'breadcrumb--active') : '' }}">{{ $submodule }}</a>
     @endif
 
     @if ($trimodule != null)
