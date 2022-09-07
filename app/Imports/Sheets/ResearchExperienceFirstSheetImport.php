@@ -51,7 +51,7 @@ class ResearchExperienceFirstSheetImport implements ToModel, WithStartRow, WithC
                 'status3' => $row[24],
                 'citizenship' => $row[25],
                 'country' => $row[26],
-                'remark' => $row[28],
+                'remark' => $row[27],
             ]);
         }
     }

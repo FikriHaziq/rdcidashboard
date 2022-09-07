@@ -55,8 +55,8 @@ class PGStudentFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
                 'study_duration' => (int)($row[28] ?? 0),
                 'got' => $row[29],
                 'status' => $row[30],
-                'remark' => $row[32],
-                'ic_no' => $row[33],
+                'remark' => $row[31],
+                'ic_no' => $row[32],
             ]);
         }
     }

@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\ElnptGraFirstSheetImport;
-use App\Models\MasterList\MasterListElnptGra;
+use App\Models\MasterList\MasterlistElnptGra;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class ElnptGraImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class ElnptGraImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListElnptGra::where('ml_end_year', $this->year)->delete();
+        MasterlistElnptGra::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array

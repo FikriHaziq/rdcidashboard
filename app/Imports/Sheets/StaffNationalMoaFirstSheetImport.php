@@ -37,10 +37,8 @@ class StaffNationalMoaFirstSheetImport implements ToModel, WithStartRow, WithChu
                 'collaborator' => $row[10],
                 'start_date' => excelDate($row[11]),
                 'expiry_date' => excelDate($row[12]),
-                'agreement_link' => $row[13],
-                'activity_link' => $row[14],
-                'activity_id' => $row[15],
-                'remark' => $row[16],
+                'activity_id' => $row[13],
+                'remark' => $row[14],
             ]);
         }
     }

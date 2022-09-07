@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListElnptGrantApplication;
+use App\Models\MasterList\MasterlistElnptGrantApplication;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ElnptGrantApplicationFirstSheetImport implements ToModel, WithStartRow, Wi
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListElnptGrantApplication([
+            return new MasterlistElnptGrantApplication([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'rm_staff_no' => $row[0],

@@ -34,7 +34,7 @@ class UGStudentFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
                 'citizenship' => $row[7],
                 'country' => $row[8],
                 'status' => $row[9],
-                'remark' => $row[11],
+                'remark' => $row[10],
             ]);
         }
     }

@@ -36,7 +36,7 @@ class NationalMembershipFirstSheetImport implements ToModel, WithStartRow, WithC
                 'staff_type' => $row[9],
                 'start_date' => excelDate($row[10]),
                 'end_date' => excelDate($row[11]),
-                'remark' => $row[13],
+                'remark' => $row[12],
             ]);
         }
     }

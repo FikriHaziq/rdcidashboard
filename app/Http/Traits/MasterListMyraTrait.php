@@ -684,12 +684,45 @@ trait MasterListMyraTrait {
         $private_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['PRIVATE'])->whereIn('project_status', ['COMPLETED'])->sum('amount_received'), 2, '.', '');
         $international_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['INTERNATIONAL'])->whereIn('project_status', ['ONGOING'])->sum('amount_pledged'), 2, '.', '');
         $international_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['INTERNATIONAL'])->whereIn('project_status', ['COMPLETED'])->sum('amount_received'), 2, '.', '');
-        $research_grant_received = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->sum('amount_received'), 2, '.', '');
+        $research_grant_received = (float)number_format($home_receive_active+$private_receive_active+$international_receive_active, 2, '.', '');
 
         $project_without_ext = MasterlistMonitoringProject::where('ml_end_year', $year)->where('project_extension', 'NO')->where('project_status', 'COMPLETED')->count();
         $project_with_ext = MasterlistMonitoringProject::where('ml_end_year', $year)->where('project_extension', 'YES')->where('project_status', 'COMPLETED')->count();
         $total_project = MasterlistMonitoringProject::where('ml_end_year', $year)->count();
         $project_complete_on_time = $total_project > 0 ? (float)number_format($project_without_ext/$total_project*100, 2) : 0;
+
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'journal' => $journal,
+            'proceeding' => $proceeding,
+            'joint_industrial' => $joint_industrial,
+            'joint_international' => $joint_international,
+            'joint_national' => $joint_national,
+            'citation' => $citation,
+            'q1_q2' => $q1_q2,
+            'mycite' => $mycite,
+            'book_indexed' => $book_indexed,
+            'book_not_indexed' => $book_not_indexed,
+            'chapter_indexed' => $chapter_indexed,
+            'chapter_not_indexed' => $chapter_not_indexed,
+            'case_studies' => $case_studies,
+            'policy_paper' => $policy_paper,
+            'other' => $other,
+            'home_pledge_new' => $home_pledge_new,
+            'home_receive_active' => $home_receive_active,
+            'private_pledge_new' => $private_pledge_new,
+            'private_receive_active' => $private_receive_active,
+            'international_pledge_new' => $international_pledge_new,
+            'international_receive_active' => $international_receive_active,
+            'project_without_ext' => $project_without_ext,
+            'project_with_ext' => $project_with_ext,
+        ];
+
+        $calculation = $this->calcSectionC($active_acad_staff, $active_st, $active_nonst, $important_data);
 
         return (object)[
             'faculties' => $faculties,
@@ -723,6 +756,8 @@ trait MasterListMyraTrait {
             'project_without_ext' => $project_without_ext,
             'project_with_ext' => $project_with_ext,
             'project_complete_on_time' => $project_complete_on_time,
+
+            'calculation' => $calculation
         ];
     }
 
@@ -756,11 +791,38 @@ trait MasterListMyraTrait {
         $entry_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($entry_enrolled/$pg_enrolled*100, 2) : 0;
 
         $fellowship_enrolled = MasterlistFellowship::where('ml_end_year', $year)->count();
-        $fellowship_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($entry_enrolled/$pg_enrolled*100, 2) : 0;
+        $fellowship_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($fellowship_enrolled/$pg_enrolled*100, 2) : 0;
 
         $local_post_doc = MasterlistPostDoc::where('ml_end_year', $year)->whereIn('citizenship', ['LOCAL', 'TEMPATAN'])->count();
         $foreign_post_doc = MasterlistPostDoc::where('ml_end_year', $year)->whereIn('citizenship', ['FOREIGN', 'ANTARABANGSA'])->count();
 
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'phd_local' => $phd_local,
+            'phd_foreign' => $phd_foreign,
+            'phd_graduate_7' => $phd_graduate_7,
+            'total_master' => $total_master,
+            'total_phd_enrolled' => $total_phd_enrolled,
+            'total_phd_st_enrolled' => $total_phd_st_enrolled,
+            'pg_enrolled' => MasterlistPgStudent::where('ml_end_year', $year)->count(),
+            'pg_research' => MasterlistPgStudent::where('ml_end_year', $year)->whereIn('study_mode', ['RESEARCH', 'PENYELIDIKAN', 'MIXED MODE', 'K KUR & PENYELIDIKAN'])->count(),
+            'pg_enrolled_ratio' => $pg_enrolled_ratio,
+            'pg_enrolled_mixed_mode_ratio' => $pg_enrolled_mixed_mode_ratio,
+            'int_pg_enrolled' => $int_pg_enrolled,
+            'int_pg_enrolled_percent' => $int_pg_enrolled_percent,
+            'entry_enrolled' => $entry_enrolled,
+            'entry_enrolled_percent' => $entry_enrolled_percent,
+            'fellowship_enrolled' => $fellowship_enrolled,
+            'fellowship_enrolled_percent' => $fellowship_enrolled_percent,
+            'local_post_doc' => $local_post_doc,
+            'foreign_post_doc' => $foreign_post_doc,
+        ];
+
+        $calculation = $this->calcSectionD($active_acad_staff, $active_st, $active_nonst, $important_data);
 
         return (object)[
             'faculties' => $faculties,
@@ -792,6 +854,8 @@ trait MasterListMyraTrait {
 
             'local_post_doc' => $local_post_doc,
             'foreign_post_doc' => $foreign_post_doc,
+
+            'calculation' => $calculation
         ];
     }
 
@@ -810,6 +874,24 @@ trait MasterListMyraTrait {
         $active_company = MasterlistActiveCompany::where('ml_end_year', $year)->count();
         $new_company = MasterlistNewCompany::where('ml_end_year', $year)->count();
 
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'grant_local' => $grant_local,
+            'grant_foreign' => $grant_foreign,
+            'file_local' => $file_local,
+            'file_foreign' => $file_foreign,
+            'comm_product' => $comm_product,
+            'know_how_sold' => $know_how_sold,
+            'other_ipr' => $other_ipr,
+            'active_company' => $active_company,
+            'new_company' => $new_company,
+        ];
+
+        $calculation = $this->calcSectionE($active_acad_staff, $active_st, $active_nonst, $important_data);
 
         return (object)[
             'faculties' => $faculties,
@@ -826,6 +908,8 @@ trait MasterListMyraTrait {
             'other_ipr' => $other_ipr,
             'active_company' => $active_company,
             'new_company' => $new_company,
+
+            'calculation' => $calculation
         ];
     }
 
@@ -843,9 +927,31 @@ trait MasterListMyraTrait {
         $new_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->sum('amount_endowed'), 2, '.', '');
         $existing_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->sum('amount_endowed_percent_research'), 2, '.', '');
         $gift = (float)number_format(MasterlistGift::where('ml_end_year', $year)->sum('value'), 2, '.', '');
-        $oe_expenditure = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->sum('amount_received'), 2, '.', '');
-        $rd_expenditure = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->sum('amount_received'), 2, '.', '');
+        $oe_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->sum('amount_spent'), 2, '.', '');
+        $rd_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->where('amount_received', '>', 0)->sum('amount_spent'), 2, '.', '');
 
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'training_course' => $training_course,
+            'pg_fee' => $pg_fee,
+            'conference' => $conference,
+            'product_comm' => $product_comm,
+            'tech_know_how' => $tech_know_how,
+            'consultancy' => $consultancy,
+            'hospital' => $hospital,
+            'lab_service' => $lab_service,
+            'new_endowment' => $new_endowment,
+            'existing_endowment' => $existing_endowment,
+            'gift' => $gift,
+            'oe_expenditure' => $oe_expenditure,
+            'rd_expenditure' => $rd_expenditure,
+        ];
+
+        $calculation = $this->calcSectionF($active_acad_staff, $active_st, $active_nonst, $important_data);
 
         return (object)[
             'faculties' => $faculties,
@@ -863,6 +969,7 @@ trait MasterListMyraTrait {
             'gift' => $gift,
             'oe_expenditure' => $oe_expenditure,
             'rd_expenditure' => $rd_expenditure,
+            'calculation' => $calculation
         ];
     }
 
@@ -891,6 +998,35 @@ trait MasterListMyraTrait {
         $joint_research_project = MasterlistJointResearchProject::where('ml_end_year', $year)->count();
         $joint_research_project_ru = MasterlistJointResearchRu::where('ml_end_year', $year)->count();
 
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'int_moa_industry' => $int_moa_industry,
+            'int_moa_community' => $int_moa_community,
+            'int_moa_university' => $int_moa_university,
+            'int_moa_agency' => $int_moa_agency,
+            'total_staff_int_moa' => $total_staff_int_moa,
+            'staff_sent_abroad' => $staff_sent_abroad,
+            'member_international' => $member_international,
+            'other_international' => $other_international,
+            'nat_moa_industry' => $nat_moa_industry,
+            'nat_moa_community' => $nat_moa_community,
+            'nat_moa_university' => $nat_moa_university,
+            'nat_moa_agency' => $nat_moa_agency,
+            'total_staff_nat_moa' => $total_staff_nat_moa,
+            'member_national' => $member_national,
+            'other_national' => $other_national,
+            'new_ktp' => $new_ktp,
+            'benefited_ktp' => $benefited_ktp,
+            'joint_research_project' => $joint_research_project,
+            'joint_research_project_ru' => $joint_research_project_ru,
+        ];
+
+        $calculation = $this->calcSectionG($active_acad_staff, $active_st, $active_nonst, $important_data);
+
         return (object)[
             'faculties' => $faculties,
             'schools' => $schools,
@@ -915,6 +1051,8 @@ trait MasterListMyraTrait {
             'benefited_ktp' => $benefited_ktp,
             'joint_research_project' => $joint_research_project,
             'joint_research_project_ru' => $joint_research_project_ru,
+
+            'calculation' => $calculation
         ];
     }
 
@@ -922,9 +1060,21 @@ trait MasterListMyraTrait {
         $faculties = [];
         $schools = [];
         $support = MasterlistSupportFacility::where('ml_end_year', $year)->count();
-        $book = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'book_printed')->sum('no_of_title');
-        $book_online = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'book_online')->sum('no_of_title');
-        $journal_subscribed = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'journal_subscribed')->sum('no_of_title');
+        $book = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'Book Printed')->sum('no_of_title');
+        $book_online = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'E-Book')->sum('no_of_title');
+        $journal_subscribed = MasterlistLibraryFacility::where('ml_end_year', $year)->whereIn('type', ['E-Journal','Journal Printed'])->sum('no_of_title');
+
+        //Calculation
+        $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+
+        $important_data = (object)[
+            'support' => $support,
+            'library' => $book + $book_online + $journal_subscribed,
+        ];
+
+        $calculation = $this->calcSectionH($active_acad_staff, $active_st, $active_nonst, $important_data);
 
         return (object)[
             'faculties' => $faculties,
@@ -933,6 +1083,7 @@ trait MasterListMyraTrait {
             'book' => $book,
             'book_online' => $book_online,
             'journal_subscribed' => $journal_subscribed,
+            'calculation' => $calculation
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListElnptProposal;
+use App\Models\MasterList\MasterlistElnptProposal;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ElnptProposalFirstSheetImport implements ToModel, WithStartRow, WithChunkR
     public function model(Array $row)
     {
         if($row[0]){
-            return new MasterListElnptProposal([
+            return new MasterlistElnptProposal([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'reference_no' => $row[0],

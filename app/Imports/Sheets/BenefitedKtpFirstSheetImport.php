@@ -41,7 +41,7 @@ class BenefitedKtpFirstSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'sponsorship_value' => is_numeric($row[14]) ? $row[14] : 0,
                 'start_date' => excelDate($row[15]),
                 'end_date' => excelDate($row[16]),
-                'remark' => $row[18],
+                'remark' => $row[17],
             ]);
         }
     }

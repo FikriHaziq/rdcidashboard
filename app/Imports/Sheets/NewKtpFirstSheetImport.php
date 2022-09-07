@@ -40,7 +40,7 @@ class NewKtpFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
                 'sponsorship_value' => is_numeric($row[13]) ? $row[13] : 0,
                 'start_date' => excelDate($row[14]),
                 'end_date' => excelDate($row[15]),
-                'remark' => $row[17],
+                'remark' => $row[16],
             ]);
         }
     }

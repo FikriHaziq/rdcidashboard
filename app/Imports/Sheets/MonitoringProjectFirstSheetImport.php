@@ -48,8 +48,8 @@ class MonitoringProjectFirstSheetImport implements ToModel, WithStartRow, WithCh
                 'amount_pledged' => is_numeric($row[21]) ? $row[21]: 0,
                 'amount_received' => is_numeric($row[22]) ? $row[22]: 0,
                 'amount_spent' => is_numeric($row[23]) ? $row[23]: 0,
-                'remark' => $row[25],
-                'pi' => $row[26],
+                'remark' => $row[24],
+                'pi' => $row[25],
             ]);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListElnptActivity;
+use App\Models\MasterList\MasterlistElnptActivity;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class ElnptActivityFirstSheetImport implements ToModel, WithStartRow, WithChunkR
     public function model(Array $row)
     {
         if($row[1]){
-            return new MasterListElnptActivity([
+            return new MasterlistElnptActivity([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'application_pk' => $row[0],

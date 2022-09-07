@@ -25,9 +25,9 @@ class LibraryFacilityFirstSheetImport implements ToModel, WithStartRow, WithChun
             return new MasterlistLibraryFacility([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
-                'type' => 'book_printed',
                 'title' => $row[1],
-                'no_of_title' => is_numeric($row[2]) ? $row[2] : null,
+                'type' => $row[2],
+                'no_of_title' => is_numeric($row[3]) ? $row[3] : null,
             ]);
         }
     }

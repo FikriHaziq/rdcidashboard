@@ -23,8 +23,6 @@ class LibraryFacilityImport implements WithMultipleSheets, SkipsUnknownSheets
     {
         return [
             0 => new LibraryFacilityFirstSheetImport($this->year),
-            1 => new LibraryFacilitySecondSheetImport($this->year),
-            2 => new LibraryFacilityThirdSheetImport($this->year),
         ];
     }
 

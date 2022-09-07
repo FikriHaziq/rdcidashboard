@@ -37,9 +37,7 @@ class NationalMoaFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'start_date' => excelDate($row[6]),
                 'expiry_date' => excelDate($row[7]),
                 'period' => $row[8],
-                'agreement_link' => $row[9],
-                'activity_link' => $row[10],
-                'remark' => $row[11],
+                'remark' => $row[9],
             ]);
         }
     }

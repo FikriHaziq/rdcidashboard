@@ -37,7 +37,7 @@ class CommProductFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'date_threshold_achieved' => excelDate($row[10]),
                 'company_name' => $row[11],
                 'gross_income' => is_numeric($row[12]) ? $row[12] : 0,
-                'remark' => $row[15],
+                'remark' => $row[13],
             ]);
         }
     }

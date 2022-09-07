@@ -18,7 +18,7 @@
         <div class="input-group">
             <div class="input-group-text">YEAR</div>
             <select class="form-select me-sm-2" onchange="getList($(this))">
-                @for ($i = date('Y') - 5; $i <= date('Y'); $i++)
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
                 <option value="{{$i}}" @if((int)$year===(int)$i) selected @endif>{{$i}}</option>
                 @endfor
             </select>
@@ -204,7 +204,7 @@
             <div class="tab-pane fade" id="calculation" role="tabpanel" aria-labelledby="calculation-tab">
                 <div class="px-5 sm:px-20 border-t border-gray-200 dark:border-dark-5">
                     <div class="alert alert-primary-soft d-flex align-items-center mb-2 fw-bolder fs-medium" role="alert">
-                         MyRA I - 22 MARKS & MyRA II -13 MARKS<br /> (CAPPED AT 200% EXCEPT RESEARCH EXPERIENCE/INPUT)
+                         MyRA I - 22 MARKS & MyRA II - 13 MARKS<br /> (CAPPED AT 200% EXCEPT RESEARCH EXPERIENCE/INPUT)
                     </div>
                     <div class="box p-5 my-5">
                         <div class="d-flex">
@@ -222,14 +222,14 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table class="table table-sm border-collapse border border-slate-500" id="sectionTable">
+                        <table class="table table-sm border-collapse" id="sectionTable">
                             <thead>
                                 <tr class="text-center">
-                                    <th class="" colspan="6" style="border: 0px solid white!important;"></th>
-                                    <th class="myra-1-header" colspan="7">Myra I</th>
-                                    <th class="myra-2-header" colspan="7">Myra II</th>
+                                    <th class="" colspan="6"></th>
+                                    <th class="myra-1-header table-border-black" colspan="7">Myra I</th>
+                                    <th class="myra-2-header table-border-black" colspan="7">Myra II</th>
                                 </tr>
-                                <tr class="myra-blue text-black text-center">
+                                <tr class="myra-blue text-black text-center table-border-black">
                                     <th class="whitespace-nowrap">No.</th>
                                     <th class="whitespace-nowrap">Criteria</th>
                                     <th class="whitespace-nowrap">KPI</th>
@@ -252,7 +252,7 @@
                                     <th class="whitespace-nowrap">Achievement (%)</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="table-border-black">
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold" rowspan="5">1</td>
                                     <td class="border border-slate-600 fw-bold" rowspan="5">Critical Mass</td>
@@ -393,8 +393,8 @@
                                     <td class="border border-slate-600 fw-bold" rowspan="4">3</td>
                                     <td class="border border-slate-600 fw-bold" rowspan="4">Research Experience (3 cohorts)</td>
                                     <td class="border border-slate-600 fw-bold myra-brown">Total Number of Active Academic Staff in each Age Group (3 Cohorts):</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ $data->calculation->myra1_3[0] }}%</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ $data->calculation->myra2_3[0] }}%</td>
+                                    <td class="border border-slate-600 fw-bold myra-brown">{{ $data->calculation->myra1_3[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold myra-brown">{{ $data->calculation->myra2_3[0] }}</td>
                                     <td class="border border-slate-600 fw-bold myra-brown">{{ $data->calculation->myra_year_3[0] }}</td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
@@ -595,7 +595,6 @@
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->total_myra2_benchmark_mark }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra2_mark, 2) }}</td>
                                     <td class="border border-slate-600 fw-bold"></td>
-
                                 </tr>
                             </tbody>
                         </table>

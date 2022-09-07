@@ -2,7 +2,7 @@
 
 namespace App\Imports\Sheets;
 
-use App\Models\MasterList\MasterListRaroProcess;
+use App\Models\MasterList\MasterlistRaroProcess;
 use App\Models\DataAttachment;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class RaroProcessFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
     public function model(Array $row)
     {
         if($row[0]){
-            return new MasterListRaroProcess([
+            return new MasterlistRaroProcess([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
                 'no_rujukan' => $row[0],

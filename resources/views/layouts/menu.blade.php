@@ -7,6 +7,18 @@
         <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
+    <x-menu-item active="grant.myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
+        <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
+        <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
+        <x-menu-item active="myra.info" route="myra.info">General Info</x-menu-item>
+        <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
+        <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
+        <x-menu-item active="myra.section-d" route="myra.section-d">Section D: Quantity and Quality of Postgraduates</x-menu-item>
+        <x-menu-item active="myra.section-f" route="myra.section-f">Section F: Professional Services and Gifts </x-menu-item>
+        <x-menu-item active="myra.section-g" route="myra.section-g">Section G: Networking and Linkages</x-menu-item>
+        <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item>
+    </x-menu-item>
+    <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
     <x-menu-item active="research.*" route="" icon="book" parent="UTM Research" type="sub">
         <x-menu-item active="grant.overview" route="grant.overview">Research Overview</x-menu-item>
         {{-- <x-menu-item active="grant.faculty-year" route="grant.faculty-year">Faculty Achievement - Year, Active, All</x-menu-item> --}}
@@ -39,18 +51,6 @@
             <x-menu-item active="" route="">RMC UTM KL Achievement</x-menu-item>
         </x-menu-item> --}}
     </x-menu-item>
-    <x-menu-item active="myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
-        <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
-        <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
-        <x-menu-item active="myra.info" route="myra.info">General Info</x-menu-item>
-        <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
-        <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
-        <x-menu-item active="myra.section-d" route="myra.section-d">Section D: Quantity and Quality of Postgraduates</x-menu-item>
-        <x-menu-item active="myra.section-f" route="myra.section-f">Section F: Professional Services and Gifts </x-menu-item>
-        <x-menu-item active="myra.section-g" route="myra.section-g">Section G: Networking and Linkages</x-menu-item>
-        <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item>
-    </x-menu-item>
-    <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
     <x-menu-item active="masterlist.*" route="" icon="archive" parent="Master List" type="sub">
         <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Myra</x-menu-item>
         <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>

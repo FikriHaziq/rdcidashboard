@@ -51,7 +51,7 @@ class JointResearchProjectFirstSheetImport implements ToModel, WithStartRow, Wit
                 'organizer_1' => $row[24],
                 'organizer_2' => $row[25],
                 'organizer_3' => $row[26],
-                'remark' => $row[28],
+                'remark' => $row[27],
             ]);
         }
     }

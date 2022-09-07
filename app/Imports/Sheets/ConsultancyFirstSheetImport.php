@@ -40,8 +40,8 @@ class ConsultancyFirstSheetImport implements ToModel, WithStartRow, WithChunkRea
                 'bill_ref_no' => $row[13],
                 'receipt_ref_no' => $row[14],
                 'gross_income' => is_numeric($row[15]) ? $row[15] : 0,
-                'remark' => $row[17],
-                'ptj' => $row[18],
+                'remark' => $row[16],
+                'ptj' => $row[17],
             ]);
         }
     }

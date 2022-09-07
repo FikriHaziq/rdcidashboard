@@ -57,7 +57,7 @@ class AwardFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
                 'event' => strtoupper($row[12]),
                 'start_date' => excelDate($row[13]),
                 'end_date' => excelDate($row[14]),
-                'remark' => $row[16],
+                'remark' => $row[15],
             ]);
         }
     }

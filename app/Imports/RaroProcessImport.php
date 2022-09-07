@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Imports\Sheets\RaroProcessFirstSheetImport;
-use App\Models\MasterList\MasterListRaroProcess;
+use App\Models\MasterList\MasterlistRaroProcess;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 
 class RaroProcessImport implements WithMultipleSheets, SkipsUnknownSheets 
@@ -14,7 +14,7 @@ class RaroProcessImport implements WithMultipleSheets, SkipsUnknownSheets
     public function  __construct($year)
     {
         $this->year= $year;
-        MasterListRaroProcess::where('ml_end_year', $this->year)->delete();
+        MasterlistRaroProcess::where('ml_end_year', $this->year)->delete();
     }
 
     public function sheets(): array
