@@ -3,7 +3,7 @@
 @slot("submodule") Project Management @endslot
 @section('custom-css') @endsection
 @slot("content")
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
         Master List - Project Management
     </h2>

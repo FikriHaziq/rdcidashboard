@@ -120,16 +120,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 150,
+                    min: 0,
+                    ticks: {
+                        stepSize: 50
+                    }
                 },
             }
         },
@@ -174,16 +169,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 1,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -228,16 +218,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 1.5,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -282,16 +267,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 2,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -336,16 +316,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 2,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -390,16 +365,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 1.5,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -444,16 +414,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 1,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },
@@ -498,16 +463,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                },
-                y1: {
-                    type: 'linear',
-                    display: false,
-                    position: 'right',
-
-                    // grid line settings
-                    grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
-                    },
+                    max: 1,
+                    min: 0,
+                    ticks: {
+                        stepSize: 0.5
+                    }
                 },
             }
         },

@@ -63,7 +63,8 @@ Route::name('research.')->prefix('research')->group(function () {
 // UTM MyRA
 Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("index")->get("overview", [MyRADashboardController::class, "index"]);
-    Route::name("info")->get("general-info", [MyRADashboardController::class, "generalInfo"]);
+    Route::name("info.staff")->get("staff-info", [MyRADashboardController::class, "staffInfo"]);
+    Route::name("info.student")->get("student-info", [MyRADashboardController::class, "studentInfo"]);
     Route::name("emyra")->get("emyra", [MyRADashboardController::class, "emyra"]);
     Route::name("section-b")->get("section-b", [MyRADashboardController::class, "sectionB"]);
     Route::name("section-c")->get("section-c", [MyRADashboardController::class, "sectionC"]);

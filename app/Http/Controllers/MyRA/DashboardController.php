@@ -12,9 +12,14 @@ class DashboardController extends Controller
         return view('myra.index');
     }
 
-    public function generalInfo()
+    public function staffInfo()
     {
-        return view('myra.info');
+        return view('myra.info-staff');
+    }
+
+    public function studentInfo()
+    {
+        return view('myra.info-student');
     }
 
     public function eMyRA()
