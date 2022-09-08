@@ -148,6 +148,42 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
+            labels: ['ENGINEERING', 'FINANCE/BUSINESS', 'EDUCATION', 'COMPUTER SCIENCE', 'ARCHITECTURE', 'SOCIAL SCIENCE', 'SCIENCE', 'TECHNOLOGY', 'ISLAMIC STUDY', 'LANGUAGE', 'TECHNICAL STUDY', 'SCIENCE EDUCATION', 'SCIENCE MANAGEMENT', 'TECHNICAL', 'COMMUNICATION', 'ENVIRONMENT', 'INFORMATION TECHNOLOGY'],
+            datasets: [
+                {
+                    data: ['4100', '1400', '1300', '1350', '1200', '1100', '1000', '700', '700', '600', '300', '250', '200', '100', '100', '100', '80'],
+                    backgroundColor: 'rgb(172, 62, 49)',
+                    borderColor: 'rgb(172, 62, 49)',
+                    borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    max: 4500,
+                    min: 0,
+                    ticks: {
+                        stepSize: 1500
+                    }
+                },
+            }
+        }
+    });
+
+    var bar3 = document.getElementById('bar3');
+    var barChart3 = new Chart(bar3, {
+        type: 'bar',
+        data: {
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
@@ -189,41 +225,6 @@
                     min: 0,
                     ticks: {
                         stepSize: 200
-                    }
-                },
-            }
-        }
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: ['INDONESIA', 'JAPAN', 'IRAN', 'PAKISTAN', 'BANGLADESH', 'INDIA', 'YEMEN', 'IRAQ', 'EGYPT', 'UK', 'NIGERIA', 'TURKEY', 'JORDAN', 'SINGAPORE', 'SUDAN', 'S.KOREA', 'AUSTRALIA', 'GERMANY', 'USA', 'CANADA', 'MYANMAR', 'UZBEKISTAN', 'GHANA', 'LIBYA', 'PALESTINE', 'AFGHANISTAN'],
-            datasets: [
-                {
-                    data: ['50', '33', '32', '23', '21', '14', '11', '10', '9', '8', '5', '4', '4', '3', '3', '3', '3', '3', '2', '2', '2', '2', '2', '2', '2', '2'],
-                    backgroundColor: 'rgb(172, 62, 49)',
-                    borderColor: 'rgb(172, 62, 49)',
-                    borderWidth: 1
-                },
-            ]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    max: 50,
-                    min: 0,
-                    ticks: {
-                        stepSize: 10
                     }
                 },
             }
