@@ -13,7 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return redirect()->route('myra.self-assessment.section-a');
+        return redirect()->route('myra.index');
     }
 
     /**
