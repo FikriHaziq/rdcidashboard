@@ -86,38 +86,31 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'PROFESSOR',
-                    data: ['200', '200', '200', '200', '200', '230'],
-                    backgroundColor: 'rgb(172, 62, 49)',
-                    borderColor: 'rgb(172, 62, 49)',
+                    label: 'MASTER RESEARCH (FOREIGN)',
+                    data: ['193', '166', '139', '147', '154', '168'],
+                    backgroundColor: 'rgb(40, 82, 135)',
+                    borderColor: 'rgb(40, 82, 135)',
                     borderWidth: 1
                 },
                 {
-                    label: 'ASSOCIATE PROFESSOR',
-                    data: ['390', '390', '390', '390', '390', '380'],
-                    backgroundColor: 'rgb(72, 138, 153)',
-                    borderColor: 'rgb(72, 138, 153)',
+                    label: 'MASTER RESEARCH (LOCAL)',
+                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    backgroundColor: 'rgba(252, 135, 6)',
+                    borderColor: 'rgba(252, 135, 6)',
                     borderWidth: 1
                 },
                 {
-                    label: 'SENIOR LECTURER',
-                    data: ['1000', '1100', '1200', '1150', '1200', '1250'],
-                    backgroundColor: 'rgba(218, 174, 89)',
-                    borderColor: 'rgba(218, 174, 89)',
+                    label: 'PhD (FOREIGN)',
+                    data: ['1957', '1854', '1713', '1876', '2104', '2482'],
+                    backgroundColor: 'rgba(132, 0, 192)',
+                    borderColor: 'rgba(132, 0, 192)',
                     borderWidth: 1
                 },
                 {
-                    label: 'LECTURER',
-                    data: ['200', '300', '200', '100', '100', '100'],
-                    backgroundColor: 'rgba(218, 218, 218)',
-                    borderColor: 'rgba(218, 218, 218)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'RESEARCH FELLOW',
-                    data: ['0', '0', '0', '0', '20', '50'],
-                    backgroundColor: 'rgba(32, 40, 62)',
-                    borderColor: 'rgba(32, 40, 62)',
+                    label: 'PhD (LOCAL)',
+                    data: ['3267', '3286', '3243', '3263', '3027', '2915'],
+                    backgroundColor: 'rgba(251, 0, 84)',
+                    borderColor: 'rgba(251, 0, 84)',
                     borderWidth: 1
                 },
             ]
@@ -127,17 +120,25 @@
                 legend: {
                     display: true,
                     position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
+                    stacked: true,
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1200,
+                    max: 10000,
                     min: 0,
                     ticks: {
-                        stepSize: 400
+                        stepSize: 5000
                     }
                 },
             }
@@ -187,24 +188,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'A (> 50 years old)',
-                    data: ['650', '600', '580', '560', '550', '540'],
-                    backgroundColor: 'rgb(172, 62, 49)',
-                    borderColor: 'rgb(172, 62, 49)',
+                    label: 'POSTGRADUATE',
+                    data: ['12000', '13000', '14000', '16000', '15500', '15000'],
+                    backgroundColor: 'rgb(25, 196, 135)',
+                    borderColor: 'rgb(25, 196, 135)',
                     borderWidth: 1
                 },
                 {
-                    label: 'B (40 - 50 years old)',
-                    data: ['530', '550', '570', '590', '620', '650'],
-                    backgroundColor: 'rgb(72, 138, 153)',
-                    borderColor: 'rgb(72, 138, 153)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'C (< 40 years old)',
-                    data: ['500', '490', '470', '480', '490', '510'],
-                    backgroundColor: 'rgba(218, 174, 89)',
-                    borderColor: 'rgba(218, 174, 89)',
+                    label: 'UNDERGRADUATE',
+                    data: ['12000', '13000', '14000', '16000', '15500', '15000'],
+                    backgroundColor: 'rgba(252, 71, 193)',
+                    borderColor: 'rgba(252, 71, 193)',
                     borderWidth: 1
                 },
             ]
@@ -214,17 +208,25 @@
                 legend: {
                     display: true,
                     position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
+                    stacked: true,
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 800,
+                    max: 30000,
                     min: 0,
                     ticks: {
-                        stepSize: 200
+                        stepSize: 5000
                     }
                 },
             }
@@ -238,10 +240,31 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
-                    data: ['1600', '1650', '1700', '1680', '1630', '1640'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    label: 'MASTER RESEARCH',
+                    data: ['5000', '4800', '5200', '4900', '5500', '5550'],
+                    borderColor: ['rgb(53, 92, 183)'],
+                    backgroundColor: ['rgb(53, 92, 183)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'MASTER COURSEWORK',
+                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'PHD',
+                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'DOCTORAL COURSEWORK',
+                    data: ['100', '100', '200', '200', '250', '260'],
+                    borderColor: ['rgb(253, 180, 7)'],
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
             ]
@@ -254,7 +277,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -263,10 +291,10 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 2000,
+                    max: 6000,
                     min: 0,
                     ticks: {
-                        stepSize: 500
+                        stepSize: 2000
                     }
                 },
             }
