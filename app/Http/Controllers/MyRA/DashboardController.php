@@ -27,9 +27,11 @@ class DashboardController extends Controller
         return view('myra.emyra');
     }
 
-    public function sectionB()
+    public function sectionB($tabs)
     {
-        return view('myra.section-b');
+        if ($tabs == 'INVESTIGATOR') { return view('myra.section-b-pi'); }
+        elseif ($tabs == 'COHORT') { return view('myra.section-b-cohort'); }
+        elseif ($tabs == 'AWARD') { return view('myra.section-b-award'); }
     }
 
     public function sectionC()

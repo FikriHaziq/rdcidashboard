@@ -66,7 +66,7 @@ Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("info.staff")->get("staff-info", [MyRADashboardController::class, "staffInfo"]);
     Route::name("info.student")->get("student-info", [MyRADashboardController::class, "studentInfo"]);
     Route::name("emyra")->get("emyra", [MyRADashboardController::class, "emyra"]);
-    Route::name("section-b")->get("section-b", [MyRADashboardController::class, "sectionB"]);
+    Route::name("section-b")->get("section-b/{tabs?}", [MyRADashboardController::class, "sectionB"]);
     Route::name("section-c")->get("section-c", [MyRADashboardController::class, "sectionC"]);
     Route::name("section-d")->get("section-d", [MyRADashboardController::class, "sectionD"]);
     Route::name("section-f")->get("section-f", [MyRADashboardController::class, "sectionF"]);

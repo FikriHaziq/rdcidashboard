@@ -6,8 +6,11 @@ use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
+    /** parseValue only works with route; */
+
     public $route;
     public $rawUrl;
+    public $customTabVal;
     public $active;
     public $type;
     public $parent;
@@ -18,14 +21,15 @@ class MenuItem extends Component
      *
      * @return void
      */
-    public function __construct($route = "", $active = "", $parent = "", $type = "", $icon = "", $rawUrl = false)
+    public function __construct($route = "", $rawUrl = false, $customTabVal = "", $active = "", $parent = "", $type = "", $icon = "")
     {
         $this->route = $route;
+        $this->rawUrl = $rawUrl;
+        $this->customTabVal = $customTabVal;
         $this->active = $active;
         $this->type = $type;
         $this->parent = $parent;
         $this->icon = $icon;
-        $this->rawUrl = $rawUrl;
     }
 
     /**

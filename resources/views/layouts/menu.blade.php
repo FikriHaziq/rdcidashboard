@@ -11,7 +11,7 @@
         <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
         <x-menu-item active="myra.info.*" route="myra.info.staff">General Info</x-menu-item>
-        <x-menu-item active="myra.section-b" route="myra.section-b">Section B: Quantity and Quality of Researchers</x-menu-item>
+        <x-menu-item active="myra.section-b" route="myra.section-b" customTabVal="INVESTIGATOR">Section B: Quantity and Quality of Researchers</x-menu-item>
         <x-menu-item active="myra.section-c" route="myra.section-c">Section C: Quantity and Quality of Research</x-menu-item>
         <x-menu-item active="myra.section-d" route="myra.section-d">Section D: Quantity and Quality of Postgraduates</x-menu-item>
         <x-menu-item active="myra.section-f" route="myra.section-f">Section F: Professional Services and Gifts </x-menu-item>
