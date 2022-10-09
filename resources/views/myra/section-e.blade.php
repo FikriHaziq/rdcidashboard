@@ -1,6 +1,6 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
-@slot("submodule") Section E: Quantity and Quality of Postgraduates @endslot
+@slot("submodule") Section E: Innovation @endslot
 @slot("submoduleLink") myra.section-e @endslot
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
@@ -29,7 +29,7 @@
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
-        Section E: Quantity and Quality of Postgraduates - Enrollment
+        Section E: Innovation
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
