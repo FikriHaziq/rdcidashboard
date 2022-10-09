@@ -1,58 +1,60 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section C: Quantity and Quality of Research @endslot
+@slot("submoduleLink") myra.section-c @endslot
 @slot("content")
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
+    <h2 class="fs-lg fw-medium me-auto">
+        Section C: Quantity and Quality of Research
+    </h2>
+</div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar1" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-stretch"><canvas id="mixed" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-center"><canvas id="bar2" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-center"><canvas id="bar3" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar4" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-stretch"><canvas id="bar5" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-center"><canvas id="bar6" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-center"><canvas id="bar7" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-3 d-flex align-items-stretch">
+    <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar8" width="800"></canvas></div>
         </div>
     </div>
-    <div class="g-col-9 d-flex align-items-stretch">
+    <div class="g-col-8 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-stretch align-items-center font-weight-bold">
                 BILANGAN & PERATUSAN STAF TERLIBAT DALAM PENERBITAN MENGIKUT TAHUN: TERLIBAT VS. TIDAK TERLIBAT<br>
