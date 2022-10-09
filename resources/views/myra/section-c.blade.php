@@ -35,10 +35,10 @@
             <div class="box p-5"><canvas id="bar7"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 d-flex align-items-stretch"><canvas id="bar8" width="800"></canvas></div>
+            <div class="box p-5"><canvas id="bar8"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 d-flex align-items-stretch font-weight-bold">
+            <div class="box p-5 font-weight-bold">
                 BILANGAN & PERATUSAN STAF TERLIBAT DALAM PENERBITAN MENGIKUT TAHUN: TERLIBAT VS. TIDAK TERLIBAT<br>
                 TOP 10: STAF YANG MEMPUNYAI BILANGAN PENERBITAN DALAM Q1Q2 JURNAL (MAIN AUTHOR)<br>
                 BILANGAN & PERATUSAN STAF YANG TIADA PENERBITAN BERINDEKS (CORRESPONDING/UTM 1ST AUTHOR) DALAM TEMPOH 3 TAHUN TERAKHIR<br>
