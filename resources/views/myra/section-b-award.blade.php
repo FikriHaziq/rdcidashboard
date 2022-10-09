@@ -1,8 +1,8 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
-@slot("submodule") eMyRA General Info @endslot
-@slot("trimoduleLink") myra.info.student @endslot
-@slot("trimodule") Student @endslot
+@slot("submodule") Section B: Quantity and Quality of Researchers @endslot
+@slot("trimoduleLink") myra.section-b @endslot
+@slot("trimodule") Awards @endslot
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
@@ -30,7 +30,7 @@
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
-        Section B
+        Section B: Quantity and Quality of Researchers - Awards
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
