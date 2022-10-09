@@ -94,7 +94,7 @@ class DashboardController extends Controller
         return view('myra.section-e', compact('start_year', 'end_year', 'data'));
     }
 
-    public function sectionF($tabs)
+    public function sectionF($tabs, Request $request)
     {
         $request_data = $this->searching_request($request);
         $start_year = $request_data->start_year;
