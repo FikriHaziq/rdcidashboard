@@ -19,9 +19,16 @@ class CreateMasterlistNationalMoasTable extends Migration
             $table->integer('ml_end_year')->nullable();
             $table->string('organisation')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->text('title')->nullable();
             $table->string('type')->nullable();
             $table->string('category')->nullable();
@@ -29,9 +36,6 @@ class CreateMasterlistNationalMoasTable extends Migration
             $table->datetime('start_date')->nullable();
             $table->datetime('expiry_date')->nullable();
             $table->string('period')->nullable();
-            $table->text('agreement_link')->nullable();
-            $table->text('activity_link')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

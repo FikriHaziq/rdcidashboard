@@ -157,312 +157,312 @@
                         <table class="table table-sm border-collapse" id="sectionTable">
                             <thead>
                                 <tr class="text-center">
-                                    <th class="" colspan="6"></th>
-                                    <th class="myra-1-header table-border-black" colspan="7">Myra I</th>
-                                    <th class="myra-2-header table-border-black" colspan="7">Myra II</th>
+                                    <th class="" colspan="4"></th>
+                                    <th class="myra-1-header table-border-black" colspan="3">Myra I</th>
+                                    <th class="myra-2-header table-border-black" colspan="3">Myra II</th>
                                 </tr>
                                 <tr class="myra-blue text-black text-center table-border-black">
                                     <th class="whitespace-nowrap">No.</th>
                                     <th class="whitespace-nowrap">Criteria</th>
                                     <th class="whitespace-nowrap">KPI</th>
-                                    <th class="whitespace-nowrap">Myra I</th>
-                                    <th class="whitespace-nowrap">Myra II</th>
-                                    <th class="whitespace-nowrap">{{ $year }}</th>
-                                    <th class="whitespace-nowrap">Weightage</th>
-                                    <th class="whitespace-nowrap">Sub-weightage</th>
+                                    {{-- <th class="whitespace-nowrap">Myra I</th>
+                                    <th class="whitespace-nowrap">Myra II</th> --}}
+                                    <th class="whitespace-nowrap">Input Data</th>
+                                    {{-- <th class="whitespace-nowrap">Weightage</th>
+                                    <th class="whitespace-nowrap">Sub-weightage</th> --}}
                                     <th class="whitespace-nowrap">Benchmark</th>
-                                    <th class="whitespace-nowrap">Benchmark Target</th>
+                                    {{-- <th class="whitespace-nowrap">Benchmark Target</th> --}}
                                     <th class="whitespace-nowrap">Benchmark Marks</th>
                                     <th class="whitespace-nowrap">Marks</th>
-                                    <th class="whitespace-nowrap">Achievement (%)</th>
-                                    <th class="whitespace-nowrap">Weightage</th>
-                                    <th class="whitespace-nowrap">Sub-weightage</th>
+                                    {{-- <th class="whitespace-nowrap">Achievement (%)</th> --}}
+                                    {{-- <th class="whitespace-nowrap">Weightage</th>
+                                    <th class="whitespace-nowrap">Sub-weightage</th> --}}
                                     <th class="whitespace-nowrap">Benchmark</th>
-                                    <th class="whitespace-nowrap">Benchmark Target</th>
+                                    {{-- <th class="whitespace-nowrap">Benchmark Target</th> --}}
                                     <th class="whitespace-nowrap">Benchmark Marks</th>
                                     <th class="whitespace-nowrap">Marks</th>
-                                    <th class="whitespace-nowrap">Achievement (%)</th>
+                                    {{-- <th class="whitespace-nowrap">Achievement (%)</th> --}}
                                 </tr>
                             </thead>
                             <tbody class="table-border-black">
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold" rowspan="8">1</td>
                                     <td class="border border-slate-600 fw-bold" rowspan="8">Patents</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">a. Total Number of New Certificates of Patents <u>Granted</u></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ number_format($data->calculation->myra_year_1[0], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold">a. Total Number of New Certificates of Patents <u>Granted</u></td>
+                                    {{-- <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[0], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">i. National</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_1[1], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[1], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">ii. International</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[1] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[1] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_1[2], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[1] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[2], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
-                                    <td class="border border-slate-600 fw-bold myra-brown">b. Total Number of New Certificates of Patents <u>Filed</u></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ number_format($data->calculation->myra_year_1[3], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
-                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold">b. Total Number of New Certificates of Patents <u>Filed</u></td>
+                                    {{-- <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[3], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td>
+                                    <td class="border border-slate-600 fw-bold myra-brown"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">i. National</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[2] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[2] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[2] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[2] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_1[4], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[2] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[2] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[2] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[2] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[4], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">ii. International</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[3] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[3] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[3] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[3] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_1[5], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[3] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[3] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[3] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[3] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[5], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">c. Total Number of New Inventions <u>Granted</u> Patents</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[4] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[4] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[4] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[4] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ number_format($data->calculation->myra_year_1[6], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_1 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_1[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[4] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[4] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[4] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[4] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[6], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_1 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_1[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_1[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_1[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_1[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_1[0], 2) }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_1 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_1[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_1[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_1 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_1[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_1[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_1[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_1[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[0], 2) }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[0], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">d. Total Number of New Inventions <u>Filed</u> Patents</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[5] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[5] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-brown">{{ number_format($data->calculation->myra_year_1[7], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_2 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_1[1] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[5] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[5] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[7], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_2 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_1[1] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_1[1] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[1], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[1], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_1[1], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_1[1], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_1[1], 2) }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_2 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_1[1] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_1[1], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_2 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_1[1] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_1[1] }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[1], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[1], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_1[1], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_1[1], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[1], 2) }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[1], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold">2</td>
                                     <td class="border border-slate-600 fw-bold">Commercialized Products</td>
                                     <td class="border border-slate-600">Total Number of Innovations Successfully Developed into Commercialized Products for the Market</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_2[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_2[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_2[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_2[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_2[0], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_3 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_2[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_2[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_2[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_2[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_2[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_2[0], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_3 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_2[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_2[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_2[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_2[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_2[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_2[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_2[0], 2) }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_3 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_2[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_2[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_3 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_2[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_2[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_2[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_2[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_2[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_2[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_2[0], 2) }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_2[0], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold">3</td>
                                     <td class="border border-slate-600 fw-bold">Technology or Know-How Licensing/Sold Outright</td>
                                     <td class="border border-slate-600">Total Number of Technology or Know-How Licensing/Sold Outright</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_3[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_3[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_3[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_3[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_3[0], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_4 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_3[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_3[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_3[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_3[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_3[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_3[0], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_4 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_3[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_3[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_3[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_3[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_3[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_3[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_3[0], 2) }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_4 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_3[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_3[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_4 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_3[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_3[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_3[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_3[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_3[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_3[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_3[0], 2) }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_3[0], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold">4</td>
                                     <td class="border border-slate-600 fw-bold">Other IPRs</td>
                                     <td class="border border-slate-600">Other than Patents, Commercialized Products, Technology or Know-How and Books Declared in Section C</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_4[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_4[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_4[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_4[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_4[0], 0) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_5 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_4[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_4[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_4[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_4[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_4[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_4[0], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_5 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_4[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_4[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_4[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_4[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_4[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_4[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_4[0], 2) }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_5 }}%</td>
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_4[0] }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_4[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_5 }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_4[0] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_4[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_4[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_4[0], 2) }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_4[0], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_4[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_4[0], 2) }}%</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_4[0], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold" rowspan="2">5</td>
                                     <td class="border border-slate-600 fw-bold" rowspan="2">Starts-Up/Spin-off Companies</td>
                                     <td class="border border-slate-600">a. Number of Active Companies That Commercialized University Innovations in The Year</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_5[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_5[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_5[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_5[0] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_5[0], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_5[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_5[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_5[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_5[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_5[0], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600">a. Number of New Companies That Commercialized University Innovations in The Year</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_5[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_5[1] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_5[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_5[1] }}</td>
-                                    <td class="border border-slate-600 fw-bold myra-yellow">{{ number_format($data->calculation->myra_year_5[1], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_5[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_5[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_5[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_5[1] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_5[1], 0) }}</td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center total-mark">
-                                    <td class="border border-slate-600 fw-bold" colspan="10">Total Mark for Section E</td>
+                                    <td class="border border-slate-600 fw-bold" colspan="5">Total Mark for Section E</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra1_benchmark_mark, 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra1_mark, 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold" colspan="5"></td>
+                                    <td class="border border-slate-600 fw-bold"></td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra2_benchmark_mark, 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra2_mark, 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold"></td>
+                                    {{-- <td class="border border-slate-600 fw-bold"></td> --}}
                                 </tr>
                             </tbody>
                         </table>

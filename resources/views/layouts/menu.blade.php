@@ -7,7 +7,7 @@
         <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
-    <x-menu-item active="grant.myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
+    <x-menu-item active="myra.*" route="" icon="clipboard" parent="UTM MyRA" type="sub">
         <x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
         <x-menu-item active="myra.info.*" route="myra.info.staff">General Info</x-menu-item>

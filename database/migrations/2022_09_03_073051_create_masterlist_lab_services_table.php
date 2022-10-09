@@ -18,16 +18,21 @@ class CreateMasterlistLabServicesTable extends Migration
             $table->integer('ml_start_year')->nullable();
             $table->integer('ml_end_year')->nullable();
             $table->string('lab')->nullable();
-            $table->string('ptj')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('utmfin_ref_no')->nullable();
             $table->string('bill_ref_no')->nullable();
             $table->string('receipt_ref_no')->nullable();
             $table->decimal('gross_income', 20, 2)->default(0);
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

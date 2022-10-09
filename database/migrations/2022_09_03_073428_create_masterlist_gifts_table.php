@@ -20,16 +20,20 @@ class CreateMasterlistGiftsTable extends Migration
             $table->string('faculty')->nullable();
             $table->text('gift')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('donor')->nullable();
             $table->string('type')->nullable();
             $table->datetime('date_received')->nullable();
-            $table->string('reference')->nullable();
             $table->decimal('value', 20, 2)->default(0);
-            $table->string('proof_reference')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }
