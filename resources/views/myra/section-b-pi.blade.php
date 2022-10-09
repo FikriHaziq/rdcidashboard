@@ -85,16 +85,22 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES STUDY MODE</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">STAFF INVOLVED AS PRINCIPAL INVESTIGATOR</span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES BY RESEARCH</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">PRINCIPAL INVESTIGATORS</span><br><canvas id="line2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES AREA OF STUDY</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">PI-INTERNATIONAL: ACHIEVEMENT VS TARGET</span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">STUDENT: UNDERGRADUATE VS POSTGRADUATE</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">PI-NATIONAL: ACHIEVEMENT VS TARGET</span><br><canvas id="bar2"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">PI-UNIVERSITY: ACHIEVEMENT VS TARGET</span><br><canvas id="bar3"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">PI-PRIVATE: ACHIEVEMENT VS TARGET</span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>
@@ -109,31 +115,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'MASTER RESEARCH (FOREIGN)',
+                    label: 'ACHIEVEMENT',
                     data: ['193', '166', '139', '147', '154', '168'],
-                    backgroundColor: 'rgb(40, 82, 135)',
-                    borderColor: 'rgb(40, 82, 135)',
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
-                    label: 'MASTER RESEARCH (LOCAL)',
+                    label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(252, 135, 6)',
-                    borderColor: 'rgba(252, 135, 6)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'PhD (FOREIGN)',
-                    data: ['1957', '1854', '1713', '1876', '2104', '2482'],
-                    backgroundColor: 'rgba(132, 0, 192)',
-                    borderColor: 'rgba(132, 0, 192)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'PhD (LOCAL)',
-                    data: ['3267', '3286', '3243', '3263', '3027', '2915'],
-                    backgroundColor: 'rgba(251, 0, 84)',
-                    borderColor: 'rgba(251, 0, 84)',
+                    backgroundColor: 'rgba(230, 104, 38)',
+                    borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
                 },
             ]
@@ -150,19 +142,8 @@
                 }
             },
             scales: {
-                x: {
-                    stacked: true,
-                },
                 y: {
-                    stacked: true,
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    max: 10000,
-                    min: 0,
-                    ticks: {
-                        stepSize: 5000
-                    }
+                    beginAtZero: true,
                 },
             }
         }
@@ -172,33 +153,38 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['ENGINEERING', 'FINANCE/BUSINESS', 'EDUCATION', 'COMPUTER SCIENCE', 'ARCHITECTURE', 'SOCIAL SCIENCE', 'SCIENCE', 'TECHNOLOGY', 'ISLAMIC STUDY', 'LANGUAGE', 'TECHNICAL STUDY', 'SCIENCE EDUCATION', 'SCIENCE MANAGEMENT', 'TECHNICAL', 'COMMUNICATION', 'ENVIRONMENT', 'INFORMATION TECHNOLOGY'],
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    data: ['4100', '1400', '1300', '1350', '1200', '1100', '1000', '700', '700', '600', '300', '250', '200', '100', '100', '100', '80'],
-                    backgroundColor: 'rgb(172, 62, 49)',
-                    borderColor: 'rgb(172, 62, 49)',
+                    label: 'ACHIEVEMENT',
+                    data: ['193', '166', '139', '147', '154', '168'],
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1
+                },
+                {
+                    label: '100% TARGET',
+                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    backgroundColor: 'rgba(230, 104, 38)',
+                    borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
                 },
             ]
         },
         options: {
-            indexAxis: 'y',
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             scales: {
-                x: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    max: 4500,
-                    min: 0,
-                    ticks: {
-                        stepSize: 1500
-                    }
+                y: {
+                    beginAtZero: true,
                 },
             }
         }
@@ -211,17 +197,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'POSTGRADUATE',
-                    data: ['12000', '13000', '14000', '16000', '15500', '15000'],
-                    backgroundColor: 'rgb(25, 196, 135)',
-                    borderColor: 'rgb(25, 196, 135)',
+                    label: 'ACHIEVEMENT',
+                    data: ['193', '166', '139', '147', '154', '168'],
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
-                    label: 'UNDERGRADUATE',
-                    data: ['12000', '13000', '14000', '16000', '15500', '15000'],
-                    backgroundColor: 'rgba(252, 71, 193)',
-                    borderColor: 'rgba(252, 71, 193)',
+                    label: '100% TARGET',
+                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    backgroundColor: 'rgba(230, 104, 38)',
+                    borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
                 },
             ]
@@ -238,19 +224,49 @@
                 }
             },
             scales: {
-                x: {
-                    stacked: true,
-                },
                 y: {
-                    stacked: true,
-                    type: 'linear',
+                    beginAtZero: true,
+                },
+            }
+        }
+    });
+
+    var bar4 = document.getElementById('bar4');
+    var barChart4 = new Chart(bar4, {
+        type: 'bar',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: ['193', '166', '139', '147', '154', '168'],
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1
+                },
+                {
+                    label: '100% TARGET',
+                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    backgroundColor: 'rgba(230, 104, 38)',
+                    borderColor: 'rgba(230, 104, 38)',
+                    borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
                     display: true,
-                    position: 'left',
-                    max: 30000,
-                    min: 0,
-                    ticks: {
-                        stepSize: 5000
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
                     }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
                 },
             }
         }
@@ -263,28 +279,82 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'MASTER RESEARCH',
-                    data: ['5000', '4800', '5200', '4900', '5500', '5550'],
-                    borderColor: ['rgb(53, 92, 183)'],
-                    backgroundColor: ['rgb(53, 92, 183)'],
-                    tension: 0.1,
-                },
-                {
-                    label: 'MASTER COURSEWORK',
+                    label: 'PI',
                     data: ['5000', '4500', '4300', '4600', '4700', '4800'],
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'PHD',
+                    label: 'NON-PI',
+                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
+                    tension: 0.1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
+                }
+            },
+            stacked: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    max: 6000,
+                    min: 0,
+                    ticks: {
+                        stepSize: 2000
+                    }
+                },
+            }
+        },
+    });
+
+    var line2 = document.getElementById('line2');
+    var lineChart2 = new Chart(line2, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            datasets: [
+                {
+                    label: 'INTERNATIONAL',
+                    data: ['5000', '4800', '5200', '4900', '5500', '5550'],
+                    borderColor: ['rgb(53, 92, 183)'],
+                    backgroundColor: ['rgb(53, 92, 183)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'NATIONAL',
+                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
+                    tension: 0.1,
+                },
+                {
+                    label: 'UNIVERSITY',
                     data: ['2000', '3100', '2100', '2000', '1800', '1700'],
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DOCTORAL COURSEWORK',
+                    label: 'PRIVATE',
                     data: ['100', '100', '200', '200', '250', '260'],
                     borderColor: ['rgb(253, 180, 7)'],
                     backgroundColor: ['rgb(253, 180, 7)'],
