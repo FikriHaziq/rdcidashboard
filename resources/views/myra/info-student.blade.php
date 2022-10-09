@@ -1,12 +1,29 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
-@slot("submoduleLink") myra.info.student @endslot
 @slot("submodule") eMyRA General Info @endslot
+@slot("trimoduleLink") myra.info.student @endslot
+@slot("trimodule") Student @endslot
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
     td.highlight {
         background-color: whitesmoke !important;
+    }
+    .bg-whitesmoke {
+        background-color: whitesmoke;
+    }
+    
+    .active-tab {
+        background-color:white;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+
+    .inactive-tab {
+        opacity: 0.5;
+        background-color:rgb(193, 193, 193);
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
     }
 </style>
 @endsection
@@ -52,17 +69,11 @@
         </div>
     </div>
 </div>
-<div class="intro-y box py-10 sm:py-20 mt-5">
-    {{-- @include('myra.self-assessment.tabs', compact('year')) --}}
-    <div class="d-flex justify-content-center">
-        <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">Academic Staff</a>
-        <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">Student</a>
-    </div>
-    <div class="px-5 mt-10">
-        <div class="font-medium text-center text-lg text-uppercase">STUDENT SECTION</div>
-    </div>
-</div>
-<div class="intro-y row mt-5">
+{{-- <div class="intro-y mt-5 p-0">
+    <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else btn-outline-primary text-primary @endif ml-0 mr-2">Academic Staff</a>
+    <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else btn-outline-primary text-primary @endif mx-2">Student</a>
+</div> --}}
+{{-- <div class="intro-y row mt-5">
     <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES STUDY MODE</span><br><canvas id="line1"></canvas></div>
     </div>
@@ -74,6 +85,34 @@
     </div>
     <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5"><span class="font-weight-bold">STUDENT: UNDERGRADUATE VS POSTGRADUATE</span><br><canvas id="bar3"></canvas></div>
+    </div>
+</div> --}}
+
+                                    
+<ul class="nav nav-link-tabs mt-5" role="tablist">
+    <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.info.staff') }}" class="nav-link w-full py-2 @if(is_active('myra.info.staff')) active-tab @else inactive-tab @endif" role="tab">Academic Staff</a>
+    </li>
+    <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.info.student') }}" class="nav-link w-full py-2 @if(is_active('myra.info.student')) active-tab @else inactive-tab @endif" role="tab">Student</a>
+    </li>
+</ul>
+<div class="tab-content box">
+    <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES STUDY MODE</span><br><canvas id="line1"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES BY RESEARCH</span><br><canvas id="bar1"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES AREA OF STUDY</span><br><canvas id="bar2"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">STUDENT: UNDERGRADUATE VS POSTGRADUATE</span><br><canvas id="bar3"></canvas></div>
+            </div>
+        </div>
     </div>
 </div>
 @endslot

@@ -1,7 +1,8 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
-@slot("submoduleLink") myra.info.student @endslot
 @slot("submodule") eMyRA General Info @endslot
+@slot("trimoduleLink") myra.info.staff @endslot
+@slot("trimodule") Academic Staff @endslot
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
@@ -52,15 +53,9 @@
         </div>
     </div>
 </div>
-<div class="intro-y box py-10 sm:py-20 mt-5">
-    {{-- @include('myra.self-assessment.tabs', compact('year')) --}}
-    <div class="d-flex justify-content-center">
-        <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">Academic Staff</a>
-        <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else bg-gray-200 dark:bg-dark-1 text-gray-600 @endif mx-2">Student</a>
-    </div>
-    <div class="px-5 mt-5">
-        <div class="font-medium text-center text-lg text-uppercase">STAFF SECTION</div>
-    </div>
+<div class="intro-y mt-5 p-0">
+    <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else btn-outline-primary text-primary @endif ml-0 mr-2">Academic Staff</a>
+    <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else btn-outline-primary text-primary @endif mx-2">Student</a>
 </div>
 <div class="intro-y row mt-5">
     <div class="col-md-6 col-sm-12 mb-5">
