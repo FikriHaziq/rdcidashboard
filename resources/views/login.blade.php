@@ -19,11 +19,14 @@
             <div class="grid columns-2 gap-4">
                 <!-- BEGIN: Login Info -->
                 <div class="g-col-2 g-col-xl-1 d-none d-xl-flex flex-column min-vh-screen">
-                    <a href="" class="-intro-x d-flex align-items-center pt-5">
-                        <img alt="Rubick Bootstrap HTML Admin Template" class="" style="width: 30%;" src="{{ asset('images/utm-white.png') }}">
-                    </a>
+                    <!-- Change div to a for hyperlink -->
+                    <div class="-intro-x d-flex align-items-center pt-5">
+                        <img class="" style="width: 30%;" src="{{ asset('images/utm-white.png') }}">
+                        <span style="width: 20px;"></span>
+                        <img class="" style="width: 30%;" src="{{ asset('images/RDCI-white.png') }}">
+                    </div>
                     <div class="my-auto">
-                        <img alt="Rubick Bootstrap HTML Admin Template" class="-intro-x w-1/2 mt-n16" src="{{ asset('theme/images/illustration.svg') }}">
+                        <img class="-intro-x w-1/2 mt-n16" src="{{ asset('theme/images/illustration.svg') }}">
                         <div class="-intro-x text-white fw-medium fs-4xl lh-base mt-10">
                             RDCI Dashboard
                         </div>
