@@ -8,6 +8,39 @@
         Section G: Networking and Linkages
     </h2>
 </div>
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
+            <select class="form-select bg-white">
+                <option value="">All</option>
+                {{-- @foreach ($data->faculties ?? [] as $faculty)
+                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
+                {{-- @endforeach --}}
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group">
+            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+</div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
@@ -68,6 +101,13 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-g?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',

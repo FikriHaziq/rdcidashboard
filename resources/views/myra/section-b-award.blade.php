@@ -49,22 +49,20 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
@@ -72,13 +70,13 @@
                                     
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'INVESTIGATOR') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Principal Investigator</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'INVESTIGATOR', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Principal Investigator</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'COHORT') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Qualification & Cohort</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'COHORT', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Qualification & Cohort</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'AWARD') }}" class="nav-link w-full py-2 active-tab" role="tab">Award</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'AWARD', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Award</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -88,13 +86,13 @@
                 <div class="p-5"><span class="font-weight-bold">INTERNATIONAL AWARDS</span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL RECOGNITION/STEWARSHIP</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL RECOGNITION/STEWARDSHIP</span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">NATIONAL AWARDS</span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NATIONAL RECOGNITION/STEWARSHIP</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">NATIONAL RECOGNITION/STEWARDSHIP</span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">EXHIBITION AWARDS</span><br><canvas id="bar5"></canvas></div>
@@ -108,22 +106,30 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-b/INVESTIGATOR?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_1.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -153,18 +159,18 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_2.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -194,18 +200,18 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_3.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_3.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -235,18 +241,18 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_4.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_4.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -276,18 +282,18 @@
     var barChart5 = new Chart(bar5, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_5.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_5.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -317,18 +323,18 @@
     var barChart6 = new Chart(bar6, {
         type: 'bar',
         data: {
-            labels: ['2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['147', '154', '168'],
+                    data: data.bar_6.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1402', '1234', '1198'],
+                    data: data.bar_6.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
