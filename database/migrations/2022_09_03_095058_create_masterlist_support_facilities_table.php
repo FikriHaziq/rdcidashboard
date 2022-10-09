@@ -20,16 +20,22 @@ class CreateMasterlistSupportFacilitiesTable extends Migration
             $table->string('facility')->nullable();
             $table->string('faculty')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('type')->nullable();
             $table->string('registration_no')->nullable();
             $table->string('awarding_body')->nullable();
             $table->datetime('first_issue_date')->nullable();
             $table->datetime('start_date')->nullable();
             $table->datetime('expiry_date')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

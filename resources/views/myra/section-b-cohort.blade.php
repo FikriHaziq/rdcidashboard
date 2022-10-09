@@ -49,22 +49,20 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
@@ -72,13 +70,13 @@
         
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'INVESTIGATOR') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Principal Investigator</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'INVESTIGATOR', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Principal Investigator</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'COHORT') }}" class="nav-link w-full py-2 active-tab" role="tab">Qualification & Cohort</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'COHORT', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Qualification & Cohort</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-b', 'AWARD') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Award</a>
+        <a href="{{ route('myra.section-b', ['tabs'=>'AWARD', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Award</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -99,29 +97,37 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-b/INVESTIGATOR?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: '< 40 years old',
-                    data: ['1957', '1854', '1713', '1876', '2104', '2482'],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgba(10, 0, 192)',
                     borderColor: 'rgba(10, 0, 192)',
                     borderWidth: 1
                 },
                 {
                     label: '40 - 50 years old',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_1.data_2,
                     backgroundColor: 'rgba(26, 198, 5)',
                     borderColor: 'rgba(26, 198, 5)',
                     borderWidth: 1
                 },
                 {
                     label: '> 50 years old',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_1.data_3,
                     backgroundColor: 'rgb(145, 0, 26)',
                     borderColor: 'rgb(145, 0, 26)',
                     borderWidth: 1
@@ -148,11 +154,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 10000,
-                    min: 0,
-                    ticks: {
-                        stepSize: 5000
-                    }
+                    // max: 10000,
+                    // min: 0,
+                    // ticks: {
+                    //     stepSize: 5000
+                    // }
                 },
             }
         }
@@ -162,18 +168,18 @@
     var lineChart1 = new Chart(line1, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'PhD',
-                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    data: data.line_1.data_1,
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                 },
                 {
                     label: 'PRO-Q',
-                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    data: data.line_1.data_2,
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
@@ -202,11 +208,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 6000,
-                    min: 0,
-                    ticks: {
-                        stepSize: 2000
-                    }
+                    // max: 6000,
+                    // min: 0,
+                    // ticks: {
+                    //     stepSize: 2000
+                    // }
                 },
             }
         },

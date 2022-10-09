@@ -20,11 +20,14 @@ class CreateMasterlistNewEndowmentsTable extends Migration
             $table->string('contributor_name')->nullable();
             $table->text('contributor_details')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
             $table->string('type')->nullable();
             $table->decimal('amount_endowed', 20, 2)->default(0);
             $table->decimal('amount_endowed_percent_research', 20, 2)->default(0);
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

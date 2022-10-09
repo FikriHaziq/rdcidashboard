@@ -20,16 +20,21 @@ class CreateMasterlistTrainingCoursesTable extends Migration
             $table->text('organizer')->nullable();
             $table->text('title')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->datetime('start_date')->nullable();
             $table->datetime('end_date')->nullable();
             $table->string('reference_no_bill')->nullable();
             $table->string('reference_no_journal')->nullable();
             $table->decimal('gross_income', 20, 2)->default(0);
-            $table->text('remark')->nullable();
-            $table->string('ptj')->nullable();
             $table->timestamps();
         });
     }

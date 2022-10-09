@@ -31,7 +31,39 @@
         Section F: Professional Services and Gifts
     </h2>
 </div>
-
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
+            <select class="form-select bg-white">
+                <option value="">All</option>
+                {{-- @foreach ($data->faculties ?? [] as $faculty)
+                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
+                {{-- @endforeach --}}
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group">
+            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+</div>
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
         <a href="{{ route('myra.section-f', 'INCOME') }}" class="nav-link w-full py-2 active-tab" role="tab">Income</a>
@@ -67,6 +99,13 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-f?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+    var data = {!! json_encode($data) !!};
+
     var pie1 = document.getElementById('pie1');
     var pieChart1 = new Chart(pie1, {
         type: 'doughnut',

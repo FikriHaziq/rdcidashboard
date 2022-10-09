@@ -32,22 +32,20 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
@@ -81,11 +79,19 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/overview?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+
+    var data = {!! json_encode($data) !!};
+
     var line1 = document.getElementById('line1');
     var lineChart1 = new Chart(line1, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -139,7 +145,7 @@
     var lineChart2 = new Chart(line2, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -193,7 +199,7 @@
     var lineChart3 = new Chart(line3, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -247,7 +253,7 @@
     var lineChart4 = new Chart(line4, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -301,7 +307,7 @@
     var lineChart5 = new Chart(line5, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -355,7 +361,7 @@
     var lineChart6 = new Chart(line6, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -409,7 +415,7 @@
     var lineChart7 = new Chart(line7, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',
@@ -463,7 +469,7 @@
     var lineChart8 = new Chart(line8, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'MyRA I',

@@ -28,13 +28,16 @@ class UGStudentFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
                 'matric_no' => strtoupper($row[1]),
                 'name' => $row[2],
                 'faculty_code' => $row[3] == '-' ? null: $row[3],
-                'school_code' => $row[4] == '-' ? null: $row[4],
-                'year_enrolled' => (int)($row[5] ?? 0),
-                'acedemic_year' => (int)($row[6] ?? 0),
-                'citizenship' => $row[7],
-                'country' => $row[8],
-                'status' => $row[9],
-                'remark' => $row[10],
+                'faculty_short' => $row[4] == '-' ? null: $row[4],
+                'faculty_long' => $row[5] == '-' ? null: $row[5],
+                'school_code' => $row[6] == '-' ? null: $row[6],
+                'school_short' => $row[7] == '-' ? null: $row[7],
+                'school_long' => $row[8] == '-' ? null: $row[8],
+                'year_enrolled' => (int)($row[9] ?? 0),
+                'acedemic_year' => (int)($row[10] ?? 0),
+                'citizenship' => $row[11],
+                'country' => $row[12],
+                'status' => $row[13],
             ]);
         }
     }

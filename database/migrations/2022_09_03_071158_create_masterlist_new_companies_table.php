@@ -20,16 +20,22 @@ class CreateMasterlistNewCompaniesTable extends Migration
             $table->string('staff_id')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('project_id')->nullable();
             $table->string('company_reg_no')->nullable();
             $table->text('company_name')->nullable();
             $table->datetime('date_incorporated')->nullable();
             $table->string('equity')->nullable();
             $table->text('research_desc')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

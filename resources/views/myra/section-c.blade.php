@@ -8,6 +8,39 @@
         Section C: Quantity and Quality of Research
     </h2>
 </div>
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
+            <select class="form-select bg-white">
+                <option value="">All</option>
+                {{-- @foreach ($data->faculties ?? [] as $faculty)
+                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
+                {{-- @endforeach --}}
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group me-2 me-sm-2">
+            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+    <div class="w-full w-md-auto d-flex">
+        <div class="input-group">
+            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    </div>
+</div>
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
@@ -50,15 +83,22 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-c?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Citations',
-                    data: [intRand(29107), intRand(41382), intRand(58871), intRand(46290), intRand(65898), intRand(84447), intRand(97597), intRand(111401)],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgba(32, 40, 62)',
                     borderColor: 'rgba(32, 40, 62)',
                     borderWidth: 1
@@ -86,13 +126,13 @@
     var mixed = document.getElementById('mixed');
     var mixedChart = new Chart(mixed, {
         data: {
-            labels: ['2013','2014','2015','2016','2017','2018','2019','2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     type: 'line',
                     label: 'No Of Project',
                     yAxisID: 'project-axis',
-                    data: [732, 1288, 972, 1120, 734, 1078, 1251, 1023, 378],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgba(172, 62, 49)',
                     borderColor: 'rgba(172, 62, 49)',
                 },
@@ -144,7 +184,7 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Percentage',
@@ -177,7 +217,7 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: ['2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'International',
@@ -233,7 +273,7 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: ['2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Research Books',
@@ -285,7 +325,7 @@
     var barChart5 = new Chart(bar5, {
         type: 'bar',
         data: {
-            labels: ['2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Research Books - Indexed',
@@ -344,7 +384,7 @@
     var barChart6 = new Chart(bar6, {
         type: 'bar',
         data: {
-            labels: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Trend',
@@ -377,7 +417,7 @@
     var barChart7 = new Chart(bar7, {
         type: 'bar',
         data: {
-            labels: ['2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Trend',
@@ -410,7 +450,7 @@
     var barChart8 = new Chart(bar8, {
         type: 'bar',
         data: {
-            labels: ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'Non-Indexed Publication',

@@ -20,9 +20,16 @@ class CreateMasterlistInternationalMoasTable extends Migration
             $table->string('organisation')->nullable();
             $table->string('country')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->text('title')->nullable();
             $table->string('type')->nullable();
             $table->string('activity')->nullable();
@@ -32,8 +39,6 @@ class CreateMasterlistInternationalMoasTable extends Migration
             $table->datetime('start_date')->nullable();
             $table->datetime('expiry_date')->nullable();
             $table->string('period')->nullable();
-            $table->string('agreement_id')->nullable();
-            $table->string('activity_id')->nullable();
             $table->timestamps();
         });
     }

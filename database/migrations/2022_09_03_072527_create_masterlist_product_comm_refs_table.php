@@ -20,17 +20,21 @@ class CreateMasterlistProductCommRefsTable extends Migration
             $table->string('staff_id')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
-            $table->string('product_id')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->text('product_name')->nullable();
             $table->integer('year_commercialized')->nullable();
             $table->text('company_name')->nullable();
             $table->string('reference_no')->nullable();
             $table->decimal('gross_income', 20, 2)->default(0);
-            $table->string('ptj')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

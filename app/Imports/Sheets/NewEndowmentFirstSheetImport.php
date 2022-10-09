@@ -28,11 +28,14 @@ class NewEndowmentFirstSheetImport implements ToModel, WithStartRow, WithChunkRe
                 'contributor_name' => $row[1],
                 'contributor_details' => $row[2],
                 'faculty_code' => $row[3] == '-' ? null: $row[3],
-                'school_code' => $row[4] == '-' ? null: $row[4],
-                'type' => $row[5],
-                'amount_endowed' => is_numeric($row[6]) ? $row[6] : 0,
-                'amount_endowed_percent_research' => is_numeric($row[7]) ? $row[7] : 0,
-                'remark' => $row[8],
+                'faculty_short' => $row[4] == '-' ? null: $row[4],
+                'faculty_long' => $row[5] == '-' ? null: $row[5],
+                'school_code' => $row[6] == '-' ? null: $row[6],
+                'school_short' => $row[7] == '-' ? null: $row[7],
+                'school_long' => $row[8] == '-' ? null: $row[8],
+                'type' => $row[9],
+                'amount_endowed' => is_numeric($row[10]) ? $row[10] : 0,
+                'amount_endowed_percent_research' => is_numeric($row[11]) ? $row[11] : 0,
             ]);
         }
     }

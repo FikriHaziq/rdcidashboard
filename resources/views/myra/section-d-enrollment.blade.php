@@ -49,22 +49,20 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
@@ -72,10 +70,10 @@
                                     
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-d', 'ABSORPTION') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Absorption</a>
+        <a href="{{ route('myra.section-d', ['tabs'=>'ABSORPTION','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Absorption</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-d', 'ENROLLMENT') }}" class="nav-link w-full py-2 active-tab" role="tab">Enrollment</a>
+        <a href="{{ route('myra.section-d', ['tabs'=>'ABSORPTION','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Enrollment</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -99,11 +97,18 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-d/ENROLLMENT?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
@@ -144,7 +149,7 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
@@ -185,7 +190,7 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
@@ -226,7 +231,7 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',

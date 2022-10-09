@@ -20,9 +20,16 @@ class CreateMasterlistAcademicStaffTable extends Migration
             $table->string('staff_id')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('position')->nullable();
             $table->string('grade')->nullable();
             $table->datetime('first_appointment_date')->nullable();
@@ -35,15 +42,12 @@ class CreateMasterlistAcademicStaffTable extends Migration
             $table->text('professional_qualification_1')->nullable();
             $table->text('professional_qualification_2')->nullable();
             $table->text('reg_number')->nullable();
-            $table->string('faculty')->nullable();
-            $table->string('department')->nullable();
             $table->string('st')->nullable();
             $table->string('status1')->nullable();
             $table->string('status2')->nullable();
             $table->string('status3')->nullable();
             $table->string('citizenship')->nullable();
             $table->string('country')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

@@ -20,9 +20,16 @@ class CreateMasterlistPgStudentsTable extends Migration
             $table->string('matric_no')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('bachelor_cgpa_act')->nullable();
             $table->string('bachelor_cgpa_eq')->nullable();
             $table->string('cgpa_status')->nullable();
@@ -33,7 +40,6 @@ class CreateMasterlistPgStudentsTable extends Migration
             $table->string('study_mode')->nullable();
             $table->string('mixed_mode_ratio')->nullable();
             $table->string('st')->nullable();
-            $table->string('faculty')->nullable();
             $table->string('study_area')->nullable();
             $table->string('sponsorship')->nullable();
             $table->string('sponsorship_status')->nullable();
@@ -47,8 +53,6 @@ class CreateMasterlistPgStudentsTable extends Migration
             $table->integer('study_duration')->nullable();
             $table->string('got')->nullable();
             $table->string('status')->nullable();
-            $table->string('ic_no')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

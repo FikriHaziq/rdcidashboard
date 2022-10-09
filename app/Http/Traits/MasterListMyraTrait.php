@@ -9,7 +9,6 @@ use App\Models\MasterList\MasterlistResearchExperience;
 use App\Models\MasterList\MasterlistAward;
 use App\Models\MasterList\MasterlistPublication;
 use App\Models\MasterList\MasterlistResearchGrant;
-use App\Models\MasterList\MasterlistExpenditureProject;
 use App\Models\MasterList\MasterlistMonitoringProject;
 use App\Models\MasterList\MasterlistPhdGraduate;
 use App\Models\MasterList\MasterlistMasterGraduate;
@@ -583,12 +582,12 @@ trait MasterListMyraTrait {
         $a40 = MasterlistResearchExperience::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
         $b40 = MasterlistResearchExperience::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->where('age', '<', 40)->count();
 
-        $award_int = MasterlistAward::where('ml_end_year', $year)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type', ['AWARD'])->count();
-        $recog_int = MasterlistAward::where('ml_end_year', $year)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type',['RECOGNITION','STEWARDSHIP'])->count();
-        $award_nat = MasterlistAward::where('ml_end_year', $year)->whereNatInt('NATIONAL')->whereIn('award_type', ['AWARD'])->count();
-        $recog_nat = MasterlistAward::where('ml_end_year', $year)->whereNatInt('NATIONAL')->whereIn('award_type',['RECOGNITION','STEWARDSHIP'])->count();
-        $exhibition = MasterlistAward::where('ml_end_year', $year)->whereAwardType('EXHIBITION AWARDS')->count();
-        $other = MasterlistAward::where('ml_end_year', $year)->whereAwardType('OTHER RESEARCH AWARDS')->count();
+        $award_int = MasterlistAward::where('ml_end_year', $year)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type', ['AWARD','AWARDS','B4C - AWARD'])->count();
+        $recog_int = MasterlistAward::where('ml_end_year', $year)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
+        $award_nat = MasterlistAward::where('ml_end_year', $year)->whereNatInt('NATIONAL')->whereIn('award_type', ['AWARD','AWARDS','B4C - AWARD'])->count();
+        $recog_nat = MasterlistAward::where('ml_end_year', $year)->whereNatInt('NATIONAL')->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
+        $exhibition = MasterlistAward::where('ml_end_year', $year)->whereIn('award_type',['EXHIBITION AWARDS','EXHIBITION AWARD','B4E - EXHIBITION AWARD'])->count();
+        $other = MasterlistAward::where('ml_end_year', $year)->whereIn('award_type',['OTHER RESEARCH AWARDS','B4F - OTHER RESEARCH AWARDS'])->count();
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();

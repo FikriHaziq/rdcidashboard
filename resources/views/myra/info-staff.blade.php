@@ -49,32 +49,30 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
-        </div> 
+        </div>
     </div>
 </div>
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.info.staff') }}" class="nav-link w-full py-2 @if(is_active('myra.info.staff')) active-tab @else inactive-tab @endif" role="tab">Academic Staff</a>
+        <a href="{{ route('myra.info.staff', ['search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 @if(is_active('myra.info.staff')) active-tab @else inactive-tab @endif" role="tab">Academic Staff</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.info.student') }}" class="nav-link w-full py-2 @if(is_active('myra.info.student')) active-tab @else inactive-tab @endif" role="tab">Student</a>
+        <a href="{{ route('myra.info.student', ['search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 @if(is_active('myra.info.student')) active-tab @else inactive-tab @endif" role="tab">Student</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -101,11 +99,19 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/staff-info?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'PROFESSOR',
@@ -170,7 +176,7 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'A (> 50 years old)',
@@ -256,7 +262,7 @@
     var lineChart1 = new Chart(line1, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'DATA',
@@ -298,7 +304,7 @@
     var lineChart2 = new Chart(line2, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'DATA',

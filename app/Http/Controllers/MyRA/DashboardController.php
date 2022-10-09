@@ -4,22 +4,37 @@ namespace App\Http\Controllers\MyRA;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Traits\GraphMyraTrait;
 
 class DashboardController extends Controller
 {
-    public function index()
+    use GraphMyraTrait;
+
+    public function index(Request $request)
     {
-        return view('myra.index');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->overview_data($start_year, $end_year);
+        return view('myra.index', compact('start_year', 'end_year', 'data'));
     }
 
-    public function staffInfo()
+    public function staffInfo(Request $request)
     {
-        return view('myra.info-staff');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->staff_data($start_year, $end_year);
+        return view('myra.info-staff', compact('start_year', 'end_year', 'data'));
     }
 
-    public function studentInfo()
+    public function studentInfo(Request $request)
     {
-        return view('myra.info-student');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->student_data($start_year, $end_year);
+        return view('myra.info-student', compact('start_year', 'end_year', 'data'));
     }
 
     public function eMyRA()
@@ -27,43 +42,97 @@ class DashboardController extends Controller
         return view('myra.emyra');
     }
 
-    public function sectionB($tabs)
+    public function sectionB($tabs, Request $request)
     {
-        if ($tabs == 'INVESTIGATOR') { return view('myra.section-b-pi'); }
-        elseif ($tabs == 'COHORT') { return view('myra.section-b-cohort'); }
-        elseif ($tabs == 'AWARD') { return view('myra.section-b-award'); }
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        if ($tabs == 'INVESTIGATOR') {
+            $data = $this->sectionB_data_PI($start_year, $end_year);
+            return view('myra.section-b-pi', compact('start_year', 'end_year', 'data')); 
+        }
+        elseif ($tabs == 'COHORT') {
+            $data = $this->sectionB_data_QC($start_year, $end_year);
+             return view('myra.section-b-cohort', compact('start_year', 'end_year', 'data')); 
+        }
+        elseif ($tabs == 'AWARD') { 
+            $data = $this->sectionB_data_A($start_year, $end_year);
+            return view('myra.section-b-award', compact('start_year', 'end_year', 'data')); 
+        }
     }
 
-    public function sectionC()
+    public function sectionC(Request $request)
     {
-        return view('myra.section-c');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->sectionC_data($start_year, $end_year);
+        return view('myra.section-c', compact('start_year', 'end_year', 'data'));
     }
 
-    public function sectionD($tabs)
+    public function sectionD($tabs, Request $request)
     {
-        if ($tabs == 'ABSORPTION') { return view('myra.section-d-absorption'); }
-        elseif ($tabs == 'ENROLLMENT') { return view('myra.section-d-enrollment'); }
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        if ($tabs == 'ABSORPTION') {
+            $data = $this->sectionD_data_A($start_year, $end_year);
+            return view('myra.section-d-absorption', compact('start_year', 'end_year', 'data')); 
+        }
+        elseif ($tabs == 'ENROLLMENT') { 
+            $data = $this->sectionD_data_E($start_year, $end_year);
+            return view('myra.section-d-enrollment', compact('start_year', 'end_year', 'data')); 
+        }
     }
 
-    public function sectionE()
+    public function sectionE(Request $request)
     {
-        return view('myra.section-e');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->sectionE_data($start_year, $end_year);
+        return view('myra.section-e', compact('start_year', 'end_year', 'data'));
     }
 
     public function sectionF($tabs)
     {
-        if ($tabs == 'INCOME') { return view('myra.section-f-income'); }
-        elseif ($tabs == 'PARTICIPATION') { return view('myra.section-f-participation'); }
-        elseif ($tabs == 'COMMUNITY') { return view('myra.section-f-community'); }
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        if ($tabs == 'INCOME') { 
+            $data = $this->sectionF_data($start_year, $end_year);
+            return view('myra.section-f-income', compact('start_year', 'end_year', 'data')); }
+        elseif ($tabs == 'PARTICIPATION') { 
+            $data = $this->sectionF_data($start_year, $end_year);
+            return view('myra.section-f-participation', compact('start_year', 'end_year', 'data')); }
+        elseif ($tabs == 'COMMUNITY') { 
+            $data = $this->sectionF_data($start_year, $end_year);
+            return view('myra.section-f-community', compact('start_year', 'end_year', 'data')); }
     }
 
-    public function sectionG()
+    public function sectionG(Request $request)
     {
-        return view('myra.section-g');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        $data = $this->sectionG_data($start_year, $end_year);
+        return view('myra.section-g', compact('start_year', 'end_year', 'data'));
     }
 
     public function sectionH()
     {
         return view('myra.section-h');
+    }
+
+    public function searching_request(Request $request)
+    {
+        $start_year = date('Y', strtotime('-6 years'));
+        $end_year = date('Y', strtotime('-1 years'));
+        if($request->search){
+            $start_year = $request->start_year;
+            $end_year = $request->end_year;
+        }
+
+        return (object)['start_year'=>$start_year, 'end_year'=>$end_year];
     }
 }

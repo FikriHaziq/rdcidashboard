@@ -17,17 +17,23 @@ class CreateMasterlistJointResearchProjectsTable extends Migration
             $table->id();
             $table->integer('ml_start_year')->nullable();
             $table->integer('ml_end_year')->nullable();
+            $table->string('project_id')->nullable();
             $table->string('staff_id')->nullable();
-            $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
-            $table->string('faculty')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
+            $table->string('name')->nullable();
             $table->string('st')->nullable();
             $table->string('staff_status')->nullable();
             $table->string('staff_type')->nullable();
-            $table->string('project_id')->nullable();
             $table->text('research_title')->nullable();
             $table->datetime('start_date')->nullable();
             $table->datetime('end_date')->nullable();
@@ -43,7 +49,6 @@ class CreateMasterlistJointResearchProjectsTable extends Migration
             $table->string('organizer_1')->nullable();
             $table->string('organizer_2')->nullable();
             $table->string('organizer_3')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

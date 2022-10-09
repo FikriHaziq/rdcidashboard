@@ -20,14 +20,16 @@ class CreateMasterlistPgFeesTable extends Migration
             $table->string('matric_no')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
             $table->string('study_mode')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->string('reference_no')->nullable();
             $table->decimal('gross_income', 20, 2)->default(0);
-            $table->string('ic_no')->nullable();
             $table->string('degree_registered')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

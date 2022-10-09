@@ -20,13 +20,16 @@ class CreateMasterlistUgStudentsTable extends Migration
             $table->string('matric_no')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
             $table->integer('year_enrolled')->nullable();
             $table->integer('acedemic_year')->nullable();
             $table->string('citizenship')->nullable();
             $table->string('country')->nullable();
             $table->string('status')->nullable();
-            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

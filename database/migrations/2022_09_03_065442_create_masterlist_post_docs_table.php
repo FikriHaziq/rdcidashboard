@@ -20,9 +20,16 @@ class CreateMasterlistPostDocsTable extends Migration
             $table->string('postdoc_id')->nullable();
             $table->string('name')->nullable();
             $table->string('faculty_code')->nullable();
+            $table->string('faculty_short')->nullable();
+            $table->string('faculty_long')->nullable();
             $table->string('school_code')->nullable();
-            $table->string('institute_code')->nullable();
-            $table->string('rc_code')->nullable();
+            $table->string('school_short')->nullable();
+            $table->string('school_long')->nullable();
+            $table->string('research_group')->nullable();
+            $table->string('institute_short')->nullable();
+            $table->string('institute_long')->nullable();
+            $table->string('rc_short')->nullable();
+            $table->string('rc_long')->nullable();
             $table->string('citizenship')->nullable();
             $table->string('country')->nullable();
             $table->datetime('first_appointment_date')->nullable();
@@ -31,9 +38,6 @@ class CreateMasterlistPostDocsTable extends Migration
             $table->integer('appointment_duration')->nullable();
             $table->string('award_institution')->nullable();
             $table->integer('year_award')->nullable();
-            $table->text('remark')->nullable();
-            $table->string('sv_id')->nullable();
-            $table->string('sv')->nullable();
             $table->timestamps();
         });
     }
