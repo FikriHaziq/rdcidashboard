@@ -8,55 +8,37 @@
         Section C: Quantity and Quality of Research
     </h2>
 </div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar1" width="800"></canvas></div>
+<div class="p-5">
+    <div class="row">
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar1"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-stretch"><canvas id="mixed" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="mixed"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar2" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar2"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar3" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar3"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar4" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar4"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-stretch"><canvas id="bar5" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar5"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar6" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar6"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar7" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar7"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar8" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5 d-flex align-items-stretch"><canvas id="bar8" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-8 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-stretch align-items-center font-weight-bold">
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5 d-flex align-items-stretch font-weight-bold">
                 BILANGAN & PERATUSAN STAF TERLIBAT DALAM PENERBITAN MENGIKUT TAHUN: TERLIBAT VS. TIDAK TERLIBAT<br>
                 TOP 10: STAF YANG MEMPUNYAI BILANGAN PENERBITAN DALAM Q1Q2 JURNAL (MAIN AUTHOR)<br>
                 BILANGAN & PERATUSAN STAF YANG TIADA PENERBITAN BERINDEKS (CORRESPONDING/UTM 1ST AUTHOR) DALAM TEMPOH 3 TAHUN TERAKHIR<br>
@@ -91,7 +73,7 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: false,
                 },
                 title: {
                     display: true,
@@ -143,7 +125,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -176,7 +163,7 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: false
                 },
                 title: {
                     display: true,
@@ -227,7 +214,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -274,7 +266,12 @@
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -328,7 +325,12 @@
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -434,7 +436,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,

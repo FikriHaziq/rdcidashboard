@@ -2,66 +2,69 @@
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section G: Networking and Linkages @endslot
 @slot("submoduleLink") myra.section-g @endslot
+@section('custom-css')
+<style>
+    td.highlight {
+        background-color: whitesmoke !important;
+    }
+    .bg-whitesmoke {
+        background-color: whitesmoke;
+    }
+    
+    .active-tab {
+        background-color:white;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+
+    .inactive-tab {
+        opacity: 0.5;
+        background-color:rgb(193, 193, 193);
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+</style>
+@endsection
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
         Section G: Networking and Linkages
     </h2>
 </div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar1" width="800"></canvas></div>
+<div class="p-5">
+    <div class="row">
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar1" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-stretch"><canvas id="bar2" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar2" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-4 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar3" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar3" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar4" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar4" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-stretch"><canvas id="bar5" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar5" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar6" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar6" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-full">
-            <div class="card-body d-flex align-items-center"><canvas id="bar7" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar7" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar8" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar8" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar9" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar9" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar10" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar10" width="800"></canvas></div>
         </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body d-flex align-items-center"><canvas id="bar11" width="800"></canvas></div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="box p-5"><canvas id="bar11" width="800"></canvas></div>
         </div>
     </div>
 </div>
@@ -105,7 +108,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -145,7 +153,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -210,7 +223,12 @@
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -257,7 +275,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -305,7 +328,12 @@
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -359,7 +387,12 @@
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -406,7 +439,12 @@
             },
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 },
                 title: {
                     display: true,
@@ -432,7 +470,7 @@
             ]
         },
         options: {
-            indexAxis: 'y',
+            // indexAxis: 'y',
             scales: {
                 y: {
                     beginAtZero: true
@@ -513,7 +551,7 @@
             ]
         },
         options: {
-            indexAxis: 'y',
+            // indexAxis: 'y',
             scales: {
                 y: {
                     beginAtZero: true
