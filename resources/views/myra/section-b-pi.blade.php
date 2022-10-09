@@ -49,22 +49,20 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2016</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
     <div class="w-full w-md-auto d-flex">
         <div class="input-group">
             <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select class="form-select bg-white">
-                <option value="">2021</option>
-                {{-- @foreach ($data->schools ?? [] as $school)
-                <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
-                {{-- @endforeach --}}
+            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
     </div>
@@ -108,22 +106,30 @@
 @endslot
 @section('custom-js')
 <script>
+    function getList(start, end) {
+        var start_year = $('#'+start).val();
+        var end_year = $('#'+end).val();
+        window.location = window.location.origin + '/myra/section-b/INVESTIGATOR?search=1&start_year=' + start_year + '&end_year=' + end_year;
+    }
+
+    var data = {!! json_encode($data) !!};
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_1.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -153,18 +159,18 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_2.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -194,18 +200,18 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_3.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_3.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -235,18 +241,18 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_4.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1
                 },
                 {
                     label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
+                    data: data.bar_4.data_2,
                     backgroundColor: 'rgba(230, 104, 38)',
                     borderColor: 'rgba(230, 104, 38)',
                     borderWidth: 1
@@ -276,18 +282,18 @@
     var lineChart1 = new Chart(line1, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'PI',
-                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    data: data.line_1.data_1,
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                 },
                 {
                     label: 'NON-PI',
-                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    data: data.line_1.data_2,
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
@@ -316,11 +322,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 6000,
+                    // max: 6000,
                     min: 0,
-                    ticks: {
-                        stepSize: 2000
-                    }
+                    // ticks: {
+                    //     stepSize: 2000
+                    // }
                 },
             }
         },
@@ -330,32 +336,32 @@
     var lineChart2 = new Chart(line2, {
         type: 'line',
         data: {
-            labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
+            labels: data.year_range,
             datasets: [
                 {
                     label: 'INTERNATIONAL',
-                    data: ['5000', '4800', '5200', '4900', '5500', '5550'],
+                    data: data.line_2.data_1,
                     borderColor: ['rgb(53, 92, 183)'],
                     backgroundColor: ['rgb(53, 92, 183)'],
                     tension: 0.1,
                 },
                 {
                     label: 'NATIONAL',
-                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    data: data.line_2.data_2,
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                 },
                 {
                     label: 'UNIVERSITY',
-                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    data: data.line_2.data_3,
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
                 },
                 {
                     label: 'PRIVATE',
-                    data: ['100', '100', '200', '200', '250', '260'],
+                    data: data.line_2.data_4,
                     borderColor: ['rgb(253, 180, 7)'],
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
@@ -384,11 +390,11 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 6000,
-                    min: 0,
-                    ticks: {
-                        stepSize: 2000
-                    }
+                    // max: 6000,
+                    // min: 0,
+                    // ticks: {
+                    //     stepSize: 2000
+                    // }
                 },
             }
         },

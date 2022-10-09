@@ -4,9 +4,12 @@ namespace App\Http\Controllers\MyRA;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Traits\GraphMyraTrait;
 
 class DashboardController extends Controller
 {
+    use GraphMyraTrait;
+
     public function index()
     {
         return view('myra.index');
@@ -27,11 +30,27 @@ class DashboardController extends Controller
         return view('myra.emyra');
     }
 
-    public function sectionB($tabs)
+    public function sectionB($tabs, Request $request)
     {
-        if ($tabs == 'INVESTIGATOR') { return view('myra.section-b-pi'); }
-        elseif ($tabs == 'COHORT') { return view('myra.section-b-cohort'); }
-        elseif ($tabs == 'AWARD') { return view('myra.section-b-award'); }
+        $start_year = date('Y', strtotime('-6 years'));
+        $end_year = date('Y', strtotime('-1 years'));
+        if($request->search){
+            $start_year = $request->start_year;
+            $end_year = $request->end_year;
+        }
+
+        // dd($request->start_year == null);
+        if ($tabs == 'INVESTIGATOR') {
+            $data = $this->sectionB_PI($start_year, $end_year);
+            // dd($data);
+            return view('myra.section-b-pi', compact('start_year', 'end_year', 'data')); 
+        }
+        elseif ($tabs == 'COHORT') {
+             return view('myra.section-b-cohort', compact('start_year', 'end_year', 'data')); 
+        }
+        elseif ($tabs == 'AWARD') { 
+            return view('myra.section-b-award', compact('start_year', 'end_year', 'data')); 
+        }
     }
 
     public function sectionC()

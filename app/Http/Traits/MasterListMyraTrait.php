@@ -9,7 +9,6 @@ use App\Models\MasterList\MasterlistResearchExperience;
 use App\Models\MasterList\MasterlistAward;
 use App\Models\MasterList\MasterlistPublication;
 use App\Models\MasterList\MasterlistResearchGrant;
-use App\Models\MasterList\MasterlistExpenditureProject;
 use App\Models\MasterList\MasterlistMonitoringProject;
 use App\Models\MasterList\MasterlistPhdGraduate;
 use App\Models\MasterList\MasterlistMasterGraduate;
