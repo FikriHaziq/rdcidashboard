@@ -69,24 +69,6 @@
         </div>
     </div>
 </div>
-{{-- <div class="intro-y mt-5 p-0">
-    <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else btn-outline-primary text-primary @endif ml-0 mr-2">Academic Staff</a>
-    <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else btn-outline-primary text-primary @endif mx-2">Student</a>
-</div> --}}
-{{-- <div class="intro-y row mt-5">
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES STUDY MODE</span><br><canvas id="line1"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES BY RESEARCH</span><br><canvas id="bar1"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES AREA OF STUDY</span><br><canvas id="bar2"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">STUDENT: UNDERGRADUATE VS POSTGRADUATE</span><br><canvas id="bar3"></canvas></div>
-    </div>
-</div> --}}
         
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
