@@ -1,7 +1,13 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section F: Professional Services and Gifts @endslot
+@slot("submoduleLink") myra.section-f @endslot
 @slot("content")
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
+    <h2 class="fs-lg fw-medium me-auto">
+        Section F: Professional Services and Gifts
+    </h2>
+</div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
@@ -18,8 +24,6 @@
             <div class="card-body d-flex align-items-stretch"><canvas id="pie2" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-stretch"><canvas id="bar2" width="800" height="500"></canvas></div>
@@ -35,8 +39,6 @@
             <div class="card-body d-flex align-items-center"><canvas id="bar4" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-3 d-flex align-items-stretch">
         <div class="card w-full">
             <div class="card-body d-flex align-items-stretch"><canvas id="bar5" width="800"></canvas></div>
@@ -57,8 +59,6 @@
             <div class="card-body d-flex align-items-center"><canvas id="bar8" width="800"></canvas></div>
         </div>
     </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-4 d-flex align-items-stretch">
         <div class="card w-100">
             <div class="card-body d-flex align-items-center"><canvas id="bar9" width="800"></canvas></div>
@@ -457,7 +457,7 @@
             ]
         },
         options: {
-            indexAxis: 'y',
+            // indexAxis: 'y',
             scales: {
                 y: {
                     beginAtZero: true
@@ -538,7 +538,7 @@
             ]
         },
         options: {
-            indexAxis: 'y',
+            // indexAxis: 'y',
             scales: {
                 y: {
                     beginAtZero: true

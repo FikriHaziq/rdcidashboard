@@ -9,12 +9,28 @@
     td.highlight {
         background-color: whitesmoke !important;
     }
+    .bg-whitesmoke {
+        background-color: whitesmoke;
+    }
+    
+    .active-tab {
+        background-color:white;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+
+    .inactive-tab {
+        opacity: 0.5;
+        background-color:rgb(193, 193, 193);
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
 </style>
 @endsection
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
-        eMyRA Overview
+        eMyRA General Info
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
@@ -50,28 +66,36 @@
                 <option value="{{ $school->school }}">{{ $school->school }}</option> --}}
                 {{-- @endforeach --}}
             </select>
+        </div> 
+    </div>
+</div>
+<ul class="nav nav-link-tabs mt-5" role="tablist">
+    <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.info.staff') }}" class="nav-link w-full py-2 @if(is_active('myra.info.staff')) active-tab @else inactive-tab @endif" role="tab">Academic Staff</a>
+    </li>
+    <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.info.student') }}" class="nav-link w-full py-2 @if(is_active('myra.info.student')) active-tab @else inactive-tab @endif" role="tab">Student</a>
+    </li>
+</ul>
+<div class="tab-content box">
+    <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="box p-5"><span class="font-weight-bold">GRADE DISTRIBUTION</span><br><canvas id="bar1"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="box p-5"><span class="font-weight-bold">COHORT DISTRIBUTION</span><br><canvas id="bar2"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="box p-5"><span class="font-weight-bold">ACTIVE ACADEMIC STAFF</span><br><canvas id="line1"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="box p-5"><span class="font-weight-bold">FOREIGN STAFF</span><br><canvas id="line2"></canvas></div>
+            </div>
+            <div class="col-12 mb-5">
+                <div class="box p-5"><span class="font-weight-bold">FOREIGN STAFF BY COUNTRY OF ORIGIN</span><br><canvas id="bar3"></canvas></div>
+            </div>
         </div>
-    </div>
-</div>
-<div class="intro-y mt-5 p-0">
-    <a href="{{ route('myra.info.staff') }}" class="intro-y h-10 btn @if(is_active('myra.info.staff')) btn-primary @else btn-outline-primary text-primary @endif ml-0 mr-2">Academic Staff</a>
-    <a href="{{ route('myra.info.student') }}" class="intro-y h-10 btn @if(is_active('myra.info.student')) btn-primary @else btn-outline-primary text-primary @endif mx-2">Student</a>
-</div>
-<div class="intro-y row mt-5">
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">GRADE DISTRIBUTION</span><br><canvas id="bar1"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">COHORT DISTRIBUTION</span><br><canvas id="bar2"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">ACTIVE ACADEMIC STAFF</span><br><canvas id="line1"></canvas></div>
-    </div>
-    <div class="col-md-6 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">FOREIGN STAFF</span><br><canvas id="line2"></canvas></div>
-    </div>
-    <div class="col-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">FOREIGN STAFF BY COUNTRY OF ORIGIN</span><br><canvas id="bar3"></canvas></div>
     </div>
 </div>
 @endslot

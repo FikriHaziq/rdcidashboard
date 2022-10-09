@@ -64,6 +64,11 @@ class DashboardController extends Controller
         elseif ($tabs == 'ENROLLMENT') { return view('myra.section-d-enrollment'); }
     }
 
+    public function sectionE()
+    {
+        return view('myra.section-e');
+    }
+
     public function sectionF()
     {
         return view('myra.section-f');

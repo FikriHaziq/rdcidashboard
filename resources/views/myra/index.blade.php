@@ -88,17 +88,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -111,7 +111,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -129,7 +134,7 @@
             }
         },
     });
-
+    
     var line2 = document.getElementById('line2');
     var lineChart2 = new Chart(line2, {
         type: 'line',
@@ -137,17 +142,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -160,7 +165,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -169,16 +179,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line3 = document.getElementById('line3');
     var lineChart3 = new Chart(line3, {
         type: 'line',
@@ -186,17 +196,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -209,7 +219,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -218,16 +233,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1.5,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line4 = document.getElementById('line4');
     var lineChart4 = new Chart(line4, {
         type: 'line',
@@ -235,17 +250,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -258,7 +273,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -267,16 +287,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 2,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line5 = document.getElementById('line5');
     var lineChart5 = new Chart(line5, {
         type: 'line',
@@ -284,17 +304,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -307,7 +327,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -316,16 +341,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 2,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line6 = document.getElementById('line6');
     var lineChart6 = new Chart(line6, {
         type: 'line',
@@ -333,17 +358,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -356,7 +381,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -365,16 +395,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1.5,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line7 = document.getElementById('line7');
     var lineChart7 = new Chart(line7, {
         type: 'line',
@@ -382,17 +412,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -405,7 +435,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -414,16 +449,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
         },
     });
-
+    
     var line8 = document.getElementById('line8');
     var lineChart8 = new Chart(line8, {
         type: 'line',
@@ -431,17 +466,17 @@
             labels: ['2016', '2017', '2018', '2019', '2020', '2021'],
             datasets: [
                 {
-                    label: 'DATA',
+                    label: 'MyRA I',
                     data: ['78', '80', '92', '94', '94', '93'],
-                    borderColor: ['rgb(172, 62, 49)'], 
-                    backgroundColor: ['rgb(172, 62, 49)'],
+                    borderColor: ['rgb(253, 180, 7)'], 
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
-                    label: 'DATA',
+                    label: 'MyRA II',
                     data: ['101', '110', '115', '117', '117', '117'],
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(21, 164, 63)'], 
+                    backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
                 },
             ]
@@ -454,7 +489,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             stacked: false,
@@ -463,10 +503,10 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1,
+                    max: 150,
                     min: 0,
                     ticks: {
-                        stepSize: 0.5
+                        stepSize: 50
                     }
                 },
             }
