@@ -52,28 +52,28 @@
 </div>
 <div class="intro-y row mt-5">
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">TOTAL MARKS</span><br><canvas id="line1"></canvas></div>
+        <div class="box p-5"><b>TOTAL MARKS</b><br><canvas id="line1"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">RESEARCHERS</span><br><canvas id="line2"></canvas></div>
+        <div class="box p-5">SECT B - <b>RESEARCHERS</b><br><canvas id="line2"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">RESEARCH</span><br><canvas id="line3"></canvas></div>
+        <div class="box p-5">SECT C - <b>RESEARCH</b><br><canvas id="line3"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">POSTGRADUATES</span><br><canvas id="line4"></canvas></div>
+        <div class="box p-5">SECT D - <b>POSTGRADUATES</b><br><canvas id="line4"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">INNOVATION</span><br><canvas id="line5"></canvas></div>
+        <div class="box p-5">SECT E - <b>INNOVATION</b><br><canvas id="line5"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">PROFESSIONAL SERVICES & GIFTS</span><br><canvas id="line6"></canvas></div>
+        <div class="box p-5">SECT F - <b>PROFESSIONAL SERVICES & GIFTS</b><br><canvas id="line6"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">NETWORKING & LINKAGES</span><br><canvas id="line7"></canvas></div>
+        <div class="box p-5">SECT G - <b>NETWORKING & LINKAGES</b><br><canvas id="line7"></canvas></div>
     </div>
     <div class="col-md-4 col-sm-12 mb-5">
-        <div class="box p-5"><span class="font-weight-bold">SUPPORT FACILITIES</span><br><canvas id="line8"></canvas></div>
+        <div class="box p-5">SECT H - <b>SUPPORT FACILITIES</b><br><canvas id="line8"></canvas></div>
     </div>
 </div>
 @endslot
@@ -133,9 +133,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -187,9 +187,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -241,9 +241,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -295,9 +295,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -349,9 +349,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -403,9 +403,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -457,9 +457,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },
@@ -511,9 +511,9 @@
                     position: 'left',
                     // max: 150,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                        // stepSize: 50
+                    // }
                 },
             }
         },

@@ -168,9 +168,9 @@
                     position: 'left',
                     // max: 1200,
                     min: 0,
-                    ticks: {
-                        stepSize: 400
-                    }
+                    // ticks: {
+                    //     stepSize: 400
+                    // }
                 },
             }
         }
@@ -223,9 +223,9 @@
                     position: 'left',
                     // max: 800,
                     min: 0,
-                    ticks: {
-                        stepSize: 200
-                    }
+                    // ticks: {
+                    //     stepSize: 200
+                    // }
                 },
             }
         }
@@ -258,9 +258,9 @@
                     position: 'left',
                     // max: 50,
                     min: 0,
-                    ticks: {
-                        stepSize: 10
-                    }
+                    // ticks: {
+                    //     stepSize: 10
+                    // }
                 },
             }
         }
@@ -300,9 +300,9 @@
                     position: 'left',
                     // max: 2000,
                     min: 0,
-                    ticks: {
-                        stepSize: 500
-                    }
+                    // ticks: {
+                    //     stepSize: 500
+                    // }
                 },
             }
         },
@@ -342,9 +342,9 @@
                     position: 'left',
                     // max: 200,
                     min: 0,
-                    ticks: {
-                        stepSize: 50
-                    }
+                    // ticks: {
+                    //     stepSize: 50
+                    // }
                 },
             }
         },

@@ -162,9 +162,9 @@
                     position: 'left',
                     // max: 10000,
                     min: 0,
-                    ticks: {
-                        stepSize: 5000
-                    }
+                    // ticks: {
+                    //     stepSize: 5000
+                    // }
                 },
             }
         }
