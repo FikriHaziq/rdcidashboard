@@ -198,9 +198,9 @@
                     position: 'left',
                     // max: 4500,
                     min: 0,
-                    ticks: {
-                        stepSize: 1500
-                    }
+                    // ticks: {
+                    //     stepSize: 1500
+                    // }
                 },
             }
         }
@@ -250,9 +250,9 @@
                     position: 'left',
                     // max: 30000,
                     min: 0,
-                    ticks: {
-                        stepSize: 5000
-                    }
+                    // ticks: {
+                    //     stepSize: 5000
+                    // }
                 },
             }
         }
@@ -318,9 +318,9 @@
                     position: 'left',
                     // max: 6000,
                     min: 0,
-                    ticks: {
-                        stepSize: 2000
-                    }
+                    // ticks: {
+                    //     stepSize: 2000
+                    // }
                 },
             }
         },
