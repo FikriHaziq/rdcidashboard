@@ -364,7 +364,31 @@ trait GraphMyraTrait {
         ];
     }
 
-    public function sectionF_data($start_year, $end_year) {
+    public function sectionF_data_I($start_year, $end_year) {
+        $year_range = []; 
+
+        for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
+            array_push($year_range, (int)$i);
+        }
+
+        return (object)[
+            'year_range' => $year_range,
+        ];
+    }
+
+    public function sectionF_data_P($start_year, $end_year) {
+        $year_range = []; 
+
+        for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
+            array_push($year_range, (int)$i);
+        }
+
+        return (object)[
+            'year_range' => $year_range,
+        ];
+    }
+
+    public function sectionF_data_C($start_year, $end_year) {
         $year_range = []; 
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
