@@ -100,13 +100,13 @@ class DashboardController extends Controller
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         if ($tabs == 'INCOME') { 
-            $data = $this->sectionF_data($start_year, $end_year);
+            $data = $this->sectionF_data_I($start_year, $end_year);
             return view('myra.section-f-income', compact('start_year', 'end_year', 'data')); }
         elseif ($tabs == 'PARTICIPATION') { 
-            $data = $this->sectionF_data($start_year, $end_year);
+            $data = $this->sectionF_data_P($start_year, $end_year);
             return view('myra.section-f-participation', compact('start_year', 'end_year', 'data')); }
         elseif ($tabs == 'COMMUNITY') { 
-            $data = $this->sectionF_data($start_year, $end_year);
+            $data = $this->sectionF_data_C($start_year, $end_year);
             return view('myra.section-f-community', compact('start_year', 'end_year', 'data')); }
     }
 

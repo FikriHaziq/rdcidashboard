@@ -66,13 +66,13 @@
 </div>
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', 'INCOME') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Income</a>
+        <a href="{{ route('myra.section-f', ['tabs'=>'INCOME','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Income</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', 'PARTICIPATION') }}" class="nav-link w-full py-2 inactive-tab" role="tab">Participation</a>
+        <a href="{{ route('myra.section-f', ['tabs'=>'PARTICIPATION','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Participation</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', 'COMMUNITY') }}" class="nav-link w-full py-2 active-tab" role="tab">Community & Joint Research</a>
+        <a href="{{ route('myra.section-f', ['tabs'=>'COMMUNITY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Community & Joint Research</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -99,7 +99,7 @@
     function getList(start, end) {
         var start_year = $('#'+start).val();
         var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-f?search=1&start_year=' + start_year + '&end_year=' + end_year;
+        window.location = window.location.origin + '/myra/section-f/COMMUNITY?search=1&start_year=' + start_year + '&end_year=' + end_year;
     }
     var data = {!! json_encode($data) !!};
 
