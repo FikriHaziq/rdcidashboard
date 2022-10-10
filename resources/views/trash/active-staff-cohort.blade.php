@@ -152,7 +152,7 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100
+                    // max: 100
                 }
             },
             plugins: {
@@ -220,7 +220,7 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 1600
+                    // max: 1600
                 }
             },
             plugins: {

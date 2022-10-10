@@ -160,7 +160,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 10000,
+                    // max: 10000,
                     min: 0,
                     ticks: {
                         stepSize: 5000
@@ -196,7 +196,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 4500,
+                    // max: 4500,
                     min: 0,
                     ticks: {
                         stepSize: 1500
@@ -248,7 +248,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 30000,
+                    // max: 30000,
                     min: 0,
                     ticks: {
                         stepSize: 5000
@@ -316,7 +316,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 6000,
+                    // max: 6000,
                     min: 0,
                     ticks: {
                         stepSize: 2000

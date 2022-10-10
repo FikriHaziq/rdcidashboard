@@ -315,7 +315,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 6000,
+                    // max: 6000,
                     min: 0,
                     ticks: {
                         stepSize: 2000

@@ -154,7 +154,11 @@
             plugins: {
                 legend: {
                     display: true,
-                    position: 'bottom',
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             scales: {
@@ -162,7 +166,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 1200,
+                    // max: 1200,
                     min: 0,
                     ticks: {
                         stepSize: 400
@@ -206,6 +210,10 @@
                 legend: {
                     display: true,
                     position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                    }
                 }
             },
             scales: {
@@ -213,7 +221,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 800,
+                    // max: 800,
                     min: 0,
                     ticks: {
                         stepSize: 200
@@ -248,7 +256,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 50,
+                    // max: 50,
                     min: 0,
                     ticks: {
                         stepSize: 10
@@ -290,7 +298,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 2000,
+                    // max: 2000,
                     min: 0,
                     ticks: {
                         stepSize: 500
@@ -332,7 +340,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 200,
+                    // max: 200,
                     min: 0,
                     ticks: {
                         stepSize: 50

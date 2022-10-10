@@ -131,7 +131,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -185,7 +185,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -239,7 +239,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -293,7 +293,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -347,7 +347,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -401,7 +401,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -455,7 +455,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
@@ -509,7 +509,7 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 150,
+                    // max: 150,
                     min: 0,
                     ticks: {
                         stepSize: 50
