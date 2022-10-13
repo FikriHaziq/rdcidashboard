@@ -106,13 +106,14 @@
                     data: ['193', '166', '139', '147', '154', '168'],
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
                 },
                 {
                     label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1
                 },
             ]
@@ -129,6 +130,9 @@
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
                     beginAtZero: true,
                 },
@@ -147,13 +151,14 @@
                     data: ['193', '166', '139', '147', '154', '168'],
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
                 },
                 {
                     label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1
                 },
             ]
@@ -170,6 +175,9 @@
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
                     beginAtZero: true,
                 },
@@ -188,13 +196,14 @@
                     data: ['193', '166', '139', '147', '154', '168'],
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
                 },
                 {
                     label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1
                 },
             ]
@@ -211,6 +220,9 @@
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
                     beginAtZero: true,
                 },
@@ -229,13 +241,14 @@
                     data: ['193', '166', '139', '147', '154', '168'],
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
                 },
                 {
                     label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1
                 },
             ]
@@ -252,6 +265,9 @@
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
                     beginAtZero: true,
                 },
@@ -270,13 +286,14 @@
                     data: ['193', '166', '139', '147', '154', '168'],
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
                 },
                 {
                     label: '100% TARGET',
                     data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(230, 104, 38)',
-                    borderColor: 'rgba(230, 104, 38)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1
                 },
             ]
@@ -293,6 +310,9 @@
                 }
             },
             scales: {
+                x: {
+                    stacked: true,
+                },
                 y: {
                     beginAtZero: true,
                 },
