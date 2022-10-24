@@ -115,35 +115,35 @@
             datasets: [
                 {
                     label: 'PROFESSOR',
-                    data: ['200', '200', '200', '200', '200', '230'],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
                 },
                 {
                     label: 'ASSOCIATE PROFESSOR',
-                    data: ['390', '390', '390', '390', '390', '380'],
+                    data: data.bar_1.data_2,
                     backgroundColor: 'rgb(72, 138, 153)',
                     borderColor: 'rgb(72, 138, 153)',
                     borderWidth: 1
                 },
                 {
                     label: 'SENIOR LECTURER',
-                    data: ['1000', '1100', '1200', '1150', '1200', '1250'],
+                    data: data.bar_1.data_3,
                     backgroundColor: 'rgba(218, 174, 89)',
                     borderColor: 'rgba(218, 174, 89)',
                     borderWidth: 1
                 },
                 {
                     label: 'LECTURER',
-                    data: ['200', '300', '200', '100', '100', '100'],
+                    data: data.bar_1.data_4,
                     backgroundColor: 'rgba(218, 218, 218)',
                     borderColor: 'rgba(218, 218, 218)',
                     borderWidth: 1
                 },
                 {
                     label: 'RESEARCH FELLOW',
-                    data: ['0', '0', '0', '0', '20', '50'],
+                    data: data.bar_1.data_5,
                     backgroundColor: 'rgba(32, 40, 62)',
                     borderColor: 'rgba(32, 40, 62)',
                     borderWidth: 1
@@ -184,21 +184,21 @@
             datasets: [
                 {
                     label: 'A (> 50 years old)',
-                    data: ['650', '600', '580', '560', '550', '540'],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
                 },
                 {
                     label: 'B (40 - 50 years old)',
-                    data: ['530', '550', '570', '590', '620', '650'],
+                    data: data.bar_2.data_2,
                     backgroundColor: 'rgb(72, 138, 153)',
                     borderColor: 'rgb(72, 138, 153)',
                     borderWidth: 1
                 },
                 {
                     label: 'C (< 40 years old)',
-                    data: ['500', '490', '470', '480', '490', '510'],
+                    data: data.bar_2.data_3,
                     backgroundColor: 'rgba(218, 174, 89)',
                     borderColor: 'rgba(218, 174, 89)',
                     borderWidth: 1
@@ -235,10 +235,10 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: ['INDONESIA', 'JAPAN', 'IRAN', 'PAKISTAN', 'BANGLADESH', 'INDIA', 'YEMEN', 'IRAQ', 'EGYPT', 'UK', 'NIGERIA', 'TURKEY', 'JORDAN', 'SINGAPORE', 'SUDAN', 'S.KOREA', 'AUSTRALIA', 'GERMANY', 'USA', 'CANADA', 'MYANMAR', 'UZBEKISTAN', 'GHANA', 'LIBYA', 'PALESTINE', 'AFGHANISTAN'],
+            labels: data.country,
             datasets: [
                 {
-                    data: ['50', '33', '32', '23', '21', '14', '11', '10', '9', '8', '5', '4', '4', '3', '3', '3', '3', '3', '2', '2', '2', '2', '2', '2', '2', '2'],
+                    data: data.bar_3.data_1,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
@@ -274,7 +274,7 @@
             datasets: [
                 {
                     label: 'DATA',
-                    data: ['1600', '1650', '1700', '1680', '1630', '1640'],
+                    data: data.line_1.data_1,
                     borderColor: ['rgb(72, 72, 72)'],
                     backgroundColor: ['rgb(72, 72, 72)'],
                     tension: 0.1,
@@ -316,7 +316,7 @@
             datasets: [
                 {
                     label: 'DATA',
-                    data: ['150', '70', '60', '50', '60', '70'],
+                    data: data.line_2.data_1,
                     borderColor: ['rgb(72, 72, 72)'],
                     backgroundColor: ['rgb(72, 72, 72)'],
                     tension: 0.1,

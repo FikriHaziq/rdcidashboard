@@ -46,6 +46,7 @@ use App\Models\MasterList\MasterlistJointResearchRu;
 use App\Models\MasterList\MasterlistSupportFacility;
 use App\Models\MasterList\MasterlistLibraryFacility;
 use App\Models\DataAttachment;
+use App\Models\MyraCalculation;
 use App\Http\Traits\MyraCalculationTrait;
 
 trait MasterListMyraTrait {
@@ -111,6 +112,7 @@ trait MasterListMyraTrait {
         return [
             (object)[
                 'group'=>'SECTION A: GENERAL INFORMATION',
+                'group_code'=>'section_a',
                 'modules'=>[
                     (object)[
                         'name'=>'Academic Staff',
@@ -131,6 +133,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION B: QUANTITY AND QUALITY OF RESEARCHERS',
+                'group_code'=>'section_b',
                 'modules'=>[
                     (object)[
                         'name'=>'Critical Mass',
@@ -156,6 +159,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION C: QUANTITY AND QUALITY OF RESEARCH',
+                'group_code'=>'section_c',
                 'modules'=>[
                     (object)[
                         'name'=>'Publication',
@@ -181,6 +185,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION D: QUANTITY AND QUALITY OF POSTGRADUATES',
+                'group_code'=>'section_d',
                 'modules'=>[
                     (object)[
                         'name'=>'PhD Graduated',
@@ -216,6 +221,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION E: INNOVATION',
+                'group_code'=>'section_e',
                 'modules'=>[
                     (object)[
                         'name'=>'Patent Granted',
@@ -256,6 +262,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION F: PROFESSIONAL SERVICES AND GIFTS',
+                'group_code'=>'section_f',
                 'modules'=>[
                     (object)[
                         'name'=>'Training Courses',
@@ -306,6 +313,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION G: NETWORKING AND LINKAGES',
+                'group_code'=>'section_g',
                 'modules'=>[
                     (object)[
                         'name'=>'International MoA',
@@ -366,6 +374,7 @@ trait MasterListMyraTrait {
             ],
             (object)[
                 'group'=>'SECTION H: SUPPORT FACILITIES',
+                'group_code'=>'section_h',
                 'modules'=>[
                     (object)[
                         'name'=>'Support Facilities',
@@ -788,10 +797,10 @@ trait MasterListMyraTrait {
 
         $entry_enrolled = MasterlistEntryQualification::where('ml_end_year', $year)->count();
         $entry_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($entry_enrolled/$pg_enrolled*100, 2) : 0;
-
-        $fellowship_enrolled = MasterlistFellowship::where('ml_end_year', $year)->count();
+        
+        $fellowship_enrolled = MasterlistPgStudent::where('ml_end_year', $year)->whereIn('study_mode', ['RESEARCH', 'PENYELIDIKAN', 'MIXED MODE', 'K KUR & PENYELIDIKAN'])->count();
         $fellowship_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($fellowship_enrolled/$pg_enrolled*100, 2) : 0;
-
+        // dd($fellowship_enrolled);
         $local_post_doc = MasterlistPostDoc::where('ml_end_year', $year)->whereIn('citizenship', ['LOCAL', 'TEMPATAN'])->count();
         $foreign_post_doc = MasterlistPostDoc::where('ml_end_year', $year)->whereIn('citizenship', ['FOREIGN', 'ANTARABANGSA'])->count();
 
@@ -822,7 +831,6 @@ trait MasterListMyraTrait {
         ];
 
         $calculation = $this->calcSectionD($active_acad_staff, $active_st, $active_nonst, $important_data);
-
         return (object)[
             'faculties' => $faculties,
             'schools' => $schools,
@@ -1084,5 +1092,110 @@ trait MasterListMyraTrait {
             'journal_subscribed' => $journal_subscribed,
             'calculation' => $calculation
         ];
+    }
+
+    public function myraSummary($year) {
+        $data_entry_flag = 0;
+        $section_b = MyraCalculation::select('overall')->where('year', $year)->whereType('section_b')->first();
+        $section_c = MyraCalculation::select('overall')->where('year', $year)->whereType('section_c')->first();
+        $section_d = MyraCalculation::select('overall')->where('year', $year)->whereType('section_d')->first();
+        $section_e = MyraCalculation::select('overall')->where('year', $year)->whereType('section_e')->first();
+        $section_f = MyraCalculation::select('overall')->where('year', $year)->whereType('section_f')->first();
+        $section_g = MyraCalculation::select('overall')->where('year', $year)->whereType('section_g')->first();
+        $section_h = MyraCalculation::select('overall')->where('year', $year)->whereType('section_h')->first();
+        if($section_b)$data_entry_flag++;
+        if($section_c)$data_entry_flag++;
+        if($section_d)$data_entry_flag++;
+        if($section_e)$data_entry_flag++;
+        if($section_f)$data_entry_flag++;
+        if($section_g)$data_entry_flag++;
+        if($section_h)$data_entry_flag++;
+
+        $section_b = json_decode($section_b->overall ?? '');
+        $section_c = json_decode($section_c->overall ?? '');
+        $section_d = json_decode($section_d->overall ?? '');
+        $section_e = json_decode($section_e->overall ?? '');
+        $section_f = json_decode($section_f->overall ?? '');
+        $section_g = json_decode($section_g->overall ?? '');
+        $section_h = json_decode($section_h->overall ?? '');
+        $data = (object)[
+            'data_entry_label' => $data_entry_flag == 7 ? 'COMPLETE' : 'NOT COMPLETE',
+            'data_entry_color' => $data_entry_flag == 7 ? 'green' : 'red',
+            'section_b' => (object)[
+                'myra1_mark' => (float)number_format($section_b->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_b->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_b->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_b->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_b->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_b->myra2_achievement ?? 0, 2),
+            ],
+            'section_c' => (object)[
+                'myra1_mark' => (float)number_format($section_c->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_c->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_c->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_c->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_c->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_c->myra2_achievement ?? 0, 2),
+            ],
+            'section_d' => (object)[
+                'myra1_mark' => (float)number_format($section_d->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_d->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_d->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_d->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_d->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_d->myra2_achievement ?? 0, 2),
+            ],
+            'section_e' => (object)[
+                'myra1_mark' => (float)number_format($section_e->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_e->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_e->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_e->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_e->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_e->myra2_achievement ?? 0, 2),
+            ],
+            'section_f' => (object)[
+                'myra1_mark' => (float)number_format($section_f->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_f->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_f->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_f->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_f->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_f->myra2_achievement ?? 0, 2),
+            ],
+            'section_g' => (object)[
+                'myra1_mark' => (float)number_format($section_g->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_g->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_g->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_g->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_g->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_g->myra2_achievement ?? 0, 2),
+            ],
+            'section_h' => (object)[
+                'myra1_mark' => (float)number_format($section_h->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)number_format($section_h->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)number_format($section_h->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)number_format($section_h->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)number_format($section_h->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)number_format($section_h->myra2_achievement ?? 0, 2),
+            ],
+        ];
+        $myra1_total_mark = $data->section_b->myra1_mark+$data->section_c->myra1_mark+$data->section_d->myra1_mark+$data->section_e->myra1_mark+$data->section_f->myra1_mark+$data->section_g->myra1_mark+$data->section_h->myra1_mark;
+        $myra1_total_benchmark_mark = $data->section_b->myra1_benchmark_mark+$data->section_c->myra1_benchmark_mark+$data->section_d->myra1_benchmark_mark+$data->section_e->myra1_benchmark_mark+$data->section_f->myra1_benchmark_mark+$data->section_g->myra1_benchmark_mark+$data->section_h->myra1_benchmark_mark;
+        $myra1_total_achievement = $myra1_total_benchmark_mark > 0? (float)number_format($myra1_total_mark/$myra1_total_benchmark_mark*100, 2) : 0.00;
+        $myra2_total_mark = $data->section_b->myra2_mark+$data->section_c->myra2_mark+$data->section_d->myra2_mark+$data->section_e->myra2_mark+$data->section_f->myra2_mark+$data->section_g->myra2_mark+$data->section_h->myra2_mark;
+        $myra2_total_benchmark_mark = $data->section_b->myra2_benchmark_mark+$data->section_c->myra2_benchmark_mark+$data->section_d->myra2_benchmark_mark+$data->section_e->myra2_benchmark_mark+$data->section_f->myra2_benchmark_mark+$data->section_g->myra2_benchmark_mark+$data->section_h->myra2_benchmark_mark;
+        $myra2_total_achievement = $myra2_total_benchmark_mark > 0? (float)number_format($myra2_total_mark/$myra2_total_benchmark_mark*100, 2) : 0.00;
+        $data->total = (object)[
+            'myra1_total_mark' => $myra1_total_mark,
+            'myra1_total_benchmark_mark' => $myra1_total_benchmark_mark,
+            'myra1_total_achievement' => $myra1_total_achievement,
+            'myra1_label' => $data_entry_flag == 7 ? ($myra1_total_achievement > 100? "CONGRATULATIONS" : "GOOD") : "N/A",
+            'myra1_color' => $data_entry_flag == 7 ? ($myra1_total_achievement > 100? "myra-soft-green" : "myra-bright-yellow") : "myra-gray",
+            'myra2_total_mark' => $myra2_total_mark,
+            'myra2_total_benchmark_mark' => $myra2_total_benchmark_mark,
+            'myra2_total_achievement' => $myra2_total_achievement,
+            'myra2_label' => $data_entry_flag == 7 ? ($myra2_total_achievement >= 75? "PASS" : "FAILED") : "N/A",
+            'myra2_color' =>  $data_entry_flag == 7 ? ($myra2_total_achievement >= 75? "myra-soft-green" : "myra-pink") : "myra-gray",
+        ];
+        return $data;
     }
 }

@@ -16,7 +16,7 @@ class FileController extends Controller
             "file_upload.required_if" => "File is required",
         ]);
         $file = collect(json_decode($request->file_upload));
-        $others = DataAttachment::whereModule($request->module)->get();
+        $others = DataAttachment::where('year', $request->year)->whereModule($request->module)->get();
         foreach ($others as $key => $other) {
             $other->status = 'not-selected';
             $other->save();

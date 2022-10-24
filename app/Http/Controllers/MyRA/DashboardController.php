@@ -16,6 +16,7 @@ class DashboardController extends Controller
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         $data = $this->overview_data($start_year, $end_year);
+        // dd($data);
         return view('myra.index', compact('start_year', 'end_year', 'data'));
     }
 

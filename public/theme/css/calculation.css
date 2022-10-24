@@ -5,6 +5,9 @@
 .myra-2-header {
     background-color: #7A86AD !important;
 }
+.myra-gray {
+    background-color: #b2bde0 !important;
+}
 .myra-yes {
     background-color: #D6E3BC !important;
 }
@@ -29,6 +32,12 @@
 }
 .myra-pink {
     background-color: #F4CCCC !important;
+}
+.myra-soft-green {
+    background-color: #9cebad !important;
+}
+.myra-soft-yellow {
+    background-color: #d8d789 !important;
 }
 .myra-dark-gray {
     background-color: #666666 !important;

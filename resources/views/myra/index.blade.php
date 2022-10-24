@@ -95,14 +95,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_1.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_1.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -149,14 +149,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_2.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_2.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -203,14 +203,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_3.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_3.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -257,14 +257,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_4.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_4.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -311,14 +311,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_5.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_5.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -365,14 +365,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_6.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_6.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -419,14 +419,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_7.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_7.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
@@ -473,14 +473,14 @@
             datasets: [
                 {
                     label: 'MyRA I',
-                    data: ['78', '80', '92', '94', '94', '93'],
+                    data: data.line_8.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
                 },
                 {
                     label: 'MyRA II',
-                    data: ['101', '110', '115', '117', '117', '117'],
+                    data: data.line_8.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,

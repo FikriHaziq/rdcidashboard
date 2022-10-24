@@ -69,6 +69,7 @@ class RawDataController extends Controller
     public function summary($year = null)
     {
         if(!$year)$year = date('Y');
-        return view('myra.self-assessment.summary', compact('year'));
+        $data = $this->myraSummary($year);
+        return view('myra.self-assessment.summary', compact('data', 'year'));
     }
 }

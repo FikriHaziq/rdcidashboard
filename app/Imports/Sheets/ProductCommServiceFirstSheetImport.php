@@ -41,7 +41,7 @@ class ProductCommServiceFirstSheetImport implements ToModel, WithStartRow, WithC
                 'product_name' => $row[14],
                 'year_commercialized' => is_numeric($row[15]) ? $row[15] : null,
                 'company_name' => $row[16],
-                'reference_no' => $row[18],
+                'reference_no' => $row[17],
                 'gross_income' => is_numeric($row[18]) ? $row[18] : 0,
             ]);
         }

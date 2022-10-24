@@ -114,19 +114,19 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '100% TARGET',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1
+                },
+                {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
-                },
-                {
-                    label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
                 },
             ]
         },
@@ -159,19 +159,19 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '100% TARGET',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1
+                },
+                {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
-                },
-                {
-                    label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
                 },
             ]
         },
@@ -204,19 +204,19 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '100% TARGET',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1
+                },
+                {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_3.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
-                },
-                {
-                    label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
                 },
             ]
         },
@@ -249,19 +249,19 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '100% TARGET',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1
+                },
+                {
                     label: 'ACHIEVEMENT',
-                    data: ['193', '166', '139', '147', '154', '168'],
+                    data: data.bar_4.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
-                },
-                {
-                    label: '100% TARGET',
-                    data: ['1766', '1632', '1447', '1402', '1234', '1198'],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
                 },
             ]
         },
@@ -295,14 +295,14 @@
             datasets: [
                 {
                     label: 'GRADUATED',
-                    data: ['5000', '4500', '4300', '4600', '4700', '4800'],
+                    data: data.line_1.data_1,
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                 },
                 {
                     label: 'GOT',
-                    data: ['2000', '3100', '2100', '2000', '1800', '1700'],
+                    data: data.line_1.data_2,
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,

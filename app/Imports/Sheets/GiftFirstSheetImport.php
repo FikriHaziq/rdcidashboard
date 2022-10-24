@@ -9,8 +9,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class GiftFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
+
+class GiftFirstSheetImport implements ToModel, WithStartRow, WithChunkReading, WithCalculatedFormulas
 {
     public $year;
 
@@ -41,7 +43,7 @@ class GiftFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
                 'donor' => $row[14],
                 'type' => $row[15],
                 'date_received' => excelDate($row[16]),
-                'value' => is_numeric($row[17]) ? $row[17] : 0,
+                'value' => is_numeric($row[18]) ? $row[18] : 0,
             ]);
         }
     }

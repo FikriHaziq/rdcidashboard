@@ -42,8 +42,7 @@ class PatentGrantedFirstSheetImport implements ToModel, WithStartRow, WithChunkR
                 'patent_name' => $row[15],
                 'date_filed' => excelDate($row[16]),
                 'date_granted' => excelDate($row[17]),
-                'country' => $row[18],
-                'expiry_date' => excelDate($row[19]),
+                'expiry_date' => excelDate($row[18]),
             ]);
         }
     }
