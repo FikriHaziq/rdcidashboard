@@ -73,7 +73,7 @@ class DashboardController extends Controller
         $end_year = $request_data->end_year;
         $faculty = $request_data->faculty;
         $data = $this->sectionC_data($start_year, $end_year);
-        dd($data);
+        // dd($data);
         return view('myra.section-c', compact('start_year', 'end_year', 'faculty', 'data'));
     }
 
