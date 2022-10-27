@@ -21,11 +21,11 @@
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
-            <select class="form-select bg-white">
+            <select class="form-select bg-white" onchange="getList('start_year', 'end_year', $(this).val())">
                 <option value="">All</option>
-                {{-- @foreach ($data->faculties ?? [] as $faculty)
-                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
-                {{-- @endforeach --}}
+                @foreach (getFaculty() ?? [] as $faculty_data)
+                <option value="{{ $faculty_data->code }}" @if($faculty==$faculty_data->code) selected @endif>{{ $faculty_data->short }} - {{ $faculty_data->long }}</option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -79,10 +79,20 @@
 @endslot
 @section('custom-js')
 <script>
-    function getList(start, end) {
+    function getList(start, end, faculty = '') {
+        swal({
+            title: 'Processing...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+        });
+        swal.showLoading();
         var start_year = $('#'+start).val();
         var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/overview?search=1&start_year=' + start_year + '&end_year=' + end_year;
+        if(faculty == '')
+            window.location = window.location.origin + '/myra/overview?search=1&start_year=' + start_year + '&end_year=' + end_year;
+        else
+            window.location = window.location.origin + '/myra/overview?search=1&start_year=' + start_year + '&end_year=' + end_year + '&faculty=' + faculty;
     }
 
     var data = {!! json_encode($data) !!};
