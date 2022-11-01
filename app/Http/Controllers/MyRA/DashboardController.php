@@ -66,15 +66,29 @@ class DashboardController extends Controller
         }
     }
 
-    public function sectionC(Request $request)
+    public function sectionC($tabs, Request $request)
     {
         $request_data = $this->searching_request($request);
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         $faculty = $request_data->faculty;
-        $data = $this->sectionC_data($start_year, $end_year);
-        // dd($data);
-        return view('myra.section-c', compact('start_year', 'end_year', 'faculty', 'data'));
+
+        if ($tabs == 'PUBLICATION-ALL') {
+            $data = $this->sectionC_data($start_year, $end_year);
+            return view('myra.section-c-puboverall', compact('start_year', 'end_year', 'faculty', 'data')); 
+        }
+        elseif ($tabs == 'PUBLICATION-FACULTY') {
+            $data = $this->sectionC_data($start_year, $end_year);
+             return view('myra.section-c-pubfaculty', compact('start_year', 'end_year', 'faculty', 'data')); 
+        }
+        elseif ($tabs == 'FUNDING-ALL') { 
+            $data = $this->sectionC_data($start_year, $end_year);
+            return view('myra.section-c-fundoverall', compact('start_year', 'end_year', 'faculty', 'data')); 
+        }
+        elseif ($tabs == 'FUNDING-FACULTY') { 
+            $data = $this->sectionC_data($start_year, $end_year);
+            return view('myra.section-c-fundfaculty', compact('start_year', 'end_year', 'faculty', 'data')); 
+        }
     }
 
     public function sectionD($tabs, Request $request)

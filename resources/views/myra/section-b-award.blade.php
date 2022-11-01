@@ -4,15 +4,7 @@
 @slot("trimoduleLink") myra.section-b @endslot
 @slot("trimodule") Awards @endslot
 @section('custom-css')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
