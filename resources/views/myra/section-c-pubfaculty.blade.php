@@ -177,12 +177,10 @@
                     data: [100, 90, 100],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -291,12 +289,10 @@
                     data: [800, 800, 800],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -337,12 +333,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -383,12 +377,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -429,12 +421,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -475,12 +465,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -521,12 +509,10 @@
                     data: [1, 1, 1],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -567,12 +553,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
