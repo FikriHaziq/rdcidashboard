@@ -151,15 +151,20 @@
         }
     };
 
+    // update year range and faculty here; labels
+    const facultyLabels = [
+        ['AHIBS', 2019], ['AHIBS', 2020], ['AHIBS', 2021],
+    ];
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
+                    data: [190, 170, 190],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -169,19 +174,17 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
+                    data: [100, 90, 100],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 2593],
+                    data: [59, 65, 88],
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -201,11 +204,11 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'INDEXED JOURNAL',
-                    data: [2750, 2600, 2600],
+                    data: [60, 65, 88],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -215,7 +218,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [886, 1040, 1239],
+                    data: [5, 9, 9],
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -269,7 +272,7 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -286,12 +289,10 @@
                     data: [800, 800, 800],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -315,7 +316,7 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -332,12 +333,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -361,7 +360,7 @@
     var barChart5 = new Chart(bar5, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -378,12 +377,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -407,7 +404,7 @@
     var barChart6 = new Chart(bar6, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -424,12 +421,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -453,7 +448,7 @@
     var barChart7 = new Chart(bar7, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -470,12 +465,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -499,11 +492,11 @@
     var barChart8 = new Chart(bar8, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
+                    data: [1, 1, 1],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -513,19 +506,17 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
+                    data: [1, 1, 1],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
+                    data: [1, 0, 0],
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -545,7 +536,7 @@
     var barChart9 = new Chart(bar9, {
         type: 'bar',
         data: {
-            labels: [2019, 2020, 2021],
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -562,12 +553,10 @@
                     data: [5000, 5000, 5000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    // borderDash: [10,5],
                     borderWidth: 0.2,
                     datalabels: {
                         display: false,
                     },
-                    setLineDash: [5,5]
                 },
                 {
                     label: 'ACHIEVEMENT',
