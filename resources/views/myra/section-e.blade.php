@@ -33,37 +33,32 @@
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
-            <select class="form-select bg-white">
-                <option value="">All</option>
-                {{-- @foreach ($data->faculties ?? [] as $faculty)
-                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
-                {{-- @endforeach --}}
-            </select>
-        </div>
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
+    <div class="w-full w-md-auto me-2 me-sm-2">
+        <label for="" class="form-label">FACULTY</label>
+        <select data-placeholder="Select faculty" class="tom-select w-full" multiple>
+            <option value="1" selected>AHIBS</option>
+            <option value="2">FC</option>
+            <option value="3" selected>FABU</option>
+            <option value="4">FKA</option>
+            <option value="5">FKE</option>
+        </select>
     </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
+    <div class="w-full w-md-auto me-2 me-sm-2">
+        <label class="form-label">START YEAR</label>
+        <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+            @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+            <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
+            @endfor
+        </select>
     </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group">
-            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
+    <div class="w-full w-md-auto me-2 me-sm-2">
+        <label class="form-label">END YEAR</label>
+        <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
+            @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+            <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
+            @endfor
+        </select>
     </div>
 </div>
 <div class="p-5">
@@ -93,6 +88,7 @@
         var end_year = $('#'+end).val();
         window.location = window.location.origin + '/myra/section-e?search=1&start_year=' + start_year + '&end_year=' + end_year;
     }
+
     var data = {!! json_encode($data) !!};
 
     const customOptions = {
