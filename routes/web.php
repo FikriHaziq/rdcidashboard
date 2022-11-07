@@ -71,7 +71,7 @@ Route::name("myra.")->prefix("myra")->group(function () {
     Route::name("section-d")->get("section-d/{tabs?}", [MyRADashboardController::class, "sectionD"]);
     Route::name("section-e")->get("section-e", [MyRADashboardController::class, "sectionE"]);
     Route::name("section-f")->get("section-f/{tabs?}", [MyRADashboardController::class, "sectionF"]);
-    Route::name("section-g")->get("section-g", [MyRADashboardController::class, "sectionG"]);
+    Route::name("section-g")->get("section-g/{tabs?}", [MyRADashboardController::class, "sectionG"]);
     Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
 
     Route::name('self-assessment.')->prefix('self-assessment')->group(function(){

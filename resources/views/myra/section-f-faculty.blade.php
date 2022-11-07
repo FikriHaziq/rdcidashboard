@@ -148,7 +148,7 @@
         }
     };
 
-    const customLabels = [
+    const facultyLabels = [
         ['AHIBS', 2019], ['AHIBS', 2020], ['AHIBS', 2021],
         ['FABU', 2019], ['FABU', 2020], ['FABU', 2021],
     ];
@@ -157,7 +157,7 @@
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -201,7 +201,7 @@
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -245,7 +245,7 @@
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -289,7 +289,7 @@
     var barChart4 = new Chart(bar4, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -333,7 +333,7 @@
     var barChart5 = new Chart(bar5, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -377,7 +377,7 @@
     var barChart6 = new Chart(bar6, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -421,7 +421,7 @@
     var barChart7 = new Chart(bar7, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
@@ -465,7 +465,7 @@
     var barChart8 = new Chart(bar8, {
         type: 'bar',
         data: {
-            labels: customLabels,
+            labels: facultyLabels,
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',

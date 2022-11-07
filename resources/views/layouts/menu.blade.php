@@ -16,7 +16,7 @@
         <x-menu-item active="myra.section-d" route="myra.section-d" customTabVal="ABSORPTION">Section D: Quantity and Quality of Postgraduates</x-menu-item>
         <x-menu-item active="myra.section-e" route="myra.section-e">Section E: Innovation </x-menu-item>
         <x-menu-item active="myra.section-f" route="myra.section-f" customTabVal="UNIVERSITY">Section F: Professional Services and Gifts </x-menu-item>
-        <x-menu-item active="myra.section-g" route="myra.section-g">Section G: Networking and Linkages</x-menu-item>
+        <x-menu-item active="myra.section-g" route="myra.section-g" customTabVal="STAFFOVERALL">Section G: Networking and Linkages</x-menu-item>
         {{-- <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item> --}}
     </x-menu-item>
     <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
