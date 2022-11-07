@@ -123,25 +123,32 @@ class DashboardController extends Controller
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         $faculty = $request_data->faculty;
-        if ($tabs == 'INCOME') { 
+        if ($tabs == 'UNIVERSITY') { 
             $data = $this->sectionF_data_I($start_year, $end_year);
-            return view('myra.section-f-income', compact('start_year', 'end_year', 'faculty', 'data')); }
-        elseif ($tabs == 'PARTICIPATION') { 
+            return view('myra.section-f-university', compact('start_year', 'end_year', 'faculty', 'data')); }
+        elseif ($tabs == 'FACULTY') { 
             $data = $this->sectionF_data_P($start_year, $end_year);
-            return view('myra.section-f-participation', compact('start_year', 'end_year', 'faculty', 'data')); }
-        elseif ($tabs == 'COMMUNITY') { 
-            $data = $this->sectionF_data_C($start_year, $end_year);
-            return view('myra.section-f-community', compact('start_year', 'end_year', 'faculty', 'data')); }
+            return view('myra.section-f-faculty', compact('start_year', 'end_year', 'faculty', 'data')); }
     }
 
-    public function sectionG(Request $request)
+    public function sectionG($tabs, Request $request)
     {
         $request_data = $this->searching_request($request);
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         $faculty = $request_data->faculty;
-        $data = $this->sectionG_data($start_year, $end_year);
-        return view('myra.section-g', compact('start_year', 'end_year', 'faculty', 'data'));
+        if ($tabs == 'STAFFOVERALL') { 
+            $data = $this->sectionG_data($start_year, $end_year);
+            return view('myra.section-g-staffoverall', compact('start_year', 'end_year', 'faculty', 'data')); }
+        elseif ($tabs == 'STAFFFACULTY') { 
+            $data = $this->sectionG_data($start_year, $end_year);
+            return view('myra.section-g-stafffaculty', compact('start_year', 'end_year', 'faculty', 'data')); }
+        else if ($tabs == 'PROJECTOVERALL') { 
+            $data = $this->sectionG_data($start_year, $end_year);
+            return view('myra.section-g-projectoverall', compact('start_year', 'end_year', 'faculty', 'data')); }
+        elseif ($tabs == 'PROJECTFACULTY') { 
+            $data = $this->sectionG_data($start_year, $end_year);
+            return view('myra.section-g-projectfaculty', compact('start_year', 'end_year', 'faculty', 'data')); }
     }
 
     public function sectionH()

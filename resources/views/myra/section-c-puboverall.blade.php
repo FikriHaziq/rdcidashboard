@@ -28,17 +28,6 @@
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
-            <select class="form-select bg-white">
-                <option value="">All</option>
-                {{-- @foreach ($data->faculties ?? [] as $faculty)
-                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
-                {{-- @endforeach --}}
-            </select>
-        </div>
-    </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
             <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
                 @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
