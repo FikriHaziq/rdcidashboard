@@ -488,7 +488,7 @@ trait GraphMyraTrait {
         ];
     }
 
-    public function sectionC_data($start_year, $end_year) {
+    public function sectionC_data_P($start_year, $end_year) {
         $year_range = [];
         $bar_1 = (object)[  //INDEXED JOURNAL
             'data_1' => [],
@@ -498,7 +498,6 @@ trait GraphMyraTrait {
         $bar_2 = (object)[  //ARTICLE Q1/Q2
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
         ]; 
         $bar_3 = (object)[  //INDEXED PROCEEDING
             'data_1' => [],
@@ -520,14 +519,28 @@ trait GraphMyraTrait {
             'data_2' => [],
             'data_3' => [],
         ]; 
+        $bar_7= (object)[  //CASE STUDY
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_8= (object)[  //POLICY PAPER
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_9= (object)[  //OTHER
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ];
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             $bar1_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('journal')->count();
             $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.journal.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
             $bar1_3 = $bar1_2*2;
             $bar2_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('journal')->whereIn('quartile', ['Q1','Q2'])->count();
-            $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.article.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
-            $bar2_3 = $bar2_2*2;
+            $bar2_2 = $bar1_1;
             $bar3_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('proceeding')->count();
             $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.proceeding.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
             $bar3_3 = $bar3_2*2;
@@ -540,30 +553,21 @@ trait GraphMyraTrait {
             $bar6_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('chapter_research_book')->count();
             $bar6_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.indexed_chapter.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0) + (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.non_indexed_chapter.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
             $bar6_3 = $bar6_2*2;
-            // $data_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('journal')->count();
-            // $data_2 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('proceeding')->count();
-            // $data_3 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('mycite')->count();
-            // $data_4 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('research_book')->whereBookStatus('INDEXED')->count();
-            // $data_5 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('chapter_research_book')->whereBookStatus('INDEXED')->count();
-            // $bar2_1 = $data_1+$data_2+$data_3+$data_4+$data_5;
-            // $bar1_2 = MasterlistAward::where('ml_end_year', $i)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type', ['AWARD','AWARDS','B4C - AWARD'])->count();
-            // $bar2_1 = MasterlistAward::where('ml_end_year', $i)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
-            // $bar2_2 = MasterlistAward::where('ml_end_year', $i)->whereIn('nat_int', ['INTERNATIONAL', 'ANTARABANGSA'])->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
-            // $bar3_1 = MasterlistAward::where('ml_end_year', $i)->whereNatInt('NATIONAL')->whereIn('award_type', ['AWARD','AWARDS','B4C - AWARD'])->count();
-            // $bar3_2 = MasterlistAward::where('ml_end_year', $i)->whereNatInt('NATIONAL')->whereIn('award_type',['AWARD','AWARDS','B4C - AWARD'])->count();
-            // $bar4_1 = MasterlistAward::where('ml_end_year', $i)->whereNatInt('NATIONAL')->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
-            // $bar4_2 = MasterlistAward::where('ml_end_year', $i)->whereNatInt('NATIONAL')->whereIn('award_type',['RECOGNITION','STEWARDSHIP','FELLOWSHIP','B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP','RECOGNITIONS/STEWARDSHIP'])->count();
-            // $bar5_1 = MasterlistAward::where('ml_end_year', $i)->whereIn('award_type',['EXHIBITION AWARDS','EXHIBITION AWARD','B4E - EXHIBITION AWARD'])->count();
-            // $bar5_2 = MasterlistAward::where('ml_end_year', $i)->whereIn('award_type',['EXHIBITION AWARDS','EXHIBITION AWARD','B4E - EXHIBITION AWARD'])->count();
-            // $bar6_1 = MasterlistAward::where('ml_end_year', $i)->whereIn('award_type',['OTHER RESEARCH AWARDS','B4F - OTHER RESEARCH AWARDS'])->count();
-            // $bar6_2 = MasterlistAward::where('ml_end_year', $i)->whereIn('award_type',['OTHER RESEARCH AWARDS','B4F - OTHER RESEARCH AWARDS'])->count();
-            array_push($year_range, (int)$i);
+            $bar7_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('case_studies')->count();
+            $bar7_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.case_studies.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar7_3 = $bar7_2*2;
+            $bar8_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('policy_paper')->count();
+            $bar8_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.policy_paper.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar8_3 = $bar8_2*2;
+            $bar9_1 = MasterlistPublication::where('ml_end_year', $i)->wherePublicationType('other')->count();
+            $bar9_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.other.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar9_3 = $bar9_2*2;
+            array_push($year_range, ['UTM', (int)$i]);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
             array_push($bar_1->data_3, $bar1_3);
             array_push($bar_2->data_1, $bar2_1);
             array_push($bar_2->data_2, $bar2_2);
-            array_push($bar_2->data_3, $bar2_3);
             array_push($bar_3->data_1, $bar3_1);
             array_push($bar_3->data_2, $bar3_2);
             array_push($bar_3->data_3, $bar3_3);
@@ -576,6 +580,15 @@ trait GraphMyraTrait {
             array_push($bar_6->data_1, $bar6_1);
             array_push($bar_6->data_2, $bar6_2);
             array_push($bar_6->data_3, $bar6_3);
+            array_push($bar_7->data_1, $bar7_1);
+            array_push($bar_7->data_2, $bar7_2);
+            array_push($bar_7->data_3, $bar7_3);
+            array_push($bar_8->data_1, $bar8_1);
+            array_push($bar_8->data_2, $bar8_2);
+            array_push($bar_8->data_3, $bar8_3);
+            array_push($bar_9->data_1, $bar9_1);
+            array_push($bar_9->data_2, $bar9_2);
+            array_push($bar_9->data_3, $bar9_3);
         }
 
         return (object)[
@@ -586,11 +599,9 @@ trait GraphMyraTrait {
             'bar_4' => $bar_4,
             'bar_5' => $bar_5,
             'bar_6' => $bar_6,
-            // 'bar_2' => $bar_2,
-            // 'bar_3' => $bar_3,
-            // 'bar_4' => $bar_4,
-            // 'bar_5' => $bar_5,
-            // 'bar_6' => $bar_6,
+            'bar_7' => $bar_7,
+            'bar_8' => $bar_8,
+            'bar_9' => $bar_9,
         ];
     }
 
