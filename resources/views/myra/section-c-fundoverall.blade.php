@@ -85,7 +85,7 @@
     function getList(start, end) {
         var start_year = $('#'+start).val();
         var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-c?search=1&start_year=' + start_year + '&end_year=' + end_year;
+        window.location = window.location.origin + '/myra/section-c/FUNDING-ALL?search=1&start_year=' + start_year + '&end_year=' + end_year;
     }
     var data = {!! json_encode($data) !!};
 
@@ -135,9 +135,7 @@
         }
     };
 
-    const customLabels = [
-        ['UTM', 2019], ['UTM', 2020], ['UTM', 2021],
-    ];
+    const customLabels = data.year_range;
 
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
@@ -146,26 +144,26 @@
             labels: customLabels,
             datasets: [
                 {
-                    label: 'NATIONAL',
-                    data: [13680000, 37390000, 14260000],
+                    label: 'UNIVERSITY',
+                    data: data.bar_1.data_1,
                     backgroundColor: 'rgb(95, 160, 56)',
                     borderColor: 'rgb(95, 160, 56)',
                 },
                 {
                     label: 'NATIONAL',
-                    data: [31150000, 21630000, 22650000],
+                    data: data.bar_1.data_2,
                     backgroundColor: 'rgb(53, 92, 183)',
                     borderColor: 'rgb(53, 92, 183)',
                 },
                 {
                     label: 'PRIVATE',
-                    data: [7530000, 3900000, 5100000],
+                    data: data.bar_1.data_3,
                     backgroundColor: 'rgba(253, 180, 7)',
                     borderColor: 'rgba(253, 180, 7)',
                 },
                 {
                     label: 'INTERNATIONAL',
-                    data: [12190000, 5880000, 8390000],
+                    data: data.bar_1.data_4,
                     backgroundColor: 'rgba(148, 148, 148)',
                     borderColor: 'rgba(148, 148, 148)',
                 },
@@ -225,7 +223,7 @@
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [160000000, 160000000, 160000000],
+                    data: data.bar_2.data_4,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -235,7 +233,7 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [80000000, 80000000, 80000000],
+                    data: data.bar_2.data_3,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
@@ -245,7 +243,7 @@
                 },
                 {
                     label: 'UNIVERSITY',
-                    data: [19820000, 28340000, 22040000],
+                    data: data.bar_2.data_1,
                     backgroundColor: 'rgb(67, 113, 40)',
                     borderColor: 'rgb(67, 113, 40)',
                     borderWidth: 1,
@@ -260,7 +258,7 @@
                 },
                 {
                     label: 'NATIONAL',
-                    data: [46060000, 58600000, 40890000],
+                    data: data.bar_2.data_2,
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -332,7 +330,7 @@
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [1600, 1600, 1650],
+                    data: data.bar_3.data_3,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -342,7 +340,7 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [800, 800, 800],
+                    data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
@@ -352,7 +350,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [1027, 898, 644],
+                    data: data.bar_3.data_1,
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -376,7 +374,7 @@
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
+                    data: data.bar_4.data_3,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -386,7 +384,7 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
+                    data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
@@ -396,7 +394,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
+                    data: data.bar_4.data_1,
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,

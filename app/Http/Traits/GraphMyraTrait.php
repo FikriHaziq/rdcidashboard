@@ -605,6 +605,73 @@ trait GraphMyraTrait {
         ];
     }
 
+    public function sectionC_data_F($start_year, $end_year) {
+        $year_range = [];
+        $bar_1 = (object)[  //NEW FUNDING APPROVED
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
+        ]; 
+        $bar_2 = (object)[  //AMOUNT RECEIVED FOR PUBLIC FUND
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
+        ]; 
+        $bar_3 = (object)[  //AMOUNT RECEIVED FOR PRIVATE FUND
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_4 = (object)[  //AMOUNT RECEIVED FOR INTERNATIONAL FUND
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ];
+        // $test = MasterlistResearchGrant::select('project_status')->distinct()->get()->toArray();
+        // dd($test);
+        for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
+            $bar1_1 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['UNIVERSITY'])->whereIn('project_status', ['ONGOING'])->sum('amount_pledged');
+            $bar1_2 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['NATIONAL'])->whereIn('project_status', ['ONGOING'])->sum('amount_pledged');
+            $bar1_3 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['PRIVATE'])->whereIn('project_status', ['ONGOING'])->sum('amount_pledged');
+            $bar1_4 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['INTERNATIONAL'])->whereIn('project_status', ['ONGOING'])->sum('amount_pledged');
+            $bar2_1 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received');
+            $bar2_2 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['NATIONAL'])->sum('amount_received') + $bar2_1;
+            $bar2_3 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_grant.public_received.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar2_4 = $bar2_3*2;
+            $bar3_1 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['PRIVATE'])->sum('amount_received');
+            $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_grant.private_received.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar3_3 = $bar3_2*2;
+            $bar4_1 = MasterlistResearchGrant::where('ml_end_year', $i)->whereIn('sponsor_category', ['INTERNATIONAL'])->sum('amount_received');
+            $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_grant.international_received.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
+            $bar4_3 = $bar4_2*2;
+            array_push($year_range, ['UTM', (int)$i]);
+            array_push($bar_1->data_1, $bar1_1);
+            array_push($bar_1->data_2, $bar1_2);
+            array_push($bar_1->data_3, $bar1_3);
+            array_push($bar_1->data_4, $bar1_4);
+            array_push($bar_2->data_1, $bar2_1);
+            array_push($bar_2->data_2, $bar2_2);
+            array_push($bar_2->data_3, $bar2_3);
+            array_push($bar_2->data_4, $bar2_4);
+            array_push($bar_3->data_1, $bar3_1);
+            array_push($bar_3->data_2, $bar3_2);
+            array_push($bar_3->data_3, $bar3_3);
+            array_push($bar_4->data_1, $bar4_1);
+            array_push($bar_4->data_2, $bar4_2);
+            array_push($bar_4->data_3, $bar4_3);
+        }
+
+        return (object)[
+            'year_range' => $year_range,
+            'bar_1' => $bar_1,
+            'bar_2' => $bar_2,
+            'bar_3' => $bar_3,
+            'bar_4' => $bar_4,
+        ];
+    }
+
     public function sectionD_data_A($start_year, $end_year) {
         $year_range = []; 
         $line_1 = (object)[  //PhD: GRADUATED & GOT
@@ -776,51 +843,232 @@ trait GraphMyraTrait {
         ];
     }
 
-    public function sectionF_data_I($start_year, $end_year) {
+    public function sectionF_data($start_year, $end_year) {
         $year_range = []; 
+        $bar_1 = (object)[  //TRAINING COURSES
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_2 = (object)[  //PG FEES
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_3 = (object)[  //CONFERENCE, SEMINAR
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_4 = (object)[  //PRODUCT COMM & LICENSING
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_5 = (object)[  //CONSULTANCY
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_6= (object)[  //LAB SERVICES
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_7= (object)[  //ENDOWMENT
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
+        $bar_8= (object)[  //GIFTS/DONATIONS
+            'data_1' => [],
+            'data_2' => [],
+            'data_3' => [],
+        ]; 
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            array_push($year_range, (int)$i);
+            $bar1_1 = MasterlistTrainingCourse::where('ml_end_year', $i)->sum('gross_income');
+            $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_fee.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar1_3 = $bar1_2*2;
+            $bar2_1 = MasterlistPgFee::where('ml_end_year', $i)->sum('gross_income');
+            $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_fee.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar2_3 = $bar2_2*2;
+            $bar3_1 = MasterlistConference::where('ml_end_year', $i)->sum('gross_income');
+            $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.seminar.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar3_3 = $bar3_2*2;
+            $bar4_1 = MasterlistProductCommRef::where('ml_end_year', $i)->sum('gross_income');
+            $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.product_commerce.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar4_3 = $bar4_2*2;
+            $bar5_1 = MasterlistConsultancy::where('ml_end_year', $i)->sum('gross_income');
+            $bar5_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.consultancy.consultancies.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar5_3 = $bar5_2*2;
+            $bar6_1 = MasterlistLabService::where('ml_end_year', $i)->sum('gross_income');
+            $bar6_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.consultancy.lab.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar6_3 = $bar6_2*2;
+            $bar7_1 = MasterlistNewEndowment::where('ml_end_year', $i)->sum('amount_endowed');
+            $bar7_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.endowment.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar7_3 = $bar7_2*2;
+            $bar8_1 = MasterlistGift::where('ml_end_year', $i)->sum('value');
+            $bar8_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.gift.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
+            $bar8_3 = $bar8_2*2;
+            array_push($year_range, ['UTM', (int)$i]);
+            array_push($bar_1->data_1, $bar1_1);
+            array_push($bar_1->data_2, $bar1_2);
+            array_push($bar_1->data_3, $bar1_3);
+            array_push($bar_2->data_1, $bar2_1);
+            array_push($bar_2->data_2, $bar2_2);
+            array_push($bar_2->data_3, $bar2_3);
+            array_push($bar_3->data_1, $bar3_1);
+            array_push($bar_3->data_2, $bar3_2);
+            array_push($bar_3->data_3, $bar3_3);
+            array_push($bar_4->data_1, $bar4_1);
+            array_push($bar_4->data_2, $bar4_2);
+            array_push($bar_4->data_3, $bar4_3);
+            array_push($bar_5->data_1, $bar5_1);
+            array_push($bar_5->data_2, $bar5_2);
+            array_push($bar_5->data_3, $bar5_3);
+            array_push($bar_6->data_1, $bar6_1);
+            array_push($bar_6->data_2, $bar6_2);
+            array_push($bar_6->data_3, $bar6_3);
+            array_push($bar_7->data_1, $bar7_1);
+            array_push($bar_7->data_2, $bar7_2);
+            array_push($bar_7->data_3, $bar7_3);
+            array_push($bar_8->data_1, $bar8_1);
+            array_push($bar_8->data_2, $bar8_2);
+            array_push($bar_8->data_3, $bar8_3);
         }
 
         return (object)[
             'year_range' => $year_range,
+            'bar_1' => $bar_1,
+            'bar_2' => $bar_2,
+            'bar_3' => $bar_3,
+            'bar_4' => $bar_4,
+            'bar_5' => $bar_5,
+            'bar_6' => $bar_6,
+            'bar_7' => $bar_7,
+            'bar_8' => $bar_8,
         ];
     }
 
-    public function sectionF_data_P($start_year, $end_year) {
+    public function sectionG_data_S($start_year, $end_year) {
         $year_range = []; 
-
+        $bar_1 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_2 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_3 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_4 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_5 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_6= (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_7= (object)[ 
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            array_push($year_range, (int)$i);
+            $bar1_1 = MasterlistStaffInternationalMoa::where('ml_end_year', $i)->count();
+            $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.international_moa.percent_staff_involved.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            $bar2_1 = MasterlistStaffSentAbroad::where('ml_end_year', $i)->count();
+            $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.staff_sent_abroad.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra1_benchmark_target ?? 0);
+            $bar3_1 = MasterlistMembershipInternational::where('ml_end_year', $i)->whereIn('staff_type', ['MEMBER','AHLI'])->count();
+            $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.international_membership.staff_members.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra1_benchmark_target ?? 0);
+            $bar4_1 = MasterlistMembershipInternational::where('ml_end_year', $i)->whereNotIn('staff_type', ['MEMBER','AHLI'])->count();
+            $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.international_membership.staff_upper_member.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            $bar5_1 = MasterlistStaffNationalMoa::where('ml_end_year', $i)->count();
+            $bar5_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.national_moa.percent_staff_involved.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            $bar6_1 = MasterlistMembershipNational::where('ml_end_year', $i)->whereIn('staff_type', ['MEMBER','AHLI'])->count();
+            $bar6_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.national_membership.staff_members.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra1_benchmark_target ?? 0);
+            $bar7_1 = MasterlistMembershipNational::where('ml_end_year', $i)->whereNotIn('staff_type', ['MEMBER','AHLI'])->count();
+            $bar7_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.national_membership.staff_upper_member.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            array_push($year_range, ['UTM', (int)$i]);
+            array_push($bar_1->data_1, $bar1_1);
+            array_push($bar_1->data_2, $bar1_2);
+            array_push($bar_2->data_1, $bar2_1);
+            array_push($bar_2->data_2, $bar2_2);
+            array_push($bar_3->data_1, $bar3_1);
+            array_push($bar_3->data_2, $bar3_2);
+            array_push($bar_4->data_1, $bar4_1);
+            array_push($bar_4->data_2, $bar4_2);
+            array_push($bar_5->data_1, $bar5_1);
+            array_push($bar_5->data_2, $bar5_2);
+            array_push($bar_6->data_1, $bar6_1);
+            array_push($bar_6->data_2, $bar6_2);
+            array_push($bar_7->data_1, $bar7_1);
+            array_push($bar_7->data_2, $bar7_2);
         }
 
         return (object)[
             'year_range' => $year_range,
+            'bar_1' => $bar_1,
+            'bar_2' => $bar_2,
+            'bar_3' => $bar_3,
+            'bar_4' => $bar_4,
+            'bar_5' => $bar_5,
+            'bar_6' => $bar_6,
+            'bar_7' => $bar_7,
         ];
     }
 
-    public function sectionF_data_C($start_year, $end_year) {
+    public function sectionG_data_P($start_year, $end_year) {
         $year_range = []; 
-
+        $bar_1 = (object)[ 
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_2 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_3 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_4 = (object)[  
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            array_push($year_range, (int)$i);
+            $bar1_1 = MasterlistNewKtp::where('ml_end_year', $i)->count();
+            $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.social_innovation.community_research.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            $bar2_1 = MasterlistBenefitedKtp::where('ml_end_year', $i)->count();
+            $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.social_innovation.community_benefit.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            $bar3_1 = MasterlistJointResearchProject::where('ml_end_year', $i)->count();
+            $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_project.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra1_benchmark_target ?? 0);
+            $bar4_1 = MasterlistJointResearchRu::where('ml_end_year', $i)->count();
+            $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_project_ru.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
+            array_push($year_range, ['UTM', (int)$i]);
+            array_push($bar_1->data_1, $bar1_1);
+            array_push($bar_1->data_2, $bar1_2);
+            array_push($bar_2->data_1, $bar2_1);
+            array_push($bar_2->data_2, $bar2_2);
+            array_push($bar_3->data_1, $bar3_1);
+            array_push($bar_3->data_2, $bar3_2);
+            array_push($bar_4->data_1, $bar4_1);
+            array_push($bar_4->data_2, $bar4_2);
         }
 
         return (object)[
             'year_range' => $year_range,
-        ];
-    }
-
-    public function sectionG_data($start_year, $end_year) {
-        $year_range = []; 
-
-        for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            array_push($year_range, (int)$i);
-        }
-
-        return (object)[
-            'year_range' => $year_range,
+            'bar_1' => $bar_1,
+            'bar_2' => $bar_2,
+            'bar_3' => $bar_3,
+            'bar_4' => $bar_4,
         ];
     }
 }

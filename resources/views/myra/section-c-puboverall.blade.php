@@ -100,7 +100,7 @@
     function getList(start, end) {
         var start_year = $('#'+start).val();
         var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-c?search=1&start_year=' + start_year + '&end_year=' + end_year;
+        window.location = window.location.origin + '/myra/section-c/PUBLICATION-ALL?search=1&start_year=' + start_year + '&end_year=' + end_year;
     }
     var data = {!! json_encode($data) !!};
 

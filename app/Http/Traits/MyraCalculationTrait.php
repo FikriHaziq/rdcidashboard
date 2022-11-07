@@ -653,6 +653,7 @@ trait MyraCalculationTrait {
         $myra2_benchmark_target_2[0] = (60000*$active_st)+(24000*$active_nonst);
         $myra2_benchmark_target_2[1] = (20000*$active_st)+(12000*$active_nonst);
         $myra2_benchmark_target_2[2] = (20000*$active_st)+(24000*$active_nonst);
+        // dd($active_st,$myra2_benchmark_target_2);
 
         $myra2_benchmark_mark_1[0] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[0]/100)*($myra2_subsubweightage_1[0]/100);
         $myra2_benchmark_mark_1[1] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[0]/100)*($myra2_subsubweightage_1[1]/100);
