@@ -95,6 +95,38 @@
     }
     var data = {!! json_encode($data) !!};
 
+    const customOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                }
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    let disable = '';
+                    let sum = 0;
+                    let i = ctx.dataIndex;
+                    let total = ctx.chart.data.datasets[0].data[i];
+                    let percentage = (value*100 / total).toFixed(2)+"%";
+                    if (total == 0) { return disable; }
+                    else { return percentage; }
+                },
+            }
+        },
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                beginAtZero: true,
+            },
+        }
+    };
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
@@ -106,7 +138,10 @@
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -115,29 +150,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        plugins: [ChartDataLabels],
+        options: customOptions,
     });
 
     var bar2 = document.getElementById('bar2');
@@ -151,7 +172,10 @@
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -160,29 +184,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        plugins: [ChartDataLabels],
+        options: customOptions,
     });
 
     var bar3 = document.getElementById('bar3');
@@ -196,7 +206,10 @@
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -205,29 +218,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        plugins: [ChartDataLabels],
+        options: customOptions,
     });
 
     var bar4 = document.getElementById('bar4');
@@ -241,7 +240,10 @@
                     data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -250,29 +252,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        plugins: [ChartDataLabels],
+        options: customOptions,
     });
 
     var bar5 = document.getElementById('bar5');
@@ -286,7 +274,10 @@
                     data: data.bar_5.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -295,29 +286,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        plugins: [ChartDataLabels],
+        options: customOptions,
     });
 </script>
 @endsection

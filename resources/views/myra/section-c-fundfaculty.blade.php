@@ -76,31 +76,25 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INDEXED JOURNAL</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (UNIVERSITY) APPROVED</span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">ARTICLES IN Q1/Q2 JOURNAL</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (NATIONAL) APPROVED</span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INDEXED PROCEEDING</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">NEW PRIVATE FUND APPROVED</span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">MyCITE</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">NEW INTERNATIONAL FUND APPROVED</span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">RESEARCH BOOK</span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR PUBLIC FUND</span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">BOOK CHAPTER</span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR PRIVATE FUND</span><br><canvas id="bar6"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">CASE STUDY/TECHNICAL REPORT</span><br><canvas id="bar7"></canvas></div>
-            </div>
-            <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POLICY PAPER</span><br><canvas id="bar8"></canvas></div>
-            </div>
-            <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">OTHER PUBLICATIONS</span><br><canvas id="bar9"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR INTERNATIONAL FUND</span><br><canvas id="bar7"></canvas></div>
             </div>
         </div>
     </div>
@@ -127,12 +121,13 @@
             },
             datalabels: {
                 formatter: (value, ctx) => {
-                    let sum = 0;
-                    let i = ctx.dataIndex;
-                    let total = ctx.chart.data.datasets[1].data[i];
-                    let percentage = (value*100 / total).toFixed(2)+"%";
-                    return percentage;
+                    return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
                 },
+                color: 'rgb(0, 0, 0)',
             }
         },
         scales: {
@@ -147,13 +142,65 @@
                 display: false
                 },
                 beginAtZero: true,
+                ticks: {
+                    callback: (value, index, values) => {
+                        return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                    }
+                }
             },
         }
     };
 
+    // no legend
+    const basicOptions = {
+        plugins: {
+            legend: {
+                display: false
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                },
+                color: 'rgb(0, 0, 0)',
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                display: false
+                },
+                stacked: true,
+            },
+            y: {
+                grid: {
+                display: false
+                },
+                beginAtZero: true,
+                ticks: {
+                    callback: (value, index, values) => {
+                        return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                    }
+                }
+            },
+        }
+    }
+
     // update year range and faculty here; labels
     const facultyLabels = [
         ['AHIBS', 2019], ['AHIBS', 2020], ['AHIBS', 2021],
+        ['FABU', 2019], ['FABU', 2020], ['FABU', 2021],
     ];
 
     var bar1 = document.getElementById('bar1');
@@ -163,32 +210,11 @@
             labels: facultyLabels,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [190, 170, 190],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [100, 90, 100],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
                     label: 'ACHIEVEMENT',
-                    data: [59, 65, 88],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
+                    data: [60000, 51000, 45000, 818000, 2280000, 843000],
+                    backgroundColor: 'rgb(253, 180, 7)',
+                    borderColor: 'rgb(253, 180, 7)',
                     borderWidth: 1,
-                    categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
                         align: 'top',
@@ -197,7 +223,7 @@
             ]
         },
         plugins: [ChartDataLabels],
-        options: customOptions,
+        options: basicOptions,
     });
 
     var bar2 = document.getElementById('bar2');
@@ -207,22 +233,11 @@
             labels: facultyLabels,
             datasets: [
                 {
-                    label: 'INDEXED JOURNAL',
-                    data: [60, 65, 88],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
                     label: 'ACHIEVEMENT',
-                    data: [5, 9, 9],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
+                    data: [455000, 146000, 229000, 2110000, 1200000, 1750000],
+                    backgroundColor: 'rgb(21, 164, 63)',
+                    borderColor: 'rgb(21, 164, 63)',
                     borderWidth: 1,
-                    categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
                         align: 'top',
@@ -231,6 +246,93 @@
             ]
         },
         plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar3 = document.getElementById('bar3');
+    var barChart3 = new Chart(bar3, {
+        type: 'bar',
+        data: {
+            labels: facultyLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [0, 15000, 80000, 329000, 96000, 40000],
+                    backgroundColor: 'rgb(19, 160, 236)',
+                    borderColor: 'rgb(19, 160, 236)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar4 = document.getElementById('bar4');
+    var barChart4 = new Chart(bar4, {
+        type: 'bar',
+        data: {
+            labels: facultyLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [0, 0, 4600000, 100000, 0, 523000],
+                    backgroundColor: 'rgb(230, 104, 38)',
+                    borderColor: 'rgb(230, 104, 38)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar5 = document.getElementById('bar5');
+    var barChart5 = new Chart(bar5, {
+        type: 'bar',
+        data: {
+            labels: facultyLabels,
+            datasets: [
+                {
+                    label: 'MyRA II TARGET (200%)',
+                    data: [160000000, 160000000, 160000000, 160000000, 160000000, 160000000],
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: [80000000, 80000000, 80000000, 80000000, 80000000, 80000000],
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 0.2,
+                },
+                {
+                    label: 'UNIVERSITY',
+                    data: [19820000, 28340000, 22040000, 19820000, 28340000, 22040000],
+                    backgroundColor: 'rgb(67, 113, 40)',
+                    borderColor: 'rgb(67, 113, 40)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.78,
+                },
+                {
+                    label: 'NATIONAL',
+                    data: [46060000, 58600000, 40890000, 46060000, 58600000, 40890000],
+                    backgroundColor: 'rgb(185, 219, 165)',
+                    borderColor: 'rgb(185, 219, 165)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.78,
+                },
+            ]
+        },
         options: {
             plugins: {
                 legend: {
@@ -241,16 +343,11 @@
                         pointStyle: 'circle',
                     }
                 },
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        let sum = 0;
-                        let i = ctx.dataIndex;
-                        let total = ctx.chart.data.datasets[0].data[i];
-                        let percentage = (value*100 / total).toFixed(2)+"%";
-                        return percentage;
-                    },
+                tooltip: {
+                    enabled: false
                 }
             },
+            locale: 'en-MY',
             scales: {
                 x: {
                     grid: {
@@ -263,141 +360,18 @@
                     display: false
                     },
                     beginAtZero: true,
+                    ticks: {
+                        callback: (value, index, values) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        }
+                    }
                 },
             }
         }
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: facultyLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [1600, 1600, 1650],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [800, 800, 800],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: [1027, 898, 644],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: facultyLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar5 = document.getElementById('bar5');
-    var barChart5 = new Chart(bar5, {
-        type: 'bar',
-        data: {
-            labels: facultyLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
     });
 
     var bar6 = document.getElementById('bar6');
@@ -408,7 +382,7 @@
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
+                    data: [1500000, 1500000, 1500000, 7000000, 7000000, 7000000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -418,7 +392,7 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
+                    data: [1000000, 1000000, 1000000, 4000000, 4000000, 4000000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
@@ -428,7 +402,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
+                    data: [97000, 1910000, 2390000, 111000, 22000, 436000],
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
@@ -452,7 +426,7 @@
             datasets: [
                 {
                     label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
+                    data: [1500000, 1500000, 1500000, 7000000, 7000000, 7000000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
@@ -462,7 +436,7 @@
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
+                    data: [1000000, 1000000, 1000000, 4000000, 4000000, 4000000],
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
@@ -472,95 +446,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar8 = document.getElementById('bar8');
-    var barChart8 = new Chart(bar8, {
-        type: 'bar',
-        data: {
-            labels: facultyLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [1, 1, 1],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [1, 1, 1],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: [1, 0, 0],
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar9 = document.getElementById('bar9');
-    var barChart9 = new Chart(bar9, {
-        type: 'bar',
-        data: {
-            labels: facultyLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: [9500, 9500, 10000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        display: false,
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: [5000, 5000, 5000],
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        display: false,
-                    },
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: [2775, 2638, 11000],
+                    data: [97000, 1910000, 2390000, 111000, 22000, 436000],
                     backgroundColor: 'rgb(185, 219, 165)',
                     borderColor: 'rgb(185, 219, 165)',
                     borderWidth: 1,
