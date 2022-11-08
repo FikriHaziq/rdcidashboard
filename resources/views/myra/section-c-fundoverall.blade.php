@@ -448,7 +448,7 @@
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: [60000, 51000, 45000, 818000, 2280000, 843000],
+                    data: data.bar_5.data_1,
                     backgroundColor: 'rgb(253, 180, 7)',
                     borderColor: 'rgb(253, 180, 7)',
                     borderWidth: 1,
@@ -471,7 +471,7 @@
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: [455000, 146000, 229000, 2110000, 1200000, 1750000],
+                    data: data.bar_6.data_1,
                     backgroundColor: 'rgb(21, 164, 63)',
                     borderColor: 'rgb(21, 164, 63)',
                     borderWidth: 1,
@@ -494,7 +494,7 @@
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: [0, 15000, 80000, 329000, 96000, 40000],
+                    data: data.bar_7.data_1,
                     backgroundColor: 'rgb(19, 160, 236)',
                     borderColor: 'rgb(19, 160, 236)',
                     borderWidth: 1,
@@ -517,7 +517,7 @@
             datasets: [
                 {
                     label: 'ACHIEVEMENT',
-                    data: [0, 0, 4600000, 100000, 0, 523000],
+                    data: data.bar_8.data_1,
                     backgroundColor: 'rgb(230, 104, 38)',
                     borderColor: 'rgb(230, 104, 38)',
                     borderWidth: 1,
