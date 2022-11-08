@@ -5,13 +5,6 @@
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -33,18 +26,23 @@
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/>
+{{-- <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/> --}}
 
-{{-- <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
     <div class="w-full w-md-auto me-2 me-sm-2">
         <label for="" class="form-label">FACULTY</label>
         <select data-placeholder="Select faculty" class="tom-select w-full" multiple>
-            <option value="1" selected>AHIBS</option>
-            <option value="2">FC</option>
-            <option value="3" selected>FABU</option>
-            <option value="4">FKA</option>
-            <option value="5">FKE</option>
+            @foreach (getFaculty() ?? [] as $faculty_data)
+                <option value="{{ $faculty_data->code }}" @if($faculty==$faculty_data->code) selected @endif>{{ $faculty_data->short }} - {{ $faculty_data->long }}</option>
+            @endforeach
         </select>
+    </div>
+    <div class="w-full w-md-auto me-2 me-sm-2">
+        <label>ALL FACULTY</label>
+        <div class="form-check form-switch mt-2">
+            <input id="checkbox-switch-7" class="form-check-input" type="checkbox">
+            <label class="form-check-label" for="checkbox-switch-7">SELECT ALL FACULTY</label>
+        </div>
     </div>
     <div class="w-full w-md-auto me-2 me-sm-2">
         <label class="form-label">START YEAR</label>
@@ -62,7 +60,7 @@
             @endfor
         </select>
     </div>
-</div> --}}
+</div>
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
