@@ -25,41 +25,21 @@
         Section C: Quantity and Quality of Research
     </h2>
 </div>
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group">
-            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-</div>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-c/PUBLICATION-ALL"/>
+
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Publication</a>
+        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Publication</a>
     </li>
+    {{-- <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication by Faculty</a>
+    </li> --}}
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication by Faculty</a>
+        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding</a>
     </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding by Faculty</a>
-    </li>
+    {{-- <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding by Faculty</a>
+    </li> --}}
 </ul>
 <div class="tab-content box">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
@@ -97,11 +77,6 @@
 @endslot
 @section('custom-js')
 <script>
-    function getList(start, end) {
-        var start_year = $('#'+start).val();
-        var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-c/PUBLICATION-ALL?search=1&start_year=' + start_year + '&end_year=' + end_year;
-    }
     var data = {!! json_encode($data) !!};
 
     const customOptions = {

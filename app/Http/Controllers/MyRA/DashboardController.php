@@ -16,7 +16,6 @@ class DashboardController extends Controller
         $start_year = $request_data->start_year;
         $end_year = $request_data->end_year;
         $faculty = $request_data->faculty;
-        // dd($faculty)
         $data = $this->overview_data($start_year, $end_year, $faculty);
         return view('myra.index', compact('start_year', 'end_year', 'faculty', 'data'));
     }
@@ -74,7 +73,7 @@ class DashboardController extends Controller
         $faculty = $request_data->faculty;
 
         if ($tabs == 'PUBLICATION-ALL') {
-            $data = $this->sectionC_data_P($start_year, $end_year);
+            $data = $this->sectionC_data_P($start_year, $end_year, $faculty);
             return view('myra.section-c-puboverall', compact('start_year', 'end_year', 'faculty', 'data')); 
         }
         elseif ($tabs == 'PUBLICATION-FACULTY') {
@@ -82,7 +81,7 @@ class DashboardController extends Controller
              return view('myra.section-c-pubfaculty', compact('start_year', 'end_year', 'faculty', 'data')); 
         }
         elseif ($tabs == 'FUNDING-ALL') { 
-            $data = $this->sectionC_data_F($start_year, $end_year);
+            $data = $this->sectionC_data_F($start_year, $end_year, $faculty);
             return view('myra.section-c-fundoverall', compact('start_year', 'end_year', 'faculty', 'data')); 
         }
         elseif ($tabs == 'FUNDING-FACULTY') { 

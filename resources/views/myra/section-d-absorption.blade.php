@@ -34,46 +34,14 @@
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
-            <select class="form-select bg-white">
-                <option value="">All</option>
-                {{-- @foreach ($data->faculties ?? [] as $faculty)
-                <option value="{{ $faculty->faculty }}">{{ $faculty->faculty }}</option> --}}
-                {{-- @endforeach --}}
-            </select>
-        </div>
-    </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group">
-            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-</div>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-d/ABSORPTION"/>
                                     
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-d', ['tabs'=>'ABSORPTION','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Absorption</a>
+        <a href="{{ route('myra.section-d', ['tabs'=>'ABSORPTION','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Absorption</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-d', ['tabs'=>'ENROLLMENT','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Enrollment</a>
+        <a href="{{ route('myra.section-d', ['tabs'=>'ENROLLMENT','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Enrollment</a>
     </li>
 </ul>
 <div class="tab-content box">
@@ -100,11 +68,6 @@
 @endslot
 @section('custom-js')
 <script>
-    function getList(start, end) {
-        var start_year = $('#'+start).val();
-        var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-d/ABSORPTION?search=1&start_year=' + start_year + '&end_year=' + end_year;
-    }
     var data = {!! json_encode($data) !!};
 
     var bar1 = document.getElementById('bar1');

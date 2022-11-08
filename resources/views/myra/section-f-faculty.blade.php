@@ -66,10 +66,10 @@
 </div>
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', ['tabs'=>'UNIVERSITY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">University</a>
+        <a href="{{ route('myra.section-f', ['tabs'=>'UNIVERSITY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">University</a>
     </li>
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', ['tabs'=>'FACULTY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Faculty</a>
+        <a href="{{ route('myra.section-f', ['tabs'=>'FACULTY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Faculty</a>
     </li>
 </ul>
 <div class="tab-content box">

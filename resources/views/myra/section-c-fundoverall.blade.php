@@ -25,48 +25,43 @@
         Section C: Quantity and Quality of Research
     </h2>
 </div>
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group me-2 me-sm-2">
-            <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-            <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-    <div class="w-full w-md-auto d-flex">
-        <div class="input-group">
-            <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-            <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-</div>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-c/FUNDING-ALL"/>
+
 <ul class="nav nav-link-tabs mt-5" role="tablist">
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication</a>
+        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication</a>
     </li>
+    {{-- <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication by Faculty</a>
+    </li> --}}
     <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication by Faculty</a>
+        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Funding</a>
     </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 active-tab" role="tab">Funding</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding by Faculty</a>
-    </li>
+    {{-- <li class="nav-item flex-1" role="presentation">
+        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding by Faculty</a>
+    </li> --}}
 </ul>
 <div class="tab-content box">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
+            @if ($faculty)
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (UNIVERSITY) APPROVED</span><br><canvas id="bar5"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (NATIONAL) APPROVED</span><br><canvas id="bar6"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">NEW PRIVATE FUND APPROVED</span><br><canvas id="bar7"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5"><span class="font-weight-bold">NEW INTERNATIONAL FUND APPROVED</span><br><canvas id="bar8"></canvas></div>
+            </div>
+            @else
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">NEW FUNDING APPROVED</span><br><canvas id="bar1"></canvas></div>
             </div>
+            @endif
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR PUBLIC FUND</span><br><canvas id="bar2"></canvas></div>
             </div>
@@ -82,13 +77,48 @@
 @endslot
 @section('custom-js')
 <script>
-    function getList(start, end) {
-        var start_year = $('#'+start).val();
-        var end_year = $('#'+end).val();
-        window.location = window.location.origin + '/myra/section-c/FUNDING-ALL?search=1&start_year=' + start_year + '&end_year=' + end_year;
-    }
     var data = {!! json_encode($data) !!};
 
+    const basicOptions = {
+        plugins: {
+            legend: {
+                display: false
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                },
+                color: 'rgb(0, 0, 0)',
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                display: false
+                },
+                stacked: true,
+            },
+            y: {
+                grid: {
+                display: false
+                },
+                beginAtZero: true,
+                ticks: {
+                    callback: (value, index, values) => {
+                        return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                    }
+                }
+            },
+        }
+    }
     const customOptions = {
         plugins: {
             legend: {
@@ -409,6 +439,99 @@
         plugins: [ChartDataLabels],
         options: customOptions,
     });
+
+    var bar5 = document.getElementById('bar5');
+    var barChart5 = new Chart(bar5, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [60000, 51000, 45000, 818000, 2280000, 843000],
+                    backgroundColor: 'rgb(253, 180, 7)',
+                    borderColor: 'rgb(253, 180, 7)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar6 = document.getElementById('bar6');
+    var barChart6 = new Chart(bar6, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [455000, 146000, 229000, 2110000, 1200000, 1750000],
+                    backgroundColor: 'rgb(21, 164, 63)',
+                    borderColor: 'rgb(21, 164, 63)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar7 = document.getElementById('bar7');
+    var barChart7 = new Chart(bar7, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [0, 15000, 80000, 329000, 96000, 40000],
+                    backgroundColor: 'rgb(19, 160, 236)',
+                    borderColor: 'rgb(19, 160, 236)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
+    var bar8 = document.getElementById('bar8');
+    var barChart8 = new Chart(bar8, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'ACHIEVEMENT',
+                    data: [0, 0, 4600000, 100000, 0, 523000],
+                    backgroundColor: 'rgb(230, 104, 38)',
+                    borderColor: 'rgb(230, 104, 38)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: basicOptions,
+    });
+
 </script>
 @endsection
 @endcomponent
