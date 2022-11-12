@@ -77,22 +77,10 @@ Route::middleware(['auth'])->group(function () {
         Route::name("section-f")->get("section-f/{tabs?}", [MyRADashboardController::class, "sectionF"]);
         Route::name("section-g")->get("section-g/{tabs?}", [MyRADashboardController::class, "sectionG"]);
         Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
-
-        Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
-            Route::name('section-a')->get('section-a/{year?}', [RawDataController::class, 'sectionA']);
-            Route::name('section-b')->get('section-b/{year?}', [RawDataController::class, 'sectionB']);
-            Route::name('section-c')->get('section-c/{year?}', [RawDataController::class, 'sectionC']);
-            Route::name('section-d')->get('section-d/{year?}', [RawDataController::class, 'sectionD']);
-            Route::name('section-e')->get('section-e/{year?}', [RawDataController::class, 'sectionE']);
-            Route::name('section-f')->get('section-f/{year?}', [RawDataController::class, 'sectionF']);
-            Route::name('section-g')->get('section-g/{year?}', [RawDataController::class, 'sectionG']);
-            Route::name('section-h')->get('section-h/{year?}', [RawDataController::class, 'sectionH']);
-            Route::name('summary')->get('summary/{year?}', [RawDataController::class, 'summary']);
-        });
     });
 });
 
-Route::middleware(['auth', 'user-role: admin'])->group(function () {
+Route::middleware(['auth', 'user-role:admin'])->group(function () {
     Route::name("masterlist.")->prefix("masterlist")->group(function () {
         Route::name("myra.")->prefix("myra")->group(function () {
             Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'myra_index']);
@@ -105,6 +93,20 @@ Route::middleware(['auth', 'user-role: admin'])->group(function () {
             Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "pm_list"]);
             Route::name("import.")->get('/import/{id}', [MasterlistController::class, "pm_import"]);
             Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "pm_delete"]);
+        });
+    });
+    Route::name("myra.")->prefix("myra")->group(function () {
+
+        Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
+            Route::name('section-a')->get('section-a/{year?}', [RawDataController::class, 'sectionA']);
+            Route::name('section-b')->get('section-b/{year?}', [RawDataController::class, 'sectionB']);
+            Route::name('section-c')->get('section-c/{year?}', [RawDataController::class, 'sectionC']);
+            Route::name('section-d')->get('section-d/{year?}', [RawDataController::class, 'sectionD']);
+            Route::name('section-e')->get('section-e/{year?}', [RawDataController::class, 'sectionE']);
+            Route::name('section-f')->get('section-f/{year?}', [RawDataController::class, 'sectionF']);
+            Route::name('section-g')->get('section-g/{year?}', [RawDataController::class, 'sectionG']);
+            Route::name('section-h')->get('section-h/{year?}', [RawDataController::class, 'sectionH']);
+            Route::name('summary')->get('summary/{year?}', [RawDataController::class, 'summary']);
         });
     });
 });
