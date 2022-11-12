@@ -4,7 +4,7 @@
     <!-- END: Breadcrumb -->
     <!-- BEGIN: Account Menu -->
         <div class="intro-x dropdown me-auto me-sm-6">
-            Admin MC
+            {{ user()->name }}
         </div>
         <div class="intro-x dropdown w-8 h-8">
         <div class="dropdown-toggle w-8 h-8 rounded-pill overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-bs-toggle="dropdown">
@@ -13,8 +13,8 @@
         <div class="dropdown-menu w-56">
             <ul class="dropdown-content bg-theme-26 dark-bg-dark-6 text-white">
                 <li class="p-2">
-                    <div class="fw-medium text-white">Admin MC</div>
-                    <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">Software Engineer</div>
+                    <div class="fw-medium text-white">{{ user()->name }}</div>
+                    <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">{{ user()->role == 'faculty' ? getFacultyByCode(user()->faculty_code)->long : ucwords(user()->role) }}</div>
                 </li>
                 <li>
                     <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
@@ -32,7 +32,7 @@
                     <hr class="dropdown-divider border-theme-27 dark-border-dark-3">
                 </li>
                 <li>
-                    <a href="{{ route('login') }}" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="toggle-right" class="w-4 h-4 me-2"></i> Logout </a>
+                    <a href="{{ route('logout') }}" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="toggle-right" class="w-4 h-4 me-2"></i> Logout </a>
                 </li>
             </ul>
         </div>

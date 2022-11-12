@@ -69,8 +69,7 @@ trait DataSerializationTrait {
     public function student_study_mode($type){
         if($type == 'research'){
             $data = [
-                'PENYELIDIKAN',
-                'K KUR & PENYELIDIKAN',
+                'RESEARCH', 'PENYELIDIKAN', 'MIXED MODE', 'K KUR & PENYELIDIKAN'
             ];
         }
         else if($type == 'coursework'){
@@ -293,6 +292,7 @@ trait DataSerializationTrait {
         if($type == 'national'){
             $data = [
                 'NATIONAL',
+                'TEMPATAN',
             ];
         }
         else if($type == 'international'){

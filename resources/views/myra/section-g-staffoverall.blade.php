@@ -33,21 +33,19 @@
 </div>
 <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-g/STAFFOVERALL"/>
 
-<ul class="nav nav-link-tabs mt-5" role="tablist">
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-g', ['tabs'=>'STAFFOVERALL','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Staff Participation Overall</a>
-    </li>
-    {{-- <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-g', ['tabs'=>'STAFFFACULTY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Staff Participation by Faculty</a>
-    </li> --}}
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-g', ['tabs'=>'PROJECTOVERALL','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Project Overall</a>
-    </li>
-    {{-- <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-g', ['tabs'=>'PROJECTFACULTY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Project by Faculty</a>
-    </li> --}}
-</ul>
-<div class="tab-content box">
+<div class="intro-y pr-1 mt-5">
+    <div class="box p-2">
+        <ul class="nav nav-pills" role="tablist">
+            <li id="chats-tab" class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-g', ['tabs'=>'STAFFOVERALL','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active" role="tab">Staff Participation Overall</a>
+            </li>
+            <li id="friends-tab" class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-g', ['tabs'=>'PROJECTOVERALL','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2" role="tab">Project Overall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content box mt-5">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">

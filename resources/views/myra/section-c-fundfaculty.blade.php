@@ -58,21 +58,25 @@
         </div>
     </div>
 </div>
-<ul class="nav nav-link-tabs mt-5" role="tablist">
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Publication by Faculty</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Funding</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">Funding by Faculty</a>
-    </li>
-</ul>
-<div class="tab-content box">
+<div class="intro-y pr-1 mt-5">
+    <div class="box p-2">
+        <ul class="nav nav-pills" role="tablist">
+            <li id="chats-tab" class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 " role="tab">Publication</a>
+            </li>
+            <li class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 " role="tab">Publication by Faculty</a>
+            </li>
+            <li class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-ALL', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 " role="tab">Funding</a>
+            </li>
+            <li class="nav-item flex-1" role="presentation">
+                <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active" role="tab">Funding by Faculty</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content box mt-5">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">

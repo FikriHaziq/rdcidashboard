@@ -26,9 +26,9 @@
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-{{-- <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/> --}}
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/>
 
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
+{{-- <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
     <div class="w-full w-md-auto me-2 me-sm-2">
         <label for="" class="form-label">FACULTY</label>
         <select data-placeholder="Select faculty" class="tom-select w-full" multiple>
@@ -60,7 +60,7 @@
             @endfor
         </select>
     </div>
-</div>
+</div> --}}
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">

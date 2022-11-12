@@ -33,15 +33,6 @@
 </div>
 <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-f/UNIVERSITY"/>
 
-{{-- <ul class="nav nav-link-tabs mt-5" role="tablist">
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', ['tabs'=>'UNIVERSITY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 active-tab" role="tab">University</a>
-    </li>
-    <li class="nav-item flex-1" role="presentation">
-        <a href="{{ route('myra.section-f', ['tabs'=>'FACULTY','search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 inactive-tab" role="tab">Faculty</a>
-    </li>
-</ul> --}}
-{{-- <div class="tab-content box"> --}}
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">

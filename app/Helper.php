@@ -1,5 +1,10 @@
 <?php
-
+if (!function_exists('user')) {
+    function user()
+    {
+        return auth()->user();
+    }
+}
 
 if (!function_exists('getUtmApiUrl')) {
     function getUtmApiUrl()
@@ -382,5 +387,12 @@ if (!function_exists('getFaculty')) {
         ];
         usort($result, function($a, $b) {return strcmp($a->long, $b->long);});
         return $result;
+    }
+}
+
+if (!function_exists('getFacultyByCode')) {
+    function getFacultyByCode($code)
+    {
+        return collect(getFaculty())->where('code', $code)->first();
     }
 }
