@@ -210,8 +210,11 @@
                 },
                 datalabels: {
                     formatter: (value, ctx) => {
-                        let fund = "RM"+(value/1000000).toFixed(2)+"mil";
-                        return fund;
+                        return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
                     },
                     color: 'rgb(0, 0, 0)',
                 }
@@ -278,8 +281,11 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         formatter: (value, ctx) => {
-                            let fund = "RM"+(value/1000000).toFixed(2)+"mil";
-                            return fund;
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
                         },
                         color: 'rgb(0, 0, 0)',
                     }
@@ -298,10 +304,13 @@
                             let i = ctx.dataIndex;
                             let x = ctx.chart.data.datasets[2].data[i];
                             let fund = 0;
-                            if (value >= x) { fund = "RM"+((value - x)/1000000).toFixed(2)+"mil"; }
-                            else { fund = "RM"+((x - value)/1000000).toFixed(2)+"mil"; }
-                            console.log(fund);
-                            return fund;
+                            if (value >= x) { fund = value - x; }
+                            else { fund = x - value; }
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(fund);
                         },
                         color: 'rgb(0, 0, 0)',
                     }

@@ -81,210 +81,37 @@
 
     var data = {!! json_encode($data) !!};
 
-    var bar1 = document.getElementById('bar1');
-    var barChart1 = new Chart(bar1, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_1.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                },
-            ]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
+    const customOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                reverse: 'true',
+                labels: {
+                    usePointStyle: true,
+                    pointStyle: 'circle',
                 }
             },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
-    });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_2.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                },
-            ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
+        scales: {
+            x: {
+                grid: {
+                display: false
+                },
+                stacked: true,
             },
-            scales: {
-                x: {
-                    stacked: true,
+            y: {
+                grace: '5%',
+                grid: {
+                display: false
                 },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_3.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                },
-            ]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
+                beginAtZero: true,
             },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
         }
-    });
+    };
 
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_4.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                },
-            ]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
-    });
-
-    var line1 = document.getElementById('line1');
-    var lineChart1 = new Chart(line1, {
-        type: 'line',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: 'PI',
-                    data: data.line_1.data_1,
-                    borderColor: ['rgb(230, 104, 38)'],
-                    backgroundColor: ['rgb(230, 104, 38)'],
-                    tension: 0.1,
-                },
-                {
-                    label: 'NON-PI',
-                    data: data.line_1.data_2,
-                    borderColor: ['rgb(95, 160, 56)'],
-                    backgroundColor: ['rgb(95, 160, 56)'],
-                    tension: 0.1,
-                },
-            ]
-        },
-        options: {
-            responsive: true,
+    const lineOptions = {
+        responsive: true,
             interaction: {
                 mode: 'index',
                 intersect: false,
@@ -301,18 +128,197 @@
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 6000,
                     min: 0,
                     // ticks: {
                     //     stepSize: 2000
                     // }
                 },
             }
+    };
+
+    var bar1 = document.getElementById('bar1');
+    var barChart1 = new Chart(bar1, {
+        type: 'bar',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: '100% TARGET',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_1.data_1,
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+            ]
         },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var bar2 = document.getElementById('bar2');
+    var barChart2 = new Chart(bar2, {
+        type: 'bar',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: '100% TARGET',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_2.data_1,
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var bar3 = document.getElementById('bar3');
+    var barChart3 = new Chart(bar3, {
+        type: 'bar',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: '100% TARGET',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_3.data_1,
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var bar4 = document.getElementById('bar4');
+    var barChart4 = new Chart(bar4, {
+        type: 'bar',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: '100% TARGET',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_4.data_1,
+                    backgroundColor: 'rgb(192, 190, 255)',
+                    borderColor: 'rgb(192, 190, 255)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end'
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var line1 = document.getElementById('line1');
+    var lineChart1 = new Chart(line1, {
+        type: 'line',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: 'PI',
+                    data: data.line_1.data_1,
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
+                    tension: 0.1,
+                    datalabels: {
+                        // anchor: 'end',
+                        // align: 'end',
+                        display: false
+                    }
+                },
+                {
+                    label: 'NON-PI',
+                    data: data.line_1.data_2,
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
+                    tension: 0.1,
+                    datalabels: {
+                        // anchor: 'end',
+                        // align: 'end',
+                        display: false
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: lineOptions,
     });
 
     var line2 = document.getElementById('line2');
