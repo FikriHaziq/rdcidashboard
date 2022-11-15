@@ -16,7 +16,7 @@
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
             <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year', '{{ $faculty ?? '' }}')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                @for ($i = date('Y') - 12; $i <= date('Y'); $i++)
                 <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
                 @endfor
             </select>
