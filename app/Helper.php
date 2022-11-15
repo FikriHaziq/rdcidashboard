@@ -34,357 +34,81 @@ if (!function_exists('getFaculty')) {
     function getFaculty()
     {
         $result = [
-            (object)[
-                "short" => "CAN",
-                "code" => 1,
-                "long" => "CANSELORI"
-            ],
-            (object)[
-                "short" => "PP",
-                "code" => 2,
-                "long" => "JABATAN PENDAFTAR"
-            ],
-            (object)[
-                "short" => "PB",
-                "code" => 3,
-                "long" => "JABATAN BENDAHARI"
-            ],
-            (object)[
-                "short" => "PSZ",
-                "code" => 4,
-                "long" => "PERPUSTAKAAN SULTANAH ZANARIAH"
-            ],
-            (object)[
-                "short" => "PPK",
-                "code" => 5,
-                "long" => "JABATAN PENGARAH KERJA"
-            ],
-            (object)[
-                "short" => "JTNCHEP",
-                "code" => 6,
-                "long" => "JABATAN TIMBALAN NAIB CANSELOR (HAL EHWAL PELAJAR)"
-            ],
-            (object)[
-                "short" => "UTMDigital",
-                "code" => 7,
-                "long" => "PUSAT TEKNOLOGI MAKLUMAT DAN KOMUNIKASI"
-            ],
-            (object)[
-                "short" => "JTNCAA",
-                "code" => 8,
-                "long" => "JABATAN TIMBALAN NAIB CANSELOR (A&amp;A)"
-            ],
-            (object)[
-                "short" => "JTNCPI",
-                "code" => 9,
-                "long" => "JABATAN TIMBALAN NAIB CANSELOR (P&amp;I)"
-            ],
-            (object)[
-                "short" => "SPS",
-                "code" => 10,
-                "long" => "SEKOLAH PENGAJIAN SISWAZAH"
-            ],
-            (object)[
-                "short" => "UTMSPACE",
-                "code" => 11,
-                "long" => "SEKOLAH PENDIDIKAN PROFESIONAL DAN PENDIDIKAN BERTERUSAN"
-            ],
-            (object)[
-                "short" => "UTM PRESS",
-                "code" => 12,
-                "long" => "PENERBIT",
-            ],
-            (object)[
-                "short" => "RMC",
-                "code" => 13,
-                "long" => "PUSAT PENGURUSAN PENYELIDIKAN"
-            ],
-            (object)[
-                "short" => "ICC",
-                "code" => 14,
-                "long" => "PUSAT INOVASI DAN PENGKOMERSILAN"
-            ],
-            (object)[
-                "short" => "CTL",
-                "code" => 16,
-                "long" => "PUSAT PENGAJARAN DAN PEMBELAJARAN"
-            ],
-            (object)[
-                "short" => "JTNCP",
-                "code" => 17,
-                "long" => "JABATAN TIMBALAN NAIB CANSELOR (PEMBANGUNAN)"
-            ],
-            (object)[
-                "short" => "UTMLEAD",
-                "code" => 18,
-                "long" => "PUSAT KEPIMPINAN AKADEMIK"
-            ],
-            (object)[
-                "short" => "UTMCS",
-                "code" => 19,
-                "long" => "UTM CAMPUS SUSTAINABILITY "
-            ],
-            (object)[
-                "short" => "CCIN",
-                "code" => 20,
-                "long" => "UTM CENTRE FOR COMMUNITY &amp; INDUSTRY NETWOK "
-            ],
-            (object)[
-                "short" => "FAB",
-                "code" => 21,
-                "long" => "FAKULTI ALAM BINA"
-            ],
-            (object)[
-                "short" => "FKA",
-                "code" => 22,
-                "long" => "FAKULTI KEJURUTERAAN AWAM"
-            ],
-            (object)[
-                "short" => "FKE",
-                "code" => 23,
-                "long" => "FAKULTI KEJURUTERAAN ELEKTRIK"
-            ],
-            (object)[
-                "short" => "FKM",
-                "code" => 24,
-                "long" => "FAKULTI KEJURUTERAAN MEKANIKAL"
-            ],
-            (object)[
-                "short" => "FKKKSA",
-                "code" => 25,
-                "long" => "FAKULTI KEJURUTERAAN KIMIA DAN KEJURUTERAAN SUMBER ASLI"
-            ],
-            (object)[
-                "short" => "FS.",
-                "code" => 26,
-                "long" => "FAKULTI SAINS."
-            ],
-            (object)[
-                "short" => "FGHT",
-                "code" => 27,
-                "long" => "FAKULTI GEOINFORMASI DAN HARTA TANAH"
-            ],
-            (object)[
-                "short" => "FC",
-                "code" => 28,
-                "long" => "FAKULTI KOMPUTERAN"
-            ],
-            (object)[
-                "short" => "FM",
-                "code" => 29,
-                "long" => "FAKULTI PENGURUSAN"
-            ],
-            (object)[
-                "short" => "PPTS",
-                "code" => 30,
-                "long" => "PUSAT PENGAJIAN TAHUN ASAS"
-            ],
-            (object)[
-                "short" => "FP",
-                "code" => 31,
-                "long" => "FAKULTI PENDIDIKAN"
-            ],
-            (object)[
-                "short" => "KST",
-                "code" => 32,
-                "long" => "KOLEJ SAINS DAN TEKNOLOGI"
-            ],
-            (object)[
-                "short" => "FTI",
-                "code" => 33,
-                "long" => "FAKULTI TAMADUN ISLAM"
-            ],
-            (object)[
-                "short" => "FBB",
-                "code" => 35,
-                "long" => "FAKULTI BIOSAINS DAN BIOKEJURUTERAAN"
-            ],
-            (object)[
-                "short" => "FKBSK",
-                "code" => 36,
-                "long" => "FAKULTI KEJURUTERAAN BIOPERUBATAN &amp; SAINS KESIHATAN"
-            ],
-            (object)[
-                "short" => "SPPS",
-                "code" => 37,
-                "long" => "SEKOLAH PENGAJIAN PRA SISWAZAH"
-            ],
-            (object)[
-                "short" => "UTM AIS",
-                "code" => 38,
-                "long" => "SEKOLAH INFORMATIK TERMAJU"
-            ],
-            (object)[
-                "short" => "UTM Perdana",
-                "code" => 39,
-                "long" => "UTM PERDANA SCHOOL",
-            ],
-            (object)[
-                "short" => "UTM Razak",
-                "code" => 40,
-                "long" => "UTM RAZAK SCHOOL"
-            ],
-            (object)[
-                "short" => "ABahasa",
-                "code" => 41,
-                "long" => "AKADEMI BAHASA."
-            ],
-            (object)[
-                "short" => "FPREE",
-                "code" => 42,
-                "long" => "FAKULTI KEJURUTERAAN PETROLEUM DAN KEJURUTERAAN TENAGA DIPERBAHARUI"
-            ],
-            (object)[
-                "short" => "MJIIT",
-                "code" => 43,
-                "long" => "INSTITUT TEKNOLOGI ANTARABANGSA MALAYSIA-JEPUN"
-            ],
-            (object)[
-                "short" => "FKK",
-                "code" => 44,
-                "long" => "FAKULTI KEJURUTERAAN KIMIA"
-            ],
-            (object)[
-                "short" => "FBME",
-                "code" => 45,
-                "long" => "FAKULTI BIOSAINS DAN KEJURUTERAAN PERUBATAN"
-            ],
-            (object)[
-                "short" => "FKT",
-                "code" => 46,
-                "long" => "FAKULTI KEJURUTERAAN KIMIA DAN KEJURUTERAAN TENAGA"
-            ],
-            (object)[
-                "short" => "FK",
-                "code" => 5100,
-                "long" => "FAKULTI KEJURUTERAAN",
-            ],
-            (object)[
-                "short" => "SKA",
-                "code" => 5102,
-                "long" => "SEKOLAH KEJURUTERAAN AWAM"
-            ],
-            (object)[
-                "short" => "SKBSK",
-                "code" => 5103,
-                "long" => "SEKOLAH KEJURUTERAAN BIOPERUBATAN &amp; SAINS KESIHATAN"
-            ],
-            (object)[
-                "short" => "SKE",
-                "code" => 5104,
-                "long" => "SEKOLAH KEJURUTERAAN ELEKTRIK"
-            ],
-            (object)[
-                "short" => "SKT",
-                "code" => 5105,
-                "long" => "SEKOLAH KEJURUTERAAN KIMIA &amp; KEJURUTERAAN TENAGA"
-            ],
-            (object)[
-                "short" => "SKM",
-                "code" => 5106,
-                "long" => "SEKOLAH KEJURUTERAAN MEKANIKAL"
-            ],
-            (object)[
-                "short" => "SC",
-                "code" => 5107,
-                "long" => "SEKOLAH KOMPUTERAN"
-            ],
-            (object)[
-                "short" => "FABU",
-                "code" => 5200,
-                "long" => "FAKULTI ALAM BINA DAN UKUR"
-            ],
-            (object)[
-                "short" => "FSSK",
-                "code" => 5300,
-                "long" => "FAKULTI SAINS SOSIAL DAN KEMANUSIAAN"
-            ],
-            (object)[
-                "short" => "CASIS",
-                "code" => 5301,
-                "long" => "PUSAT KAJIAN TINGGI ISLAM, SAINS DAN PERADABAN"
-            ],
-            (object)[
-                "short" => "AB",
-                "code" => 5302,
-                "long" => "AKADEMI BAHASA"
-            ],
-            (object)[
-                "short" => "ATI",
-                "code" => 5303,
-                "long" => "AKADEMI TAMADUN ISLAM"
-            ],
-            (object)[
-                "short" => "SPSMP",
-                "code" => 5304,
-                "long" => "SEKOLAH PEMBANGUNAN SUMBER MANUSIA &amp; PSIKOLOGI"
-            ],
-            (object)[
-                "short" => "SP",
-                "code" => 5305,
-                "long" => "SEKOLAH PENDIDIKAN"
-            ],
-            (object)[
-                "short" => "FS",
-                "code" => 5400,
-                "long" => "FAKULTI SAINS"
-            ],
-            (object)[
-                "short" => "AHIBS",
-                "code" => 5500,
-                "long" => "SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM"
-            ],
-            (object)[
-                "short" => "FTIR",
-                "code" => 5600,
-                "long" => "FAKULTI TEKNOLOGI DAN INFORMATIK RAZAK"
-            ],
-            (object)[
-                "short" => "SPACE",
-                "code" => 60,
-                "long" => "SEKOLAH PENDIDIKAN PROFESIONAL DAN PENDIDIKAN BERTERUSAN"
-            ],
-            (object)[
-                "short" => "SPACE (F)",
-                "code" => 61,
-                "long" => "SEKOLAH PENDIDIKAN PROFESIONAL DAN PENDIDIKAN BERTERUSAN(F)"
-            ],
-            (object)[
-                "short" => "BATC",
-                "code" => 62,
-                "long" => "BUSINESS ADVANCED TECHNOLOGY CENTRE"
-            ],
-            (object)[
-                "short" => "AHIBS",
-                "code" => 63,
-                "long" => "SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM"
-            ],
-            (object)[
-                "short" => "CCSL",
-                "code" => 64,
-                "long" => "PUSAT KURSUS KOKURIKULUM DAN PEMBELAJARAN SERVIS"
-            ],
-            (object)[
-                "short" => "PPMU",
-                "code" => 65,
-                "long" => "PUSAT PENGURUSAN MAKMAL UNIVERSITI"
-            ],
-            (object)[
-                "short" => "OSHE",
-                "code" => 66,
-                "long" => "PEJABAT PERSEKITARAN, KESELAMATAN DAN KESIHATAN PEKERJAAN"
-            ],
-            (object)[
-                "short" => "UTM XCITE",
-                "code" => 67,
-                "long" => "UTM CENTER FOR STUDENT INNOVATION &amp; TECHNOLOGY ENTREPRENEURSHIP"
-            ],
-            (object)[
-                "short" => "AHIBS &amp; FE",
-                "code" => 7101,
-                "long" => "SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM DAN FAKULTI KEJURUTERAAN"
-            ]
+            (object) ["code" => '01', "long" => 'CANSELORI', "short" => 'CAN', "short_overall" => 'CAN', "year" => NULL],
+            (object) ["code" => '02', "long" => 'PEJABAT PENDAFTAR', "short" => 'PP', "short_overall" => 'PP', "year" => NULL],
+            (object) ["code" => '03', "long" => 'PEJABAT BENDAHARI', "short" => 'PB', "short_overall" => 'PB', "year" => NULL],
+            (object) ["code" => '04', "long" => 'PERPUSTAKAAN SULTANAH ZANARIAH', "short" => 'PSZ', "short_overall" => 'PSZ', "year" => NULL],
+            (object) ["code" => '05', "long" => 'PEJABAT PENGARAH KERJA', "short" => 'PPK', "short_overall" => 'PPK', "year" => NULL],
+            (object) ["code" => '06', "long" => 'PEJABAT HAL EHWAL MAHASISWA', "short" => 'HEM', "short_overall" => 'HEM', "year" => NULL],
+            (object) ["code" => '07', "long" => 'PUSAT TEKNOLOGI MAKLUMAT DAN KOMUNIKASI', "short" => 'CICT', "short_overall" => 'CICT', "year" => NULL],
+            (object) ["code" => '08', "long" => 'PEJABAT TIMBALAN NAIB CANSELOR (A&A)', "short" => 'TNCAA', "short_overall" => 'TNCAA', "year" => NULL],
+            (object) ["code" => '09', "long" => 'PEJABAT TIMBALAN NAIB CANSELOR (P&I)', "short" => 'TNCPI', "short_overall" => 'TNCPI', "year" => NULL],
+            (object) ["code" => '10', "long" => 'SEKOLAH PENGAJIAN SISWAZAH', "short" => 'SPS', "short_overall" => 'SPS', "year" => NULL],
+            (object) ["code" => '12', "long" => 'PENERBIT', "short" => 'PENERBIT', "short_overall" => 'PENERBIT', "year" => NULL],
+            (object) ["code" => '13', "long" => 'PUSAT PENGURUSAN PENYELIDIKAN', "short" => 'RMC', "short_overall" => 'RMC', "year" => NULL],
+            (object) ["code" => '14', "long" => 'PUSAT INOVASI DAN PENGKOMERSILAN', "short" => 'ICC', "short_overall" => 'ICC', "year" => NULL],
+            (object) ["code" => '16', "long" => 'PUSAT PENGAJARAN DAN PEMBELAJARAN', "short" => 'CTL', "short_overall" => 'CTL', "year" => NULL],
+            (object) ["code" => '17', "long" => 'PEJABAT TIMBALAN NAIB CANSELOR (PEMBANGUNAN)', "short" => 'TNCP', "short_overall" => 'TNCP', "year" => NULL],
+            (object) ["code" => '21', "long" => 'FAKULTI ALAM BINA', "short" => 'FAB', "short_overall" => 'FABU', "year" => 2017],
+            (object) ["code" => '22', "long" => 'FAKULTI KEJURUTERAAN AWAM', "short" => 'FKA', "short_overall" => 'FKA', "year" => 2017],
+            (object) ["code" => '23', "long" => 'FAKULTI KEJURUTERAAN ELEKTRIK', "short" => 'FKE', "short_overall" => 'FKE', "year" => 2017],
+            (object) ["code" => '24', "long" => 'FAKULTI KEJURUTERAAN MEKANIKAL', "short" => 'FKM', "short_overall" => 'FKM', "year" => 2017],
+            (object) ["code" => '25', "long" => 'FAKULTI KEJURUTERAAN KIMIA DAN KEJURUTERAAN SUMBER ASLI', "short" => 'FKKKSA', "short_overall" => 'FKT', "year" => 2017],
+            (object) ["code" => '26', "long" => 'FAKULTI SAINS', "short" => 'FS', "short_overall" => 'FS', "year" => 2017],
+            (object) ["code" => '27', "long" => 'FAKULTI GEOINFORMASI DAN HARTA TANAH', "short" => 'FGHT', "short_overall" => 'FABU', "year" => 2017],
+            (object) ["code" => '28', "long" => 'FAKULTI KOMPUTERAN', "short" => 'FC', "short_overall" => 'FC', "year" => 2017],
+            (object) ["code" => '29', "long" => 'FAKULTI PENGURUSAN', "short" => 'FM', "short_overall" => 'FM', "year" => 2017],
+            (object) ["code" => '31', "long" => 'FAKULTI PENDIDIKAN', "short" => 'FP', "short_overall" => 'FSSK', "year" => 2017],
+            (object) ["code" => '33', "long" => 'FAKULTI TAMADUN ISLAM', "short" => 'FTI', "short_overall" => 'FSSK', "year" => 2017],
+            (object) ["code" => '35', "long" => 'FAKULTI BIOSAINS DAN BIOKEJURUTERAAN', "short" => 'FBB', "short_overall" => 'FBB', "year" => 2017],
+            (object) ["code" => '36', "long" => 'FAKULTI KEJURUTERAAN BIOPERUBATAN & SAINS KESIHATAN', "short" => 'FKBSK', "short_overall" => 'FKBSK', "year" => 2017],
+            (object) ["code" => '38', "long" => 'SEKOLAH INFORMATIK TERMAJU UTM', "short" => 'AIS', "short_overall" => 'FTIR', "year" => 2017],
+            (object) ["code" => '39', "long" => 'UTM PERDANA SCHOOL', "short" => 'UTM Perdana', "short_overall" => 'FTIR', "year" => 2017],
+            (object) ["code" => '40', "long" => 'UTM RAZAK SCHOOL', "short" => 'UTM Razak', "short_overall" => 'FTIR', "year" => 2017],
+            (object) ["code" => '41', "long" => 'AKADEMI BAHASA', "short" => 'ABahasa', "short_overall" => 'FSSK', "year" => 2017],
+            (object) ["code" => '42', "long" => 'FAKULTI KEJURUTERAAN PETROLEUM DAN KEJURUTERAAN TENAGA DIPERBAHARUI', "short" => 'FPREE', "short_overall" => 'FKT', "year" => 2017],
+            (object) ["code" => '43', "long" => 'INSTITUT TEKNOLOGI ANTARABANGSA MALAYSIA-JEPUN', "short" => 'MJIIT', "short_overall" => 'MJIIT', "year" => 2017],
+            (object) ["code" => '44', "long" => 'FAKULTI KEJURUTERAAN KIMIA', "short" => 'FKK', "short_overall" => 'FKT', "year" => 2017],
+            (object) ["code" => '45', "long" => 'FAKULTI BIOSAINS DAN KEJURUTERAAN PERUBATAN', "short" => 'FBME', "short_overall" => 'FBME', "year" => 2017],
+            (object) ["code" => '46', "long" => 'FAKULTI KEJURUTERAAN KIMIA DAN KEJURUTERAAN TENAGA', "short" => 'FKT', "short_overall" => 'FKT', "year" => 2017],
+            (object) ["code" => '60', "long" => 'SEKOLAH PENDIDIKAN PROFESIONAL DAN PENDIDIKAN BERTERUSAN', "short" => 'SPACE', "short_overall" => 'SPACE', "year" => 2017],
+            (object) ["code" => '62', "long" => 'BUSINESS ADVANCED TECHNOLOGY CENTRE', "short" => 'BATC', "short_overall" => 'BATC', "year" => 2017],
+            (object) ["code" => '63', "long" => 'SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM', "short" => 'AHIBS', "short_overall" => 'AHIBS', "year" => 2017],
+            (object) ["code" => '5100', "long" => 'FAKULTI KEJURUTERAAN', "short" => 'FE', "short_overall" => 'FE', "year" => 2021],
+            (object) ["code" => '5102', "long" => 'SEKOLAH KEJURUTERAAN AWAM', "short" => 'SKA', "short_overall" => 'FKA', "year" => 2021],
+            (object) ["code" => '5103', "long" => 'SEKOLAH KEJURUTERAAN BIOPERUBATAN & SAINS KESIHATAN', "short" => 'SKBSK', "short_overall" => 'FKBSK', "year" => 2021],
+            (object) ["code" => '5104', "long" => 'SEKOLAH KEJURUTERAAN ELEKTRIK', "short" => 'SKE', "short_overall" => 'FKE', "year" => 2021],
+            (object) ["code" => '5105', "long" => 'SEKOLAH KEJURUTERAAN KIMIA & KEJURUTERAAN TENAGA', "short" => 'SKT', "short_overall" => 'FKT', "year" => 2021],
+            (object) ["code" => '5106', "long" => 'SEKOLAH KEJURUTERAAN MEKANIKAL', "short" => 'SKM', "short_overall" => 'FKM', "year" => 2021],
+            (object) ["code" => '5107', "long" => 'SEKOLAH KOMPUTERAN', "short" => 'SK', "short_overall" => 'FC', "year" => 2021],
+            (object) ["code" => '5200', "long" => 'FAKULTI ALAM BINA DAN UKUR', "short" => 'FABU', "short_overall" => 'FABU', "year" => 2021],
+            (object) ["code" => '5300', "long" => 'FAKULTI SAINS SOSIAL DAN KEMANUSIAAN', "short" => 'FSSK', "short_overall" => 'FSSK', "year" => 2021],
+            (object) ["code" => '5302', "long" => 'AKADEMI BAHASA', "short" => 'AB', "short_overall" => 'FSSK', "year" => 2021],
+            (object) ["code" => '5303', "long" => 'AKADEMI TAMADUN ISLAM', "short" => 'ATI', "short_overall" => 'FSSK', "year" => 2021],
+            (object) ["code" => '5304', "long" => 'SEKOLAH PEMBANGUNAN SUMBER MANUSIA & PSIKOLOGI', "short" => 'SPSMP', "short_overall" => 'FSSK', "year" => 2021],
+            (object) ["code" => '5305', "long" => 'SEKOLAH PENDIDIKAN', "short" => 'SP', "short_overall" => 'FSSK', "year" => 2021],
+            (object) ["code" => '5400', "long" => 'FAKULTI SAINS', "short" => 'FS', "short_overall" => 'FS', "year" => 2021],
+            (object) ["code" => '5500', "long" => 'SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM', "short" => 'AHIBS', "short_overall" => 'AHIBS', "year" => 2021],
+            (object) ["code" => '5600', "long" => 'FAKULTI TEKNOLOGI DAN INFORMATIK RAZAK', "short" => 'FTIR', "short_overall" => 'FTIR', "year" => 2021],
+            (object) ["code" => '5700', "long" => 'INSTITUT TEKNOLOGI ANTARABANGSA MALAYSIA-JEPUN', "short" => 'MJIIT', "short_overall" => 'MJIIT', "year" => 2021],
+            (object) ["code" => '5800', "long" => 'FAKULTI KEJURUTERAAN AWAM', "short" => 'FKA', "short_overall" => 'FKA', "year" => 2022],
+            (object) ["code" => '5900', "long" => 'FAKULTI KEJURUTERAAN ELEKTRIK', "short" => 'FKE', "short_overall" => 'FKE', "year" => 2022],
+            (object) ["code" => '6000', "long" => 'FAKULTI KEJURUTERAAN KIMIA & KEJURUTERAAN TENAGA', "short" => 'FKT', "short_overall" => 'FKT', "year" => 2022],
+            (object) ["code" => '6100', "long" => 'FAKULTI KEJURUTERAAN MEKANIKAL', "short" => 'FKM', "short_overall" => 'FKM', "year" => 2022],
+            (object) ["code" => '6200', "long" => 'FAKULTI KOMPUTERAN', "short" => 'FC', "short_overall" => 'FC', "year" => 2022],
+            (object) ["code" => '6300', "long" => 'FAKULTI ALAM BINA DAN UKUR', "short" => 'FABU', "short_overall" => 'FABU', "year" => 2022],
+            (object) ["code" => '6400', "long" => 'FAKULTI SAINS SOSIAL DAN KEMANUSIAAN', "short" => 'FSSK', "short_overall" => 'FSSK', "year" => 2022],
+            (object) ["code" => '6500', "long" => 'AKADEMI BAHASA', "short" => 'AB', "short_overall" => 'FSSK', "year" => 2022],
+            (object) ["code" => '6600', "long" => 'AKADEMI TAMADUN ISLAM', "short" => 'ATI', "short_overall" => 'FSSK', "year" => 2022],
+            (object) ["code" => '6700', "long" => 'SEKOLAH PEMBANGUNAN SUMBER MANUSIA & PSIKOLOGI', "short" => 'SPSMP', "short_overall" => 'FSSK', "year" => 2022],
+            (object) ["code" => '6800', "long" => 'SEKOLAH PENDIDIKAN', "short" => 'SP', "short_overall" => 'FSSK', "year" => 2022],
+            (object) ["code" => '6900', "long" => 'FAKULTI SAINS', "short" => 'FS', "short_overall" => 'FS', "year" => 2022],
+            (object) ["code" => '7000', "long" => 'FAKULTI PENGURUSAN', "short" => 'FM', "short_overall" => 'FM', "year" => 2022],
+            (object) ["code" => '7100', "long" => 'SEKOLAH PERNIAGAAN ANTARABANGSA AZMAN HASHIM', "short" => 'AHIBS', "short_overall" => 'AHIBS', "year" => 2022],
+            (object) ["code" => '7200', "long" => 'FAKULTI TEKNOLOGI DAN INFORMATIK RAZAK', "short" => 'FTIR', "short_overall" => 'FTIR', "year" => 2022],
+            (object) ["code" => '7300', "long" => 'INSTITUT TEKNOLOGI ANTARABANGSA MALAYSIA-JEPUN', "short" => 'MJIIT', "short_overall" => 'MJIIT', "year" => 2022],
         ];
+        
         usort($result, function($a, $b) {return strcmp($a->long, $b->long);});
         return $result;
     }
@@ -394,5 +118,17 @@ if (!function_exists('getFacultyByCode')) {
     function getFacultyByCode($code)
     {
         return collect(getFaculty())->where('code', $code)->first();
+    }
+}
+
+if (!function_exists('getFacultyByYear')) {
+    function getFacultyByYear($year)
+    {
+        $year_filter = 2017;
+        if($year >= 2018) $year_filter = 2018;
+        if($year >= 2021) $year_filter = 2021;
+        if($year >= 2022) $year_filter = 2022;
+        $faculties = collect(getFaculty())->whereIn('year', [$year_filter, NULL]);
+        return $faculties->values();
     }
 }

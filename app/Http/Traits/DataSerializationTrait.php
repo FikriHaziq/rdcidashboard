@@ -7,34 +7,25 @@ trait DataSerializationTrait {
         if($type == 'prof'){
             $data = [
                 'PROF.',
-                'PROF. TURUS III',
-                'PROFESOR TURUS III (VU04)',
-                'PROFESOR (VK05)',
-                'PROFESOR (VK06)',
-                'PROFESOR (VK07)',
-                'PROFESOR KUP (VK06)',
-                'PROFESSOR',
             ];
         }
         else if($type == 'assoc_prof'){
             $data = [
                 'ASSOC. PROF.',
-                'PROFESOR MADYA (DS53)',
-                'PROFESOR MADYA (DS54)',
 
             ];
         }
         else if($type == 'senior_lecturer'){
             $data = [
                 'SENIOR LECTURER',
+                'PENSYARAH KANAN (DS51)',
+                'PENSYARAH KANAN (DS52)',
             ];
         }
         else if($type == 'lecturer'){
             $data = [
                 'LECTURER',
                 'PENSYARAH (DS45)',
-                'PENSYARAH KANAN (DS51)',
-                'PENSYARAH KANAN (DS52)',
             ];
         }
         else if($type == 'research_fellow'){
@@ -69,13 +60,15 @@ trait DataSerializationTrait {
     public function student_study_mode($type){
         if($type == 'research'){
             $data = [
-                'RESEARCH', 'PENYELIDIKAN', 'MIXED MODE', 'K KUR & PENYELIDIKAN'
+                'RESEARCH', 'PENYELIDIKAN',
             ];
         }
         else if($type == 'coursework'){
             $data = [
+                'COURSEWORK',
                 'KERJA KURSUS',
                 'K KUR & PENYELIDIKAN',
+                'MIXED MODE',
             ];
         }
 

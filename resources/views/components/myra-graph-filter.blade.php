@@ -5,8 +5,8 @@
             <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
             <select class="form-select bg-white" onchange="getList('start_year', 'end_year', $(this).val())">
                 <option value="">All</option>
-                @foreach (getFaculty() ?? [] as $faculty_data)
-                <option value="{{ $faculty_data->code }}" @if($faculty==$faculty_data->code) selected @endif>{{ $faculty_data->short }} - {{ $faculty_data->long }}</option>
+                @foreach (getFacultyByYear($end_year) ?? [] as $faculty_data)
+                <option value="{{ $faculty_data->short_overall }}" @if($faculty==$faculty_data->short_overall) selected @endif>{{ $faculty_data->short_overall }} - {{ $faculty_data->long }}</option>
                 @endforeach
             </select>
         </div>
