@@ -99,15 +99,15 @@
                     pointStyle: 'circle',
                 }
             },
-            datalabels: {
-                formatter: (value, ctx) => {
-                    let sum = 0;
-                    let i = ctx.dataIndex;
-                    let total = ctx.chart.data.datasets[1].data[i];
-                    let percentage = (value*100 / total).toFixed(2)+"%";
-                    return percentage;
-                },
-            }
+            // datalabels: {
+            //     formatter: (value, ctx) => {
+            //         let sum = 0;
+            //         let i = ctx.dataIndex;
+            //         let total = ctx.chart.data.datasets[1].data[i];
+            //         let percentage = (value*100 / total).toFixed(2)+"%";
+            //         return percentage;
+            //     },
+            // }
         },
         scales: {
             x: {
@@ -213,15 +213,15 @@
                         pointStyle: 'circle',
                     }
                 },
-                datalabels: {
-                    formatter: (value, ctx) => {
-                        let sum = 0;
-                        let i = ctx.dataIndex;
-                        let total = ctx.chart.data.datasets[0].data[i];
-                        let percentage = (value*100 / total).toFixed(2)+"%";
-                        return percentage;
-                    },
-                }
+                // datalabels: {
+                //     formatter: (value, ctx) => {
+                //         let sum = 0;
+                //         let i = ctx.dataIndex;
+                //         let total = ctx.chart.data.datasets[0].data[i];
+                //         let percentage = (value*100 / total).toFixed(2)+"%";
+                //         return percentage;
+                //     },
+                // }
             },
             scales: {
                 x: {
