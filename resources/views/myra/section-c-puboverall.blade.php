@@ -213,6 +213,17 @@
                         pointStyle: 'circle',
                     }
                 },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let sum = 0;
+                            let i = context.dataIndex;
+                            let total = context.chart.data.datasets[0].data[i];
+                            let percentage = (value*100 / total).toFixed(2)+"%";
+                            return percentage;
+                        }
+                    }
+                }
                 // datalabels: {
                 //     formatter: (value, ctx) => {
                 //         let sum = 0;
