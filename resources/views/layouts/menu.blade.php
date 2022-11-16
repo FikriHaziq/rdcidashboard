@@ -7,9 +7,10 @@
         <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
-    <x-menu-item active="myra.*" route="" icon="clipboard" parent="Research Management System" type="sub">
+    <x-menu-item active="myra.*" route="" icon="clipboard" parent="RDM" type="sub">
         @if(user()->role == 'admin')<x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>@endif
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
+        
         <x-menu-item active="myra.info.*" route="myra.info.staff">General Info</x-menu-item>
         <x-menu-item active="myra.section-b" route="myra.section-b" customTabVal="INVESTIGATOR">Section B: Quantity and Quality of Researchers</x-menu-item>
         <x-menu-item active="myra.section-c" route="myra.section-c" customTabVal="PUBLICATION-ALL">Section C: Quantity and Quality of Research</x-menu-item>
