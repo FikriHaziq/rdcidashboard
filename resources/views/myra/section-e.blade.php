@@ -91,22 +91,23 @@
             legend: {
                 display: true,
                 position: 'bottom',
+                reverse: 'true',
                 labels: {
                     usePointStyle: true,
                     pointStyle: 'circle',
                 }
             },
-            datalabels: {
-                formatter: (value, ctx) => {
-                    let disable = '';
-                    let sum = 0;
-                    let i = ctx.dataIndex;
-                    let total = ctx.chart.data.datasets[0].data[i];
-                    let percentage = (value*100 / total).toFixed(2)+"%";
-                    if (total == 0) { return disable; }
-                    else { return percentage; }
-                },
-            }
+            // datalabels: {
+            //     formatter: (value, ctx) => {
+            //         let disable = '';
+            //         let sum = 0;
+            //         let i = ctx.dataIndex;
+            //         let total = ctx.chart.data.datasets[0].data[i];
+            //         let percentage = (value*100 / total).toFixed(2)+"%";
+            //         if (total == 0) { return disable; }
+            //         else { return percentage; }
+            //     },
+            // }
         },
         scales: {
             x: {

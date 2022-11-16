@@ -138,9 +138,6 @@
                     display: true,
                     position: 'left',
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 2000
-                    // }
                 },
             }
     };
