@@ -117,6 +117,7 @@
             legend: {
                 display: true,
                 position: 'bottom',
+                reverse: 'true',
                 labels: {
                     usePointStyle: true,
                     pointStyle: 'circle',
@@ -135,13 +136,13 @@
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
                 },
                 stacked: true,
             },
             y: {
                 grid: {
-                display: false
+                    display: false
                 },
                 beginAtZero: true,
             },

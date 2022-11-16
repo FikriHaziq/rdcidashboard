@@ -73,6 +73,7 @@
             legend: {
                 display: true,
                 position: 'bottom',
+                reverse: 'true',
                 labels: {
                     usePointStyle: true,
                     pointStyle: 'circle',

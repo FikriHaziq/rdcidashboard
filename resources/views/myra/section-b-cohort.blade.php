@@ -114,9 +114,15 @@
             },
             scales: {
                 x: {
+                    grid: {
+                        display: false
+                    },
                     stacked: true,
                 },
                 y: {
+                    grid: {
+                        display: false
+                    },
                     stacked: true,
                     type: 'linear',
                     display: true,
@@ -171,6 +177,11 @@
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                },
                 y: {
                     type: 'linear',
                     display: true,

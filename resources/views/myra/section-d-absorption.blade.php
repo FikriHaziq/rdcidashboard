@@ -74,6 +74,35 @@
 <script>
     var data = {!! json_encode($data) !!};
 
+    const customOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                reverse: 'true',
+                labels: {
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                }
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                display: false
+                },
+                stacked: true,
+            },
+            y: {
+                grace: '5%',
+                grid: {
+                display: false
+                },
+                beginAtZero: true,
+            },
+        }
+    };
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
@@ -97,26 +126,7 @@
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        options: customOptions,
     });
 
     var bar2 = document.getElementById('bar2');
@@ -142,26 +152,7 @@
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        options: customOptions,
     });
 
     var bar3 = document.getElementById('bar3');
@@ -187,26 +178,7 @@
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        options: customOptions,
     });
 
     var bar4 = document.getElementById('bar4');
@@ -232,26 +204,7 @@
                 },
             ]
         },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            }
-        }
+        options: customOptions,
     });
 
     var line1 = document.getElementById('line1');
@@ -294,6 +247,11 @@
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                },
                 y: {
                     type: 'linear',
                     display: true,
