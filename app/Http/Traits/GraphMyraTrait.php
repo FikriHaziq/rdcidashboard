@@ -612,7 +612,7 @@ trait GraphMyraTrait {
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
-                $label = collect(getFaculty())->where('code', $faculty)->first()->short;
+                $label = collect(getFaculty())->where('code', $faculty)->first()->short_overall ?? '';
                 $section_c_data = $this->myraSectionC($i, $faculty);
                 $data = $section_c_data->calculation;
                 $bar1_1 = $section_c_data->journal;
@@ -755,7 +755,7 @@ trait GraphMyraTrait {
         // dd($test);
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
-                $label = collect(getFaculty())->where('code', $faculty)->first()->short;
+                $label = collect(getFaculty())->where('code', $faculty)->first()->short_overall ?? '';
                 $section_c_data = $this->myraSectionC($i, $faculty);
                 $data = $section_c_data->calculation;
                 // dd(MasterlistPublication::select('book_status')->distinct()->get()->toArray());
@@ -1095,7 +1095,7 @@ trait GraphMyraTrait {
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
-                $label = collect(getFaculty())->where('code', $faculty)->first()->short;
+                $label = collect(getFaculty())->where('code', $faculty)->first()->short_overall ?? '';
                 $section_f_data = $this->myraSectionF($i, $faculty);
                 $bar1_1 = $section_f_data->training_course;
                 $bar1_2 = (int)($section_f_data->calculation->myra2_benchmark_1[0] ?? 0);
@@ -1222,7 +1222,7 @@ trait GraphMyraTrait {
         ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
-                $label = collect(getFaculty())->where('code', $faculty)->first()->short;
+                $label = collect(getFaculty())->where('code', $faculty)->first()->short_overall ?? '';
                 $section_g_data = $this->myraSectionG($i, $faculty);
                 $bar1_1 = $section_g_data->total_int_moa;
                 $bar1_2 = (int)($section_g_data->calculation->myra2_benchmark_target_1[1] ?? 0);
@@ -1306,7 +1306,7 @@ trait GraphMyraTrait {
         ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) {
             if($faculty){
-                $label = collect(getFaculty())->where('code', $faculty)->first()->short;
+                $label = collect(getFaculty())->where('code', $faculty)->first()->short_overall ?? '';
                 $section_g_data = $this->myraSectionG($i, $faculty);
                 $bar1_1 = $section_g_data->new_ktp;
                 $bar1_2 = (int)($section_g_data->calculation->myra2_benchmark_target_6[0] ?? 0);
