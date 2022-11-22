@@ -6,13 +6,6 @@
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -138,14 +131,34 @@
         }
     });
 
+    // sort data from highest to lowest for bar2
+    const datapoints = data.bar_2.data_1;
+    const labels = data.study_area;
+    let merged = datapoints.map((datapoint, i) => {
+        return { "datapoint": datapoints[i], "label": labels[i] }
+    });
+
+    const dataSort = merged.sort(function (a, b) {
+        return b.datapoint - a.datapoint
+    });
+    const sortedData = [];
+    const sortedLabel = [];
+
+    for (i = 0; i < dataSort.length; i++) {
+        sortedData.push(dataSort[i].datapoint);
+        sortedLabel.push(dataSort[i].label);
+    }
+    // end sort
+    // console.log(dataSort);
+
     var bar2 = document.getElementById('bar2');
     var barChart2 = new Chart(bar2, {
         type: 'bar',
         data: {
-            labels: data.study_area,
+            labels: sortedLabel,
             datasets: [
                 {
-                    data: data.bar_2.data_1,
+                    data: sortedData,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
