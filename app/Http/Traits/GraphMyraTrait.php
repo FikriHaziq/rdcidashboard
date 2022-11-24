@@ -217,7 +217,7 @@ trait GraphMyraTrait {
         $country_labels = [];
         $countries = [];
 
-        $countryRaws = MasterlistAcademicStaff::select('country')->where('ml_end_year', '>=', $start_year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('ml_end_year', '<=', $end_year)->orderBy('country')->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship',$this->filter_citizenship('foreign'))->distinct()->get();
+        $countryRaws = MasterlistAcademicStaff::select('country')->where('ml_end_year', '>=', $start_year)->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)->orderBy('country')->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship',$this->filter_citizenship('foreign'))->distinct()->get();
         foreach ($countryRaws as $key => $countryRaw) {
             $country = $this->country_code_label($countryRaw->country);
             array_push($country_queries, $country);
@@ -228,7 +228,7 @@ trait GraphMyraTrait {
         $country_labels = array_unique($country_labels);
         // dd($country_queries);
         foreach ($country_queries as $key => $value) {
-            $country_data = MasterlistAcademicStaff::where('ml_end_year', '>=', $start_year)->select('staff_id')->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('ml_end_year', '<=', $end_year)
+            $country_data = MasterlistAcademicStaff::where('ml_end_year', '>=', $start_year)->select('staff_id')->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)
             ->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('country', $value)->distinct()->count();
             array_push($bar_3->data_1, $country_data);
         }
