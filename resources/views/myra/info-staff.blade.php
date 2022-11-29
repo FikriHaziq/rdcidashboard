@@ -57,7 +57,7 @@
                 <div class="p-5"><span class="font-weight-bold">FOREIGN STAFF</span><br><canvas id="line2"></canvas></div>
             </div>
             <div class="col-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">FOREIGN STAFF BY COUNTRY OF ORIGIN</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">FOREIGN STAFF BY COUNTRY OF ORIGIN ({{ $start_year }} - {{ $end_year }})</span><br><canvas id="bar3"></canvas></div>
             </div>
         </div>
     </div>
@@ -233,9 +233,22 @@
         sortedData.push(dataSort[i].datapoint);
         sortedLabel.push(dataSort[i].label);
     }
-
-    var total_country_cumulative = data.total_country_cumulative; // TOTAL CUMULATIVE (COUNTRY)
     // end sort
+
+    const cumulativeTotal = {
+        id: 'cumulativeTotal',
+        afterDraw(chart, args, option) {
+            const { ctx, chartArea: { top, bottom, left, right } } = chart;
+            const logoWidth = 30;
+            const logoHeight = 30;
+            ctx.save();
+            ctx.textAlign = 'right';
+            ctx.fillStyle = 'rgb(172, 62, 49)';
+            ctx.font = '20px Arial';
+            ctx.fillText('TOTAL FOREIGN STAFF: ' + data.total_country_cumulative, ctx.canvas.offsetWidth, 20);
+            ctx.restore();
+        }
+    }
     // console.log(dataSort);
 
     var bar3 = document.getElementById('bar3');
@@ -252,7 +265,9 @@
                 },
             ]
         },
+        plugins: [cumulativeTotal],
         options: {
+            // maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false,
@@ -294,8 +309,8 @@
                 {
                     label: 'TOTAL ACADEMIC STAFF',
                     data: data.line_1.data_1,
-                    borderColor: ['rgb(255, 0, 0)'],
-                    backgroundColor: ['rgb(255, 0, 0)'],
+                    backgroundColor: 'rgb(172, 62, 49)',
+                    borderColor: 'rgb(172, 62, 49)',
                     tension: 0.1,
                     pointStyle: 'rectRot',
                     pointRadius: 5,
@@ -303,8 +318,8 @@
                 {
                     label: 'TOTAL ACTIVE STAFF',
                     data: data.line_1.data_2,
-                    borderColor: ['rgb(29, 185, 242)'],
-                    backgroundColor: ['rgb(29, 185, 242)'],
+                    backgroundColor: 'rgb(72, 138, 153)',
+                    borderColor: 'rgb(72, 138, 153)',
                     tension: 0.1,
                     pointStyle: 'rectRot',
                     pointRadius: 5,
@@ -319,7 +334,12 @@
             },
             plugins: {
                 legend: {
-                    display: false,
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rectRot',
+                    }
                 }
             },
             stacked: false,
@@ -360,8 +380,8 @@
                 {
                     label: 'DATA',
                     data: data.line_2.data_1,
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    backgroundColor: 'rgb(91, 142, 57)',
+                    borderColor: 'rgb(91, 142, 57)',
                     tension: 0.1,
                     pointStyle: 'rectRot',
                     pointRadius: 5,
