@@ -324,7 +324,10 @@ trait GraphMyraTrait {
         sort($study_area_labels);
         foreach ($study_area_queries as $key => $value) {
             // dd($value)
-            $study_area_data = MasterlistPgStudent::select('matric_no')->whereIn('study_area', $value)->distinct()->count();
+            if($faculty){
+                $study_area_data = MasterlistPgStudent::select('matric_no')->where(function ($q) use ($faculty, $end_year) {if($faculty){if($faculty == 'FKT' && $end_year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('ml_end_year','>=', $start_year)->where('ml_end_year','<=', $end_year)->whereIn('study_area', $value)->distinct()->count();
+            }
+            else $study_area_data = MasterlistPgStudent::select('matric_no')->where('ml_end_year','>=', $start_year)->where('ml_end_year','<=', $end_year)->whereIn('study_area', $value)->distinct()->count();
             array_push($bar_2->data_1, $study_area_data);
         }
 
