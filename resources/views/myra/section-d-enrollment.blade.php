@@ -75,6 +75,11 @@
                     pointStyle: 'rectRot',
                 }
             },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    return Math.round(value) + '%';
+                }
+            }
         },
         scales: {
             x: {
