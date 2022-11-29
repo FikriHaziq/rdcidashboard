@@ -233,8 +233,6 @@
         sortedData.push(dataSort[i].datapoint);
         sortedLabel.push(dataSort[i].label);
     }
-
-    var total_country_cumulative = data.total_country_cumulative; // TOTAL CUMULATIVE (COUNTRY)
     // end sort
 
     const cumulativeTotal = {
@@ -245,7 +243,9 @@
             const logoHeight = 30;
             ctx.save();
             ctx.textAlign = 'right';
-            ctx.fillText('TOTAL FOREIGN STAFF', ctx.canvas.offsetWidth, 20);
+            ctx.fillStyle = 'rgb(172, 62, 49)';
+            ctx.font = '20px Arial';
+            ctx.fillText('TOTAL FOREIGN STAFF: ' + data.total_country_cumulative, ctx.canvas.offsetWidth, 20);
             ctx.restore();
         }
     }
