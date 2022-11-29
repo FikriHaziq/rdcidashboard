@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'user-role:admin'])->group(function () {
+Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
     Route::name("masterlist.")->prefix("masterlist")->group(function () {
         Route::name("myra.")->prefix("myra")->group(function () {
             Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'myra_index']);

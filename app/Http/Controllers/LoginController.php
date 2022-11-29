@@ -18,6 +18,9 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
         if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
+            if(auth()->user()->role == 'super_admin'){
+                return redirect()->route('myra.index');
+            }
             if(auth()->user()->role == 'admin'){
                 return redirect()->route('myra.index');
             }

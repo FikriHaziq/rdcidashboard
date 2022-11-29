@@ -709,8 +709,8 @@ trait GraphMyraTrait {
                 $bar9_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.publication.other.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_c')->first()->myra2_benchmark_target ?? 0);
                 $bar9_3 = $bar9_2*2;
             }
-            // if(user()->role == 'admin')array_push($year_range, [$label, (int)$i]);
-            if(user()->role == 'admin')array_push($year_range, (int)$i);
+            // if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, [$label, (int)$i]);
+            if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, (int)$i);
             else array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
@@ -838,8 +838,8 @@ trait GraphMyraTrait {
                 $bar7_1 = null;
                 $bar8_1 = null;
             }
-            // if(user()->role == 'admin')array_push($year_range, [$label, (int)$i]);
-            if(user()->role == 'admin')array_push($year_range, (int)$i);
+            // if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, [$label, (int)$i]);
+            if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, (int)$i);
             else array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
@@ -1189,8 +1189,8 @@ trait GraphMyraTrait {
                 $bar8_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.gift.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_f')->first()->myra2_benchmark_target ?? 0);
                 $bar8_3 = $bar8_2*2;
             }
-            // if(user()->role == 'admin')array_push($year_range, [$label, (int)$i]);
-            if(user()->role == 'admin')array_push($year_range, (int)$i);
+            // if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, [$label, (int)$i]);
+            if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, (int)$i);
             else array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
@@ -1297,8 +1297,8 @@ trait GraphMyraTrait {
                 $bar7_1 = MasterlistMembershipNational::where('ml_end_year', $i)->whereNotIn('staff_type', ['MEMBER','AHLI'])->count();
                 $bar7_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.national_membership.staff_upper_member.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
             }
-            // if(user()->role == 'admin')array_push($year_range, [$label, (int)$i]);
-            if(user()->role == 'admin')array_push($year_range, (int)$i);
+            // if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, [$label, (int)$i]);
+            if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, (int)$i);
             else array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
@@ -1370,8 +1370,8 @@ trait GraphMyraTrait {
                 $bar4_1 = MasterlistJointResearchRu::where('ml_end_year', $i)->count();
                 $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.research_project_ru.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_g')->first()->myra2_benchmark_target ?? 0);
             }
-            // if(user()->role == 'admin')array_push($year_range, [$label, (int)$i]);
-            if(user()->role == 'admin')array_push($year_range, (int)$i);
+            // if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, [$label, (int)$i]);
+            if(in_array(user()->role, ['super_admin', 'admin']))array_push($year_range, (int)$i);
             else array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);

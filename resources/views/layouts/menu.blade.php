@@ -8,7 +8,7 @@
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
     <x-menu-item active="myra.*" route="" icon="clipboard" parent="RDM" type="sub">
-        @if(user()->role == 'admin')<x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>@endif
+        @if(user()->role == 'super_admin')<x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>@endif
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
         
         <x-menu-item active="myra.info.*" route="myra.info.staff">General Info</x-menu-item>
@@ -20,7 +20,7 @@
         <x-menu-item active="myra.section-g" route="myra.section-g" customTabVal="STAFFOVERALL">Section G: Networking and Linkages</x-menu-item>
         {{-- <x-menu-item active="myra.section-h" route="myra.section-h">Seksyen H: Lab Acreditation</x-menu-item> --}}
     </x-menu-item>
-    @if(user()->role == 'admin')
+    @if(user()->role == 'super_admin')
     <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
     <x-menu-item active="research.*" route="" icon="book" parent="UTM Research" type="sub">
         <x-menu-item active="grant.overview" route="grant.overview">Research Overview</x-menu-item>
@@ -54,6 +54,9 @@
             <x-menu-item active="" route="">RMC UTM KL Achievement</x-menu-item>
         </x-menu-item> --}}
     </x-menu-item>
+    {{-- <x-menu-item active="report.*" route="" icon="book" parent="Report" type="sub">
+        <x-menu-item active="report.myra.*" route="report.myra.index">Myra</x-menu-item>
+    </x-menu-item> --}}
     <x-menu-item active="masterlist.*" route="" icon="archive" parent="Master List" type="sub">
         <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Myra</x-menu-item>
         <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>
