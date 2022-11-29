@@ -298,22 +298,44 @@ trait DataSerializationTrait {
         return $data ?? [];
     }
 
-    public function award_type($type){
+    public function award_type($type, $nat_type){
         if($type == 'award'){
             $data = [
                 'AWARD',
-                'AWARDS','B4C - AWARD'
+                'AWARDS',
+                'B4A - AWARD',
+                'B4C - AWARD',
             ];
         }
         else if($type == 'recognition_stewardship'){
-            $data = [
-                'RECOGNITION',
-                'STEWARDSHIP',
-                'FELLOWSHIP',
-                'B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
-                'B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
-                'RECOGNITIONS/STEWARDSHIP'
-            ];
+            if($nat_type == 'all'){
+                $data = [
+                    'RECOGNITION',
+                    'STEWARDSHIP',
+                    'FELLOWSHIP',
+                    'B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
+                    'B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
+                    'RECOGNITIONS/STEWARDSHIP'
+                ];
+            }
+            else if($nat_type == 'international'){
+                $data = [
+                    'RECOGNITION',
+                    'STEWARDSHIP',
+                    'FELLOWSHIP',
+                    'B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
+                    'RECOGNITIONS/STEWARDSHIP'
+                ];
+            }
+            else if($nat_type == 'national'){
+                $data = [
+                    'RECOGNITION',
+                    'STEWARDSHIP',
+                    'FELLOWSHIP',
+                    'B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
+                    'RECOGNITIONS/STEWARDSHIP'
+                ];
+            }
         }
         else if($type == 'exhibition'){
             $data = [
@@ -335,6 +357,7 @@ trait DataSerializationTrait {
     public function got($type){
         if($type == 'yes'){
             $data = [
+                'YES',
                 'YA',
             ];
         }
