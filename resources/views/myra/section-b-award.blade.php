@@ -81,7 +81,7 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
         },
@@ -89,6 +89,10 @@
             x: {
                 grid: {
                     display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
@@ -102,6 +106,15 @@
         }
     };
 
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
@@ -109,14 +122,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -144,14 +172,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -179,14 +222,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -214,14 +272,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_4.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -249,14 +322,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_5.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_5.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_5.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -284,14 +372,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_6.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_6.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_6.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
