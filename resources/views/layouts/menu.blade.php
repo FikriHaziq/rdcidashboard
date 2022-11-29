@@ -54,9 +54,11 @@
             <x-menu-item active="" route="">RMC UTM KL Achievement</x-menu-item>
         </x-menu-item> --}}
     </x-menu-item>
+    @endif
     <x-menu-item active="report.*" route="" icon="file-text" parent="Report" type="sub">
         <x-menu-item active="report.myra.*" route="report.myra.index">Myra</x-menu-item>
     </x-menu-item>
+    @if(user()->role == 'super_admin')
     <x-menu-item active="masterlist.*" route="" icon="archive" parent="Master List" type="sub">
         <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Myra</x-menu-item>
         <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>

@@ -1,5 +1,5 @@
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    @if(user()->role == 'admin')
+    @if(in_array(user()->role, ['super_admin', 'admin']))
     <div class="w-full w-md-auto d-flex">
         <div class="input-group me-2 me-sm-2">
             <div class="input-group-text bg-theme-1 text-white">FACULTY</div>
