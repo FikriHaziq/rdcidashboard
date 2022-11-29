@@ -89,7 +89,7 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
         },
@@ -98,12 +98,20 @@
                 grid: {
                     display: false
                 },
+                title: {
+                    display: true,
+                    text: 'Year'
+                },
                 stacked: true,
             },
             y: {
                 grace: '5%',
                 grid: {
                     display: false
+                },
+                title: {
+                    display: true,
+                    text: 'No. of PI'
                 },
                 beginAtZero: true,
             },
@@ -150,6 +158,15 @@
             }
     };
 
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
+
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
         type: 'bar',
@@ -157,14 +174,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -176,7 +208,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -192,14 +225,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -211,7 +259,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -227,14 +276,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -246,7 +310,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -262,14 +327,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_4.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -281,7 +361,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'end'
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -302,11 +383,8 @@
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
-                    datalabels: {
-                        // anchor: 'end',
-                        // align: 'end',
-                        display: false
-                    }
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'NON-PI',
@@ -314,15 +392,11 @@
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
-                    datalabels: {
-                        // anchor: 'end',
-                        // align: 'end',
-                        display: false
-                    }
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
-        plugins: [ChartDataLabels],
         options: lineOptions,
     });
 
@@ -333,11 +407,13 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'INTERNATIONAL',
-                    data: data.line_2.data_1,
-                    borderColor: ['rgb(53, 92, 183)'],
-                    backgroundColor: ['rgb(53, 92, 183)'],
+                    label: 'UNIVERSITY',
+                    data: data.line_2.data_3,
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'NATIONAL',
@@ -345,13 +421,8 @@
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
-                },
-                {
-                    label: 'UNIVERSITY',
-                    data: data.line_2.data_3,
-                    borderColor: ['rgb(95, 160, 56)'],
-                    backgroundColor: ['rgb(95, 160, 56)'],
-                    tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'PRIVATE',
@@ -359,6 +430,17 @@
                     borderColor: ['rgb(253, 180, 7)'],
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
+                },
+                {
+                    label: 'INTERNATIONAL',
+                    data: data.line_2.data_1,
+                    borderColor: ['rgb(53, 92, 183)'],
+                    backgroundColor: ['rgb(53, 92, 183)'],
+                    tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -393,11 +475,6 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 6000,
-                    // min: 0,
-                    // ticks: {
-                    //     stepSize: 2000
-                    // }
                     title: {
                         display: true,
                         text: 'No. of PI'

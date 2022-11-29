@@ -81,22 +81,22 @@
                 {
                     label: '< 40 years old',
                     data: data.bar_1.data_1,
-                    backgroundColor: 'rgba(10, 0, 192)',
-                    borderColor: 'rgba(10, 0, 192)',
+                    backgroundColor: 'rgba(180, 207, 168)',
+                    borderColor: 'rgba(180, 207, 168)',
                     borderWidth: 1
                 },
                 {
                     label: '40 - 50 years old',
                     data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(26, 198, 5)',
-                    borderColor: 'rgba(26, 198, 5)',
+                    backgroundColor: 'rgb(112, 173, 71)',
+                    borderColor: 'rgb(112, 173, 71)',
                     borderWidth: 1
                 },
                 {
                     label: '> 50 years old',
                     data: data.bar_1.data_3,
-                    backgroundColor: 'rgb(145, 0, 26)',
-                    borderColor: 'rgb(145, 0, 26)',
+                    backgroundColor: 'rgb(91, 142, 57)',
+                    borderColor: 'rgb(91, 142, 57)',
                     borderWidth: 1
                 },
             ]
@@ -108,7 +108,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -116,6 +116,10 @@
                 x: {
                     grid: {
                         display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
                     },
                     stacked: true,
                 },
@@ -127,11 +131,6 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 10000,
-                    // min: 0,
-                    // ticks: {
-                    //     stepSize: 5000
-                    // }
                 },
             }
         }
@@ -149,6 +148,8 @@
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'PRO-Q',
@@ -156,6 +157,8 @@
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -171,7 +174,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -180,6 +183,10 @@
                 x: {
                     grid: {
                         display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
                     },
                 },
                 y: {

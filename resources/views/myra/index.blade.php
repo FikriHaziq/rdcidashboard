@@ -64,6 +64,15 @@
                     usePointStyle: true,
                     pointStyle: 'rectRot',
                 }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(ctx) {
+                        let i = ctx.dataIndex;
+                        let label = ctx.dataset.label + ': ' + ctx.dataset.data[i] + '%';
+                        return label;
+                    }
+                }
             }
         },
         stacked: false,
@@ -107,14 +116,18 @@
                     data: data.line_1.data_1,
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
-                    tension: 0.1
+                    tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
                     data: data.line_1.data_2,
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
-                    tension: 0.1
+                    tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -135,6 +148,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -142,6 +157,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -162,6 +179,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -169,6 +188,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -189,6 +210,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -196,6 +219,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -216,6 +241,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -223,6 +250,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -243,6 +272,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -250,6 +281,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -270,6 +303,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -277,6 +312,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -297,6 +334,8 @@
                     borderColor: ['rgb(253, 180, 7)'], 
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MyRA II',
@@ -304,6 +343,8 @@
                     borderColor: ['rgb(21, 164, 63)'], 
                     backgroundColor: ['rgb(21, 164, 63)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
