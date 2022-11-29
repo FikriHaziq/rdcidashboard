@@ -63,30 +63,44 @@ trait GraphMyraTrait {
         $line_2 = (object)[ //SECTION B
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_3 = (object)[ //SECTION C
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_4 = (object)[ //SECTION D
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_5 = (object)[ //SECTION E
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_6 = (object)[ //SECTION F
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_7 = (object)[ //SECTION G
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         $line_8 = (object)[ //SECTION H
             'data_1' => [],
             'data_2' => [],
+            'data_3' => [],
+            'data_4' => [],
         ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
@@ -97,26 +111,26 @@ trait GraphMyraTrait {
                 $section_f_data = $this->myraSectionF($i, $faculty);
                 $section_g_data = $this->myraSectionG($i, $faculty);
                 $section_h_data = $this->myraSectionH($i, $faculty);
-                $section_b = (object)['myra1_mark'=>$section_b_data->calculation->total_myra1_mark,'myra2_mark'=>$section_b_data->calculation->total_myra2_mark];
-                $section_c = (object)['myra1_mark'=>$section_c_data->calculation->total_myra1_mark,'myra2_mark'=>$section_c_data->calculation->total_myra2_mark];
-                $section_d = (object)['myra1_mark'=>$section_d_data->calculation->total_myra1_mark,'myra2_mark'=>$section_d_data->calculation->total_myra2_mark];
-                $section_e = (object)['myra1_mark'=>$section_e_data->calculation->total_myra1_mark,'myra2_mark'=>$section_e_data->calculation->total_myra2_mark];
-                $section_f = (object)['myra1_mark'=>$section_f_data->calculation->total_myra1_mark,'myra2_mark'=>$section_f_data->calculation->total_myra2_mark];
-                $section_g = (object)['myra1_mark'=>$section_g_data->calculation->total_myra1_mark,'myra2_mark'=>$section_g_data->calculation->total_myra2_mark];
-                $section_h = (object)['myra1_mark'=>$section_h_data->calculation->total_myra1_mark,'myra2_mark'=>$section_h_data->calculation->total_myra2_mark];
+                $section_b = (object)['myra1_mark'=>$section_b_data->calculation->total_myra1_mark,'myra2_mark'=>$section_b_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_b_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_b_data->calculation->total_myra2_benchmark_mark];
+                $section_c = (object)['myra1_mark'=>$section_c_data->calculation->total_myra1_mark,'myra2_mark'=>$section_c_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_c_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_c_data->calculation->total_myra2_benchmark_mark];
+                $section_d = (object)['myra1_mark'=>$section_d_data->calculation->total_myra1_mark,'myra2_mark'=>$section_d_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_d_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_d_data->calculation->total_myra2_benchmark_mark];
+                $section_e = (object)['myra1_mark'=>$section_e_data->calculation->total_myra1_mark,'myra2_mark'=>$section_e_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_e_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_e_data->calculation->total_myra2_benchmark_mark];
+                $section_f = (object)['myra1_mark'=>$section_f_data->calculation->total_myra1_mark,'myra2_mark'=>$section_f_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_f_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_f_data->calculation->total_myra2_benchmark_mark];
+                $section_g = (object)['myra1_mark'=>$section_g_data->calculation->total_myra1_mark,'myra2_mark'=>$section_g_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_g_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_g_data->calculation->total_myra2_benchmark_mark];
+                $section_h = (object)['myra1_mark'=>$section_h_data->calculation->total_myra1_mark,'myra2_mark'=>$section_h_data->calculation->total_myra2_mark, 'myra1_benchmark_mark'=>$section_h_data->calculation->total_myra1_benchmark_mark,'myra2_benchmark_mark'=>$section_h_data->calculation->total_myra2_benchmark_mark];
                 // dd($section_b_data);
                 $total_myra1 = ($section_b->myra1_mark ?? 0) + ($section_c->myra1_mark ?? 0) + ($section_d->myra1_mark ?? 0) + ($section_e->myra1_mark ?? 0) + ($section_f->myra1_mark ?? 0) + ($section_g->myra1_mark ?? 0) + ($section_h->myra1_mark ?? 0);
                 $total_myra2 = ($section_b->myra2_mark ?? 0) + ($section_c->myra2_mark ?? 0) + ($section_d->myra2_mark ?? 0) + ($section_e->myra2_mark ?? 0) + ($section_f->myra2_mark ?? 0) + ($section_g->myra2_mark ?? 0) + ($section_h->myra2_mark ?? 0);
             }
             else
             {
-                $section_b = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_b')->first();
-                $section_c = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_c')->first();
-                $section_d = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_d')->first();
-                $section_e = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_e')->first();
-                $section_f = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_f')->first();
-                $section_g = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_g')->first();
-                $section_h = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark")])->where('year', $i)->whereType('section_h')->first();
+                $section_b = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_b')->first();
+                $section_c = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_c')->first();
+                $section_d = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_d')->first();
+                $section_e = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_e')->first();
+                $section_f = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_f')->first();
+                $section_g = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_g')->first();
+                $section_h = MyraCalculation::select([DB::raw("JSON_EXTRACT(overall, '$.myra1_mark')as myra1_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_mark')as myra2_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra1_benchmark_mark')as myra1_benchmark_mark"), DB::raw("JSON_EXTRACT(overall, '$.myra2_benchmark_mark')as myra2_benchmark_mark")])->where('year', $i)->whereType('section_h')->first();
                 $total_myra1 = ($section_b->myra1_mark ?? 0) + ($section_c->myra1_mark ?? 0) + ($section_d->myra1_mark ?? 0) + ($section_e->myra1_mark ?? 0) + ($section_f->myra1_mark ?? 0) + ($section_g->myra1_mark ?? 0) + ($section_h->myra1_mark ?? 0);
                 $total_myra2 = ($section_b->myra2_mark ?? 0) + ($section_c->myra2_mark ?? 0) + ($section_d->myra2_mark ?? 0) + ($section_e->myra2_mark ?? 0) + ($section_f->myra2_mark ?? 0) + ($section_g->myra2_mark ?? 0) + ($section_h->myra2_mark ?? 0);
             }
@@ -125,18 +139,32 @@ trait GraphMyraTrait {
             array_push($line_1->data_2, (float)number_format(($total_myra2), 2));
             array_push($line_2->data_1, (float)number_format(($section_b->myra1_mark ?? 0), 2));
             array_push($line_2->data_2, (float)number_format(($section_b->myra2_mark ?? 0), 2));
+            array_push($line_2->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_2->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_3->data_1, (float)number_format(($section_c->myra1_mark ?? 0), 2));
             array_push($line_3->data_2, (float)number_format(($section_c->myra2_mark ?? 0), 2));
+            array_push($line_3->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_3->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_4->data_1, (float)number_format(($section_d->myra1_mark ?? 0), 2));
             array_push($line_4->data_2, (float)number_format(($section_d->myra2_mark ?? 0), 2));
+            array_push($line_4->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_4->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_5->data_1, (float)number_format(($section_e->myra1_mark ?? 0), 2));
             array_push($line_5->data_2, (float)number_format(($section_e->myra2_mark ?? 0), 2));
+            array_push($line_5->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_5->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_6->data_1, (float)number_format(($section_f->myra1_mark ?? 0), 2));
             array_push($line_6->data_2, (float)number_format(($section_f->myra2_mark ?? 0), 2));
+            array_push($line_6->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_6->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_7->data_1, (float)number_format(($section_g->myra1_mark ?? 0), 2));
             array_push($line_7->data_2, (float)number_format(($section_g->myra2_mark ?? 0), 2));
+            array_push($line_7->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_7->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
             array_push($line_8->data_1, (float)number_format(($section_h->myra1_mark ?? 0), 2));
             array_push($line_8->data_2, (float)number_format(($section_h->myra2_mark ?? 0), 2));
+            array_push($line_8->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
+            array_push($line_8->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
 
         }
 
@@ -231,10 +259,12 @@ trait GraphMyraTrait {
         $country_queries = array_unique($country_queries, SORT_REGULAR);
         $country_labels = array_unique($country_labels);
         // dd($country_queries);
+        $total_country_cumulative = 0;
         foreach ($country_queries as $key => $value) {
             $country_data = MasterlistAcademicStaff::where('ml_end_year', '>=', $start_year)->select('staff_id')->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)
             ->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('country', $value)->distinct()->count();
             array_push($bar_3->data_1, $country_data);
+            $total_country_cumulative += $country_data;
         }
 
         foreach ($country_labels as $key => $value) {
@@ -249,6 +279,7 @@ trait GraphMyraTrait {
             'line_1' => $line_1,
             'line_2' => $line_2,
             'bar_3' => $bar_3,
+            'total_country_cumulative' => $total_country_cumulative
         ];
     }
 

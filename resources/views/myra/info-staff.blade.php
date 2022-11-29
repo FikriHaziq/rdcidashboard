@@ -233,6 +233,8 @@
         sortedData.push(dataSort[i].datapoint);
         sortedLabel.push(dataSort[i].label);
     }
+
+    var total_country_cumulative = data.total_country_cumulative; // TOTAL CUMULATIVE (COUNTRY)
     // end sort
 
     const cumulativeTotal = {
