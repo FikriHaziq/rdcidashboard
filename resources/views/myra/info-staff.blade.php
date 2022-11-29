@@ -45,7 +45,7 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">ACTIVE ACADEMIC STAFF</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">TOTAL ACADEMIC STAFF VS TOTAL ACTIVE STAFF</span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">GRADE DISTRIBUTION</span><br><canvas id="bar1"></canvas></div>
@@ -118,7 +118,7 @@
                     position: 'right',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -146,22 +146,22 @@
                 {
                     label: 'A (> 50 years old)',
                     data: data.bar_2.data_1,
-                    backgroundColor: 'rgb(172, 62, 49)',
-                    borderColor: 'rgb(172, 62, 49)',
+                    backgroundColor: 'rgb(91, 142, 57)',
+                    borderColor: 'rgb(91, 142, 57)',
                     borderWidth: 1
                 },
                 {
                     label: 'B (40 - 50 years old)',
                     data: data.bar_2.data_2,
-                    backgroundColor: 'rgb(72, 138, 153)',
-                    borderColor: 'rgb(72, 138, 153)',
+                    backgroundColor: 'rgb(112, 173, 71)',
+                    borderColor: 'rgb(112, 173, 71)',
                     borderWidth: 1
                 },
                 {
                     label: 'C (< 40 years old)',
                     data: data.bar_2.data_3,
-                    backgroundColor: 'rgba(218, 174, 89)',
-                    borderColor: 'rgba(218, 174, 89)',
+                    backgroundColor: 'rgba(180, 207, 168)',
+                    borderColor: 'rgba(180, 207, 168)',
                     borderWidth: 1
                 },
             ]
@@ -173,7 +173,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -192,14 +192,34 @@
         }
     });
 
+    // sort data from highest to lowest for bar3
+    const datapoints = data.bar_3.data_1;
+    const labels = data.country;
+    let merged = datapoints.map((datapoint, i) => {
+        return { "datapoint": datapoints[i], "label": labels[i] }
+    });
+
+    const dataSort = merged.sort(function (a, b) {
+        return b.datapoint - a.datapoint
+    });
+    const sortedData = [];
+    const sortedLabel = [];
+
+    for (i = 0; i < dataSort.length; i++) {
+        sortedData.push(dataSort[i].datapoint);
+        sortedLabel.push(dataSort[i].label);
+    }
+    // end sort
+    // console.log(dataSort);
+
     var bar3 = document.getElementById('bar3');
     var barChart3 = new Chart(bar3, {
         type: 'bar',
         data: {
-            labels: data.country,
+            labels: sortedLabel,
             datasets: [
                 {
-                    data: data.bar_3.data_1,
+                    data: sortedData,
                     backgroundColor: 'rgb(172, 62, 49)',
                     borderColor: 'rgb(172, 62, 49)',
                     borderWidth: 1
@@ -239,6 +259,8 @@
                     borderColor: ['rgb(72, 72, 72)'],
                     backgroundColor: ['rgb(72, 72, 72)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -281,6 +303,8 @@
                     borderColor: ['rgb(72, 72, 72)'],
                     backgroundColor: ['rgb(72, 72, 72)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
