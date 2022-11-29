@@ -74,29 +74,29 @@
                 {
                     label: 'MASTER RESEARCH (FOREIGN)',
                     data: data.bar_1.data_1,
-                    backgroundColor: 'rgba(180, 207, 168)',
-                    borderColor: 'rgba(180, 207, 168)',
+                    borderColor: ['rgb(253, 180, 7)'],
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     borderWidth: 1
                 },
                 {
                     label: 'MASTER RESEARCH (LOCAL)',
                     data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(150, 185, 131)',
-                    borderColor: 'rgba(150, 185, 131)',
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
                     borderWidth: 1
                 },
                 {
                     label: 'PhD (FOREIGN)',
                     data: data.bar_1.data_3,
-                    backgroundColor: 'rgba(120, 164, 94)',
-                    borderColor: 'rgba(120, 164, 94)',
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
                     borderWidth: 1
                 },
                 {
                     label: 'PhD (LOCAL)',
                     data: data.bar_1.data_4,
-                    backgroundColor: 'rgb(91, 142, 57)',
-                    borderColor: 'rgb(91, 142, 57)',
+                    borderColor: ['rgb(53, 92, 183)'],
+                    backgroundColor: ['rgb(53, 92, 183)'],
                     borderWidth: 1
                 },
             ]
@@ -202,15 +202,15 @@
                 {
                     label: 'POSTGRADUATE',
                     data: data.bar_3.data_2,
-                    backgroundColor: 'rgba(180, 207, 168)',
-                    borderColor: 'rgba(180, 207, 168)',
+                    borderColor: ['rgb(253, 180, 7)'],
+                    backgroundColor: ['rgb(253, 180, 7)'],
                     borderWidth: 1
                 },
                 {
                     label: 'UNDERGRADUATE',
                     data: data.bar_3.data_1,
-                    backgroundColor: 'rgb(91, 142, 57)',
-                    borderColor: 'rgb(91, 142, 57)',
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
                     borderWidth: 1
                 },
             ]
@@ -260,6 +260,8 @@
                     borderColor: ['rgb(53, 92, 183)'],
                     backgroundColor: ['rgb(53, 92, 183)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'MASTER COURSEWORK',
@@ -267,6 +269,8 @@
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'PHD',
@@ -274,6 +278,8 @@
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
                 {
                     label: 'DOCTORAL COURSEWORK',
@@ -281,6 +287,8 @@
                     borderColor: ['rgb(253, 180, 7)'],
                     backgroundColor: ['rgb(253, 180, 7)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
