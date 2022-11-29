@@ -290,7 +290,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'Total Academic Staff',
+                    label: 'TOTAL ACADEMIC STAFF',
                     data: data.line_1.data_1,
                     borderColor: ['rgb(255, 0, 0)'],
                     backgroundColor: ['rgb(255, 0, 0)'],
@@ -299,7 +299,7 @@
                     pointRadius: 5,
                 },
                 {
-                    label: 'Active Academic Staff',
+                    label: 'TOTAL ACTIVE STAFF',
                     data: data.line_1.data_2,
                     borderColor: ['rgb(29, 185, 242)'],
                     backgroundColor: ['rgb(29, 185, 242)'],
