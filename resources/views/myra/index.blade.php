@@ -122,6 +122,8 @@
     });
     
     var line2 = document.getElementById('line2');
+    var line2_total_myra1 = data.line_2.data_3;
+    var line2_total_myra2 = data.line_2.data_4;
     var lineChart2 = new Chart(line2, {
         type: 'line',
         data: {
@@ -147,6 +149,8 @@
     });
     
     var line3 = document.getElementById('line3');
+    var line3_total_myra1 = data.line_3.data_3;
+    var line3_total_myra2 = data.line_3.data_4;
     var lineChart3 = new Chart(line3, {
         type: 'line',
         data: {
@@ -172,6 +176,8 @@
     });
     
     var line4 = document.getElementById('line4');
+    var line4_total_myra1 = data.line_4.data_3;
+    var line4_total_myra2 = data.line_4.data_4;
     var lineChart4 = new Chart(line4, {
         type: 'line',
         data: {
@@ -197,6 +203,8 @@
     });
     
     var line5 = document.getElementById('line5');
+    var line5_total_myra1 = data.line_5.data_3;
+    var line5_total_myra2 = data.line_5.data_4;
     var lineChart5 = new Chart(line5, {
         type: 'line',
         data: {
@@ -222,6 +230,8 @@
     });
     
     var line6 = document.getElementById('line6');
+    var line6_total_myra1 = data.line_6.data_3;
+    var line6_total_myra2 = data.line_6.data_4;
     var lineChart6 = new Chart(line6, {
         type: 'line',
         data: {
@@ -247,6 +257,8 @@
     });
     
     var line7 = document.getElementById('line7');
+    var line7_total_myra1 = data.line_7.data_3;
+    var line7_total_myra2 = data.line_7.data_4;
     var lineChart7 = new Chart(line7, {
         type: 'line',
         data: {
@@ -272,6 +284,8 @@
     });
     
     var line8 = document.getElementById('line8');
+    var line8_total_myra1 = data.line_8.data_3;
+    var line8_total_myra2 = data.line_8.data_4;
     var lineChart8 = new Chart(line8, {
         type: 'line',
         data: {
