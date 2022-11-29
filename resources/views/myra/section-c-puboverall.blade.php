@@ -96,7 +96,7 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
             // datalabels: {
@@ -114,11 +114,20 @@
                 grid: {
                 display: false
                 },
+                title: {
+                    display: true,
+                    text: 'Year'
+                },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
                 display: false
+                },
+                title: {
+                    display: true,
+                    text: 'No. of Publication'
                 },
                 beginAtZero: true,
             },
@@ -140,7 +149,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -150,7 +162,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -162,7 +177,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -184,7 +200,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -196,7 +215,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -210,7 +230,7 @@
                     reverse: 'true',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 },
                 tooltip: {
@@ -237,13 +257,21 @@
             scales: {
                 x: {
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
                     },
                     stacked: true,
                 },
                 y: {
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Article'
                     },
                     beginAtZero: true,
                 },
@@ -264,7 +292,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -274,7 +305,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -286,7 +320,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -308,7 +343,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -318,7 +356,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -330,7 +371,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -352,7 +394,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -362,7 +407,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -374,7 +422,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -396,7 +445,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -406,7 +458,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -418,7 +473,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -440,7 +496,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -450,7 +509,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -462,7 +524,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -484,7 +547,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -494,7 +560,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -506,7 +575,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -528,7 +598,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -538,7 +611,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -550,7 +626,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]

@@ -118,6 +118,10 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
                 },
                 y: {
                     stacked: true,
@@ -128,6 +132,10 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    }
                 },
             }
         }
@@ -183,11 +191,19 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    }
                 },
                 y: {
+                    ticks: {
+                        autoSkip: false,
+                        beginAtZero: true
+                    },
                     grid: {
                         display: false
-                    },
+                    }
                 }
             }
         }
@@ -232,6 +248,10 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
                 },
                 y: {
                     stacked: true,
@@ -243,6 +263,10 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    }
                 },
             }
         }
@@ -314,12 +338,20 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
                 },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
                     min: 0,
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    }
                 },
             }
         },

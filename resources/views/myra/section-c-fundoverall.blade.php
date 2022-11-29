@@ -96,13 +96,22 @@
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Amount'
                 },
                 beginAtZero: true,
                 ticks: {
@@ -126,7 +135,7 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
             datalabels: {
@@ -143,13 +152,22 @@
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Amount'
                 },
                 beginAtZero: true,
                 ticks: {
@@ -207,7 +225,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 },
                 datalabels: {
@@ -225,13 +243,22 @@
             scales: {
                 x: {
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
                     },
                     stacked: true,
                 },
                 y: {
+                    grace: '5%',
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Amount'
                     },
                     stacked: true,
                     ticks: {
@@ -261,7 +288,17 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -271,8 +308,18 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
-                    },
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'UNIVERSITY',
@@ -328,7 +375,7 @@
                     reverse: 'true',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 },
                 tooltip: {
@@ -339,13 +386,22 @@
             scales: {
                 x: {
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
                     },
                     stacked: true,
                 },
                 y: {
+                    grace: '5%',
                     grid: {
-                    display: false
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Amount'
                     },
                     beginAtZero: true,
                     ticks: {
@@ -375,7 +431,17 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -385,8 +451,18 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
-                    },
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -397,7 +473,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'   
                     }
                 },
             ]
@@ -419,7 +496,17 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -429,8 +516,18 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 0.2,
                     datalabels: {
-                        display: false,
-                    },
+                        formatter: (value, ctx) => {
+                            return new Intl.NumberFormat('en-MY', {
+                                style: 'currency',
+                                currency: 'MYR',
+                                notation: 'compact',
+                            }).format(value);
+                        },
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -441,7 +538,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]

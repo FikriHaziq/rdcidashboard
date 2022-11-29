@@ -6,13 +6,6 @@
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -79,26 +72,49 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
         },
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
                 grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Percentage (%)'
+                },
+                ticks: {
+                    stepSize: 50,
+                    callback: ((value, index, ticks) => {
+                        return value + '%';
+                    })
                 },
                 beginAtZero: true,
             },
         }
     };
+
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
 
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
@@ -107,11 +123,30 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -120,9 +155,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 
@@ -133,11 +174,30 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -146,9 +206,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 
@@ -159,11 +225,30 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -172,9 +257,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 
@@ -185,11 +276,30 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
+                    label: 'MyRA II TARGET (200%)',
+                    data: doubleTarget(data.bar_4.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -198,9 +308,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 </script>

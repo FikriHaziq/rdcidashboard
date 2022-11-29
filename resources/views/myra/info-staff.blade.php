@@ -288,6 +288,10 @@
                     display: true,
                     position: 'left',
                     min: 0,
+                    ticks: {
+                        autoSkip: false,
+                        beginAtZero: true
+                    },
                     grid: {
                         display: false
                     },

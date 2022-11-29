@@ -6,13 +6,6 @@
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -82,21 +75,25 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
         },
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
                 grace: '5%',
                 grid: {
-                display: false
+                    display: false
                 },
                 beginAtZero: true,
             },
@@ -219,6 +216,9 @@
                     borderColor: ['rgb(230, 104, 38)'],
                     backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
+
                 },
                 {
                     label: 'GOT',
@@ -226,6 +226,8 @@
                     borderColor: ['rgb(95, 160, 56)'],
                     backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
+                    pointStyle: 'rectRot',
+                    pointRadius: 5,
                 },
             ]
         },
@@ -241,7 +243,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -251,16 +253,20 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
                 },
                 y: {
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    },
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 6000,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 2000
-                    // }
                 },
             }
         },
