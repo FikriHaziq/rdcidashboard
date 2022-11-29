@@ -169,6 +169,7 @@ trait GraphMyraTrait {
         ];
         $line_1 = (object)[ //active staff
             'data_1' => [],
+            'data_2' => [],
         ];
         $line_2 = (object)[ //foreign staff
             'data_1' => [],
@@ -186,7 +187,8 @@ trait GraphMyraTrait {
                 $bar2_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
                 $bar2_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar2_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
-                $line1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+                $line1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+                $line1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
                 $line2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
             }
             else {
@@ -198,7 +200,8 @@ trait GraphMyraTrait {
                 $bar2_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
                 $bar2_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar2_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
-                $line1 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+                $line1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->count();
+                $line1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
                 $line2 = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
             }
             array_push($year_range, (int)$i);
@@ -210,7 +213,8 @@ trait GraphMyraTrait {
             array_push($bar_2->data_1, $bar2_1);
             array_push($bar_2->data_2, $bar2_2);
             array_push($bar_2->data_3, $bar2_3);
-            array_push($line_1->data_1, $line1);
+            array_push($line_1->data_1, $line1_1);
+            array_push($line_1->data_2, $line1_2);
             array_push($line_2->data_1, $line2);
         }
         $country_queries = [];
