@@ -20,6 +20,13 @@ class ReportController extends Controller
     public function index($year = null)
     {
         if($year == null)$year = date('Y');
-        return view('myra.report.index', compact('year'));
+        $modules = $this->getMyraModuleAvailability($year);
+        return view('myra.report.index', compact('year', 'modules'));
+    }
+
+    public function downloadMasterlist($masterlist, $year, $faculty = null)
+    {
+        
+        if($masterlist = 'acad_staff') return (new InvoicesExport(2018))->download('invoices.xlsx');
     }
 }
