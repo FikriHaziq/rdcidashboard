@@ -259,10 +259,12 @@ trait GraphMyraTrait {
         $country_queries = array_unique($country_queries, SORT_REGULAR);
         $country_labels = array_unique($country_labels);
         // dd($country_queries);
+        $total_country_cumulative = 0;
         foreach ($country_queries as $key => $value) {
             $country_data = MasterlistAcademicStaff::where('ml_end_year', '>=', $start_year)->select('staff_id')->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)
             ->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('country', $value)->distinct()->count();
             array_push($bar_3->data_1, $country_data);
+            $total_country_cumulative += $country_data;
         }
 
         foreach ($country_labels as $key => $value) {
@@ -277,6 +279,7 @@ trait GraphMyraTrait {
             'line_1' => $line_1,
             'line_2' => $line_2,
             'bar_3' => $bar_3,
+            'total_country_cumulative' => $total_country_cumulative
         ];
     }
 
