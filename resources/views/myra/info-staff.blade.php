@@ -82,7 +82,7 @@
                     borderWidth: 1
                 },
                 {
-                    label: 'ASSOCIATE PROFESSOR',
+                    label: 'ASSOC. PROFESSOR',
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgb(72, 138, 153)',
                     borderColor: 'rgb(72, 138, 153)',
@@ -115,7 +115,7 @@
             plugins: {
                 legend: {
                     display: true,
-                    position: 'right',
+                    position: 'bottom',
                     labels: {
                         usePointStyle: true,
                         pointStyle: 'rectRot',
@@ -123,15 +123,27 @@
                 }
             },
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 1200,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 400
-                    // }
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
         }
@@ -178,15 +190,27 @@
                 }
             },
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 800,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 200
-                    // }
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
         }
@@ -233,15 +257,27 @@
                 }
             },
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Country'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 50,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 10
-                    // }
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
         }
@@ -277,6 +313,15 @@
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
@@ -286,6 +331,10 @@
                     // ticks: {
                     //     stepSize: 500
                     // }
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
         },
@@ -321,6 +370,15 @@
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },  
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
@@ -330,6 +388,10 @@
                     // ticks: {
                     //     stepSize: 50
                     // }
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
         },

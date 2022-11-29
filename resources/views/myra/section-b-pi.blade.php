@@ -122,7 +122,7 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
@@ -132,12 +132,20 @@
                     grid: {
                         display: false
                     },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
                 },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
                     min: 0,
+                    title: {
+                        display: true,
+                        text: 'No. of Staff'
+                    }
                 },
             }
     };
@@ -291,8 +299,8 @@
                 {
                     label: 'PI',
                     data: data.line_1.data_1,
-                    borderColor: ['rgb(230, 104, 38)'],
-                    backgroundColor: ['rgb(230, 104, 38)'],
+                    borderColor: ['rgb(95, 160, 56)'],
+                    backgroundColor: ['rgb(95, 160, 56)'],
                     tension: 0.1,
                     datalabels: {
                         // anchor: 'end',
@@ -303,8 +311,8 @@
                 {
                     label: 'NON-PI',
                     data: data.line_1.data_2,
-                    borderColor: ['rgb(95, 160, 56)'],
-                    backgroundColor: ['rgb(95, 160, 56)'],
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
                     tension: 0.1,
                     datalabels: {
                         // anchor: 'end',
@@ -366,12 +374,21 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
                 y: {
                     type: 'linear',
                     display: true,
@@ -381,6 +398,10 @@
                     // ticks: {
                     //     stepSize: 2000
                     // }
+                    title: {
+                        display: true,
+                        text: 'No. of PI'
+                    }
                 },
             }
         },

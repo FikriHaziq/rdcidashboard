@@ -72,6 +72,10 @@
                 grid: {
                     display: false
                 },
+                title: {
+                    display: true,
+                    text: 'Year'
+                }
             },
             y: {
                 type: 'linear',

@@ -74,29 +74,29 @@
                 {
                     label: 'MASTER RESEARCH (FOREIGN)',
                     data: data.bar_1.data_1,
-                    backgroundColor: 'rgb(40, 82, 135)',
-                    borderColor: 'rgb(40, 82, 135)',
+                    backgroundColor: 'rgba(180, 207, 168)',
+                    borderColor: 'rgba(180, 207, 168)',
                     borderWidth: 1
                 },
                 {
                     label: 'MASTER RESEARCH (LOCAL)',
                     data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(252, 135, 6)',
-                    borderColor: 'rgba(252, 135, 6)',
+                    backgroundColor: 'rgba(150, 185, 131)',
+                    borderColor: 'rgba(150, 185, 131)',
                     borderWidth: 1
                 },
                 {
                     label: 'PhD (FOREIGN)',
                     data: data.bar_1.data_3,
-                    backgroundColor: 'rgba(132, 0, 192)',
-                    borderColor: 'rgba(132, 0, 192)',
+                    backgroundColor: 'rgba(120, 164, 94)',
+                    borderColor: 'rgba(120, 164, 94)',
                     borderWidth: 1
                 },
                 {
                     label: 'PhD (LOCAL)',
                     data: data.bar_1.data_4,
-                    backgroundColor: 'rgba(251, 0, 84)',
-                    borderColor: 'rgba(251, 0, 84)',
+                    backgroundColor: 'rgb(91, 142, 57)',
+                    borderColor: 'rgb(91, 142, 57)',
                     borderWidth: 1
                 },
             ]
@@ -108,24 +108,26 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
             scales: {
                 x: {
                     stacked: true,
+                    grid: {
+                        display: false
+                    },
                 },
                 y: {
                     stacked: true,
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 10000,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 5000
-                    // }
+                    grid: {
+                        display: false
+                    },
                 },
             }
         }
@@ -177,12 +179,16 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 4500,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 1500
-                    // }
+                    grid: {
+                        display: false
+                    },
                 },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                }
             }
         }
     });
@@ -196,15 +202,15 @@
                 {
                     label: 'POSTGRADUATE',
                     data: data.bar_3.data_2,
-                    backgroundColor: 'rgb(25, 196, 135)',
-                    borderColor: 'rgb(25, 196, 135)',
+                    backgroundColor: 'rgba(180, 207, 168)',
+                    borderColor: 'rgba(180, 207, 168)',
                     borderWidth: 1
                 },
                 {
                     label: 'UNDERGRADUATE',
                     data: data.bar_3.data_1,
-                    backgroundColor: 'rgba(252, 71, 193)',
-                    borderColor: 'rgba(252, 71, 193)',
+                    backgroundColor: 'rgb(91, 142, 57)',
+                    borderColor: 'rgb(91, 142, 57)',
                     borderWidth: 1
                 },
             ]
@@ -216,13 +222,16 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
             scales: {
                 x: {
                     stacked: true,
+                    grid: {
+                        display: false
+                    },
                 },
                 y: {
                     stacked: true,
@@ -231,9 +240,9 @@
                     position: 'left',
                     // max: 30000,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 5000
-                    // }
+                    grid: {
+                        display: false
+                    },
                 },
             }
         }
@@ -287,21 +296,22 @@
                     position: 'bottom',
                     labels: {
                         usePointStyle: true,
-                        pointStyle: 'circle',
+                        pointStyle: 'rectRot',
                     }
                 }
             },
             stacked: false,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                },
                 y: {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    // max: 6000,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 2000
-                    // }
                 },
             }
         },
