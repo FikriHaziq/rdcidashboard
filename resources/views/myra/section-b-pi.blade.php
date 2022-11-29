@@ -96,14 +96,14 @@
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
                 },
                 stacked: true,
             },
             y: {
                 grace: '5%',
                 grid: {
-                display: false
+                    display: false
                 },
                 beginAtZero: true,
             },

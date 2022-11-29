@@ -292,8 +292,8 @@
                 {
                     label: 'Total Academic Staff',
                     data: data.line_1.data_1,
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(255, 0, 0)'],
+                    backgroundColor: ['rgb(255, 0, 0)'],
                     tension: 0.1,
                     pointStyle: 'rectRot',
                     pointRadius: 5,
@@ -301,8 +301,8 @@
                 {
                     label: 'Active Academic Staff',
                     data: data.line_1.data_2,
-                    borderColor: ['rgb(72, 72, 72)'],
-                    backgroundColor: ['rgb(72, 72, 72)'],
+                    borderColor: ['rgb(29, 185, 242)'],
+                    backgroundColor: ['rgb(29, 185, 242)'],
                     tension: 0.1,
                     pointStyle: 'rectRot',
                     pointRadius: 5,
