@@ -63,44 +63,30 @@ trait GraphMyraTrait {
         $line_2 = (object)[ //SECTION B
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_3 = (object)[ //SECTION C
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_4 = (object)[ //SECTION D
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_5 = (object)[ //SECTION E
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_6 = (object)[ //SECTION F
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_7 = (object)[ //SECTION G
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         $line_8 = (object)[ //SECTION H
             'data_1' => [],
             'data_2' => [],
-            'data_3' => [],
-            'data_4' => [],
         ]; 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
@@ -134,37 +120,38 @@ trait GraphMyraTrait {
                 $total_myra1 = ($section_b->myra1_mark ?? 0) + ($section_c->myra1_mark ?? 0) + ($section_d->myra1_mark ?? 0) + ($section_e->myra1_mark ?? 0) + ($section_f->myra1_mark ?? 0) + ($section_g->myra1_mark ?? 0) + ($section_h->myra1_mark ?? 0);
                 $total_myra2 = ($section_b->myra2_mark ?? 0) + ($section_c->myra2_mark ?? 0) + ($section_d->myra2_mark ?? 0) + ($section_e->myra2_mark ?? 0) + ($section_f->myra2_mark ?? 0) + ($section_g->myra2_mark ?? 0) + ($section_h->myra2_mark ?? 0);
             }
+            $percent_myra1_b = ($section_b->myra1_benchmark_mark ?? 0) > 0 ? ($section_b->myra1_mark ?? 0)/($section_b->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_b = ($section_b->myra2_benchmark_mark ?? 0) > 0 ? ($section_b->myra2_mark ?? 0)/($section_b->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_c = ($section_c->myra1_benchmark_mark ?? 0) > 0 ? ($section_c->myra1_mark ?? 0)/($section_c->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_c = ($section_c->myra2_benchmark_mark ?? 0) > 0 ? ($section_c->myra2_mark ?? 0)/($section_c->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_d = ($section_d->myra1_benchmark_mark ?? 0) > 0 ? ($section_d->myra1_mark ?? 0)/($section_d->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_d = ($section_d->myra2_benchmark_mark ?? 0) > 0 ? ($section_d->myra2_mark ?? 0)/($section_d->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_e = ($section_e->myra1_benchmark_mark ?? 0) > 0 ? ($section_e->myra1_mark ?? 0)/($section_e->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_e = ($section_e->myra2_benchmark_mark ?? 0) > 0 ? ($section_e->myra2_mark ?? 0)/($section_e->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_f = ($section_f->myra1_benchmark_mark ?? 0) > 0 ? ($section_f->myra1_mark ?? 0)/($section_f->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_f = ($section_f->myra2_benchmark_mark ?? 0) > 0 ? ($section_f->myra2_mark ?? 0)/($section_f->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_g = ($section_g->myra1_benchmark_mark ?? 0) > 0 ? ($section_g->myra1_mark ?? 0)/($section_g->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_g = ($section_g->myra2_benchmark_mark ?? 0) > 0 ? ($section_g->myra2_mark ?? 0)/($section_g->myra2_benchmark_mark ?? 0)*100:0;
+            $percent_myra1_h = ($section_h->myra1_benchmark_mark ?? 0) > 0 ? ($section_h->myra1_mark ?? 0)/($section_h->myra1_benchmark_mark ?? 0)*100:0;
+            $percent_myra2_h = ($section_h->myra2_benchmark_mark ?? 0) > 0 ? ($section_h->myra2_mark ?? 0)/($section_h->myra2_benchmark_mark ?? 0)*100:0;
+
             array_push($year_range, (int)$i);
             array_push($line_1->data_1, (float)number_format(($total_myra1), 2));
             array_push($line_1->data_2, (float)number_format(($total_myra2), 2));
-            array_push($line_2->data_1, (float)number_format(($section_b->myra1_mark ?? 0), 2));
-            array_push($line_2->data_2, (float)number_format(($section_b->myra2_mark ?? 0), 2));
-            array_push($line_2->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_2->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_3->data_1, (float)number_format(($section_c->myra1_mark ?? 0), 2));
-            array_push($line_3->data_2, (float)number_format(($section_c->myra2_mark ?? 0), 2));
-            array_push($line_3->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_3->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_4->data_1, (float)number_format(($section_d->myra1_mark ?? 0), 2));
-            array_push($line_4->data_2, (float)number_format(($section_d->myra2_mark ?? 0), 2));
-            array_push($line_4->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_4->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_5->data_1, (float)number_format(($section_e->myra1_mark ?? 0), 2));
-            array_push($line_5->data_2, (float)number_format(($section_e->myra2_mark ?? 0), 2));
-            array_push($line_5->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_5->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_6->data_1, (float)number_format(($section_f->myra1_mark ?? 0), 2));
-            array_push($line_6->data_2, (float)number_format(($section_f->myra2_mark ?? 0), 2));
-            array_push($line_6->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_6->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_7->data_1, (float)number_format(($section_g->myra1_mark ?? 0), 2));
-            array_push($line_7->data_2, (float)number_format(($section_g->myra2_mark ?? 0), 2));
-            array_push($line_7->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_7->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
-            array_push($line_8->data_1, (float)number_format(($section_h->myra1_mark ?? 0), 2));
-            array_push($line_8->data_2, (float)number_format(($section_h->myra2_mark ?? 0), 2));
-            array_push($line_8->data_3, (float)number_format(($section_b->myra1_benchmark_mark ?? 0), 2));
-            array_push($line_8->data_4, (float)number_format(($section_b->myra2_benchmark_mark ?? 0), 2));
+            array_push($line_2->data_1, (float)number_format(($percent_myra1_b ?? 0), 2));
+            array_push($line_2->data_2, (float)number_format(($percent_myra2_b ?? 0), 2));
+            array_push($line_3->data_1, (float)number_format(($percent_myra1_c ?? 0), 2));
+            array_push($line_3->data_2, (float)number_format(($percent_myra2_c ?? 0), 2));
+            array_push($line_4->data_1, (float)number_format(($percent_myra1_d ?? 0), 2));
+            array_push($line_4->data_2, (float)number_format(($percent_myra2_d ?? 0), 2));
+            array_push($line_5->data_1, (float)number_format(($percent_myra1_e ?? 0), 2));
+            array_push($line_5->data_2, (float)number_format(($percent_myra2_e ?? 0), 2));
+            array_push($line_6->data_1, (float)number_format(($percent_myra1_f ?? 0), 2));
+            array_push($line_6->data_2, (float)number_format(($percent_myra2_f ?? 0), 2));
+            array_push($line_7->data_1, (float)number_format(($percent_myra1_g ?? 0), 2));
+            array_push($line_7->data_2, (float)number_format(($percent_myra2_g ?? 0), 2));
+            array_push($line_8->data_1, (float)number_format(($percent_myra1_h ?? 0), 2));
+            array_push($line_8->data_2, (float)number_format(($percent_myra2_h ?? 0), 2));
 
         }
 
