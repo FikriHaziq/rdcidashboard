@@ -9,6 +9,7 @@ use App\Http\Controllers\MasterlistController;
 use App\Http\Controllers\Research\ManagementController as ManagementController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
+use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
 
 // OLD
 use App\Http\Controllers\Grant\OverviewController as GrantOverviewController;
@@ -77,6 +78,11 @@ Route::middleware(['auth'])->group(function () {
         Route::name("section-f")->get("section-f/{tabs?}", [MyRADashboardController::class, "sectionF"]);
         Route::name("section-g")->get("section-g/{tabs?}", [MyRADashboardController::class, "sectionG"]);
         Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
+    });
+
+    // Report Myra
+    Route::name("report.")->prefix("report")->group(function () {
+        Route::name("myra.index")->get("myra/{year?}", [MyRAReportController::class, "index"]);
     });
 });
 
