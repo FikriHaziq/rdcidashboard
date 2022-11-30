@@ -155,8 +155,10 @@
     const sortedLabel = [];
 
     for (i = 0; i < dataSort.length; i++) {
-        sortedData.push(dataSort[i].datapoint);
-        sortedLabel.push(dataSort[i].label);
+        if (dataSort[i].datapoint != 0) {
+            sortedData.push(dataSort[i].datapoint);
+            sortedLabel.push(dataSort[i].label);
+        }
     }
     // end sort
     // console.log(dataSort);

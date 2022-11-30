@@ -64,9 +64,25 @@
 
     var bar1 = document.getElementById('bar1');
     //Percentage
-    var bar1_1_percent = data.bar_1.data_4;
-    var bar1_2_percent = data.bar_1.data_5;
-    var bar1_3_percent = data.bar_1.data_6;
+    var type1_percent = data.bar_1.data_4;
+    var type2_percent = data.bar_1.data_5;
+    var type3_percent = data.bar_1.data_6;
+    var type1_data = data.bar_1.data_1;
+    var type2_data = data.bar_1.data_2;
+    var type3_data = data.bar_1.data_3;
+
+    let type1 = type1_data.map((data, i) => {
+        return { "data": type1_data[i], "percent": type1_percent[i] }
+    });
+
+    let type2 = type2_data.map((data, i) => {
+        return { "data": type2_data[i], "percent": type2_percent[i] }
+    });
+
+    let type3 = type3_data.map((data, i) => {
+        return { "data": type3_data[i], "percent": type3_percent[i] }
+    });
+
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
@@ -74,21 +90,21 @@
             datasets: [
                 {
                     label: '< 40 years old',
-                    data: data.bar_1.data_1,
+                    data: data.bar_1.data_4,
                     backgroundColor: 'rgba(180, 207, 168)',
                     borderColor: 'rgba(180, 207, 168)',
                     borderWidth: 1
                 },
                 {
                     label: '40 - 50 years old',
-                    data: data.bar_1.data_2,
+                    data: data.bar_1.data_5,
                     backgroundColor: 'rgb(112, 173, 71)',
                     borderColor: 'rgb(112, 173, 71)',
                     borderWidth: 1
                 },
                 {
                     label: '> 50 years old',
-                    data: data.bar_1.data_3,
+                    data: data.bar_1.data_6,
                     backgroundColor: 'rgb(91, 142, 57)',
                     borderColor: 'rgb(91, 142, 57)',
                     borderWidth: 1
@@ -107,7 +123,37 @@
                     }
                 },
                 datalabels: {
+                    formatter: (value, ctx) => {
+                        let type;
+                        let i = ctx.dataIndex;
+                        let v1 = ctx.chart.data.datasets[0].data[i];
+                        let v2 = ctx.chart.data.datasets[1].data[i];
+                        let v3 = ctx.chart.data.datasets[2].data[i];
+                        if (value == v1) { type = 1; }
+                        else if (value == v2) { type = 2; }
+                        else if (value == v3) { type = 3; }
+                        switch (type) {
+                            case 1:
+                                return [type1[i].percent + '%', type1[i].data];
+                                break;
+                            case 2:
+                                return [type2[i].percent + '%', type2[i].data];
+                                break;
+                            case 3:
+                                return [type3[i].percent + '%', type3[i].data];
+                                break;
+                        }
+                    },
                     color: 'rgb(0, 0, 0)'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            let i = ctx.dataIndex;
+                            let label = ctx.dataset.label + ': ' + ctx.dataset.data[i] + '%';
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
@@ -129,10 +175,12 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
+                    max: 100,
                     grid: {
                         display: false
                     },
                     ticks: {
+                        stepSize: 20,
                         callback: ((value, index, ticks) => {
                             return value + '%';
                         })
