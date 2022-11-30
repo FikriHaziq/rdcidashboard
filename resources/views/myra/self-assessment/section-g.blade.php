@@ -339,7 +339,7 @@
                                     <td class="border border-slate-600 fw-bold">b. Percentage of Staff Involved in Joint Research Projects Under MoA</td>
                                     {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[5] }}</td>
                                     <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[5] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[5], 2) }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[5], 0) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_1[1] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_1[1], 2) }}%</td>
                                     {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[1], 2) }}</td> --}}
@@ -509,7 +509,7 @@
                                     <td class="border border-slate-600 fw-bold">b. Percentage of Staff Involved in Joint Research Projects Under MoA</td>
                                     {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_4[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_4[5] }}</td>
                                     <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_4[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_4[5] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_4[5], 2) }}%</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_4[5], 0) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_4[1] }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_4[1], 2) }}%</td>
                                     {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_4[1], 2) }}</td> --}}
