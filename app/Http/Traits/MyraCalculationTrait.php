@@ -1193,7 +1193,7 @@ trait MyraCalculationTrait {
         $myra2_subweightage_3[0] = 100;
         $myra2_subweightage_4[0] = 100;
 
-        $myra2_benchmark_1[0] = 0.005;
+        $myra2_benchmark_1[0] = 0.01;
         $myra2_benchmark_1[1] = 0.04;
         $myra2_benchmark_2[0] = 0.005;
         $myra2_benchmark_3[0] = 0.01;
@@ -1204,7 +1204,6 @@ trait MyraCalculationTrait {
         $myra2_benchmark_target_2[0] = round($myra2_benchmark_2[0]*$active_acad_staff);
         $myra2_benchmark_target_3[0] = round($myra2_benchmark_3[0]*$active_acad_staff);
         $myra2_benchmark_target_4[0] = round($myra2_benchmark_4[0]*$active_acad_staff);
-
         $myra2_benchmark_mark_1[0] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[0]/100);
         $myra2_benchmark_mark_1[1] = $myra2_global_weightage*($myra2_weightage_2/100)*($myra2_subweightage_1[1]/100);
         $myra2_benchmark_mark_2[0] = $myra2_global_weightage*($myra2_weightage_3/100)*($myra2_subweightage_2[0]/100);
