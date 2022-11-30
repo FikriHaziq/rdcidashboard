@@ -604,6 +604,7 @@ trait MasterListMyraTrait {
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
         $important_data = (object)[
+            'year' => $year,
             'uni_staff' => $uni_staff,
             'national_staff' => $national_staff,
             'private_staff' => $private_staff,
@@ -704,7 +705,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'journal' => $journal,
             'proceeding' => $proceeding,
             'joint_industrial' => $joint_industrial,
@@ -809,7 +812,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'phd_local' => $phd_local,
             'phd_foreign' => $phd_foreign,
             'phd_graduate_7' => $phd_graduate_7,
@@ -888,7 +893,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'grant_local' => $grant_local,
             'grant_foreign' => $grant_foreign,
             'file_local' => $file_local,
@@ -944,7 +951,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'training_course' => $training_course,
             'pg_fee' => $pg_fee,
             'conference' => $conference,
@@ -1012,7 +1021,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'int_moa_industry' => $int_moa_industry,
             'int_moa_community' => $int_moa_community,
             'int_moa_university' => $int_moa_university,
@@ -1078,7 +1089,9 @@ trait MasterListMyraTrait {
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
-        $important_data = (object)[
+         $important_data = (object)[
+            'year' => $year,
+            
             'support' => $support,
             'library' => $book + $book_online + $journal_subscribed,
         ];
