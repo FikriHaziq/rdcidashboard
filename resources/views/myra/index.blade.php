@@ -13,7 +13,7 @@
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
-        eMyRA Overview
+        Overview
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->

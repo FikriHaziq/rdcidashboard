@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 trait MyraCalculationTrait {
 
     public function calcSectionB($active_acad_staff, $active_st, $active_nonst, $important_data){
+        // if($important_data->year >= 2016 && $important_data->year <= 2018)
         $myra1_global_weightage = 22;
         $myra2_global_weightage = 13;
 
