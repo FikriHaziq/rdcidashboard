@@ -4,18 +4,58 @@ namespace App\Http\Traits;
 trait MyraCalculationTrait {
 
     public function calcSectionB($active_acad_staff, $active_st, $active_nonst, $important_data){
-        // if($important_data->year >= 2016 && $important_data->year <= 2018)
-        // {
-        //     $myra1_global_weightage = 22;
-        //     $myra2_global_weightage = 13;
-        // }
-        // else if($important_data->year >= 2019 && $important_data->year <= 2021)
-        // {
-        //     $myra1_global_weightage = 22;
-        //     $myra2_global_weightage = 13;
-        // }
-        $myra1_global_weightage = 22;
-        $myra2_global_weightage = 13;
+        if($important_data->year <= 2018)
+        {
+            $myra1_global_weightage = 25;
+            $myra2_global_weightage = 15;
+
+            $myra1_weightage_1 = 30;
+            $myra1_weightage_2 = 20;
+            $myra1_weightage_3 = 30;
+            $myra1_weightage_4 = 20;
+
+            $myra1_subweightage_1[0] = 30;
+            $myra1_subweightage_1[1] = 24;
+            $myra1_subweightage_1[2] = 16;
+            $myra1_subweightage_1[3] = 30;
+            $myra1_subweightage_2[0] = 80;
+            $myra1_subweightage_2[1] = 20;
+            $myra1_subweightage_3[0] = 30;
+            $myra1_subweightage_3[1] = 40;
+            $myra1_subweightage_3[2] = 30;
+            $myra1_subweightage_4[0] = 20;
+            $myra1_subweightage_4[1] = 20;
+            $myra1_subweightage_4[2] = 25;
+            $myra1_subweightage_4[3] = 25;
+            $myra1_subweightage_4[4] = 10;
+            $myra1_subweightage_4[5] = 20;
+        }
+        else if($important_data->year >= 2019)
+        {
+            $myra1_global_weightage = 22;
+            $myra2_global_weightage = 13;
+
+            $myra1_weightage_1 = 35;
+            $myra1_weightage_2 = 20;
+            $myra1_weightage_3 = 20;
+            $myra1_weightage_4 = 25;
+
+            $myra1_subweightage_1[0] = 30;
+            $myra1_subweightage_1[1] = 24;
+            $myra1_subweightage_1[2] = 16;
+            $myra1_subweightage_1[3] = 30;
+            $myra1_subweightage_2[0] = 80;
+            $myra1_subweightage_2[1] = 20;
+            $myra1_subweightage_3[0] = 30;
+            $myra1_subweightage_3[1] = 40;
+            $myra1_subweightage_3[2] = 30;
+            $myra1_subweightage_4[0] = 16;
+            $myra1_subweightage_4[1] = 16;
+            $myra1_subweightage_4[2] = 20;
+            $myra1_subweightage_4[3] = 20;
+            $myra1_subweightage_4[4] = 8;
+            $myra1_subweightage_4[5] = 20;
+        }
 
         $myra_year_1[1] = $important_data->uni_staff;
         $myra_year_1[2] = $important_data->national_staff;
@@ -77,26 +117,6 @@ trait MyraCalculationTrait {
         $v18 = min(15, abs(30-$u18));
 
         //myra I
-        $myra1_weightage_1 = 35;
-        $myra1_weightage_2 = 20;
-        $myra1_weightage_3 = 20;
-        $myra1_weightage_4 = 25;
-
-        $myra1_subweightage_1[0] = 30;
-        $myra1_subweightage_1[1] = 24;
-        $myra1_subweightage_1[2] = 16;
-        $myra1_subweightage_1[3] = 30;
-        $myra1_subweightage_2[0] = 80;
-        $myra1_subweightage_2[1] = 20;
-        $myra1_subweightage_3[0] = 30;
-        $myra1_subweightage_3[1] = 40;
-        $myra1_subweightage_3[2] = 30;
-        $myra1_subweightage_4[0] = 16;
-        $myra1_subweightage_4[1] = 16;
-        $myra1_subweightage_4[2] = 20;
-        $myra1_subweightage_4[3] = 20;
-        $myra1_subweightage_4[4] = 8;
-        $myra1_subweightage_4[5] = 20;
 
         $myra1_benchmark_1[1] = 23;
         $myra1_benchmark_1[2] = 18;
