@@ -58,7 +58,7 @@
 <script>
 
     function getList(that) {
-        window.location = window.location.origin + '/masterlist/myra/index/' + that.val();
+        window.location = window.location.origin + '/report/myra/' + that.val();
     }
 
     function downloadAll(code, year){
@@ -92,15 +92,15 @@
         $('#'+code+'_download').show();
     }
 
-    function downloadMasterlist(code, year, faculty = null){
+    function downloadMasterlist(code, year, faculty = ''){
         // alert(faculty);
-        swal({
-            title: 'Downloading',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
-        });
-        swal.showLoading();
+        // swal({
+        //     title: 'Downloading',
+        //     allowOutsideClick: false,
+        //     allowEscapeKey: false,
+        //     allowEnterKey: false,
+        // });
+        // swal.showLoading();
         // window.location = window.location.origin + "/report/myra/download/"+code+"/"+year+'/'+faculty;
     }
 </script>

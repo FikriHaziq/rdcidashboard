@@ -5,6 +5,7 @@ namespace App\Http\Controllers\MyRA;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Traits\GraphMyraTrait;
+use App\Exports\AcadStaffExport;
 
 class ReportController extends Controller
 {
@@ -26,7 +27,7 @@ class ReportController extends Controller
 
     public function downloadMasterlist($masterlist, $year, $faculty = null)
     {
-        
-        if($masterlist = 'acad_staff') return (new InvoicesExport(2018))->download('invoices.xlsx');
+        session()->flash('success', "Download Successfully");
+        if($masterlist = 'acad_staff') return (new AcadStaffExport($year, $faculty))->download('acad_staff.xlsx');
     }
 }
