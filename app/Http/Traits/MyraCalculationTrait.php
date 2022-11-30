@@ -5,6 +5,15 @@ trait MyraCalculationTrait {
 
     public function calcSectionB($active_acad_staff, $active_st, $active_nonst, $important_data){
         // if($important_data->year >= 2016 && $important_data->year <= 2018)
+        // {
+        //     $myra1_global_weightage = 22;
+        //     $myra2_global_weightage = 13;
+        // }
+        // else if($important_data->year >= 2019 && $important_data->year <= 2021)
+        // {
+        //     $myra1_global_weightage = 22;
+        //     $myra2_global_weightage = 13;
+        // }
         $myra1_global_weightage = 22;
         $myra2_global_weightage = 13;
 
@@ -898,12 +907,12 @@ trait MyraCalculationTrait {
         $myra1_benchmark_7[0] = 0.1;
         $myra1_benchmark_8[0] = 10;
 
-        $myra1_benchmark_target_1[0] = $myra1_benchmark_1[0]*$active_acad_staff;
-        $myra1_benchmark_target_3[0] = $myra1_benchmark_3[0]*$active_acad_staff;
-        $myra1_benchmark_target_4[0] = $myra1_benchmark_4[0]*$active_acad_staff;
-        $myra1_benchmark_target_5[0] = $myra1_benchmark_5[0]*$important_data->pg_enrolled;
-        $myra1_benchmark_target_6[0] = $myra1_benchmark_6[0]*$important_data->pg_enrolled;
-        $myra1_benchmark_target_7[0] = $myra1_benchmark_7[0]*$important_data->pg_research;
+        $myra1_benchmark_target_1[0] = round($myra1_benchmark_1[0]*$active_acad_staff);
+        $myra1_benchmark_target_3[0] = round($myra1_benchmark_3[0]*$active_acad_staff);
+        $myra1_benchmark_target_4[0] = round($myra1_benchmark_4[0]*$active_acad_staff);
+        $myra1_benchmark_target_5[0] = round($myra1_benchmark_5[0]*$important_data->pg_enrolled);
+        $myra1_benchmark_target_6[0] = round($myra1_benchmark_6[0]*$important_data->pg_enrolled);
+        $myra1_benchmark_target_7[0] = round($myra1_benchmark_7[0]*$important_data->pg_research);
         $myra1_benchmark_target_8[0] = 10;
 
         $myra1_benchmark_mark_1[0] = round($myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100), 1);
@@ -918,10 +927,9 @@ trait MyraCalculationTrait {
         $myra1_mark_3[0] = $myra1_benchmark_3[0] > 0 ? (((float)$myra_year_3[0]/$myra1_benchmark_3[0]*$myra1_benchmark_mark_3[0]) > ($myra1_benchmark_mark_3[0]*2) ? $myra1_benchmark_mark_3[0]*2 : ((float)$myra_year_3[0]/$myra1_benchmark_3[0]*$myra1_benchmark_mark_3[0])) : 0;
         $myra1_mark_4[0] = $myra1_benchmark_4[0] > 0 ? (((float)$myra_year_4[0]/$myra1_benchmark_4[0]*$myra1_benchmark_mark_4[0]) > ($myra1_benchmark_mark_4[0]*2) ? $myra1_benchmark_mark_4[0]*2 : ((float)$myra_year_4[0]/$myra1_benchmark_4[0]*$myra1_benchmark_mark_4[0])) : 0;
         $myra1_mark_5[0] = $myra1_benchmark_5[0] > 0 ? (((float)$myra_year_5[0]/$myra1_benchmark_5[0]*$myra1_benchmark_mark_5[0]) > ($myra1_benchmark_mark_5[0]*2) ? $myra1_benchmark_mark_5[0]*2 : ((float)$myra_year_5[0]/$myra1_benchmark_5[0]*$myra1_benchmark_mark_5[0])) : 0;
-        $myra1_mark_6[0] = $myra1_benchmark_6[0] > 0 ? (((float)$myra_year_6[0]/$myra1_benchmark_6[0]*$myra1_benchmark_mark_6[0]) > ($myra1_benchmark_mark_6[0]*2) ? $myra1_benchmark_mark_6[0]*2 : ((float)$myra_year_6[0]/$myra1_benchmark_6[0]*$myra1_benchmark_mark_6[0])) : 0;
-        $myra1_mark_7[0] = $myra1_benchmark_7[0] > 0 ? (((float)$myra_year_7[0]/$myra1_benchmark_7[0]*$myra1_benchmark_mark_7[0]) > ($myra1_benchmark_mark_7[0]*2) ? $myra1_benchmark_mark_7[0]*2 : ((float)$myra_year_7[0]/$myra1_benchmark_7[0]*$myra1_benchmark_mark_7[0])) : 0;
+        $myra1_mark_6[0] = $myra1_benchmark_6[0] > 0 ? (((float)($myra_year_6[1]/100)/$myra1_benchmark_6[0]*$myra1_benchmark_mark_6[0]) > ($myra1_benchmark_mark_6[0]*2) ? $myra1_benchmark_mark_6[0]*2 : ((float)($myra_year_6[1]/100)/$myra1_benchmark_6[0]*$myra1_benchmark_mark_6[0])) : 0;
+        $myra1_mark_7[0] = $myra1_benchmark_7[0] > 0 ? (((float)($myra_year_7[1]/100)/$myra1_benchmark_7[0]*$myra1_benchmark_mark_7[0]) > ($myra1_benchmark_mark_7[0]*2) ? $myra1_benchmark_mark_7[0]*2 : ((float)($myra_year_7[1]/100)/$myra1_benchmark_7[0]*$myra1_benchmark_mark_7[0])) : 0;
         $myra1_mark_8[0] = $myra1_benchmark_8[0] > 0 ? (((float)$myra_year_8[0]/$myra1_benchmark_8[0]*$myra1_benchmark_mark_8[0]) > ($myra1_benchmark_mark_8[0]*2) ? $myra1_benchmark_mark_8[0]*2 : ((float)$myra_year_8[0]/$myra1_benchmark_8[0]*$myra1_benchmark_mark_8[0])) : 0;
-
         $myra1_achievement_1[0] = $myra1_benchmark_mark_1[0] > 0 ? $myra1_mark_1[0]/$myra1_benchmark_mark_1[0]*100 : 0*100;
         $myra1_achievement_3[0] = $myra1_benchmark_mark_3[0] > 0 ? $myra1_mark_3[0]/$myra1_benchmark_mark_3[0]*100 : 0*100;
         $myra1_achievement_4[0] = $myra1_benchmark_mark_4[0] > 0 ? $myra1_mark_4[0]/$myra1_benchmark_mark_4[0]*100 : 0*100;
@@ -944,17 +952,18 @@ trait MyraCalculationTrait {
         $myra2_benchmark_1[1] = 25/100;
         $myra2_benchmark_8[0] = 100;
 
-        $myra2_benchmark_target_1[0] = $myra2_benchmark_1[0]*$active_acad_staff;
-        $myra2_benchmark_target_1[1] = $myra2_benchmark_1[1]*$myra_year_1[0];
+        $myra2_benchmark_target_1[0] = round($myra2_benchmark_1[0]*$active_acad_staff);
+        $myra2_benchmark_target_1[1] = round($myra2_benchmark_1[1]*$myra_year_1[0]);
         $myra2_benchmark_target_8[0] = 100;
 
         $myra2_benchmark_mark_1[0] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[0]/100);
         $myra2_benchmark_mark_1[1] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[1]/100);
         $myra2_benchmark_mark_8[0] = $myra2_global_weightage*($myra2_weightage_3/100)*($myra2_subweightage_8[0]/100);
 
-        $myra2_mark_1[0] = $myra2_benchmark_1[0] > 0 ? (((float)$myra_year_1[0]/$myra2_benchmark_1[0]*$myra2_benchmark_mark_1[0]) > ($myra2_benchmark_mark_1[0]*2) ? $myra2_benchmark_mark_1[0]*2 : ((float)$myra_year_1[0]/$myra2_benchmark_1[0]*$myra2_benchmark_mark_1[0])) : 0;
-        $myra2_mark_1[1] = $myra2_benchmark_1[1] > 0 ? (((float)$myra_year_1[1]/$myra2_benchmark_1[1]*$myra2_benchmark_mark_1[1]) > ($myra2_benchmark_mark_1[1]*2) ? $myra2_benchmark_mark_1[1]*2 : ((float)$myra_year_1[1]/$myra2_benchmark_1[1]*$myra2_benchmark_mark_1[1])) : 0;
-        $myra2_mark_8[0] = $myra2_benchmark_8[0] > 0 ? (((float)$myra_year_8[0]/$myra2_benchmark_8[0]*$myra2_benchmark_mark_8[0]) > ($myra2_benchmark_mark_8[0]*2) ? $myra2_benchmark_mark_8[0]*2 : ((float)$myra_year_8[0]/$myra2_benchmark_8[0]*$myra2_benchmark_mark_8[0])) : 0;
+        $myra2_mark_1[0] = $myra2_benchmark_1[0] > 0 ? (((float)$myra_year_1[3]/$myra2_benchmark_1[0]*$myra2_benchmark_mark_1[0]) > ($myra2_benchmark_mark_1[0]*2) ? $myra2_benchmark_mark_1[0]*2 : ((float)$myra_year_1[3]/$myra2_benchmark_1[0]*$myra2_benchmark_mark_1[0])) : 0;
+        $myra2_mark_1[1] = $myra2_benchmark_1[1] > 0 ? (((float)$myra_year_1[5]/$myra2_benchmark_1[1]*$myra2_benchmark_mark_1[1]) > ($myra2_benchmark_mark_1[1]*2) ? $myra2_benchmark_mark_1[1]*2 : ((float)$myra_year_1[5]/$myra2_benchmark_1[1]*$myra2_benchmark_mark_1[1])) : 0;
+        $myra2_mark_8[0] = $myra2_benchmark_8[0] > 0 ? (((float)$myra_year_8[0]/$myra2_benchmark_8[0]*$myra2_benchmark_mark_8[0]) > ($myra2_benchmark_mark_8[0]) ? $myra2_benchmark_mark_8[0] : ((float)$myra_year_8[0]/$myra2_benchmark_8[0]*$myra2_benchmark_mark_8[0])) : 0;
+        // dd($myra_year_8[0]/$myra2_benchmark_8[0]*$myra2_benchmark_mark_8[0], $myra2_benchmark_mark_8[0]);
 
         $myra2_achievement_1[0] = $myra2_benchmark_mark_1[0] > 0 ? $myra2_mark_1[0]/$myra2_benchmark_mark_1[0]*100 : 0*100;
         $myra2_achievement_1[1] = $myra2_benchmark_mark_1[1] > 0 ? $myra2_mark_1[1]/$myra2_benchmark_mark_1[1]*100 : 0*100;
@@ -964,7 +973,6 @@ trait MyraCalculationTrait {
         $total_myra1_mark = $myra1_mark_1[0]+$myra1_mark_3[0]+$myra1_mark_4[0]+$myra1_mark_5[0]+$myra1_mark_6[0]+$myra1_mark_7[0]+$myra1_mark_8[0];
         $total_myra2_benchmark_mark = $myra2_benchmark_mark_1[0]+$myra2_benchmark_mark_1[1]+$myra2_benchmark_mark_8[0];
         $total_myra2_mark = $myra2_mark_1[0]+$myra2_mark_1[1]+$myra2_mark_8[0];
-        
         
         return (object)[
             'active_acad_staff' => $active_acad_staff,

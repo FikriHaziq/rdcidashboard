@@ -471,6 +471,9 @@ trait GraphMyraTrait {
             'data_1' => [],
             'data_2' => [],
             'data_3' => [],
+            'data_4' => [],
+            'data_5' => [],
+            'data_6' => [],
         ];
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
@@ -487,6 +490,10 @@ trait GraphMyraTrait {
                 $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
+                $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
+                $bar1_4 = (float)number_format($bar1_1/$total_cohort*100, 2, '.', '');
+                $bar1_5 = (float)number_format($bar1_2/$total_cohort*100, 2, '.', '');
+                $bar1_6 = (float)number_format($bar1_3/$total_cohort*100, 2, '.', '');
             }
             
             array_push($year_range, (int)$i);
@@ -495,6 +502,9 @@ trait GraphMyraTrait {
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
             array_push($bar_1->data_3, $bar1_3);
+            array_push($bar_1->data_4, $bar1_4);
+            array_push($bar_1->data_5, $bar1_5);
+            array_push($bar_1->data_6, $bar1_6);
         }
 
         return (object)[
@@ -903,7 +913,7 @@ trait GraphMyraTrait {
                 $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
                 $line1_1 = MasterlistPhdGraduate::where('ml_end_year', $i)->count();
                 $line1_2 = MasterlistPhdGraduate::where('ml_end_year', $i)->whereIn('got', $this->got('yes'))->count();
-                $bar1_1 = $active_acad_staff > 0 ? (float)$line1_1/$active_acad_staff  : 0;
+                $bar1_1 = $line1_1;
                 $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.phd_graduate.ratio_phd_staff.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra2_benchmark_target ?? 0);
                 $phd_graduate_7 = $line1_2;
                 $bar2_1 =$line1_1 > 0 ? (float)number_format($phd_graduate_7/$line1_1*100, 2) : 0;
