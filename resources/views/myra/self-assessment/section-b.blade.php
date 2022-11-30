@@ -185,11 +185,12 @@
                                 <td class="border border-slate-600 font-bold">&emsp;e. Research Exhibition Awards (gold medal / special awards)  </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->exhibition }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
+                            @if($year >= 2019)
                             <tr>
                                 <td class="border border-slate-600 font-bold">&emsp;f. Other Research Awards </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->other }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
-                        
+                            @endif
                             {{-- @foreach (getSection('A') as $item)
                                 <tr>
                                     <td class="border-b dark:border-dark-5">{{ $item->criteria_name }}</td>
@@ -562,22 +563,25 @@
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                 </tr>
                                 <tr class="text-center">
-                                    <td class="border border-slate-600">f. Others Research Awards</td>
-                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_4[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_4[5] }}</td>
-                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_4[5] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_4[5] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra_year_4[5] }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_4[5] }}%</td> --}}
+                                    @if($year <= 2018)
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_4[5], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    @elseif($year >= 2019)
+                                    <td class="border border-slate-600">f. Others Research Awards</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra_year_4[5] }}</td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_4[5], 2) }}</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_4[5], 2) }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_4[5], 2) }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
+                                    @endif
                                 </tr>
                                 <tr class="text-center total-mark">
                                     <td class="border border-slate-600 fw-bold" colspan="5">Total Mark for Section B</td>
