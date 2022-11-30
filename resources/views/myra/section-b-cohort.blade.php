@@ -73,6 +73,10 @@
     var data = {!! json_encode($data) !!};
 
     var bar1 = document.getElementById('bar1');
+    //Percentage
+    var bar1_1_percent = data.bar_1.data_4;
+    var bar1_2_percent = data.bar_1.data_5;
+    var bar1_3_percent = data.bar_1.data_6;
     var barChart1 = new Chart(bar1, {
         type: 'bar',
         data: {
