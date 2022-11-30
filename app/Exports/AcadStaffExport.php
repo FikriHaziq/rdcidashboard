@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 
 class AcadStaffExport implements FromQuery
 {
+    use Exportable;
     /**
     * @return \Illuminate\Support\Collection
     */
