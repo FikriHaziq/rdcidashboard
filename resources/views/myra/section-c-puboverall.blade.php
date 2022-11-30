@@ -54,31 +54,31 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1a(i,iii) - <b>INDEXED JOURNAL</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>INDEXED JOURNAL</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1a(i,iii) - <b>ARTICLES IN Q1/Q2 JOURNAL</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>ARTICLES IN Q1/Q2 JOURNAL</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1a(ii) - <b>INDEXED PROCEEDING</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(ii) - <b>INDEXED PROCEEDING</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold"><b>MyCITE</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1c - <b>MyCITE</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1d(i) - <b>RESEARCH BOOK</b></span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(i) - <b>RESEARCH BOOK</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1d(ii) - <b>BOOK CHAPTER</b></span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(ii) - <b>BOOK CHAPTER</b></span><br><canvas id="bar6"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1d(iii) - <b>CASE STUDY/TECHNICAL REPORT</b></span><br><canvas id="bar7"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(iii) - <b>CASE STUDY/TECHNICAL REPORT</b></span><br><canvas id="bar7"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1e - <b>POLICY PAPER</b></span><br><canvas id="bar8"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1e - <b>POLICY PAPER</b></span><br><canvas id="bar8"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. C1f - <b>OTHER PUBLICATIONS</b></span><br><canvas id="bar9"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1f - <b>OTHER PUBLICATIONS</b></span><br><canvas id="bar9"></canvas></div>
             </div>
         </div>
     </div>

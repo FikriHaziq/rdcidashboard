@@ -45,16 +45,16 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">% OF INTERNATIONAL POSTGRADUATES ENROLLED</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D5 - <b>% OF INTERNATIONAL POSTGRADUATES ENROLLED</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">% OF POSTGRADUATES ENROLLED WITH CGPA ≥ 3.00</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D6 - <b>% OF POSTGRADUATES ENROLLED WITH CGPA ≥ 3.00</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">% OF POSTGRADUATES ENROLLED WITH FELLOWSHIP/GRANTS</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D7 - <b>% OF POSTGRADUATES ENROLLED WITH FELLOWSHIP/GRANTS</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTDOCTORAL APPOINTMENT</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D8 - <b>POSTDOCTORAL APPOINTMENT</b></span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -141,7 +141,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -179,7 +179,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -192,7 +192,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -230,7 +230,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -243,7 +243,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -281,20 +281,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
-                    data: doubleTarget(data.bar_4.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',

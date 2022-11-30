@@ -64,19 +64,19 @@
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. E1(a) - <b>PATENT GRANTED</b></span><br><canvas id="bar1"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. E1(a) - <b>PATENT GRANTED</b></span><br><canvas id="bar1"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. E1(b) - <b>PATENT FILED</b></span><br><canvas id="bar2"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. E1(b) - <b>PATENT FILED</b></span><br><canvas id="bar2"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. E4 - <b>OTHER IPRs</b></span><br><canvas id="bar3"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. E2 - <b>COMMERCIALIZED PRODUCTS</b></span><br><canvas id="bar4"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. E2 - <b>COMMERCIALIZED PRODUCTS</b></span><br><canvas id="bar4"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. E3 - <b>LICENSING/SOLD OUTRIGHT</b></span><br><canvas id="bar5"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. E3 - <b>LICENSING/SOLD OUTRIGHT</b></span><br><canvas id="bar5"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. E4 - <b>OTHER IPRs</b></span><br><canvas id="bar3"></canvas></div>
         </div>
     </div>
 </div>
@@ -94,30 +94,43 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
-            // datalabels: {
-            //     formatter: (value, ctx) => {
-            //         let disable = '';
-            //         let sum = 0;
-            //         let i = ctx.dataIndex;
-            //         let total = ctx.chart.data.datasets[0].data[i];
-            //         let percentage = (value*100 / total).toFixed(2)+"%";
-            //         if (total == 0) { return disable; }
-            //         else { return percentage; }
-            //     },
-            // }
         },
         scales: {
             x: {
+                grid: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
+                },
                 stacked: true,
             },
             y: {
+                grace: '5%',
+                grid: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Ratio'
+                },
                 beginAtZero: true,
             },
         }
     };
+
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
 
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
@@ -126,13 +139,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: '100% TARGET',
+                    data: data.bar_1.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -144,7 +173,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -160,13 +190,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: '100% TARGET',
+                    data: data.bar_2.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -178,7 +224,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -194,13 +241,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: '100% TARGET',
+                    data: data.bar_3.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -212,7 +275,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -228,13 +292,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_4.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: '100% TARGET',
+                    data: data.bar_4.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -246,7 +326,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -262,13 +343,29 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_5.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_5.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
+                    label: '100% TARGET',
+                    data: data.bar_5.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -280,7 +377,8 @@
                     categoryPercentage: 0.75,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]

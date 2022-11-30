@@ -45,16 +45,16 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES STUDY MODE</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5 text-center"><span><b>POSTGRADUATES STUDY MODE</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES BY RESEARCH</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span><b>POSTGRADUATES BY RESEARCH</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">POSTGRADUATES AREA OF STUDY</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span><b>POSTGRADUATES AREA OF STUDY</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">STUDENT: UNDERGRADUATE VS POSTGRADUATE</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span><b>STUDENT: UNDERGRADUATE VS POSTGRADUATE</b></span><br><canvas id="bar3"></canvas></div>
             </div>
         </div>
     </div>

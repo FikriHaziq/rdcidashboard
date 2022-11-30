@@ -29,32 +29,31 @@
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F1(a) - <b>TRAINING COURSES</b></span><br><canvas id="bar1"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F1(a) - <b>TRAINING COURSES</b></span><br><canvas id="bar1"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F1(b) - <b>PG FEES</b></span><br><canvas id="bar2"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F1(b) - <b>PG FEES</b></span><br><canvas id="bar2"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F2 - <b>CONFERENCE, SEMINAR</b></span><br><canvas id="bar3"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F2 - <b>CONFERENCE, SEMINAR</b></span><br><canvas id="bar3"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F3 - <b>PRODUCT COMM & LICENSING</b></span><br><canvas id="bar4"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F3 - <b>PRODUCT COMM & LICENSING</b></span><br><canvas id="bar4"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F4(a) - <b>CONSULTANCY</b></span><br><canvas id="bar5"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F4a - <b>CONSULTANCY</b></span><br><canvas id="bar5"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F4(c) - <b>LAB SERVICES</b></span><br><canvas id="bar6"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F4c - <b>LAB SERVICES</b></span><br><canvas id="bar6"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F5(a) - <b>ENDOWMENT</b></span><br><canvas id="bar7"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F5 - <b>ENDOWMENT</b></span><br><canvas id="bar7"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">SEC. F6 - <b>GIFTS/DONATIONS</b></span><br><canvas id="bar8"></canvas></div>
+            <div class="box p-5 text-center"><span>SEC. F6 - <b>GIFTS/DONATIONS</b></span><br><canvas id="bar8"></canvas></div>
         </div>
     </div>
 </div>
-{{-- </div> --}}
 @endslot
 @section('custom-js')
 <script>
@@ -68,31 +67,49 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
-            // datalabels: {
-            //     formatter: (value, ctx) => {
-            //         let sum = 0;
-            //         let i = ctx.dataIndex;
-            //         let total = ctx.chart.data.datasets[1].data[i];
-            //         let percentage = (value*100 / total).toFixed(2)+"%";
-            //         return percentage;
-            //     },
-            // }
+            datalabels: {
+                formatter: (value, ctx) => {
+                    return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                },
+            }
         },
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Amount (RM)'
                 },
                 beginAtZero: true,
+                ticks: {
+                    callback: (value, index, values) => {
+                        return new Intl.NumberFormat('en-MY', {
+                            style: 'currency',
+                            currency: 'MYR',
+                            notation: 'compact',
+                        }).format(value);
+                    }
+                }
             },
         }
     };
@@ -112,7 +129,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -120,9 +140,12 @@
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -134,7 +157,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -156,7 +180,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -164,9 +191,12 @@
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -178,7 +208,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -200,7 +231,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -208,9 +242,12 @@
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -222,7 +259,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -244,17 +282,23 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
                     data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderColor: 'rgba(44, 73, 26)',                        anchor: 'end',
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -266,7 +310,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -288,17 +333,23 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
                     data: data.bar_5.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderColor: 'rgba(44, 73, 26)',                        align: 'end',
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -310,7 +361,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -332,17 +384,23 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
                     label: 'MyRA II TARGET (100%)',
                     data: data.bar_6.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderColor: 'rgba(44, 73, 26)',                        display: 'auto',
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -354,7 +412,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -376,7 +435,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -384,9 +446,12 @@
                     data: data.bar_7.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -398,7 +463,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]
@@ -420,7 +486,10 @@
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
                     }
                 },
                 {
@@ -428,9 +497,12 @@
                     data: data.bar_8.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
+                    borderWidth: 1,
                     datalabels: {
-                        display: false,
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
                     }
                 },
                 {
@@ -442,7 +514,8 @@
                     categoryPercentage: 0.78,
                     datalabels: {
                         anchor: 'end',
-                        align: 'top',
+                        align: 'end',
+                        color: '#000'
                     }
                 },
             ]

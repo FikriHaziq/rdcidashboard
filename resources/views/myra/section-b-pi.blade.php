@@ -48,22 +48,22 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1 - <b>STAFF INVOLVED AS PRINCIPAL INVESTIGATOR</b></span><br><canvas id="line1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1 - <b>STAFF INVOLVED AS PRINCIPAL INVESTIGATOR</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1 - <b>PRINCIPAL INVESTIGATORS</b></span><br><canvas id="line2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1 - <b>PRINCIPAL INVESTIGATORS</b></span><br><canvas id="line2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1(d) - <b>PI-INTERNATIONAL: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1a - <b>PI-UNIVERSITY: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1(b) - <b>PI-NATIONAL: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1b - <b>PI-NATIONAL: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1(a) - <b>PI-UNIVERSITY: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1c - <b>PI-PRIVATE: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. B1(c) - <b>PI-PRIVATE: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B1d - <b>PI-INTERNATIONAL: ACHIEVEMENT VS TARGET</b></span><br><canvas id="bar1"></canvas></div>
             </div>
         </div>
     </div>

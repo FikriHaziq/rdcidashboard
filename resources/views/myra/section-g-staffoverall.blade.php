@@ -4,13 +4,6 @@
 @slot("submoduleLink") myra.section-g @endslot
 @section('custom-css')
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -49,25 +42,25 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">STAFF INVOLVED IN INTERNATIONAL MOA</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G1b - <b>STAFF INVOLVED IN INTERNATIONAL MOA</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">STAFF SENT ABROAD</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G2 - <b>STAFF SENT ABROAD</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL MEMBERSHIP - STAFF AS MEMBER</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G3a - <b>INTERNATIONAL MEMBERSHIP - STAFF AS MEMBER</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL MEMBERSHIP - STAFF APOINTED AS COMMITTEE</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G3b - <b>INTERNATIONAL MEMBERSHIP - STAFF APOINTED AS COMMITTEE</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">STAFF INVOLVED IN NATIONAL MOA</span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G4a - <b>STAFF INVOLVED IN NATIONAL MOA</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NATIONAL MEMBERSHIP - STAFF AS MEMBER</span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G5a - <b>NATIONAL MEMBERSHIP - STAFF AS MEMBER</b></span><br><canvas id="bar6"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NATIONAL MEMBERSHIP - STAFF APOINTED AS COMMITTEE</span><br><canvas id="bar7"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G5b - <b>NATIONAL MEMBERSHIP - STAFF APOINTED AS COMMITTEE</b></span><br><canvas id="bar7"></canvas></div>
             </div>
         </div>
     </div>
@@ -85,29 +78,29 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             },
-            // datalabels: {
-            //     formatter: (value, ctx) => {
-            //         let sum = 0;
-            //         let i = ctx.dataIndex;
-            //         let total = ctx.chart.data.datasets[0].data[i];
-            //         let percentage = (value*100 / total).toFixed(2)+"%";
-            //         return percentage;
-            //     },
-            // }
         },
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'No. of Staff'
                 },
                 beginAtZero: true,
             },
@@ -157,7 +150,7 @@
             labels: customLabels,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: 'MyRA I TARGET (100%)',
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -191,7 +184,7 @@
             labels: customLabels,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: 'MyRA I TARGET (100%)',
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -293,7 +286,7 @@
             labels: customLabels,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: 'MyRA I TARGET (100%)',
                     data: data.bar_6.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
