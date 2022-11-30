@@ -4,13 +4,6 @@
 @slot("submoduleLink") myra.section-g @endslot
 @section('custom-css')
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -49,16 +42,16 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW KTP PROJECT</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G6a - <b>NEW KTP PROJECT</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">COMMUNITIES BENEFITED</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G6c - <b>COMMUNITIES BENEFITED</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">COLLABORATIVE PROJECTS</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G7 - <b>COLLABORATIVE PROJECTS</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">COLLABORATIVE PROJECTS BETWEEN RUs</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G8 - <b>COLLABORATIVE PROJECTS BETWEEN RUs</b></span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>
@@ -76,20 +69,29 @@
                 reverse: 'true',
                 labels: {
                     usePointStyle: true,
-                    pointStyle: 'circle',
+                    pointStyle: 'rectRot',
                 }
             }
         },
         scales: {
             x: {
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
                 },
                 stacked: true,
             },
             y: {
+                grace: '5%',
                 grid: {
-                display: false
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'No. of Project'
                 },
                 beginAtZero: true,
             },
@@ -173,7 +175,7 @@
             labels: customLabels,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: 'MyRA I TARGET (100%)',
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',

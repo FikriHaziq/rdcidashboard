@@ -2,7 +2,7 @@
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section D: Quantity and Quality of Postgraduates @endslot
 @slot("trimoduleLink") myra.section-d @endslot
-@slot("trimodule") Post Graduate @endslot
+@slot("trimodule") Postgraduate @endslot
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
@@ -45,19 +45,19 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD: GRADUATED & GOT</b></span><br><canvas id="line1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D1a - <b>PhD: GRADUATED & GOT</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD GRADUATED</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D1b - <b>PhD GRADUATED</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D1d - <b>PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D3 - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D3b - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D3 - <b>RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D4a - <b>RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>
@@ -95,10 +95,74 @@
                 grid: {
                     display: false
                 },
+                title: {
+                    display: true,
+                    text: 'No. of Postgraduate'
+                },
                 beginAtZero: true,
             },
         }
     };
+
+    const ratioOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                reverse: 'true',
+                labels: {
+                    usePointStyle: true,
+                    pointStyle: 'rectRot',
+                }
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Year'
+                },
+                stacked: true,
+            },
+            y: {
+                grace: '5%',
+                ticks: {
+                    callback: ((value, index, ticks) => {
+                        return value.toFixed(2);
+                    })
+                },
+                grid: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Ratio'
+                },
+                beginAtZero: true,
+            },
+        }
+    };
+
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
+
+    function doubleRatioTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value.toFixed(2));
+        }
+        return dataValue;
+    }
 
     var bar1 = document.getElementById('bar1');
     var barChart1 = new Chart(bar1, {
@@ -107,11 +171,30 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_1.data_2),
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
                     label: '100% TARGET',
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -120,9 +203,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 
@@ -133,11 +222,30 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_2.data_2),
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
                     label: '100% TARGET',
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -146,9 +254,15 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: customOptions,
     });
 
@@ -159,11 +273,30 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '200% TARGET',
+                    data: doubleRatioTarget(data.bar_3.data_2),
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
                     label: '100% TARGET',
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -172,10 +305,16 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
-        options: customOptions,
+        plugins: [ChartDataLabels],
+        options: ratioOptions,
     });
 
     var bar4 = document.getElementById('bar4');
@@ -185,11 +324,30 @@
             labels: data.year_range,
             datasets: [
                 {
+                    label: '200% TARGET',
+                    data: doubleRatioTarget(data.bar_4.data_2),
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(82, 0, 192)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#5200C0'
+                    }
+                },
+                {
                     label: '100% TARGET',
                     data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        display: 'auto',
+                        color: '#2C491A'
+                    }
                 },
                 {
                     label: 'ACHIEVEMENT',
@@ -198,10 +356,16 @@
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
                     categoryPercentage: 0.75,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        color: '#000'
+                    }
                 },
             ]
         },
-        options: customOptions,
+        plugins: [ChartDataLabels],
+        options: ratioOptions,
     });
 
     var line1 = document.getElementById('line1');

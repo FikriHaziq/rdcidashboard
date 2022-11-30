@@ -6,13 +6,6 @@
 @section('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -55,14 +48,11 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">QUALIFICATION: PhD & PROFESSIONAL QUALIFICATION</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B2 - <b>QUALIFICATION: PhD & PROFESSIONAL QUALIFICATION</b></span><br><canvas id="line1"></canvas></div>
             </div>
-            
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">COHORT</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B3 - <b>COHORT</b></span><br><canvas id="bar1"></canvas></div>
             </div>
-            
-            
         </div>
     </div>
 </div>
@@ -101,6 +91,7 @@
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: {
             plugins: {
                 legend: {
@@ -110,6 +101,9 @@
                         usePointStyle: true,
                         pointStyle: 'rectRot',
                     }
+                },
+                datalabels: {
+                    color: 'rgb(0, 0, 0)'
                 }
             },
             scales: {
@@ -131,6 +125,18 @@
                     type: 'linear',
                     display: true,
                     position: 'left',
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        callback: ((value, index, ticks) => {
+                            return value + '%';
+                        })
+                    },
+                    title: {
+                        display: true,
+                        text: 'Percentage (%)'
+                    }
                 },
             }
         }

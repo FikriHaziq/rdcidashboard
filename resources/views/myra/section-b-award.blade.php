@@ -47,22 +47,22 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL AWARDS</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4a<b>INTERNATIONAL AWARDS</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">INTERNATIONAL RECOGNITION/STEWARDSHIP</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4b<b>INTERNATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NATIONAL AWARDS</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4c<b>NATIONAL AWARDS</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NATIONAL RECOGNITION/STEWARDSHIP</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4d<b>NATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">EXHIBITION AWARDS</span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4e<b>EXHIBITION AWARDS</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">OTHER RESEARCH AWARDS</span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4f<b>OTHER RESEARCH AWARDS</b></span><br><canvas id="bar6"></canvas></div>
             </div>
         </div>
     </div>
@@ -122,7 +122,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_1.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -135,7 +135,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_1.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -172,7 +172,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -185,7 +185,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -222,7 +222,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_3.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -235,7 +235,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_3.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -272,7 +272,7 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
+                    label: '200% TARGET',
                     data: doubleTarget(data.bar_4.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
@@ -285,7 +285,7 @@
                     }
                 },
                 {
-                    label: 'MyRA II TARGET (100%)',
+                    label: '100% TARGET',
                     data: data.bar_4.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
@@ -322,8 +322,8 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
-                    data: doubleTarget(data.bar_5.data_2),
+                    label: '100% TARGET',
+                    data: data.bar_5.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
@@ -332,19 +332,6 @@
                         align: 'end',
                         display: 'auto',
                         color: '#5200C0'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_5.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
                     }
                 },
                 {
@@ -372,8 +359,8 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: 'MyRA II TARGET (200%)',
-                    data: doubleTarget(data.bar_6.data_2),
+                    label: '100% TARGET',
+                    data: data.bar_6.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
@@ -382,19 +369,6 @@
                         align: 'end',
                         display: 'auto',
                         color: '#5200C0'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_6.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
                     }
                 },
                 {

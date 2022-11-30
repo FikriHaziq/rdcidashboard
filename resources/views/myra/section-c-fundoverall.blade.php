@@ -44,30 +44,30 @@
         <div class="row">
             @if ($faculty)
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (UNIVERSITY) APPROVED</span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span><b>NEW PUBLIC FUND (UNIVERSITY) APPROVED</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW PUBLIC FUND (NATIONAL) APPROVED</span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span><b>NEW PUBLIC FUND (NATIONAL) APPROVED</b></span><br><canvas id="bar6"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW PRIVATE FUND APPROVED</span><br><canvas id="bar7"></canvas></div>
+                <div class="p-5 text-center"><span><b>NEW PRIVATE FUND APPROVED</b></span><br><canvas id="bar7"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW INTERNATIONAL FUND APPROVED</span><br><canvas id="bar8"></canvas></div>
+                <div class="p-5 text-center"><span><b>NEW INTERNATIONAL FUND APPROVED</b></span><br><canvas id="bar8"></canvas></div>
             </div>
             @else
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">NEW FUNDING APPROVED</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C2 - <b>NEW FUNDING APPROVED</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             @endif
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR PUBLIC FUND</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C2a - <b>AMOUNT RECEIVED FOR PUBLIC FUND</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR PRIVATE FUND</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C2b - <b>AMOUNT RECEIVED FOR PRIVATE FUND</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">AMOUNT RECEIVED FOR INTERNATIONAL FUND</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C2c - <b>AMOUNT RECEIVED FOR INTERNATIONAL FUND</b></span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Amount'
+                    text: 'Amount (RM)'
                 },
                 beginAtZero: true,
                 ticks: {
