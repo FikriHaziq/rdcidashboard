@@ -146,15 +146,6 @@
         }
     };
 
-    function seventyTarget(arg) {
-        dataValue = [];
-        for (i = 0; i < arg.length; i++) {
-            value = arg[i] * 0.7;
-            dataValue.push(Math.round(value));
-        }
-        return dataValue;
-    }
-
     function doubleTarget(arg) {
         dataValue = [];
         for (i = 0; i < arg.length; i++) {
@@ -231,8 +222,8 @@
             labels: data.year_range,
             datasets: [
                 {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
+                    label: '200% TARGET',
+                    data: doubleTarget(data.bar_2.data_2),
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(82, 0, 192)',
                     borderWidth: 1,
@@ -244,8 +235,8 @@
                     }
                 },
                 {
-                    label: '70% TARGET',
-                    data: seventyTarget(data.bar_2.data_2),
+                    label: '100% TARGET',
+                    data: data.bar_2.data_2,
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     borderColor: 'rgba(44, 73, 26)',
                     borderWidth: 1,
