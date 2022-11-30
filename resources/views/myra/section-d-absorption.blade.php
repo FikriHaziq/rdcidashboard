@@ -45,19 +45,19 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">PhD: GRADUATED & GOT</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD: GRADUATED & GOT</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">RATIO PhD GRADUATED TO ACTIVE STAFF</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>RATIO PhD GRADUATED TO ACTIVE STAFF</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">% OF PhD GRADUATED ON TIME</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>% OF PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">RATIO PhD ENROLLED TO ACTIVE STAFF</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D3 - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D3 - <b>RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar4"></canvas></div>
             </div>
         </div>
     </div>

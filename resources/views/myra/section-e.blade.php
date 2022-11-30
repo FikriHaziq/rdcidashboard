@@ -64,19 +64,19 @@
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">PATENT GRANTED</span><br><canvas id="bar1"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. E1(a) - <b>PATENT GRANTED</b></span><br><canvas id="bar1"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">PATENT FILED</span><br><canvas id="bar2"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. E1(b) - <b>PATENT FILED</b></span><br><canvas id="bar2"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">OTHER IPRs</span><br><canvas id="bar3"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. E4 - <b>OTHER IPRs</b></span><br><canvas id="bar3"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">COMMERCIALIZED PRODUCTS</span><br><canvas id="bar4"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. E2 - <b>COMMERCIALIZED PRODUCTS</b></span><br><canvas id="bar4"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">LICENSING/SOLD OUTRIGHT</span><br><canvas id="bar5"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. E3 - <b>LICENSING/SOLD OUTRIGHT</b></span><br><canvas id="bar5"></canvas></div>
         </div>
     </div>
 </div>

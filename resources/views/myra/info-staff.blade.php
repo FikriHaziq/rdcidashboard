@@ -45,19 +45,19 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">TOTAL ACADEMIC STAFF VS TOTAL ACTIVE STAFF</span><br><canvas id="line1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. A1(b) - <b>TOTAL ACADEMIC STAFF VS TOTAL ACTIVE STAFF</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">GRADE DISTRIBUTION</span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. A1(a) - <b>GRADE DISTRIBUTION</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">COHORT DISTRIBUTION</span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. A1(a) - <b>COHORT DISTRIBUTION</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">FOREIGN STAFF</span><br><canvas id="line2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. A1(f) - <b>FOREIGN STAFF</b></span><br><canvas id="line2"></canvas></div>
             </div>
             <div class="col-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">FOREIGN STAFF BY COUNTRY OF ORIGIN ({{ $start_year }} - {{ $end_year }})</span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. A1(f) - <b>FOREIGN STAFF BY COUNTRY OF ORIGIN ({{ $start_year }} - {{ $end_year }})</b></span><br><canvas id="bar3"></canvas></div>
             </div>
         </div>
     </div>

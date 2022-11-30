@@ -4,13 +4,6 @@
 @slot("submoduleLink") myra.section-f @endslot
 @section('custom-css')
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
-    .bg-whitesmoke {
-        background-color: whitesmoke;
-    }
-    
     .active-tab {
         background-color:white;
         border-top-left-radius: 7px;
@@ -36,28 +29,28 @@
 <div class="p-5">
     <div class="row">
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">TRAINING COURSES</span><br><canvas id="bar1"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F1(a) - <b>TRAINING COURSES</b></span><br><canvas id="bar1"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">PG FEES</span><br><canvas id="bar2"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F1(b) - <b>PG FEES</b></span><br><canvas id="bar2"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">CONFERENCE, SEMINAR</span><br><canvas id="bar3"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F2 - <b>CONFERENCE, SEMINAR</b></span><br><canvas id="bar3"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">PRODUCT COMM & LICENSING</span><br><canvas id="bar4"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F3 - <b>PRODUCT COMM & LICENSING</b></span><br><canvas id="bar4"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">CONSULTANCY</span><br><canvas id="bar5"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F4(a) - <b>CONSULTANCY</b></span><br><canvas id="bar5"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">LAB SERVICES</span><br><canvas id="bar6"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F4(c) - <b>LAB SERVICES</b></span><br><canvas id="bar6"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">ENDOWMENT</span><br><canvas id="bar7"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F5(a) - <b>ENDOWMENT</b></span><br><canvas id="bar7"></canvas></div>
         </div>
         <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5"><span class="font-weight-bold">GIFTS/DONATIONS</span><br><canvas id="bar8"></canvas></div>
+            <div class="box p-5"><span class="font-weight-bold">SEC. F6 - <b>GIFTS/DONATIONS</b></span><br><canvas id="bar8"></canvas></div>
         </div>
     </div>
 </div>
