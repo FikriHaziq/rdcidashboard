@@ -48,10 +48,10 @@
                 <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD: GRADUATED & GOT</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>RATIO PhD GRADUATED TO ACTIVE STAFF</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD GRADUATED</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>% OF PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5"><span class="font-weight-bold">SEC. D1 - <b>PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5"><span class="font-weight-bold">SEC. D3 - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar3"></canvas></div>
@@ -115,7 +115,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: data.bar_1.data_1,
+                    data: data.line_1.data_2,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
@@ -141,7 +141,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: data.bar_2.data_1,
+                    data: data.line_1.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,

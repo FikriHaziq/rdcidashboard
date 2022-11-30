@@ -322,7 +322,42 @@
             ]
         },
         plugins: [ChartDataLabels],
-        options: customOptions,
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    reverse: 'true',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rectRot',
+                    }
+                },
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    },
+                    stacked: true,
+                },
+                y: {
+                    grace: '5%',
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Postdoctoral Appointment'
+                    },
+                    beginAtZero: true,
+                },
+            }
+        },
     });
 </script>
 @endsection
