@@ -899,10 +899,10 @@ trait GraphMyraTrait {
                 $active_acad_staff = $section_d_data->calculation->active_acad_staff;
                 $line1_1 = $section_d_data->total_phd;
                 $line1_2 = MasterlistPhdGraduate::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('got', $this->got('yes'))->count();
-                $bar1_1 = $active_acad_staff > 0 ? (float)$line1_1/$active_acad_staff  : 0;
+                $bar1_1 = $line1_1;
                 $bar1_2 = (int)($section_d_data->calculation->myra2_benchmark_target_1[0] ?? 0);
                 $phd_graduate_7 = $line1_2;
-                $bar2_1 =$line1_1 > 0 ? (float)number_format($phd_graduate_7/$line1_1*100, 2) : 0;
+                $bar2_1 =$line1_1;
                 $bar2_2 = (int)($section_d_data->calculation->myra2_benchmark_target_1[1] ?? 0);
                 $bar3_1 = $active_acad_staff > 0 ? $section_d_data->total_phd_enrolled/$active_acad_staff  : 0;
                 $bar3_2 = (int)($section_d_data->calculation->myra1_benchmark_target_3[0] ?? 0);
@@ -927,9 +927,9 @@ trait GraphMyraTrait {
             array_push($line_1->data_1, $line1_1);
             array_push($line_1->data_2, $line1_2);
             array_push($bar_1->data_1, (float)number_format($bar1_1, 2));
-            array_push($bar_1->data_2, $active_acad_staff > 0 ? number_format($bar1_2/$active_acad_staff, 2)  : 0);
+            array_push($bar_1->data_2, $bar1_2);
             array_push($bar_2->data_1, (float)number_format($bar2_1, 2));
-            array_push($bar_2->data_2, $line1_1 > 0 ? number_format($bar2_2/$line1_1*100, 2)  : 0);
+            array_push($bar_2->data_2, $bar2_2);
             array_push($bar_3->data_1, (float)number_format($bar3_1, 2));
             array_push($bar_3->data_2, $active_acad_staff > 0 ? number_format($bar3_2/$active_acad_staff, 2)  : 0);
             array_push($bar_4->data_1, (float)number_format($bar4_1, 2));

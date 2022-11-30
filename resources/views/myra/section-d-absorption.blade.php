@@ -198,7 +198,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: data.line_1.data_2,
+                    data: data.line_1.data_1,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
@@ -249,7 +249,7 @@
                 },
                 {
                     label: 'ACHIEVEMENT',
-                    data: data.line_1.data_1,
+                    data: data.line_1.data_2,
                     backgroundColor: 'rgb(192, 190, 255)',
                     borderColor: 'rgb(192, 190, 255)',
                     borderWidth: 1,
