@@ -830,7 +830,7 @@ trait MasterListMyraTrait {
             'total_phd_enrolled' => $total_phd_enrolled,
             'total_phd_st_enrolled' => $total_phd_st_enrolled,
             'pg_enrolled' => MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count(),
-            'pg_research' => MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('study_mode', $this->student_study_mode('research'))->count(),
+            'pg_research' => $pg_research,
             'pg_enrolled_ratio' => $pg_enrolled_ratio,
             'pg_enrolled_mixed_mode_ratio' => $pg_enrolled_mixed_mode_ratio,
             'int_pg_enrolled' => $int_pg_enrolled,
