@@ -479,14 +479,14 @@ trait GraphMyraTrait {
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
                 $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_1')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
+                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
                 $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
             }
             else{
                 $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_1')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
+                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
                 $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
