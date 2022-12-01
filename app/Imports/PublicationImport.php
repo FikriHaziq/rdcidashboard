@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use App\Imports\Sheets\PublicationCitationSheetImport;
 use App\Imports\Sheets\PublicationFirstSheetImport;
 use App\Imports\Sheets\PublicationSecondSheetImport;
 use App\Imports\Sheets\PublicationThirdSheetImport;
@@ -28,15 +29,16 @@ class PublicationImport implements WithMultipleSheets, SkipsUnknownSheets
     public function sheets(): array
     {
         return [
-            0 => new PublicationFirstSheetImport($this->year),
-            1 => new PublicationSecondSheetImport($this->year),
-            2 => new PublicationThirdSheetImport($this->year),
-            3 => new PublicationFourthSheetImport($this->year),
-            4 => new PublicationFifthSheetImport($this->year),
-            5 => new PublicationSixthSheetImport($this->year),
-            6 => new PublicationSeventhSheetImport($this->year),
-            7 => new PublicationEighthSheetImport($this->year),
-            8 => new PublicationNinethSheetImport($this->year),
+            0 => new PublicationCitationSheetImport($this->year),
+            1 => new PublicationFirstSheetImport($this->year),
+            2 => new PublicationSecondSheetImport($this->year),
+            3 => new PublicationThirdSheetImport($this->year),
+            4 => new PublicationFourthSheetImport($this->year),
+            5 => new PublicationFifthSheetImport($this->year),
+            6 => new PublicationSixthSheetImport($this->year),
+            7 => new PublicationSeventhSheetImport($this->year),
+            8 => new PublicationEighthSheetImport($this->year),
+            9 => new PublicationNinethSheetImport($this->year),
         ];
     }
 

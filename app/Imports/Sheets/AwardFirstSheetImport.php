@@ -70,7 +70,7 @@ class AwardFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
 
     public function startRow(): int
     {
-        return 3;
+        return 2;
     }
 
     public function chunkSize(): int

@@ -479,14 +479,14 @@ trait GraphMyraTrait {
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
                 $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_1')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
+                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
                 $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
             }
             else{
                 $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_1')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
+                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
                 $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
@@ -976,7 +976,10 @@ trait GraphMyraTrait {
                 $bar2_1 = $pg_enrolled > 0 ? (float)number_format($section_d_data->entry_enrolled/$pg_enrolled*100, 2) : 0;
                 $bar2_2 = (int)($section_d_data->calculation->myra1_benchmark_target_6[0] ?? 0);
                 $pg_research = $section_d_data->fellowship_enrolled;
-                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_enrolled*100, 2) : 0;
+                $pg_master_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
+                $pg_phd_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('phd'))->count();
+                $pg_research_enrolled = $pg_master_research + $pg_phd_research;
+                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_research_enrolled*100, 2) : 0;
                 $bar3_2 = (int)($section_d_data->calculation->myra1_benchmark_target_7[0] ?? 0);
                 $bar4_1 = MasterlistPostDoc::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
                 $bar4_2 = (int)($section_d_data->calculation->myra2_benchmark_target_8[0] ?? 0);
@@ -989,8 +992,14 @@ trait GraphMyraTrait {
                 $bar2_1 = $pg_enrolled > 0 ? (float)number_format(MasterlistEntryQualification::where('ml_end_year', $i)->count()/$pg_enrolled*100, 2) : 0;
                 $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_entry.percentage_enrolled.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra1_benchmark_target ?? 0);
                 $pg_research = MasterlistFellowship::where('ml_end_year', $i)->count();
-                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_enrolled*100, 2) : 0;
+
+                $pg_master_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
+                $pg_phd_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('phd'))->count();
+                $pg_research_enrolled = $pg_master_research + $pg_phd_research;
+                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_research_enrolled*100, 2) : 0;
+                // dd($bar3_1);
                 $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_research.percentage_enrolled.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra1_benchmark_target ?? 0);
+                // dd($bar3_2/6763*100);
                 $bar4_1 = MasterlistPostDoc::where('ml_end_year', $i)->count();
                 $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.postdoc.percentage_enrolled.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra2_benchmark_target ?? 0);
             }
@@ -1000,7 +1009,7 @@ trait GraphMyraTrait {
             array_push($bar_2->data_1, (float)number_format($bar2_1, 2));
             array_push($bar_2->data_2, $pg_enrolled > 0 ? number_format($bar2_2/$pg_enrolled*100, 2)  : 0);
             array_push($bar_3->data_1, (float)number_format($bar3_1, 2));
-            array_push($bar_3->data_2, $pg_enrolled > 0 ? number_format($bar3_2/$pg_research*100, 2)  : 0);
+            array_push($bar_3->data_2, $pg_research_enrolled > 0 ? number_format($bar3_2/$pg_research_enrolled*100, 2)  : 0);
             array_push($bar_4->data_1, (int)$bar4_1);
             array_push($bar_4->data_2, $bar4_2);
 

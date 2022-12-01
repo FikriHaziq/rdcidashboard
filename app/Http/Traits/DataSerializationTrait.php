@@ -51,6 +51,7 @@ trait DataSerializationTrait {
         else if($type == 'master'){
             $data = [
                 'SARJANA',
+                'MASTER'
             ];
         }
 

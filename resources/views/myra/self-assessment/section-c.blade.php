@@ -459,14 +459,14 @@
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td> --}}
                                     {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subsubweightage_1[6] }}%</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_1[6] }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[6], 2) }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_1[6], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_1[6] , 2)}}</td>
+                                    
                                     {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[6], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
@@ -477,9 +477,9 @@
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
-                                    <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_1[6] }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_1[6], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_1[6] , 2)}}</td>
                                     {{-- <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray"></td>
