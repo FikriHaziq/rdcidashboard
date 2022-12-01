@@ -6,6 +6,8 @@
 <script src="{{ asset('theme/js/ckeditor-document.js') }}"></script>
 <script src="{{ asset('theme/js/ckeditor-inline.js') }}"></script> --}}
 
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <!-- Chart JS -->
 <script src="{{ asset('theme/js/chart.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -26,4 +28,84 @@
     function intRand(max) {
         return Math.floor(Math.random() * max);
     }
+
+    // return 200% target value
+    function doubleTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value);
+        }
+        return dataValue;
+    }
+
+    // return 200% ratio target value
+    function doubleRatioTarget(arg) {
+        dataValue = [];
+        for (i = 0; i < arg.length; i++) {
+            value = arg[i] * 2;
+            dataValue.push(value.toFixed(2));
+        }
+        return dataValue;
+    }
+
+    // convert data to json with custom color
+    function customizedData(yearRange, targetList, baseList, targetColor, baseColor) {
+        result = [];
+        targetList.forEach((x, i) => {
+            result.push({
+                x: yearRange[i],
+                y: filterString(baseList[i]),
+                color: x > baseList[i] ? baseColor : targetColor,
+                borderColor: x > baseList[i] ? baseColor : targetColor,
+            });
+        });
+        return result;
+    }
+
+    // convert target data to json with custom border
+    function targetedData(yearRange, targetList, borderColor, type) {
+        result = [];
+        targetList.forEach((x, i) => {
+            result.push({
+                x: yearRange[i],
+                y: filterString(x),
+                color: 'transparent',
+                borderColor: borderColor,
+                dashStyle: type != 'solid' ? type : 'solid',
+            });
+        });
+        return result;
+    }
+
+    function filterString(arg) {
+        if (typeof arg == 'string') {
+            return parseInt(arg);
+        } else {
+            return arg;
+        }
+    }
+
+    Highcharts.setOptions({
+        title: {
+            text: ''
+        },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+                dataLabels: {
+                    enabled: true,
+                    inside: false
+                }
+            }
+        },
+        accessibility: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        }
+    });
 </script>

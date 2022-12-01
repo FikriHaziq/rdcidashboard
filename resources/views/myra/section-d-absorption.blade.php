@@ -48,16 +48,16 @@
                 <div class="p-5 text-center"><span>SEC. D1a - <b>PhD: GRADUATED & GOT</b></span><br><canvas id="line1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. D1b - <b>PhD GRADUATED</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D1b - <b>PhD GRADUATED</b></span><br><div id="bar1"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. D1d - <b>PhD GRADUATED ON TIME</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D1d - <b>PhD GRADUATED ON TIME</b></span><br><div id="bar2"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. D3b - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D3b - <b>RATIO PhD ENROLLED TO ACTIVE STAFF</b></span><br><div id="bar3"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. D4a - <b>RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. D4a - <b>RATIO POSTGRADUATE ENROLLED TO ACTIVE STAFF</b></span><br><div id="bar4"></div></div>
             </div>
         </div>
     </div>
@@ -66,306 +66,209 @@
 @section('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
+    
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar1',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Postgraduate'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_1.data_2, data.line_1.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
 
-    const customOptions = {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom',
-                reverse: 'true',
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'rectRot',
+    var chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar2',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Postgraduate'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_2.data_2, data.line_1.data_2, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_2.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_2.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar3',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+            formatter: function () {
+                return this.points.reduce(function (s, point) {
+                    return s + '<br/>' + point.series.name + ': <b>' +
+                        point.y.toFixed(2) + '</b>';
+                }, '<b>' + this.x + '</b>');
+            }
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Ratio'
+            },
+            labels: {
+                format: '{text}.00'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleRatioTarget(data.bar_3.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    formatter: function () {
+                        return Highcharts.numberFormat(this.y,2);
+                    }
                 }
-            },
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Year'
-                },
-                stacked: true,
-            },
-            y: {
-                grace: '5%',
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'No. of Postgraduate'
-                },
-                beginAtZero: true,
-            },
+            }
         }
-    };
+    });
 
-    const ratioOptions = {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom',
-                reverse: 'true',
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'rectRot',
+    var chart4 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar4',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+            formatter: function () {
+                return this.points.reduce(function (s, point) {
+                    return s + '<br/>' + point.series.name + ': <b>' +
+                        point.y.toFixed(2) + '</b>';
+                }, '<b>' + this.x + '</b>');
+            }
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Ratio'
+            },
+            labels: {
+                format: '{text}.00'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleRatioTarget(data.bar_4.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    formatter: function () {
+                        return Highcharts.numberFormat(this.y,2);
+                    }
                 }
-            },
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Year'
-                },
-                stacked: true,
-            },
-            y: {
-                grace: '5%',
-                ticks: {
-                    callback: ((value, index, ticks) => {
-                        return value.toFixed(2);
-                    })
-                },
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Ratio'
-                },
-                beginAtZero: true,
-            },
+            }
         }
-    };
-
-    function doubleTarget(arg) {
-        dataValue = [];
-        for (i = 0; i < arg.length; i++) {
-            value = arg[i] * 2;
-            dataValue.push(value);
-        }
-        return dataValue;
-    }
-
-    function doubleRatioTarget(arg) {
-        dataValue = [];
-        for (i = 0; i < arg.length; i++) {
-            value = arg[i] * 2;
-            dataValue.push(value.toFixed(2));
-        }
-        return dataValue;
-    }
-
-    var bar1 = document.getElementById('bar1');
-    var barChart1 = new Chart(bar1, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_1.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.line_1.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_2.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.line_1.data_2,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleRatioTarget(data.bar_3.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_3.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: ratioOptions,
-    });
-
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleRatioTarget(data.bar_4.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_4.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: ratioOptions,
     });
 
     var line1 = document.getElementById('line1');
