@@ -9,8 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class ProductCommServiceFirstSheetImport implements ToModel, WithStartRow, WithChunkReading
+class ProductCommServiceFirstSheetImport implements ToModel, WithStartRow, WithChunkReading, WithCalculatedFormulas
 {
     public $year;
 

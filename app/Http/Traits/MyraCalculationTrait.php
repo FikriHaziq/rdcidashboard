@@ -113,7 +113,7 @@ trait MyraCalculationTrait {
         $u17 = $active_acad_staff > 0 ? (float)$myra_year_3[2]/$active_acad_staff*100 : 0;
         $u18 = $active_acad_staff > 0 ? (float)$myra_year_3[3]/$active_acad_staff*100 : 0;
         $v16 = min(abs(30-$u16), 15);
-        $v17 = min(abs(30-$u17), 15);
+        $v17 = min(abs(40-$u17), 15);
         $v18 = min(abs(30-$u18), 15);
         //myra I
 
