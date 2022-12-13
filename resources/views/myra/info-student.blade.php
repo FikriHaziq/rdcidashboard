@@ -274,11 +274,39 @@
         }
     });
 
+    // sort data from highest to lowest for bar2
+    const pg1 = data.bar_1.data_1;
+    const pg2 = data.bar_1.data_2;
+    const pg3 = data.bar_1.data_3;
+    const pg4 = data.bar_1.data_4;
+    const labels2 = data.year_range;
+    
+    let merged2 = labels2.map((label, i) => {
+        return { "label": labels2[i], "data_1": pg1[i], "data_2": pg2[i], "data_3": pg3[i], "data_4": pg4[i] }
+    });
+
+    const sortedLabel2 = [];
+
+    for (i = 0; i < merged2.length; i++) {
+        var total = 0;
+        total = merged2[i].data_1 + merged2[i].data_2 + merged2[i].data_3 + merged2[i].data_4;
+
+        const subLabel = [];
+
+        subLabel.push(merged2[i].label);
+        subLabel.push(Intl.NumberFormat('en-MY').format(total));
+
+        sortedLabel2.push(subLabel);
+    }
+
+    console.log(sortedLabel2);
+    // end sort
+
     var line1 = document.getElementById('line1');
     var lineChart1 = new Chart(line1, {
         type: 'line',
         data: {
-            labels: data.year_range,
+            labels: sortedLabel2,
             datasets: [
                 {
                     label: 'MASTER RESEARCH',
