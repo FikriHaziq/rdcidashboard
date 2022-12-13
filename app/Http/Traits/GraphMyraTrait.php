@@ -491,9 +491,9 @@ trait GraphMyraTrait {
                 $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
                 $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
                 $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
-                $bar1_4 = (float)number_format($bar1_1/$total_cohort*100, 2, '.', '');
-                $bar1_5 = (float)number_format($bar1_2/$total_cohort*100, 2, '.', '');
-                $bar1_6 = (float)number_format($bar1_3/$total_cohort*100, 2, '.', '');
+                $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
+                $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;;
+                $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;;
             }
             
             array_push($year_range, (int)$i);
