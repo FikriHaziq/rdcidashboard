@@ -568,7 +568,7 @@ class MasterlistController extends Controller
         $masterlist = DataAttachment::find($id);
         if($masterlist){
             $module = $masterlist->module;
-            if($module == 'acad_student'){
+            if($module == 'acad_staff'){
                 MasterlistAcademicStaff::where('ml_end_year', $masterlist->year)->delete();
             }
             else if($module == 'ug_student'){
@@ -664,8 +664,17 @@ class MasterlistController extends Controller
             else if($module == 'new_endowment'){
                 MasterlistNewEndowment::where('ml_end_year', $masterlist->year)->delete(); 
             }
+            else if($module == 'income_dividend'){
+                MasterlistIncomeDividend::where('ml_end_year', $masterlist->year)->delete(); 
+            }
             else if($module == 'gift'){
                 MasterlistGift::where('ml_end_year', $masterlist->year)->delete(); 
+            }
+            else if($module == 'operational_expenditure'){
+                MasterlistOperationalExpenditure::where('ml_end_year', $masterlist->year)->delete(); 
+            }
+            else if($module == 'total_expenditure'){
+                MasterlistTotalExpenditure::where('ml_end_year', $masterlist->year)->delete(); 
             }
             else if($module == 'international_moa'){
                 MasterlistInternationalMoa::where('ml_end_year', $masterlist->year)->delete(); 
