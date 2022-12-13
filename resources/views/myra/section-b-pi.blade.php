@@ -236,7 +236,19 @@
             shared: true
         },
         legend: {
-            symbolRadius: 0
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<img src="https://rdcidashboard.utm.my/images/legendA.png" width="15" height="15"/></span>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<img src="https://rdcidashboard.utm.my/images/legendH.png" width="15" height="15"/></span>';
+                } else {
+                    legend = '<img src="https://rdcidashboard.utm.my/images/legendE.png" width="15" height="15"/></span>';
+                }
+                return '<span class="customLegend">' + this.name + legend;
+            }
         },
         xAxis: {
             categories: data.year_range,
@@ -254,20 +266,25 @@
             {
                 name: 'ACHIEVEMENT',
                 data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#b9dba5', '#c0beff'),
+                marker: { symbol: 'url(rdcidashboard.utm.my/images/a-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
                 data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'dash'),
+                marker: { symbol: 'url(rdcidashboard.utm.my/images/h-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
                 data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#6600cc', 'solid'),
+                marker: { symbol: 'url(https://rdcidashboard.utm.my/images/e-legend.png)' },
                 pointWidth: 45
             },
         ],
     });
+
+    console.log('url(rdcidashboard.utm.my/images/e-legend.png)');
 
     var chart2 = new Highcharts.Chart({
         chart: {

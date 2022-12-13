@@ -6,3 +6,8 @@
 <link href="{{ asset('theme/css/vendor.css') }}" rel="stylesheet" />
 <link href="{{ asset('theme/css/calculation.css?id=234455') }}" rel="stylesheet" />
 {{-- <link href="{{ asset('theme/css/select2.min.css') }}" rel="stylesheet" /> --}}
+<style>
+    .highcharts-legend-item rect{
+        display: none;
+    }
+</style>
