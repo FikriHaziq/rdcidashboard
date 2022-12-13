@@ -47,22 +47,22 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4a<b>INTERNATIONAL AWARDS</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4a - <b>INTERNATIONAL AWARDS</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4b<b>INTERNATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4b - <b>INTERNATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4c<b>NATIONAL AWARDS</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4c - <b>NATIONAL AWARDS</b></span><br><canvas id="bar3"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4d<b>NATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4d - <b>NATIONAL RECOGNITION/STEWARDSHIP</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4e<b>EXHIBITION AWARDS</b></span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4e - <b>EXHIBITION AWARDS</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B4f<b>OTHER RESEARCH AWARDS</b></span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B4f - <b>OTHER RESEARCH AWARDS</b></span><br><canvas id="bar6"></canvas></div>
             </div>
         </div>
     </div>
