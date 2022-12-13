@@ -10,4 +10,14 @@
     .highcharts-legend-item rect{
         display: none;
     }
+
+    .custom-legend > img,
+        .custom-legend > span {
+            display: inline-block;
+    }
+
+    .custom-legend-img {
+        padding-bottom: 2px;
+        padding-right: 5px;
+    }
 </style>

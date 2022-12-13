@@ -235,21 +235,6 @@
         tooltip: {
             shared: true
         },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<img src="https://rdcidashboard.utm.my/images/legendA.png" width="15" height="15"/></span>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<img src="https://rdcidashboard.utm.my/images/legendH.png" width="15" height="15"/></span>';
-                } else {
-                    legend = '<img src="https://rdcidashboard.utm.my/images/legendE.png" width="15" height="15"/></span>';
-                }
-                return '<span class="customLegend">' + this.name + legend;
-            }
-        },
         xAxis: {
             categories: data.year_range,
             title: {
@@ -294,9 +279,6 @@
         tooltip: {
             shared: true
         },
-        legend: {
-            symbolRadius: 0
-        },
         xAxis: {
             categories: data.year_range,
             title: {
@@ -336,9 +318,6 @@
         tooltip: {
             shared: true,
         },
-        legend: {
-            symbolRadius: 0
-        },
         xAxis: {
             categories: data.year_range,
             title: {
@@ -377,9 +356,6 @@
         },
         tooltip: {
             shared: true,
-        },
-        legend: {
-            symbolRadius: 0
         },
         xAxis: {
             categories: data.year_range,
