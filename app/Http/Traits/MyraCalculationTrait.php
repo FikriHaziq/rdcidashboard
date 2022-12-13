@@ -1388,9 +1388,9 @@ trait MyraCalculationTrait {
         $myra1_benchmark_7[0] = 0.02;
 
         $myra1_benchmark_mark_1[0] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100);
-        $myra1_benchmark_mark_4[0] = $myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[0]/100);
-        $myra1_benchmark_mark_4[1] = $myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[1]/100);
-        $myra1_benchmark_mark_4[2] = $myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[2]/100);
+        $myra1_benchmark_mark_4[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[0]/100), 1);
+        $myra1_benchmark_mark_4[1] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[1]/100), 2);
+        $myra1_benchmark_mark_4[2] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[2]/100), 1);
         $myra1_benchmark_mark_5[0] = $myra1_global_weightage*($myra1_weightage_3/100);
         $myra1_benchmark_mark_6[0] = $myra1_global_weightage*($myra1_weightage_4/100);
         $myra1_benchmark_mark_7[0] = $myra1_global_weightage*($myra1_weightage_5/100);
