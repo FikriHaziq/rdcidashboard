@@ -43,42 +43,35 @@
         </ul>
     </div>
 </div>
-{{-- Faculty Link OlD --}}
-{{-- <li class="nav-item flex-1" role="presentation">
-    <a href="{{ route('myra.section-c', ['tabs'=>'PUBLICATION-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 " role="tab">Publication by Faculty</a>
-</li> --}}
-{{-- <li class="nav-item flex-1" role="presentation">
-    <a href="{{ route('myra.section-c', ['tabs'=>'FUNDING-FACULTY', 'search'=>1, 'start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty]) }}" class="nav-link w-full py-2 " role="tab">Funding by Faculty</a>
-</li> --}}
 <div class="tab-content box mt-5">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>INDEXED JOURNAL</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>INDEXED JOURNAL</b></span><br><div id="bar1"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>ARTICLES IN Q1/Q2 JOURNAL</b></span><br><canvas id="bar2"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(i,iii) - <b>ARTICLES IN Q1/Q2 JOURNAL</b></span><br><div id="bar2"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1a(ii) - <b>INDEXED PROCEEDING</b></span><br><canvas id="bar3"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1a(ii) - <b>INDEXED PROCEEDING</b></span><br><div id="bar3"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1c - <b>MyCITE</b></span><br><canvas id="bar4"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1c - <b>MyCITE</b></span><br><div id="bar4"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1d(i) - <b>RESEARCH BOOK</b></span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(i) - <b>RESEARCH BOOK</b></span><br><div id="bar5"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1d(ii) - <b>BOOK CHAPTER</b></span><br><canvas id="bar6"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(ii) - <b>BOOK CHAPTER</b></span><br><div id="bar6"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1d(iii) - <b>CASE STUDY/TECHNICAL REPORT</b></span><br><canvas id="bar7"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1d(iii) - <b>CASE STUDY/TECHNICAL REPORT</b></span><br><div id="bar7"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1e - <b>POLICY PAPER</b></span><br><canvas id="bar8"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1e - <b>POLICY PAPER</b></span><br><div id="bar8"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. C1f - <b>OTHER PUBLICATIONS</b></span><br><canvas id="bar9"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. C1f - <b>OTHER PUBLICATIONS</b></span><br><div id="bar9"></div></div>
             </div>
         </div>
     </div>
@@ -88,552 +81,379 @@
 <script>
     var data = {!! json_encode($data) !!};
 
-    const customOptions = {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom',
-                reverse: 'true',
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'rectRot',
-                }
-            },
-            // datalabels: {
-            //     formatter: (value, ctx) => {
-            //         let sum = 0;
-            //         let i = ctx.dataIndex;
-            //         let total = ctx.chart.data.datasets[1].data[i];
-            //         let percentage = (value*100 / total).toFixed(2)+"%";
-            //         return percentage;
-            //     },
-            // }
-        },
-        scales: {
-            x: {
-                grid: {
-                display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Year'
-                },
-                stacked: true,
-            },
-            y: {
-                grace: '5%',
-                grid: {
-                display: false
-                },
-                title: {
-                    display: true,
-                    text: 'No. of Publication'
-                },
-                beginAtZero: true,
-            },
-        }
-    };
-
     const customLabels = data.year_range;
-
-    var bar1 = document.getElementById('bar1');
-    var barChart1 = new Chart(bar1, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_1.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_1.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar1',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'INDEXED JOURNAL',
-                    data: data.bar_2.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_2.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+        tooltip: {
+            shared: true
         },
-        plugins: [ChartDataLabels],
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    reverse: 'true',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'rectRot',
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let sum = 0;
-                            let i = context.dataIndex;
-                            let total = context.chart.data.datasets[0].data[i];
-                            let percentage = (value*100 / total).toFixed(2)+"%";
-                            return percentage;
-                        }
-                    }
-                }
-                // datalabels: {
-                //     formatter: (value, ctx) => {
-                //         let sum = 0;
-                //         let i = ctx.dataIndex;
-                //         let total = ctx.chart.data.datasets[0].data[i];
-                //         let percentage = (value*100 / total).toFixed(2)+"%";
-                //         return percentage;
-                //     },
-                // }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    },
-                    stacked: true,
-                },
-                y: {
-                    grid: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: 'No. of Article'
-                    },
-                    beginAtZero: true,
-                },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
             }
-        }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_1.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_3.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_3.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_3.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    var chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar2',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Article'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: 'INDEXED JOURNAL',
+                data: targetedData(data.year_range, data.bar_2.data_2, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar3',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_3.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_4.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_4.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_4.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    var chart4 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar4',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_4.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart5 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar5',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_5.data_2, data.bar_5.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_5.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_5.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 
-    var bar5 = document.getElementById('bar5');
-    var barChart5 = new Chart(bar5, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_5.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_5.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_5.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    var chart6 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar6',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_6.data_2, data.bar_6.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_6.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_6.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart7 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar7',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_7.data_2, data.bar_7.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_7.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_7.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 
-    var bar6 = document.getElementById('bar6');
-    var barChart6 = new Chart(bar6, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_6.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_6.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_6.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    var chart8 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar8',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_8.data_2, data.bar_8.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_8.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_8.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
-
-    var bar7 = document.getElementById('bar7');
-    var barChart7 = new Chart(bar7, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_7.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_7.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_7.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart9 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar9',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar8 = document.getElementById('bar8');
-    var barChart8 = new Chart(bar8, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_8.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_8.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_8.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+        tooltip: {
+            shared: true,
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
-    });
-
-    var bar9 = document.getElementById('bar9');
-    var barChart9 = new Chart(bar9, {
-        type: 'bar',
-        data: {
-            labels: customLabels,
-            datasets: [
-                {
-                    label: 'MyRA II TARGET (200%)',
-                    data: data.bar_9.data_3,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'MyRA II TARGET (100%)',
-                    data: data.bar_9.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 0.2,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_9.data_1,
-                    backgroundColor: 'rgb(185, 219, 165)',
-                    borderColor: 'rgb(185, 219, 165)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.78,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+        legend: {
+            symbolRadius: 0
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_9.data_2, data.bar_9.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_9.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_9.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 </script>
 @endsection

@@ -150,9 +150,15 @@ class DashboardController extends Controller
             return view('myra.section-g-projectoverall', compact('start_year', 'end_year', 'faculty', 'data')); }
     }
 
-    public function sectionH()
+    public function sectionH(Request $request)
     {
-        return view('myra.section-h');
+        $request_data = $this->searching_request($request);
+        $start_year = $request_data->start_year;
+        $end_year = $request_data->end_year;
+        if(in_array(user()->role, ['super_admin', 'admin']))$faculty = $request_data->faculty;
+        else $faculty = getFacultyByCode(user()->faculty_code)->short_overall;
+        $data = $this->sectionE_data($start_year, $end_year, $faculty);
+        return view('myra.section-h', compact('start_year', 'end_year', 'faculty', 'data'));
     }
 
     public function searching_request(Request $request)
