@@ -31,6 +31,7 @@ use App\Models\MasterList\MasterlistTechKnowHow;
 use App\Models\MasterList\MasterlistConsultancy;
 use App\Models\MasterList\MasterlistLabService;
 use App\Models\MasterList\MasterlistNewEndowment;
+use App\Models\MasterList\MasterlistIncomeDividend;
 use App\Models\MasterList\MasterlistGift;
 use App\Models\MasterList\MasterlistInternationalMoa;
 use App\Models\MasterList\MasterlistStaffInternationalMoa;
@@ -92,7 +93,10 @@ trait MasterListMyraTrait {
         $consultancy = DataAttachment::whereModule('consultancy')->where('year', $year)->whereStatus('selected')->exists();
         $lab_service = DataAttachment::whereModule('lab_service')->where('year', $year)->whereStatus('selected')->exists();
         $new_endowment = DataAttachment::whereModule('new_endowment')->where('year', $year)->whereStatus('selected')->exists();
+        $income_dividend = DataAttachment::whereModule('income_dividend')->where('year', $year)->whereStatus('selected')->exists();
         $gift = DataAttachment::whereModule('gift')->where('year', $year)->whereStatus('selected')->exists();
+        $operational_expenditure = DataAttachment::whereModule('operational_expenditure')->where('year', $year)->whereStatus('selected')->exists();
+        $total_expenditure = DataAttachment::whereModule('total_expenditure')->where('year', $year)->whereStatus('selected')->exists();
         
         $international_moa = DataAttachment::whereModule('international_moa')->where('year', $year)->whereStatus('selected')->exists();
         $staff_international_moa = DataAttachment::whereModule('staff_international_moa')->where('year', $year)->whereStatus('selected')->exists();
@@ -306,9 +310,24 @@ trait MasterListMyraTrait {
                         'available'=>$new_endowment
                     ],
                     (object)[
+                        'name'=>'Income Dividend',
+                        'code'=>'income_dividend',
+                        'available'=>$income_dividend
+                    ],
+                    (object)[
                         'name'=>'Gifts',
                         'code'=>'gift',
                         'available'=>$gift
+                    ],
+                    (object)[
+                        'name'=>'Operational Expenditure',
+                        'code'=>'operational_expenditure',
+                        'available'=>$operational_expenditure
+                    ],
+                    (object)[
+                        'name'=>'Total Expenditure',
+                        'code'=>'total_expenditure',
+                        'available'=>$total_expenditure
                     ],
                 ]
             ],
@@ -949,7 +968,7 @@ trait MasterListMyraTrait {
         $hospital = 0;
         $lab_service = (float)number_format(MasterlistLabService::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('gross_income'), 0, '.', '');
         $new_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_endowed_percent_research'), 0, '.', '');
-        $existing_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_endowed_percent_research'), 0, '.', '');
+        $existing_endowment = (float)number_format(MasterlistIncomeDividend::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('dividend'), 0, '.', '');
         $gift = (float)number_format(MasterlistGift::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('value'), 0, '.', '');
         $oe_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_spent'), 0, '.', '');
         $rd_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('amount_received', '>', 0)->sum('amount_spent'), 0, '.', '');

@@ -36,6 +36,7 @@ use App\Models\MasterList\MasterlistTechKnowHow;
 use App\Models\MasterList\MasterlistConsultancy;
 use App\Models\MasterList\MasterlistLabService;
 use App\Models\MasterList\MasterlistNewEndowment;
+use App\Models\MasterList\MasterlistIncomeDividend;
 use App\Models\MasterList\MasterlistGift;
 use App\Models\MasterList\MasterlistInternationalMoa;
 use App\Models\MasterList\MasterlistStaffInternationalMoa;
@@ -91,6 +92,7 @@ use App\Imports\TechKnowHowImport;
 use App\Imports\ConsultancyImport;
 use App\Imports\LabServiceImport;
 use App\Imports\NewEndowmentImport;
+use App\Imports\IncomeDividendImport;
 use App\Imports\GiftImport;
 use App\Imports\InternationalMoaImport;
 use App\Imports\StaffInternationalMoaImport;
@@ -241,6 +243,9 @@ class MasterlistController extends Controller
         }
         else if($module == 'new_endowment'){
             $module_name = "New Endowment";
+        }
+        else if($module == 'income_dividend'){
+            $module_name = "Income Dividend";
         }
         else if($module == 'gift'){
             $module_name = "Gifts";
@@ -430,6 +435,9 @@ class MasterlistController extends Controller
             }
             else if($module == 'new_endowment'){
                 Excel::import(new NewEndowmentImport($masterlist->year), $filepath);
+            }
+            else if($module == 'income_dividend'){
+                Excel::import(new IncomeDividendImport($masterlist->year), $filepath);
             }
             else if($module == 'gift'){
                 Excel::import(new GiftImport($masterlist->year), $filepath);
