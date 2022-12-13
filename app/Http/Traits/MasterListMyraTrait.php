@@ -33,6 +33,8 @@ use App\Models\MasterList\MasterlistLabService;
 use App\Models\MasterList\MasterlistNewEndowment;
 use App\Models\MasterList\MasterlistIncomeDividend;
 use App\Models\MasterList\MasterlistGift;
+use App\Models\MasterList\MasterlistOperationalExpenditure;
+use App\Models\MasterList\MasterlistTotalExpenditure;
 use App\Models\MasterList\MasterlistInternationalMoa;
 use App\Models\MasterList\MasterlistStaffInternationalMoa;
 use App\Models\MasterList\MasterlistStaffSentAbroad;
@@ -969,8 +971,8 @@ trait MasterListMyraTrait {
         $new_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_endowed_percent_research'), 0, '.', '');
         $existing_endowment = (float)number_format(MasterlistIncomeDividend::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('dividend'), 0, '.', '');
         $gift = (float)number_format(MasterlistGift::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('value'), 0, '.', '');
-        $oe_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_spent'), 0, '.', '');
-        $rd_expenditure = (float)number_format(MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('amount_received', '>', 0)->sum('amount_spent'), 0, '.', '');
+        $oe_expenditure = (float)number_format(MasterlistOperationalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount'), 0, '.', '');
+        $rd_expenditure = (float)number_format(MasterlistTotalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount'), 0, '.', '');
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();

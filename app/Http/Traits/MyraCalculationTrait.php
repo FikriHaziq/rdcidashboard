@@ -1387,13 +1387,13 @@ trait MyraCalculationTrait {
         $myra1_benchmark_6[0] = 2000000;
         $myra1_benchmark_7[0] = 0.02;
 
-        $myra1_benchmark_mark_1[0] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100);
+        $myra1_benchmark_mark_1[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100), 1);
         $myra1_benchmark_mark_4[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[0]/100), 1);
-        $myra1_benchmark_mark_4[1] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[1]/100), 2);
+        $myra1_benchmark_mark_4[1] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[1]/100), 1);
         $myra1_benchmark_mark_4[2] = (float)number_format($myra1_global_weightage*($myra1_weightage_2/100)*($myra1_subweightage_4[2]/100), 1);
-        $myra1_benchmark_mark_5[0] = $myra1_global_weightage*($myra1_weightage_3/100);
-        $myra1_benchmark_mark_6[0] = $myra1_global_weightage*($myra1_weightage_4/100);
-        $myra1_benchmark_mark_7[0] = $myra1_global_weightage*($myra1_weightage_5/100);
+        $myra1_benchmark_mark_5[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_3/100), 1);
+        $myra1_benchmark_mark_6[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_4/100), 1);
+        $myra1_benchmark_mark_7[0] = (float)number_format($myra1_global_weightage*($myra1_weightage_5/100), 1);
 
         $myra1_total_data_1 = (float)$myra_year_1[0]+(float)$myra_year_1[1]+(float)$myra_year_2[0]+(float)$myra_year_3[0]+(float)$myra_year_3[1];
         $myra1_mark_1[0] = $myra1_benchmark_1[0] > 0 ? (((float)$myra1_total_data_1/$myra1_benchmark_1[0]*$myra1_benchmark_mark_1[0]) > ($myra1_benchmark_mark_1[0]) ? $myra1_benchmark_mark_1[0] : ((float)$myra1_total_data_1/$myra1_benchmark_1[0]*$myra1_benchmark_mark_1[0])) : 0;
@@ -1473,7 +1473,8 @@ trait MyraCalculationTrait {
         $myra2_achievement_7[0] = $myra2_benchmark_mark_7[0] > 0 ? $myra2_mark_7[0]/$myra2_benchmark_mark_7[0]*100 : 0*100;
 
         $total_myra1_benchmark_mark = $myra1_benchmark_mark_1[0]+$myra1_benchmark_mark_4[0]+$myra1_benchmark_mark_4[1]+$myra1_benchmark_mark_4[2]+$myra1_benchmark_mark_5[0]+$myra1_benchmark_mark_6[0]+$myra1_benchmark_mark_7[0];
-        $total_myra1_mark = $myra1_mark_1[0]+$myra1_mark_4[0]+$myra1_mark_4[1]+$myra1_mark_4[2]+$myra1_mark_5[0]+$myra1_mark_6[0]+$myra1_mark_7[0];
+        // dd($myra1_mark_1[0],$myra1_mark_4[0],$myra1_mark_4[1],$myra1_mark_4[2],$myra1_mark_5[0],$myra1_mark_6[0],$myra1_mark_7[0]);
+        $total_myra1_mark = round($myra1_mark_1[0], 2)+round($myra1_mark_4[0], 2)+round($myra1_mark_4[1], 2)+round($myra1_mark_4[2], 2)+round($myra1_mark_5[0], 2)+round($myra1_mark_6[0], 2)+round($myra1_mark_7[0], 2);
         $total_myra2_benchmark_mark = $myra2_benchmark_mark_1[0]+$myra2_benchmark_mark_2[0]+$myra2_benchmark_mark_3[0]+$myra2_benchmark_mark_4[0]+$myra2_benchmark_mark_4[1]+$myra2_benchmark_mark_4[2]+$myra2_benchmark_mark_5[0]+$myra2_benchmark_mark_6[0]+$myra2_benchmark_mark_7[0];
         $total_myra2_mark = $myra2_mark_1[0]+$myra2_mark_2[0]+$myra2_mark_3[0]+$myra2_mark_4[0]+$myra2_mark_4[1]+$myra2_mark_4[2]+$myra2_mark_5[0]+$myra2_mark_6[0]+$myra2_mark_7[0];
         

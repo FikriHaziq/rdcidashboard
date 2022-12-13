@@ -94,6 +94,8 @@ use App\Imports\LabServiceImport;
 use App\Imports\NewEndowmentImport;
 use App\Imports\IncomeDividendImport;
 use App\Imports\GiftImport;
+use App\Imports\OperationalExpenditureImport;
+use App\Imports\TotalExpenditureImport;
 use App\Imports\InternationalMoaImport;
 use App\Imports\StaffInternationalMoaImport;
 use App\Imports\StaffSentAbroadImport;
@@ -249,6 +251,12 @@ class MasterlistController extends Controller
         }
         else if($module == 'gift'){
             $module_name = "Gifts";
+        }
+        else if($module == 'operational_expenditure'){
+            $module_name = "Operational Expenditure";
+        }
+        else if($module == 'total_expenditure'){
+            $module_name = "Total Expenditure";
         }
         else if($module == 'international_moa'){
             $module_name = "International MoA";
@@ -442,6 +450,12 @@ class MasterlistController extends Controller
             else if($module == 'gift'){
                 Excel::import(new GiftImport($masterlist->year), $filepath);
             }
+            else if($module == 'operational_expenditure'){
+                Excel::import(new OperationalExpenditureImport($masterlist->year), $filepath);
+            }
+            else if($module == 'total_expenditure'){
+                Excel::import(new TotalExpenditureImport($masterlist->year), $filepath);
+            }
             else if($module == 'international_moa'){
                 Excel::import(new InternationalMoaImport($masterlist->year), $filepath);
             }
@@ -554,7 +568,7 @@ class MasterlistController extends Controller
         $masterlist = DataAttachment::find($id);
         if($masterlist){
             $module = $masterlist->module;
-            if($module == 'acad_student'){
+            if($module == 'acad_staff'){
                 MasterlistAcademicStaff::where('ml_end_year', $masterlist->year)->delete();
             }
             else if($module == 'ug_student'){
@@ -650,8 +664,17 @@ class MasterlistController extends Controller
             else if($module == 'new_endowment'){
                 MasterlistNewEndowment::where('ml_end_year', $masterlist->year)->delete(); 
             }
+            else if($module == 'income_dividend'){
+                MasterlistIncomeDividend::where('ml_end_year', $masterlist->year)->delete(); 
+            }
             else if($module == 'gift'){
                 MasterlistGift::where('ml_end_year', $masterlist->year)->delete(); 
+            }
+            else if($module == 'operational_expenditure'){
+                MasterlistOperationalExpenditure::where('ml_end_year', $masterlist->year)->delete(); 
+            }
+            else if($module == 'total_expenditure'){
+                MasterlistTotalExpenditure::where('ml_end_year', $masterlist->year)->delete(); 
             }
             else if($module == 'international_moa'){
                 MasterlistInternationalMoa::where('ml_end_year', $masterlist->year)->delete(); 
