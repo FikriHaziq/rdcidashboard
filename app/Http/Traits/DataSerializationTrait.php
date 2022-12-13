@@ -241,7 +241,7 @@ trait DataSerializationTrait {
         }
         else if(in_array($code, ["KOREA", "SOUTH OF KOREA"])){
             $code = "KOREA";
-            $label = "SOUTH OF KOREA";
+            $label = "KOREA";
         }
         else if(in_array($code, ["UZB", "UZBEKISTAN"])){
             $code = "UZB";
@@ -250,6 +250,18 @@ trait DataSerializationTrait {
         else if(in_array($code, ["YEM", "YEMEN"])){
             $code = "YEM";
             $label = "YEMEN";
+        }
+        else if(in_array($code, ["UNITED STATES OF AMERICA"])){
+            $code = "UNITED STATES OF AMERICA";
+            $label = "AMERICA";
+        }
+        else if(in_array($code, ["CZEH REPUBLIC"])){
+            $code = "CZEH REPUBLIC";
+            $label = "CZECH REPUBLIC";
+        }
+        else if(in_array($code, ["BRUNEI DARUSSALAM"])){
+            $code = "BRUNEI DARUSSALAM";
+            $label = "BRUNEI";
         }
         else{
             $label = $code;
