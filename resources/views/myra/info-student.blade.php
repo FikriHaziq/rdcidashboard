@@ -54,6 +54,9 @@
                 <div class="p-5 text-center"><span><b>POSTGRADUATES AREA OF STUDY</b></span><br><canvas id="bar2"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span><b>POSTGRADUATES: LOCAL VS FOREIGN</b></span><br><canvas id="bar4"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span><b>STUDENT: UNDERGRADUATE VS POSTGRADUATE</b></span><br><canvas id="bar3"></canvas></div>
             </div>
         </div>
@@ -257,6 +260,67 @@
                 },
                 y: {
                     stacked: true,
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    // max: 30000,
+                    min: 0,
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
+                    }
+                },
+            }
+        }
+    });
+
+    var bar4 = document.getElementById('bar4');
+    var barChart4 = new Chart(bar4, {
+        type: 'bar',
+        data: {
+            labels: data.year_range,
+            datasets: [
+                {
+                    label: 'LOCAL',
+                    data: data.bar_3.data_2,
+                    borderColor: ['rgb(253, 180, 7)'],
+                    backgroundColor: ['rgb(253, 180, 7)'],
+                    borderWidth: 1
+                },
+                {
+                    label: 'FOREIGN',
+                    data: data.bar_3.data_1,
+                    borderColor: ['rgb(230, 104, 38)'],
+                    backgroundColor: ['rgb(230, 104, 38)'],
+                    borderWidth: 1
+                },
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rectRot',
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Year'
+                    }
+                },
+                y: {
                     type: 'linear',
                     display: true,
                     position: 'left',

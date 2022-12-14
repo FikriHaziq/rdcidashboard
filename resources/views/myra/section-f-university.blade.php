@@ -65,7 +65,13 @@
                 <div class="p-5 text-center"><span>SEC. F5 - <b>ENDOWMENT</b></span><br><div id="bar7"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. F5b - <b>INCOME/DIVIDEND FROM EXISTING ENDOWMENT</b></span><br><div id="bar9"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span>SEC. F6 - <b>GIFTS/DONATIONS</b></span><br><div id="bar8"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. F7 - <b>PERCENTAGE OF OPERATIONAL EXPENDITURE FOR R&D DEVELOPMENT</b></span><br><div id="bar10"></div></div>
             </div>
         </div>
     </div>
@@ -364,6 +370,66 @@
     var chart8 = new Highcharts.Chart({
         chart: {
             renderTo: 'bar8',
+            type: 'column'
+        },
+        yAxis: {
+            type: 'logarithmic',
+            max: 100000000
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_8.data_2, data.bar_8.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_8.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_8.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+            }
+        },
+    });
+    
+    var chart9 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar9',
+            type: 'column'
+        },
+        yAxis: {
+            type: 'logarithmic',
+            max: 100000000
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: data.bar_8.data_1,
+                pointWidth: 45
+            },
+        ],
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+            }
+        },
+    });
+    
+    var chart10 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar10',
             type: 'column'
         },
         yAxis: {

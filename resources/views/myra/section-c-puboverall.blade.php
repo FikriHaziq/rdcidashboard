@@ -71,6 +71,9 @@
                 <div class="p-5 text-center"><span>SEC. C1a(ii) - <b>INDEXED PROCEEDING</b></span><br><div id="bar3"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. C1b(i) - <b>TOTAL CITATIONS OF PUBLICATIONS</b></span><br><div id="bar10"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span>SEC. C1c - <b>MyCITE</b></span><br><div id="bar4"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
@@ -490,6 +493,48 @@
         yAxis: {
             title: {
                 text: 'No. of Publication'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_9.data_2, data.bar_9.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_9.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, data.bar_9.data_3, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart10 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar10',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Citation'
             },
             gridLineWidth: 0
         },

@@ -42,7 +42,10 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. G1b - <b>STAFF INVOLVED IN INTERNATIONAL MOA</b></span><br><canvas id="bar1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G1a - <b>INTERNATIONAL MoA</b></span><br><canvas id="bar8"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. G1b - <b>STAFF INVOLVED IN INTERNATIONAL MoA</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span>SEC. G2 - <b>STAFF SENT ABROAD</b></span><br><canvas id="bar2"></canvas></div>
@@ -54,7 +57,10 @@
                 <div class="p-5 text-center"><span>SEC. G3b - <b>INTERNATIONAL MEMBERSHIP - STAFF APOINTED AS COMMITTEE</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. G4a - <b>STAFF INVOLVED IN NATIONAL MOA</b></span><br><canvas id="bar5"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. G4a - <b>NATIONAL MoA</b></span><br><canvas id="bar9"></canvas></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. G4b - <b>STAFF INVOLVED IN NATIONAL MoA</b></span><br><canvas id="bar5"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span>SEC. G5a - <b>NATIONAL MEMBERSHIP - STAFF AS MEMBER</b></span><br><canvas id="bar6"></canvas></div>
@@ -315,6 +321,74 @@
 
     var bar7 = document.getElementById('bar7');
     var barChart7 = new Chart(bar7, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_7.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_7.data_1,
+                    backgroundColor: 'rgb(185, 219, 165)',
+                    borderColor: 'rgb(185, 219, 165)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.78,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var bar8 = document.getElementById('bar8');
+    var barChart8 = new Chart(bar8, {
+        type: 'bar',
+        data: {
+            labels: customLabels,
+            datasets: [
+                {
+                    label: 'MyRA II TARGET (100%)',
+                    data: data.bar_7.data_2,
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    borderColor: 'rgba(44, 73, 26)',
+                    borderWidth: 1,
+                    datalabels: {
+                        display: false,
+                    }
+                },
+                {
+                    label: 'ACHIEVEMENT',
+                    data: data.bar_7.data_1,
+                    backgroundColor: 'rgb(185, 219, 165)',
+                    borderColor: 'rgb(185, 219, 165)',
+                    borderWidth: 1,
+                    categoryPercentage: 0.78,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                    }
+                },
+            ]
+        },
+        plugins: [ChartDataLabels],
+        options: customOptions,
+    });
+
+    var bar9 = document.getElementById('bar9');
+    var barChart9 = new Chart(bar9, {
         type: 'bar',
         data: {
             labels: customLabels,
