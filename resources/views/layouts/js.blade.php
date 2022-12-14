@@ -63,6 +63,29 @@
         return result;
     }
 
+    // only for section c - public fund
+    function publicFundData(yearRange, targetList, baseList, bufferList, targetColor, baseColor) {
+        result = [];
+        targetList.forEach((x, i) => {
+            var a = filterString(baseList[i]);
+            var b = filterString(bufferList[i]);
+            var c;
+            if (a >= b) {
+                c = a - b;
+            } else {
+                c = b - a;
+            }
+            result.push({
+                x: yearRange[i],
+                y: a,
+                alt: c,
+                color: x > baseList[i] ? baseColor : targetColor,
+                borderColor: x > baseList[i] ? baseColor : targetColor,
+            });
+        });
+        return result;
+    }
+
     // convert target data to json with custom border
     function targetedData(yearRange, targetList, borderColor, type) {
         result = [];
@@ -86,26 +109,11 @@
         }
     }
 
-    Highcharts.setOptions({
-        title: {
-            text: ''
-        },
-        plotOptions: {
-            column: {
-                grouping: false,
-                shadow: false,
-                borderWidth: 2,
-                dataLabels: {
-                    enabled: true,
-                    inside: false
-                }
-            }
-        },
-        accessibility: {
-            enabled: false
-        },
-        credits: {
-            enabled: false
+    function filterSetString(obj) {
+        var newSet = [];
+        for (i = 0; i < obj.length; i++) {
+            newSet.push(filterString(obj[i]));
         }
-    });
+        return newSet;
+    }
 </script>

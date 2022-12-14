@@ -17,6 +17,20 @@
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
     }
+
+    .highcharts-legend-item rect{
+        display: none;
+    }
+
+    .custom-legend > img,
+        .custom-legend > span {
+            display: inline-block;
+    }
+
+    .custom-legend-img {
+        padding-bottom: 2px;
+        padding-right: 5px;
+    }
 </style>
 @endsection
 @slot('content')
@@ -28,55 +42,24 @@
 <!-- BEGIN: Wizard Layout -->
 <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/>
 
-{{-- <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 box p-5">
-    <div class="w-full w-md-auto me-2 me-sm-2">
-        <label for="" class="form-label">FACULTY</label>
-        <select data-placeholder="Select faculty" class="tom-select w-full" multiple>
-            @foreach (getFaculty() ?? [] as $faculty_data)
-                <option value="{{ $faculty_data->code }}" @if($faculty==$faculty_data->code) selected @endif>{{ $faculty_data->short }} - {{ $faculty_data->long }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="w-full w-md-auto me-2 me-sm-2">
-        <label>ALL FACULTY</label>
-        <div class="form-check form-switch mt-2">
-            <input id="checkbox-switch-7" class="form-check-input" type="checkbox">
-            <label class="form-check-label" for="checkbox-switch-7">SELECT ALL FACULTY</label>
-        </div>
-    </div>
-    <div class="w-full w-md-auto me-2 me-sm-2">
-        <label class="form-label">START YEAR</label>
-        <select id="start_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-            @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-            <option value="{{$i}}" @if((int)$start_year===(int)$i) selected @endif>{{$i}}</option>
-            @endfor
-        </select>
-    </div>
-    <div class="w-full w-md-auto me-2 me-sm-2">
-        <label class="form-label">END YEAR</label>
-        <select id="end_year" class="form-select bg-white" onchange="getList('start_year', 'end_year')">
-            @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-            <option value="{{$i}}" @if((int)$end_year===(int)$i) selected @endif>{{$i}}</option>
-            @endfor
-        </select>
-    </div>
-</div> --}}
-<div class="p-5">
-    <div class="row">
-        <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 text-center"><span>SEC. E1(a) - <b>PATENT GRANTED</b></span><br><canvas id="bar1"></canvas></div>
-        </div>
-        <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 text-center"><span>SEC. E1(b) - <b>PATENT FILED</b></span><br><canvas id="bar2"></canvas></div>
-        </div>
-        <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 text-center"><span>SEC. E2 - <b>COMMERCIALIZED PRODUCTS</b></span><br><canvas id="bar4"></canvas></div>
-        </div>
-        <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 text-center"><span>SEC. E3 - <b>LICENSING/SOLD OUTRIGHT</b></span><br><canvas id="bar5"></canvas></div>
-        </div>
-        <div class="col-md-6 col-sm-12 mb-5">
-            <div class="box p-5 text-center"><span>SEC. E4 - <b>OTHER IPRs</b></span><br><canvas id="bar3"></canvas></div>
+<div class="tab-contet box mt-5">
+    <div class="tab-pane leading-relaxed p-5 active">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. E1(a) - <b>PATENT GRANTED</b></span><br><div id="bar1"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. E1(b) - <b>PATENT FILED</b></span><br><div id="bar2"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. E2 - <b>COMMERCIALIZED PRODUCTS</b></span><br><div id="bar4"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. E3 - <b>LICENSING/SOLD OUTRIGHT</b></span><br><div id="bar5"></div></div>
+            </div>
+            <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. E4 - <b>OTHER IPRs</b></span><br><div id="bar3"></div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -86,305 +69,240 @@
 
     var data = {!! json_encode($data) !!};
 
-    const customOptions = {
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom',
-                reverse: 'true',
-                labels: {
-                    usePointStyle: true,
-                    pointStyle: 'rectRot',
+    Highcharts.setOptions({
+        title: {
+            text: ''
+        },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
                 }
-            },
+                return legend + '<span>' + this.name + '</span></div>';
+            }
         },
-        scales: {
-            x: {
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Year'
-                },
-                stacked: true,
-            },
-            y: {
-                grace: '5%',
-                grid: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Ratio'
-                },
-                beginAtZero: true,
-            },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+                dataLabels: {
+                    enabled: true,
+                    inside: false,
+                    formatter: function () {
+                        return Intl.NumberFormat('en-MY').format(this.y);
+                    }
+                }
+            }
+        },
+        accessibility: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
         }
-    };
-
-    function doubleTarget(arg) {
-        dataValue = [];
-        for (i = 0; i < arg.length; i++) {
-            value = arg[i] * 2;
-            dataValue.push(value);
-        }
-        return dataValue;
-    }
-
-    var bar1 = document.getElementById('bar1');
-    var barChart1 = new Chart(bar1, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_1.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_1.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_1.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
-        },
-        plugins: [ChartDataLabels],
-        options: customOptions,
     });
-
-    var bar2 = document.getElementById('bar2');
-    var barChart2 = new Chart(bar2, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_2.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_2.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_2.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar1',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Patents'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
-
-    var bar3 = document.getElementById('bar3');
-    var barChart3 = new Chart(bar3, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_3.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_3.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_3.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar2',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Patents'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_2.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_2.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
-
-    var bar4 = document.getElementById('bar4');
-    var barChart4 = new Chart(bar4, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_4.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_4.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_4.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar3',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of IPRs'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_3.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
-
-    var bar5 = document.getElementById('bar5');
-    var barChart5 = new Chart(bar5, {
-        type: 'bar',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: '200% TARGET',
-                    data: doubleTarget(data.bar_5.data_2),
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(82, 0, 192)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#5200C0'
-                    }
-                },
-                {
-                    label: '100% TARGET',
-                    data: data.bar_5.data_2,
-                    backgroundColor: 'rgba(255, 255, 255, 0)',
-                    borderColor: 'rgba(44, 73, 26)',
-                    borderWidth: 1,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        display: 'auto',
-                        color: '#2C491A'
-                    }
-                },
-                {
-                    label: 'ACHIEVEMENT',
-                    data: data.bar_5.data_1,
-                    backgroundColor: 'rgb(192, 190, 255)',
-                    borderColor: 'rgb(192, 190, 255)',
-                    borderWidth: 1,
-                    categoryPercentage: 0.75,
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'end',
-                        color: '#000'
-                    }
-                },
-            ]
+    
+    var chart4 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar4',
+            type: 'column'
         },
-        plugins: [ChartDataLabels],
-        options: customOptions,
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Products'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_4.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+    
+    var chart5 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar5',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Licenses'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.bar_5.data_2, data.bar_5.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.bar_5.data_2, '#6600cc', 'dash'),
+                pointWidth: 45
+            },
+            {
+                name: '200% TARGET',
+                data: targetedData(data.year_range, doubleTarget(data.bar_5.data_2), '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 </script>
 @endsection
