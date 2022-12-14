@@ -18,6 +18,20 @@
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
     }
+
+    .highcharts-legend-item rect{
+        display: none;
+    }
+
+    .custom-legend > img,
+        .custom-legend > span {
+            display: inline-block;
+    }
+
+    .custom-legend-img {
+        padding-bottom: 2px;
+        padding-right: 5px;
+    }
 </style>
 @endsection
 @slot('content')
@@ -66,6 +80,47 @@
 @section('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
+
+    Highcharts.setOptions({
+        title: {
+            text: ''
+        },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
+        },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+                dataLabels: {
+                    enabled: true,
+                    inside: false,
+                    formatter: function () {
+                        return Intl.NumberFormat('en-MY').format(this.y);
+                    }
+                }
+            }
+        },
+        accessibility: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        }
+    });
     
     var chart1 = new Highcharts.Chart({
         chart: {
