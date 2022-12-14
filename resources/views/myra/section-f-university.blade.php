@@ -93,7 +93,19 @@
             }
         },
         legend: {
-            symbolRadius: 0
+            useHTML: true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
         },
         xAxis: {
             categories: data.year_range,
@@ -137,21 +149,6 @@
             renderTo: 'bar1',
             type: 'column'
         },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
-        },
         series: [
             {
                 name: 'ACHIEVEMENT',
@@ -182,21 +179,6 @@
         chart: {
             renderTo: 'bar2',
             type: 'column'
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
         },
         series: [
             {
@@ -229,21 +211,6 @@
             renderTo: 'bar3',
             type: 'column'
         },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
-        },
         series: [
             {
                 name: 'ACHIEVEMENT',
@@ -274,21 +241,6 @@
         chart: {
             renderTo: 'bar4',
             type: 'column'
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
         },
         series: [
             {
@@ -321,21 +273,6 @@
             renderTo: 'bar5',
             type: 'column'
         },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
-        },
         series: [
             {
                 name: 'ACHIEVEMENT',
@@ -366,21 +303,6 @@
         chart: {
             renderTo: 'bar6',
             type: 'column'
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
         },
         series: [
             {
@@ -413,21 +335,6 @@
             renderTo: 'bar7',
             type: 'column'
         },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
-        },
         series: [
             {
                 name: 'ACHIEVEMENT',
@@ -458,21 +365,6 @@
         chart: {
             renderTo: 'bar8',
             type: 'column'
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
         },
         yAxis: {
             type: 'logarithmic',
