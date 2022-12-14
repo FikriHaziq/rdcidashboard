@@ -145,7 +145,7 @@ trait MyraCalculationTrait {
         $myra1_benchmark_target_4[2] = round(20);
         $myra1_benchmark_target_4[3] = round(25);
         $myra1_benchmark_target_4[4] = round(50);
-        $myra1_benchmark_target_4[5] = round(233);
+        $myra1_benchmark_target_4[5] = round(155);
 
         $myra1_benchmark_mark_1[1] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100);
         $myra1_benchmark_mark_1[2] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[1]/100);
@@ -400,10 +400,6 @@ trait MyraCalculationTrait {
     }
 
     public function calcSectionC($active_acad_staff, $active_st, $active_nonst, $important_data){
-        $myra1_global_weightage = 30;
-        $myra2_global_weightage = 35;
-        $w19 = 100*0.1;
-
         $myra1_1[0] = 'YES';
         $myra1_1[1] = 'YES';
         $myra1_1[2] = 'YES';
@@ -456,6 +452,9 @@ trait MyraCalculationTrait {
         $myra2_3[1] = 'NO';
         $myra2_3[2] = 'NO';
 
+        $myra1_global_weightage = 30;
+        $myra2_global_weightage = 35;
+        $w19 = 100*0.1;
         $myra_year_1[0] = $important_data->journal;
         $myra_year_1[1] = $important_data->proceeding;
         $myra_year_1[2] = $important_data->joint_industrial;
@@ -491,7 +490,8 @@ trait MyraCalculationTrait {
         $myra1_weightage_3 = 5;
 
         $myra1_subweightage_1[0] = 70;
-        $myra1_subweightage_1[1] = 9;
+        if($important_data->year <= 2018)$myra1_subweightage_1[1] = 15;
+        if($important_data->year >= 2019)$myra1_subweightage_1[1] = 9;
         $myra1_subweightage_1[2] = 16;
         $myra1_subweightage_1[3] = 3;
         $myra1_subweightage_1[4] = 2;

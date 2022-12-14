@@ -417,6 +417,7 @@ trait MasterListMyraTrait {
         $faculties = [];
         $schools = MasterlistUgStudent::where('ml_end_year', $year)->select('school_code')->whereNotNull('school_code')->distinct()->orderBy('school_code')->get();
 
+        // dd(MasterlistAcademicStaff::select('position')->distinct()->get()->toArray());
         $staff = MasterlistAcademicStaff::where('ml_end_year', $year)->count();
         $prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->count();
         $prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->count();
@@ -451,10 +452,10 @@ trait MasterListMyraTrait {
         $active_res_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'RESEARCH FELLOW')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_res = $active_res_fulltime+$active_res_parttime;
 
-        $active_st_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'S&T')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'S&T')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_st = $active_st_fulltime+$active_st_parttime;
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $percentage_active_st = $staff > 0 ? (float)number_format($active_st/$staff * 100, 2) : 0;
         $active_foreign_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_foreign_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
@@ -622,8 +623,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
         $important_data = (object)[
             'year' => $year,
@@ -724,8 +725,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,
@@ -810,7 +811,7 @@ trait MasterListMyraTrait {
 
         $total_phd_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $phd_enrolled_ratio = $academic_staff > 0? (float)number_format($total_phd_enrolled/$academic_staff, 2) : 0;
-        $total_phd_st_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('st', ['S&T', 'ST'])->count();
+        $total_phd_st_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('st', ['ST', 'ST'])->count();
 
         $pg_enrolled = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $pg_enrolled_ratio = $academic_staff > 0 ? (float)number_format($pg_enrolled/$academic_staff, 2) : 0;
@@ -837,8 +838,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,
@@ -918,8 +919,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,
@@ -976,8 +977,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,
@@ -1046,8 +1047,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,
@@ -1114,8 +1115,8 @@ trait MasterListMyraTrait {
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'NON S&T')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
 
          $important_data = (object)[
             'year' => $year,

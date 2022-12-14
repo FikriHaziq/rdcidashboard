@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Traits\LoginApi;
 use Auth;
 
 class LoginController extends Controller
 {
+    use LoginApi;
+
     public function index() {
         return view('login');
     }
@@ -14,9 +17,14 @@ class LoginController extends Controller
     public function login(Request $request){
         $input = $request->all();
         $this->validate($request, [
-            'email'=>'required|email',
+            'email'=>'required',
             'password'=>'required'
         ]);
+        // $auth = $this->authenticate($request->email, $request->password);
+        // if($auth->status() == 200){
+        //     dd($this->getClaims($auth->json()['token']));
+        // }
+        // dd($auth->json());
         if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
             if(auth()->user()->role == 'super_admin'){
                 return redirect()->route('myra.index');
@@ -31,8 +39,7 @@ class LoginController extends Controller
         else{
             session()->flash('error', "Incorrect email or password");
             return redirect()->route('login')->with("error", 'Incorrect email or password');   
-        }
-        
+        }  
     }
 
     public function logout(Request $request){
