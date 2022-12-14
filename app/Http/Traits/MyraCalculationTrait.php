@@ -145,7 +145,7 @@ trait MyraCalculationTrait {
         $myra1_benchmark_target_4[2] = round(20);
         $myra1_benchmark_target_4[3] = round(25);
         $myra1_benchmark_target_4[4] = round(50);
-        $myra1_benchmark_target_4[5] = round(155);
+        $myra1_benchmark_target_4[5] = round(150);
 
         $myra1_benchmark_mark_1[1] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[0]/100);
         $myra1_benchmark_mark_1[2] = $myra1_global_weightage*($myra1_weightage_1/100)*($myra1_subweightage_1[1]/100);
@@ -183,7 +183,7 @@ trait MyraCalculationTrait {
         $myra1_mark_4[3] = $myra1_benchmark_target_4[3] > 0 ? (((float)$myra_year_4[3]/$myra1_benchmark_target_4[3]*$myra1_benchmark_mark_4[3]) > ($myra1_benchmark_mark_4[3]*2) ? $myra1_benchmark_mark_4[3]*2 : ((float)$myra_year_4[3]/$myra1_benchmark_target_4[3]*$myra1_benchmark_mark_4[3])) : 0;
         $myra1_mark_4[4] = $myra1_benchmark_target_4[4] > 0 ? (((float)$myra_year_4[4]/$myra1_benchmark_target_4[4]*$myra1_benchmark_mark_4[4]) > ($myra1_benchmark_mark_4[4]*2) ? $myra1_benchmark_mark_4[4]*2 : ((float)$myra_year_4[4]/$myra1_benchmark_target_4[4]*$myra1_benchmark_mark_4[4])) : 0;
         if($important_data->year <= 2018)$myra1_mark_4[5] = 0;
-        if($important_data->year >= 2019)$myra1_mark_4[5] = $myra1_benchmark_target_4[5] > 0 ? (((float)$myra_year_4[5]/$myra1_benchmark_target_4[5]*$myra1_benchmark_mark_4[5]) > ($myra1_benchmark_mark_4[5]*2) ? $myra1_benchmark_mark_4[5]*2 : ((float)$myra_year_4[5]/$myra1_benchmark_target_4[5]*$myra1_benchmark_mark_4[5])) : 0;
+        if($important_data->year >= 2019)$myra1_mark_4[5] = $myra1_benchmark_target_4[5] > 0 ? (((float)$myra_year_4[5]/$myra1_benchmark_target_4[5]*$myra1_benchmark_mark_4[5]) > ($myra1_benchmark_mark_4[5]) ? $myra1_benchmark_mark_4[5] : ((float)$myra_year_4[5]/$myra1_benchmark_target_4[5]*$myra1_benchmark_mark_4[5])) : 0;
 
         $myra1_achievement_1[0] = $myra1_benchmark_mark_1[1] > 0 ? $myra1_mark_1[1]/$myra1_benchmark_mark_1[1]*100 : 0*100;
         $myra1_achievement_1[1] = $myra1_benchmark_mark_1[2] > 0 ? $myra1_mark_1[2]/$myra1_benchmark_mark_1[2]*100 : 0*100;
