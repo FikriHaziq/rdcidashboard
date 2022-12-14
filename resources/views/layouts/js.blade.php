@@ -63,6 +63,29 @@
         return result;
     }
 
+    // only for section c - public fund
+    function publicFundData(yearRange, targetList, baseList, bufferList, targetColor, baseColor) {
+        result = [];
+        targetList.forEach((x, i) => {
+            var a = filterString(baseList[i]);
+            var b = filterString(bufferList[i]);
+            var c;
+            if (a >= b) {
+                c = a - b;
+            } else {
+                c = b - a;
+            }
+            result.push({
+                x: yearRange[i],
+                y: a,
+                alt: c,
+                color: x > baseList[i] ? baseColor : targetColor,
+                borderColor: x > baseList[i] ? baseColor : targetColor,
+            });
+        });
+        return result;
+    }
+
     // convert target data to json with custom border
     function targetedData(yearRange, targetList, borderColor, type) {
         result = [];
@@ -86,44 +109,11 @@
         }
     }
 
-    Highcharts.setOptions({
-        title: {
-            text: ''
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="15" height="15"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="15" height="15"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="15" height="15"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
-        },
-        plotOptions: {
-            column: {
-                grouping: false,
-                shadow: false,
-                borderWidth: 2,
-                dataLabels: {
-                    enabled: true,
-                    inside: false,
-                    formatter: function () {
-                        return Intl.NumberFormat('en-MY').format(this.y);
-                    }
-                }
-            }
-        },
-        accessibility: {
-            enabled: false
-        },
-        credits: {
-            enabled: false
+    function filterSetString(obj) {
+        var newSet = [];
+        for (i = 0; i < obj.length; i++) {
+            newSet.push(filterString(obj[i]));
         }
-    });
+        return newSet;
+    }
 </script>
