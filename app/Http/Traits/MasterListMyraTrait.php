@@ -10,6 +10,7 @@ use App\Models\MasterList\MasterlistAward;
 use App\Models\MasterList\MasterlistPublication;
 use App\Models\MasterList\MasterlistResearchGrant;
 use App\Models\MasterList\MasterlistMonitoringProject;
+use App\Models\MasterList\MasterlistExpenditureProject;
 use App\Models\MasterList\MasterlistPhdGraduate;
 use App\Models\MasterList\MasterlistMasterGraduate;
 use App\Models\MasterList\MasterlistPhdEnroll;
@@ -417,10 +418,10 @@ trait MasterListMyraTrait {
         $faculties = [];
         $schools = MasterlistUgStudent::where('ml_end_year', $year)->select('school_code')->whereNotNull('school_code')->distinct()->orderBy('school_code')->get();
 
-        // dd(MasterlistAcademicStaff::select('position')->distinct()->get()->toArray());
+        // dd(MasterlistAcademicStaff::select('position')->where('ml_end_year', 2018)->distinct()->get()->toArray());
         $staff = MasterlistAcademicStaff::where('ml_end_year', $year)->count();
-        $prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->count();
-        $prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->count();
+        $prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('position', ['PROF.', 'PROF. TURUS III'])->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->count();
+        $prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('position', ['PROF.', 'PROF. TURUS III'])->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->count();
         $prof = $prof_fulltime+$prof_parttime;
         $assoc_prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'ASSOC. PROF.')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->count();
         $assoc_prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'ASSOC. PROF.')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->count();
@@ -436,8 +437,8 @@ trait MasterListMyraTrait {
         $res = $res_fulltime+$res_parttime;
 
         $active_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $active_prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'PROF.')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('position', ['PROF.', 'PROF. TURUS III'])->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+        $active_prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('position', ['PROF.', 'PROF. TURUS III'])->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_prof = $active_prof_fulltime+$active_prof_parttime;
         $active_assoc_prof_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'ASSOC. PROF.')->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_assoc_prof_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('position', 'ASSOC. PROF.')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
@@ -456,7 +457,7 @@ trait MasterListMyraTrait {
         $active_st_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_st = $active_st_fulltime+$active_st_parttime;
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-        $percentage_active_st = $staff > 0 ? (float)number_format($active_st/$staff * 100, 2) : 0;
+        $percentage_active_st = $active_staff > 0 ? (float)number_format($active_st/$active_staff * 100, 2) : 0;
         $active_foreign_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_foreign_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', ['PART TIME', 'SEPARUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_foreign = $active_foreign_fulltime+$active_foreign_parttime;
@@ -700,6 +701,7 @@ trait MasterListMyraTrait {
         $citation = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('citation')->first()->citation_total ?? 0;
         $q1_q2 = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('journal')->whereIn('quartile', ['Q1','Q2'])->count();
         $q1_q2_percent = $journal > 0 ? number_format($q1_q2/$journal*100, 2) : 0;
+        $others_journal = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('others_journal')->count();
         $mycite = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('mycite')->count();
         $book_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('research_book')->whereIn('book_status',['INDEXED',' INDEXED'])->count();
         $book_not_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('research_book')->whereNotIn('book_status',['INDEXED',' INDEXED'])->count();
@@ -709,12 +711,12 @@ trait MasterListMyraTrait {
         $case_studies = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('case_studies')->count();
         $policy_paper = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('policy_paper')->count();
         $other = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->wherePublicationType('other')->count();
-
-        $home_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->whereYear('start_date', $year)->sum('amount_pledged'), 2, '.', '');
+        // dd(MasterlistResearchGrant::where('ml_end_year', 2018)->select('sponsor_category')->distinct()->get()->toArray());
+        $home_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
         $home_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->sum('amount_received'), 2, '.', '');
-        $private_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('private'))->whereYear('start_date', $year)->sum('amount_pledged'), 2, '.', '');
+        $private_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('private'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
         $private_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('private'))->sum('amount_received'), 2, '.', '');
-        $international_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('international'))->whereYear('start_date', $year)->sum('amount_pledged'), 2, '.', '');
+        $international_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('international'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
         $international_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', $this->sponsor_category('international'))->sum('amount_received'), 2, '.', '');
         $research_grant_received = (float)number_format($home_receive_active+$private_receive_active+$international_receive_active, 2, '.', '');
         // dd(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->count(), (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received'), 2, '.', ''));
@@ -722,7 +724,9 @@ trait MasterListMyraTrait {
         $project_with_ext = MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('project_extension', 'YES')->where('project_status', 'COMPLETED')->count();
         $total_project = MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $project_complete_on_time = $total_project > 0 ? (float)number_format($project_without_ext/$total_project*100, 2) : 0;
-
+        $expenditure_received = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_received'), 2, '.', '');
+        $expenditure_spent = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->sum('amount_spent'), 2, '.', '');
+        
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('st', 'ST')->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
@@ -738,6 +742,7 @@ trait MasterListMyraTrait {
             'joint_national' => $joint_national,
             'citation' => $citation,
             'q1_q2' => $q1_q2,
+            'others_journal' => $others_journal,
             'mycite' => $mycite,
             'book_indexed' => $book_indexed,
             'book_not_indexed' => $book_not_indexed,
@@ -754,6 +759,8 @@ trait MasterListMyraTrait {
             'international_receive_active' => $international_receive_active,
             'project_without_ext' => $project_without_ext,
             'project_with_ext' => $project_with_ext,
+            'expenditure_received' => $expenditure_received,
+            'expenditure_spent' => $expenditure_spent,
         ];
 
         $calculation = $this->calcSectionC($active_acad_staff, $active_st, $active_nonst, $important_data);
@@ -769,6 +776,7 @@ trait MasterListMyraTrait {
             'citation' => $citation,
             'q1_q2' => $q1_q2,
             'q1_q2_percent' => $q1_q2_percent,
+            'others_journal' => $others_journal,
             'mycite' => $mycite,
             'book_indexed' => $book_indexed,
             'book_not_indexed' => $book_not_indexed,
@@ -790,6 +798,9 @@ trait MasterListMyraTrait {
             'project_without_ext' => $project_without_ext,
             'project_with_ext' => $project_with_ext,
             'project_complete_on_time' => $project_complete_on_time,
+            'expenditure_received' => $expenditure_received,
+            'expenditure_spent' => $expenditure_spent,
+            
 
             'calculation' => $calculation
         ];
@@ -811,9 +822,10 @@ trait MasterListMyraTrait {
 
         $total_phd_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $phd_enrolled_ratio = $academic_staff > 0? (float)number_format($total_phd_enrolled/$academic_staff, 2) : 0;
-        $total_phd_st_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('st', ['ST', 'ST'])->count();
+        $total_phd_st_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('st', ['ST', 'S&T'])->count();
 
         $pg_enrolled = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+        // dd($pg_enrolled, $academic_staff);
         $pg_enrolled_ratio = $academic_staff > 0 ? (float)number_format($pg_enrolled/$academic_staff, 2) : 0;
         $pg_enrolled_mixed_mode = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('study_mode', $this->student_study_mode('research'))->count();
         $ug_enrolled = MasterlistUgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
@@ -913,6 +925,8 @@ trait MasterListMyraTrait {
         $file = $file_local+$file_foreign;
         $comm_product = MasterlistCommProduct::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $know_how_sold = MasterlistKnowHowSold::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+        $licensing = MasterlistKnowHowSold::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('type', $this->know_how_sold_type('licensed'))->count();
+        $outright = MasterlistKnowHowSold::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('type', $this->know_how_sold_type('outright'))->count();
         $other_ipr = MasterlistOtherIpr::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $active_company = MasterlistActiveCompany::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
         $new_company = MasterlistNewCompany::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){if($faculty == 'FKT' && $year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
@@ -931,6 +945,8 @@ trait MasterListMyraTrait {
             'file_foreign' => $file_foreign,
             'comm_product' => $comm_product,
             'know_how_sold' => $know_how_sold,
+            'licensing' => $licensing,
+            'outright' => $outright,
             'other_ipr' => $other_ipr,
             'active_company' => $active_company,
             'new_company' => $new_company,
@@ -950,6 +966,8 @@ trait MasterListMyraTrait {
 
             'comm_product' => $comm_product,
             'know_how_sold' => $know_how_sold,
+            'licensing' => $licensing,
+            'outright' => $outright,
             'other_ipr' => $other_ipr,
             'active_company' => $active_company,
             'new_company' => $new_company,

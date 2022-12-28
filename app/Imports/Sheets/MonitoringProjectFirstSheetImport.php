@@ -22,7 +22,7 @@ class MonitoringProjectFirstSheetImport implements ToModel, WithStartRow, WithCh
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistMonitoringProject([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,

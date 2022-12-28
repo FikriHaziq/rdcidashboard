@@ -48,6 +48,10 @@ class CreateMasterlistAcademicStaffTable extends Migration
             $table->string('status3')->nullable();
             $table->string('citizenship')->nullable();
             $table->string('country')->nullable();
+            $table->string('ori_faculty_code')->nullable();
+            $table->string('ori_faculty_name')->nullable();
+            $table->string('ori_school_code')->nullable();
+            $table->string('ori_school_name')->nullable();
             $table->timestamps();
         });
     }

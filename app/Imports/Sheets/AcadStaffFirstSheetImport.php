@@ -21,7 +21,7 @@ class AcadStaffFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistAcademicStaff([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,
@@ -41,21 +41,25 @@ class AcadStaffFirstSheetImport implements ToModel, WithStartRow, WithChunkReadi
                 'position' => $row[14],
                 'grade' => $row[15],
                 'first_appointment_date' => excelDate($row[16]),
-                'current_position_appointment_date' => excelDate($row[17]),
-                'service_end_date' => excelDate($row[18]),
-                'dob' => excelDate($row[19]),
-                'age' => is_numeric($row[20]) ? $row[20]: null,
-                'cohort' => $row[21],
-                'acad_qualification' => $row[22],
-                'professional_qualification_1' => $row[23],
-                'professional_qualification_2' => $row[24],
-                'reg_number' => $row[25],
-                'st' => $row[26],
-                'status1' => $row[27],
-                'status2' => $row[28],
-                'status3' => $row[29],
-                'citizenship' => $row[30],
-                'country' => $row[31],
+                'current_position_appointment_date' => excelDate($row[18]),
+                'service_end_date' => excelDate($row[19]),
+                'dob' => excelDate($row[20]),
+                'age' => is_numeric($row[21]) ? $row[21]: null,
+                'cohort' => $row[22],
+                'acad_qualification' => $row[23],
+                'professional_qualification_1' => $row[24],
+                'professional_qualification_2' => $row[25],
+                'reg_number' => $row[26],
+                'st' => $row[27],
+                'status1' => $row[28],
+                'status2' => $row[29],
+                'status3' => $row[30],
+                'citizenship' => $row[31],
+                'country' => $row[32],
+                'ori_faculty_code' => $row[34] == '-' ? null: $row[34],
+                'ori_faculty_name' => $row[35] == '-' ? null: $row[35],
+                'ori_school_code' => $row[36] == '-' ? null: $row[36],
+                'ori_school_name' => $row[37] == '-' ? null: $row[37],
             ]);
         }
     }

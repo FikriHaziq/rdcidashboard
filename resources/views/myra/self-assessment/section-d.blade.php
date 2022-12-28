@@ -611,6 +611,28 @@
                                     <td class="border border-slate-600 fw-bold myra-brown"></td>
                                     <td class="border border-slate-600 fw-bold myra-brown"></td> --}}
                                 </tr>
+                                @if($year <= 2018)
+                                <tr class="text-center">
+                                    <td class="border border-slate-600">a. Number of Local Postdoctoral</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_8[1], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_8[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_8[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_8[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_8[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_8[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_8[0], 2) }}</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="border border-slate-600">a. Number of Foreign Postdoctoral</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_8[2], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_8[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_8[1], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_8[1], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_8[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_8[1], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_8[1], 2) }}</td>
+                                </tr>
+                                @elseif($year >= 2019)
                                 <tr class="text-center">
                                     <td class="border border-slate-600">a. Number of Local Postdoctoral</td>
                                     {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_8[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_8[0] }}</td>
@@ -637,6 +659,7 @@
                                     <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_8[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_8[1] }}</td> --}}
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_8[2], 0) }}</td>
                                 </tr>
+                                @endif
                                 <tr class="text-center total-mark">
                                     <td class="border border-slate-600 fw-bold" colspan="5">Total Mark for Section D</td>
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra1_benchmark_mark, 2) }}</td>

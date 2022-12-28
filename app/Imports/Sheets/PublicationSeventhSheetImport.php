@@ -21,7 +21,7 @@ class PublicationSeventhSheetImport implements ToModel, WithStartRow, WithChunkR
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistPublication([
                 'publication_type' => 'case_studies',
                 'ml_start_year' => $this->year,

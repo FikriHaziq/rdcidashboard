@@ -76,6 +76,25 @@ trait DataSerializationTrait {
         return $data ?? [];
     }
 
+    public function know_how_sold_type($type){
+        if($type == 'outright'){
+            $data = [
+                'SOLD OUTRIGHT', 
+                'OUTRIGHT SALE AND ASSIGNMENT AGREEMENT',
+                'Outright Sale',
+                'OUTRIGHT'
+            ];
+        }
+        else if($type == 'licensed'){
+            $data = [
+                'LICENSED',
+                'Technology Licensing ',
+            ];
+        }
+
+        return $data ?? [];
+    }
+
     public function student_study_area($code){
         $label = "";
         if(in_array($code, ["Alam Sekitar","ALAM SEKITAR"])){

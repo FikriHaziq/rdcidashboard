@@ -22,7 +22,7 @@ class JointResearchProjectFirstSheetImport implements ToModel, WithStartRow, Wit
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistJointResearchProject([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,

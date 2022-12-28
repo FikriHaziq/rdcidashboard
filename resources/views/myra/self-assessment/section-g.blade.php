@@ -146,6 +146,25 @@
                                 <td class="border border-slate-600 font-bold">b. Total Number of Staff Appointed as Chairman/ Committee Members in National Academic/ Professional Bodies/ Associations/ Ministry/ NGOs</td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->other_national }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
+                            @if($year <= 2018)
+                            <tr>
+                                <td class="align-top border border-slate-600 font-bold" rowspan="4">6</td>
+                                <td class="border border-slate-600 font-bold">Knowledge/ Technology Diffusion Projects/ Assimilation (Social Innovation)</td>
+                                <td class="border border-slate-600 font-bold"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-slate-600 font-bold">a. Total Number of New Community-Related Projects</td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ $data->new_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-slate-600 font-bold">b. Total Number of Rolling Community-Related Research Projects</td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ 0 }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-slate-600 font-bold">c. Total Number of Communities Receiving/ Benefiting from the Knowledge/ Technology Diffusion Projects</td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ $data->benefited_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                            </tr>
+                            @elseif($year >= 2019)
                             <tr>
                                 <td class="align-top border border-slate-600 font-bold" rowspan="3">6</td>
                                 <td class="border border-slate-600 font-bold">Knowledge/ Technology Diffusion Projects/ Assimilation (Social Innovation)</td>
@@ -159,6 +178,7 @@
                                 <td class="border border-slate-600 font-bold">b. Total Number of Communities Receiving/ Benefiting from the Knowledge/ Technology Diffusion Projects</td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->benefited_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
+                            @endif
                             <tr>
                                 <td class="align-top border border-slate-600 font-bold" rowspan="2">7</td>
                                 <td class="border border-slate-600 font-bold">Joint Research Projects Between Institution Assessed and Research Universities/Public Universities/Private Universities/Industries/Agencies in Each Project</td>
@@ -561,6 +581,66 @@
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_5[0], 2) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_5[0], 2) }}%</td> --}}
                                 </tr>
+                                @if($year <= 2018)
+                                <tr class="text-center">
+                                    <td class="border border-slate-600 fw-bold" rowspan="3">6</td>
+                                    <td class="border border-slate-600 fw-bold" rowspan="3">Knowledge/ Technology Diffusion Projects/Assimilation (Social Innovation)</td>
+                                    <td class="border border-slate-600 fw-bold">a. Total Number of New Community-Related Research Projects</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_6[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_6[0] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_6[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_6[0] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_6[0], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold" rowspan="2">{{ $data->calculation->myra1_weightage_3 }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_6[0] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_6[0] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_6[0], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_6[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_6[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_6[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold" rowspan="2">{{ $data->calculation->myra2_weightage_3 }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_6[0] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_6[0] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_6[0], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_6[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_6[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_6[0], 2) }}%</td> --}}
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="border border-slate-600 fw-bold">b. Total Number of Rolling Community-Related Research Projects</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_6[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_6[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_6[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_6[1] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_6[1], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_6[1] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_6[1] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_6[1], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_6[1], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_6[1], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_6[1], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_6[1] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_6[1] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_6[1], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_6[1], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_6[1], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_6[1], 2) }}%</td> --}}
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="border border-slate-600 fw-bold">c. Total Number of Communities Receiving/Benefiting the Knowledge/Technology Diffusion Projects</td>
+                                    {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_6[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_6[1] }}</td>
+                                    <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_6[1] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_6[1] }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_6[2], 0) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_subweightage_6[2] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_benchmark_6[2] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_6[2], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_6[2], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_6[2], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_6[2], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_subweightage_6[2] }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_benchmark_6[2] }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_6[2], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_6[2], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_6[2], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_6[1], 2) }}%</td> --}}
+                                </tr>
+                                @elseif($year >= 2019)
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold" rowspan="2">6</td>
                                     <td class="border border-slate-600 fw-bold" rowspan="2">Knowledge/ Technology Diffusion Projects/Assimilation (Social Innovation)</td>
@@ -601,6 +681,7 @@
                                     <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_6[1], 2) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_6[1], 2) }}%</td> --}}
                                 </tr>
+                                @endif
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold">7</td>
                                     <td class="border border-slate-600 fw-bold">Joint Research Projects Between Institution Assessed and Research Universities/Public Universities/Private Universities/Industries/Agencies in Each Project</td>

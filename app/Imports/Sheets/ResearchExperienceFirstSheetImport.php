@@ -21,7 +21,7 @@ class ResearchExperienceFirstSheetImport implements ToModel, WithStartRow, WithC
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistResearchExperience([
                 'ml_start_year' => $this->year,
                 'ml_end_year' => $this->year,

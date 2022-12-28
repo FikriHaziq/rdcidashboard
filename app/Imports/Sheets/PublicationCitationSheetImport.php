@@ -22,7 +22,7 @@ class PublicationCitationSheetImport implements ToModel, WithStartRow, WithChunk
 
     public function model(Array $row)
     {
-        if($row[1]){
+        if($row[0]){
             return new MasterlistPublication([
                 'publication_type' => 'citation',
                 'ml_start_year' => $this->year,

@@ -67,7 +67,7 @@
 @section('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
-
+    console.log(data);
     Highcharts.setOptions({
         title: {
             text: ''
@@ -125,7 +125,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Patents'
+                text: 'No. of Support Facilities'
             },
             gridLineWidth: 0
         },
@@ -159,7 +159,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Patents'
+                text: 'No. of Library Facilities'
             },
             gridLineWidth: 0
         },
@@ -193,7 +193,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of IPRs'
+                text: 'No. of Books'
             },
             gridLineWidth: 0
         },
@@ -223,7 +223,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Products'
+                text: 'No. of Online Books'
             },
             gridLineWidth: 0
         },
@@ -253,7 +253,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Licenses'
+                text: 'No. of Journal Subscribed'
             },
             gridLineWidth: 0
         },

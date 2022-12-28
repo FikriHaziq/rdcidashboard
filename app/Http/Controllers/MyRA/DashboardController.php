@@ -157,7 +157,7 @@ class DashboardController extends Controller
         $end_year = $request_data->end_year;
         if(in_array(user()->role, ['super_admin', 'admin']))$faculty = $request_data->faculty;
         else $faculty = getFacultyByCode(user()->faculty_code)->short_overall;
-        $data = $this->sectionE_data($start_year, $end_year, $faculty);
+        $data = $this->sectionH_data($start_year, $end_year, $faculty);
         return view('myra.section-h', compact('start_year', 'end_year', 'faculty', 'data'));
     }
 
