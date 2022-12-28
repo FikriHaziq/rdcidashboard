@@ -406,16 +406,16 @@ class AjaxController extends Controller
                                 "myra2_benchmark_target" => $data->myra2_benchmark_target_1[11],
                             ],
                             "case_studies" => [
-                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[11],
-                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[12],
+                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[11] ?? 0,
+                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[12] ?? 0,
                             ],
                             "policy_paper" => [
-                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[12],
-                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[13],
+                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[12] ?? 0,
+                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[13] ?? 0,
                             ],
                             "other" => [
-                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[13],
-                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[14],
+                                "myra1_benchmark_target" => $data->myra1_benchmark_target_1[13] ?? 0,
+                                "myra2_benchmark_target" => $data->myra2_benchmark_target_1[14] ?? 0,
                             ],
                         ],
                         "research_grant" => [
@@ -489,16 +489,16 @@ class AjaxController extends Controller
                                 "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[11],
                             ],
                             "case_studies" => [
-                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[11],
-                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[12],
+                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[11] ?? 0,
+                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[12] ?? 0,
                             ],
                             "policy_paper" => [
-                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[12],
-                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[13],
+                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[12] ?? 0,
+                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[13] ?? 0,
                             ],
                             "other" => [
-                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[13],
-                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[14],
+                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_1[13] ?? 0,
+                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_1[14] ?? 0,
                             ],
                         ],
                         "research_grant" => [
@@ -572,16 +572,16 @@ class AjaxController extends Controller
                                 "myra2_mark" => $data->myra2_mark_1[11],
                             ],
                             "case_studies" => [
-                                "myra1_mark" => $data->myra1_mark_1[11],
-                                "myra2_mark" => $data->myra2_mark_1[12],
+                                "myra1_mark" => $data->myra1_mark_1[11] ?? 0,
+                                "myra2_mark" => $data->myra2_mark_1[12] ?? 0,
                             ],
                             "policy_paper" => [
-                                "myra1_mark" => $data->myra1_mark_1[12],
-                                "myra2_mark" => $data->myra2_mark_1[13],
+                                "myra1_mark" => $data->myra1_mark_1[12] ?? 0,
+                                "myra2_mark" => $data->myra2_mark_1[13] ?? 0,
                             ],
                             "other" => [
-                                "myra1_mark" => $data->myra1_mark_1[13],
-                                "myra2_mark" => $data->myra2_mark_1[14],
+                                "myra1_mark" => $data->myra1_mark_1[13] ?? 0,
+                                "myra2_mark" => $data->myra2_mark_1[14] ?? 0,
                             ],
                         ],
                         "research_grant" => [
@@ -654,16 +654,16 @@ class AjaxController extends Controller
                                 "myra2_achievement" => $data->myra2_achievement_1[11],
                             ],
                             "case_studies" => [
-                                "myra1_achievement" => $data->myra1_achievement_1[11],
-                                "myra2_achievement" => $data->myra2_achievement_1[12],
+                                "myra1_achievement" => $data->myra1_achievement_1[11] ?? 0,
+                                "myra2_achievement" => $data->myra2_achievement_1[12] ?? 0,
                             ],
                             "policy_paper" => [
-                                "myra1_achievement" => $data->myra1_achievement_1[12],
-                                "myra2_achievement" => $data->myra2_achievement_1[13],
+                                "myra1_achievement" => $data->myra1_achievement_1[12] ?? 0,
+                                "myra2_achievement" => $data->myra2_achievement_1[13] ?? 0,
                             ],
                             "other" => [
-                                "myra1_achievement" => $data->myra1_achievement_1[13],
-                                "myra2_achievement" => $data->myra2_achievement_1[14],
+                                "myra1_achievement" => $data->myra1_achievement_1[13] ?? 0,
+                                "myra2_achievement" => $data->myra2_achievement_1[14] ?? 0,
                             ],
                         ],
                         "research_grant" => [
@@ -1044,12 +1044,12 @@ class AjaxController extends Controller
                                 "myra2_benchmark_target" => $data->myra2_benchmark_4[0],
                             ],
                             "hospital" => [
-                                "myra1_benchmark_target" => $data->myra1_benchmark_4[1],
-                                "myra2_benchmark_target" => $data->myra2_benchmark_4[1],
+                                "myra1_benchmark_target" => $data->myra1_benchmark_4[1] ?? 0,
+                                "myra2_benchmark_target" => $data->myra2_benchmark_4[1] ?? 0,
                             ],
                             "lab" => [
-                                "myra1_benchmark_target" => $data->myra1_benchmark_4[2],
-                                "myra2_benchmark_target" => $data->myra2_benchmark_4[2],
+                                "myra1_benchmark_target" => $data->myra1_benchmark_4[2] ?? 0,
+                                "myra2_benchmark_target" => $data->myra2_benchmark_4[2] ?? 0,
                             ],
                         ],
                         "endowment" => [
@@ -1084,12 +1084,12 @@ class AjaxController extends Controller
                                 "myra2_benchmark_mark" => $data->myra2_benchmark_mark_4[0],
                             ],
                             "hospital" => [
-                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_4[1],
-                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_4[1],
+                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_4[1] ?? 0,
+                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_4[1] ?? 0,
                             ],
                             "lab" => [
-                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_4[2],
-                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_4[2],
+                                "myra1_benchmark_mark" => $data->myra1_benchmark_mark_4[2] ?? 0,
+                                "myra2_benchmark_mark" => $data->myra2_benchmark_mark_4[2] ?? 0,
                             ],
                         ],
                         "endowment" => [
@@ -1124,12 +1124,12 @@ class AjaxController extends Controller
                                 "myra2_mark" => $data->myra2_mark_4[0],
                             ],
                             "hospital" => [
-                                "myra1_mark" => $data->myra1_mark_4[1],
-                                "myra2_mark" => $data->myra2_mark_4[1],
+                                "myra1_mark" => $data->myra1_mark_4[1] ?? 0,
+                                "myra2_mark" => $data->myra2_mark_4[1] ?? 0,
                             ],
                             "lab" => [
-                                "myra1_mark" => $data->myra1_mark_4[2],
-                                "myra2_mark" => $data->myra2_mark_4[2],
+                                "myra1_mark" => $data->myra1_mark_4[2] ?? 0,
+                                "myra2_mark" => $data->myra2_mark_4[2] ?? 0,
                             ],
                         ],
                         "endowment" => [
@@ -1164,12 +1164,12 @@ class AjaxController extends Controller
                                 "myra2_achievement" => $data->myra2_achievement_4[0],
                             ],
                             "hospital" => [
-                                "myra1_achievement" => $data->myra1_achievement_4[1],
-                                "myra2_achievement" => $data->myra2_achievement_4[1],
+                                "myra1_achievement" => $data->myra1_achievement_4[1] ?? 0,
+                                "myra2_achievement" => $data->myra2_achievement_4[1] ?? 0,
                             ],
                             "lab" => [
-                                "myra1_achievement" => $data->myra1_achievement_4[2],
-                                "myra2_achievement" => $data->myra2_achievement_4[2],
+                                "myra1_achievement" => $data->myra1_achievement_4[2] ?? 0,
+                                "myra2_achievement" => $data->myra2_achievement_4[2] ?? 0,
                             ],
                         ],
                         "endowment" => [
