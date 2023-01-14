@@ -20,8 +20,9 @@
 </div>
 @foreach ($modules as $module)
 <div class="alert alert-primary-soft d-flex py-2 pl-5 align-items-center mt-5" role="">
-    <button id="{{ $module->group_code }}_download" class="btn btn-sm btn-primary me-5" onclick="downloadAll('{{ $module->group_code }}', {{$year}})">Download All</button>
-    <button id="{{ $module->group_code }}_processing" class="btn btn-sm btn-primary me-5" style="display: none">Downloading <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
+    @if($module->available)
+    <button id="{{ $module->group_code }}_download" class="btn btn-sm btn-primary me-5" onclick="downloadMasterlist('{{ $module->group_code }}', {{$year}}, 1)">Download All</button>
+    @endif
     <div class="text-gray-800 fw-medium">{{ $module->group }}</div>
 </div>
 <div class="pos intro-y grid columns-12 gap-5">
@@ -30,14 +31,7 @@
         <div class="grid grid-cols-12 gap-5">
             @foreach ($module->modules as $item)
             <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
-                {{-- @if ($item->available) --}}
-                {{-- <a href="{{ route('masterlist.myra.list', ['module'=>$item->code, 'year'=>$year]) }}" class="btn btn-success-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
-                    <div class="me-auto">
-                        <div class="fs-lg fw-medium" style="color: black">{{ $item->name }}</div>
-                    </div>
-                    <div class="ms-3 me-2 text-success"><i data-feather="check-square" class="w-8 h-8"></i></div>
-                </a> --}}
-                {{-- @else --}}
+                @if ($item->available)
                 <a class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
                     <div class="me-auto">
                         <div class="fs-lg fw-medium" style="color: black">{{ $item->name }}</div>
@@ -45,7 +39,15 @@
 
                     <div class="ms-3 me-2 text-theme-6"><button onclick="downloadMasterlist('{{ $item->code }}', {{$year}})" class="btn btn-primary"> <i data-feather="download" class="w-5 h-5"></i> </button></div>
                 </a>
-                {{-- @endif --}}
+                @else
+                <a class="btn btn-secondary h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
+                    <div class="me-auto">
+                        <div class="fs-lg fw-medium" style="color: black">{{ $item->name }}</div>
+                    </div>
+
+                    <div class="ms-3 me-2 text-theme-6"><button class="btn btn-secondary" disabled> <i data-feather="alert-circle" class="w-5 h-5"></i> </button></div>
+                </a>
+                @endif
             </div>
             @endforeach
         </div>
@@ -61,47 +63,8 @@
         window.location = window.location.origin + '/report/myra/' + that.val();
     }
 
-    function downloadAll(code, year){
-        // alert(code);
-        $('#'+code+'_download').hide();
-        $('#'+code+'_processing').show();
-        // var data = new FormData();
-        // data.append("section", code);
-        // data.append("year", year);
-        // alert(data);
-        // $.ajax({
-        //     url: "/ajax/update-myra-data/",
-        //     cache: false,
-        //     contentType: false,
-        //     processData: false,
-        //     data: data,
-        //     type: "post",
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     },
-        //     success: function(res) {
-        //         $('#'+code+'_processing').hide();
-        //         $('#'+code+'_download').show();
-        //     },
-        //     error: function(data) {
-        //         $('#'+code+'_processing').hide();
-        //         $('#'+code+'_download').show();
-        //     }
-        // });
-        $('#'+code+'_processing').hide();
-        $('#'+code+'_download').show();
-    }
-
-    function downloadMasterlist(code, year, faculty = ''){
-        // alert(faculty);
-        // swal({
-        //     title: 'Downloading',
-        //     allowOutsideClick: false,
-        //     allowEscapeKey: false,
-        //     allowEnterKey: false,
-        // });
-        // swal.showLoading();
-        // window.location = window.location.origin + "/report/myra/download/"+code+"/"+year+'/'+faculty;
+    function downloadMasterlist(code, year, all = ''){
+        window.location = window.location.origin + "/report/myra/download/"+code+"/"+year+'/'+all;
     }
 </script>
 @endsection

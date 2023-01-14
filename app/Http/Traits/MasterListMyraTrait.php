@@ -58,7 +58,7 @@ trait MasterListMyraTrait {
 
     use MyraCalculationTrait, DataSerializationTrait;
 
-    public function getMyraModuleAvailability($year) {
+    public function getMyraModuleAvailability($year, $module = null) {
         $acad_staff = DataAttachment::whereModule('acad_staff')->where('year', $year)->whereStatus('selected')->exists();
         $ug_student = DataAttachment::whereModule('ug_student')->where('year', $year)->whereStatus('selected')->exists();
         $pg_student = DataAttachment::whereModule('pg_student')->where('year', $year)->whereStatus('selected')->exists();
@@ -116,302 +116,328 @@ trait MasterListMyraTrait {
         $support_facilities = DataAttachment::whereModule('support_facilities')->where('year', $year)->whereStatus('selected')->exists();
         $library_facilities = DataAttachment::whereModule('library_facilities')->where('year', $year)->whereStatus('selected')->exists();
 
-
-        return [
-            (object)[
-                'group'=>'SECTION A: GENERAL INFORMATION',
-                'group_code'=>'section_a',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Academic Staff',
-                        'code'=>'acad_staff',
-                        'available'=>$acad_staff
-                    ],
-                    (object)[
-                        'name'=>'Under Graduate Student',
-                        'code'=>'ug_student',
-                        'available'=>$ug_student
-                    ],
-                    (object)[
-                        'name'=>'Post Graduate Student',
-                        'code'=>'pg_student',
-                        'available'=>$pg_student
-                    ],
-                ], 
-            ],
-            (object)[
-                'group'=>'SECTION B: QUANTITY AND QUALITY OF RESEARCHERS',
-                'group_code'=>'section_b',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Critical Mass',
-                        'code'=>'critical_mass',
-                        'available'=>$critical_mass
-                    ],
-                    (object)[
-                        'name'=>'PhD/Professional Qualifications',
-                        'code'=>'pro_qualification',
-                        'available'=>$pro_qualification
-                    ],
-                    (object)[
-                        'name'=>'Research Experience (3 COHORTS)',
-                        'code'=>'research_experience',
-                        'available'=>$research_experience
-                    ],
-                    (object)[
-                        'name'=>'Awards Recognition',
-                        'code'=>'award',
-                        'available'=>$award
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION C: QUANTITY AND QUALITY OF RESEARCH',
-                'group_code'=>'section_c',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Publication',
-                        'code'=>'publication',
-                        'available'=>$publication
-                    ],
-                    (object)[
-                        'name'=>'Research Grant',
-                        'code'=>'research_grant',
-                        'available'=>$research_grant
-                    ],
-                    (object)[
-                        'name'=>'Expenditure Project',
-                        'code'=>'expenditure_project',
-                        'available'=>$expenditure_project
-                    ],
-                    (object)[
-                        'name'=>'Monitoring Project',
-                        'code'=>'monitoring_project',
-                        'available'=>$monitoring_project
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION D: QUANTITY AND QUALITY OF POSTGRADUATES',
-                'group_code'=>'section_d',
-                'modules'=>[
-                    (object)[
-                        'name'=>'PhD Graduated',
-                        'code'=>'phd_graduated',
-                        'available'=>$phd_graduated
-                    ],
-                    (object)[
-                        'name'=>'Master Graduated',
-                        'code'=>'master_graduated',
-                        'available'=>$master_graduated
-                    ],
-                    (object)[
-                        'name'=>'PhD Enrolled',
-                        'code'=>'phd_enrolled',
-                        'available'=>$phd_enrolled
-                    ],
-                    (object)[
-                        'name'=>'Entry Qualification',
-                        'code'=>'entry_qualification',
-                        'available'=>$entry_qualification
-                    ],
-                    (object)[
-                        'name'=>'Fellowship',
-                        'code'=>'fellowship',
-                        'available'=>$fellowship
-                    ],
-                    (object)[
-                        'name'=>'Post Doc',
-                        'code'=>'post_doc',
-                        'available'=>$post_doc
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION E: INNOVATION',
-                'group_code'=>'section_e',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Patent Granted',
-                        'code'=>'patent_granted',
-                        'available'=>$patent_granted
-                    ],
-                    (object)[
-                        'name'=>'Patent Filed',
-                        'code'=>'patent_filed',
-                        'available'=>$patent_filed
-                    ],
-                    (object)[
-                        'name'=>'Comm Product',
-                        'code'=>'comm_product',
-                        'available'=>$comm_product
-                    ],
-                    (object)[
-                        'name'=>'Know-How Sold Outright',
-                        'code'=>'know_how_sold',
-                        'available'=>$know_how_sold
-                    ],
-                    (object)[
-                        'name'=>'Other IPR',
-                        'code'=>'other_ipr',
-                        'available'=>$other_ipr
-                    ],
-                    (object)[
-                        'name'=>'Active Companies',
-                        'code'=>'active_company',
-                        'available'=>$active_company
-                    ],
-                    (object)[
-                        'name'=>'New Companies',
-                        'code'=>'new_company',
-                        'available'=>$new_company
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION F: PROFESSIONAL SERVICES AND GIFTS',
-                'group_code'=>'section_f',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Training Courses',
-                        'code'=>'training_course',
-                        'available'=>$training_course
-                    ],
-                    (object)[
-                        'name'=>'PG Fees',
-                        'code'=>'pg_fee',
-                        'available'=>$pg_fee
-                    ],
-                    (object)[
-                        'name'=>'Conference',
-                        'code'=>'conference',
-                        'available'=>$conference
-                    ],
-                    (object)[
-                        'name'=>'Product Comm',
-                        'code'=>'product_comm_service',
-                        'available'=>$product_comm_service
-                    ],
-                    (object)[
-                        'name'=>'Tech Know-How',
-                        'code'=>'tech_know_how',
-                        'available'=>$tech_know_how
-                    ],
-                    (object)[
-                        'name'=>'Consultancy',
-                        'code'=>'consultancy',
-                        'available'=>$consultancy
-                    ],
-                    (object)[
-                        'name'=>'Lab Services',
-                        'code'=>'lab_service',
-                        'available'=>$lab_service
-                    ],
-                    (object)[
-                        'name'=>'New Endowment',
-                        'code'=>'new_endowment',
-                        'available'=>$new_endowment
-                    ],
-                    (object)[
-                        'name'=>'Income Dividend',
-                        'code'=>'income_dividend',
-                        'available'=>$income_dividend
-                    ],
-                    (object)[
-                        'name'=>'Gifts',
-                        'code'=>'gift',
-                        'available'=>$gift
-                    ],
-                    (object)[
-                        'name'=>'Operational Expenditure',
-                        'code'=>'operational_expenditure',
-                        'available'=>$operational_expenditure
-                    ],
-                    (object)[
-                        'name'=>'Total Expenditure',
-                        'code'=>'total_expenditure',
-                        'available'=>$total_expenditure
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION G: NETWORKING AND LINKAGES',
-                'group_code'=>'section_g',
-                'modules'=>[
-                    (object)[
-                        'name'=>'International MoA',
-                        'code'=>'international_moa',
-                        'available'=>$international_moa
-                    ],
-                    (object)[
-                        'name'=>'Staff Involved International MoA',
-                        'code'=>'staff_international_moa',
-                        'available'=>$staff_international_moa
-                    ],
-                    (object)[
-                        'name'=>'Staff Sent Abroad',
-                        'code'=>'staff_sent_abroad',
-                        'available'=>$staff_sent_abroad
-                    ],
-                    (object)[
-                        'name'=>'International Membership',
-                        'code'=>'international_membership',
-                        'available'=>$international_membership
-                    ],
-                    (object)[
-                        'name'=>'National MoA',
-                        'code'=>'national_moa',
-                        'available'=>$national_moa
-                    ],
-                    (object)[
-                        'name'=>'Staff Involved National MoA',
-                        'code'=>'staff_national_moa',
-                        'available'=>$staff_national_moa
-                    ],
-                    (object)[
-                        'name'=>'National Membership',
-                        'code'=>'national_membership',
-                        'available'=>$national_membership
-                    ],
-                    (object)[
-                        'name'=>'New KTP',
-                        'code'=>'new_ktp',
-                        'available'=>$new_ktp
-                    ],
-                    (object)[
-                        'name'=>'Benefited KTP',
-                        'code'=>'benefited_ktp',
-                        'available'=>$benefited_ktp
-                    ],
-                    (object)[
-                        'name'=>'Joint Research Projects',
-                        'code'=>'joint_research_project',
-                        'available'=>$joint_research_project
-                    ],
-                    (object)[
-                        'name'=>'Joint Research Projects Between RUs',
-                        'code'=>'joint_research_project_ru',
-                        'available'=>$joint_research_project_ru
-                    ],
-                ]
-            ],
-            (object)[
-                'group'=>'SECTION H: SUPPORT FACILITIES',
-                'group_code'=>'section_h',
-                'modules'=>[
-                    (object)[
-                        'name'=>'Support Facilities',
-                        'code'=>'support_facilities',
-                        'available'=>$support_facilities
-                    ],
-                    (object)[
-                        'name'=>'Library Facilities',
-                        'code'=>'library_facilities',
-                        'available'=>$library_facilities
-                    ],
-                ]
-            ],
+        $section_a = (object)[
+            'group'=>'SECTION A: GENERAL INFORMATION',
+            'group_code'=>'section_a',
+            'available' => $acad_staff || $acad_staff || $ug_student,
+            'modules'=>[
+                (object)[
+                    'name'=>'Academic Staff',
+                    'code'=>'acad_staff',
+                    'available'=>$acad_staff
+                ],
+                (object)[
+                    'name'=>'Under Graduate Student',
+                    'code'=>'ug_student',
+                    'available'=>$ug_student
+                ],
+                (object)[
+                    'name'=>'Post Graduate Student',
+                    'code'=>'pg_student',
+                    'available'=>$pg_student
+                ],
+            ], 
         ];
+        $section_b = (object)[
+            'group'=>'SECTION B: QUANTITY AND QUALITY OF RESEARCHERS',
+            'group_code'=>'section_b',
+            'available' => $critical_mass || $pro_qualification || $research_experience || $award,
+            'modules'=>[
+                (object)[
+                    'name'=>'Critical Mass',
+                    'code'=>'critical_mass',
+                    'available'=>$critical_mass
+                ],
+                (object)[
+                    'name'=>'PhD/Professional Qualifications',
+                    'code'=>'pro_qualification',
+                    'available'=>$pro_qualification
+                ],
+                (object)[
+                    'name'=>'Research Experience (3 COHORTS)',
+                    'code'=>'research_experience',
+                    'available'=>$research_experience
+                ],
+                (object)[
+                    'name'=>'Awards Recognition',
+                    'code'=>'award',
+                    'available'=>$award
+                ],
+            ]
+        ];
+        $section_c = (object)[
+            'group'=>'SECTION C: QUANTITY AND QUALITY OF RESEARCH',
+            'group_code'=>'section_c',
+            'available' => $publication || $research_grant || $expenditure_project || $monitoring_project,
+            'modules'=>[
+                (object)[
+                    'name'=>'Publication',
+                    'code'=>'publication',
+                    'available'=>$publication
+                ],
+                (object)[
+                    'name'=>'Research Grant',
+                    'code'=>'research_grant',
+                    'available'=>$research_grant
+                ],
+                (object)[
+                    'name'=>'Expenditure Project',
+                    'code'=>'expenditure_project',
+                    'available'=>$expenditure_project
+                ],
+                (object)[
+                    'name'=>'Monitoring Project',
+                    'code'=>'monitoring_project',
+                    'available'=>$monitoring_project
+                ],
+            ]
+        ];
+        $section_d = (object)[
+            'group'=>'SECTION D: QUANTITY AND QUALITY OF POSTGRADUATES',
+            'group_code'=>'section_d',
+            'available' => $phd_graduated || $master_graduated || $phd_enrolled || $entry_qualification || $fellowship || $post_doc,
+            'modules'=>[
+                (object)[
+                    'name'=>'PhD Graduated',
+                    'code'=>'phd_graduated',
+                    'available'=>$phd_graduated
+                ],
+                (object)[
+                    'name'=>'Master Graduated',
+                    'code'=>'master_graduated',
+                    'available'=>$master_graduated
+                ],
+                (object)[
+                    'name'=>'PhD Enrolled',
+                    'code'=>'phd_enrolled',
+                    'available'=>$phd_enrolled
+                ],
+                (object)[
+                    'name'=>'Entry Qualification',
+                    'code'=>'entry_qualification',
+                    'available'=>$entry_qualification
+                ],
+                (object)[
+                    'name'=>'Fellowship',
+                    'code'=>'fellowship',
+                    'available'=>$fellowship
+                ],
+                (object)[
+                    'name'=>'Post Doc',
+                    'code'=>'post_doc',
+                    'available'=>$post_doc
+                ],
+            ]
+        ];
+        $section_e = (object)[
+            'group'=>'SECTION E: INNOVATION',
+            'group_code'=>'section_e',
+            'available' => $patent_granted || $patent_filed || $comm_product || $know_how_sold || $other_ipr || $active_company || $new_company,
+            'modules'=>[
+                (object)[
+                    'name'=>'Patent Granted',
+                    'code'=>'patent_granted',
+                    'available'=>$patent_granted
+                ],
+                (object)[
+                    'name'=>'Patent Filed',
+                    'code'=>'patent_filed',
+                    'available'=>$patent_filed
+                ],
+                (object)[
+                    'name'=>'Comm Product',
+                    'code'=>'comm_product',
+                    'available'=>$comm_product
+                ],
+                (object)[
+                    'name'=>'Know-How Sold Outright',
+                    'code'=>'know_how_sold',
+                    'available'=>$know_how_sold
+                ],
+                (object)[
+                    'name'=>'Other IPR',
+                    'code'=>'other_ipr',
+                    'available'=>$other_ipr
+                ],
+                (object)[
+                    'name'=>'Active Companies',
+                    'code'=>'active_company',
+                    'available'=>$active_company
+                ],
+                (object)[
+                    'name'=>'New Companies',
+                    'code'=>'new_company',
+                    'available'=>$new_company
+                ],
+            ]
+        ];
+        $section_f = (object)[
+            'group'=>'SECTION F: PROFESSIONAL SERVICES AND GIFTS',
+            'group_code'=>'section_f',
+            'available' => $training_course || $pg_fee || $conference || $product_comm_service || $tech_know_how || $consultancy || $lab_service || $new_endowment || $income_dividend  || $gift || $operational_expenditure || $total_expenditure,
+            'modules'=>[
+                (object)[
+                    'name'=>'Training Courses',
+                    'code'=>'training_course',
+                    'available'=>$training_course
+                ],
+                (object)[
+                    'name'=>'PG Fees',
+                    'code'=>'pg_fee',
+                    'available'=>$pg_fee
+                ],
+                (object)[
+                    'name'=>'Conference',
+                    'code'=>'conference',
+                    'available'=>$conference
+                ],
+                (object)[
+                    'name'=>'Product Comm',
+                    'code'=>'product_comm_service',
+                    'available'=>$product_comm_service
+                ],
+                (object)[
+                    'name'=>'Tech Know-How',
+                    'code'=>'tech_know_how',
+                    'available'=>$tech_know_how
+                ],
+                (object)[
+                    'name'=>'Consultancy',
+                    'code'=>'consultancy',
+                    'available'=>$consultancy
+                ],
+                (object)[
+                    'name'=>'Lab Services',
+                    'code'=>'lab_service',
+                    'available'=>$lab_service
+                ],
+                (object)[
+                    'name'=>'New Endowment',
+                    'code'=>'new_endowment',
+                    'available'=>$new_endowment
+                ],
+                (object)[
+                    'name'=>'Income Dividend',
+                    'code'=>'income_dividend',
+                    'available'=>$income_dividend
+                ],
+                (object)[
+                    'name'=>'Gifts',
+                    'code'=>'gift',
+                    'available'=>$gift
+                ],
+                (object)[
+                    'name'=>'Operational Expenditure',
+                    'code'=>'operational_expenditure',
+                    'available'=>$operational_expenditure
+                ],
+                (object)[
+                    'name'=>'Total Expenditure',
+                    'code'=>'total_expenditure',
+                    'available'=>$total_expenditure
+                ],
+            ]
+        ];
+        $section_g = (object)[
+            'group'=>'SECTION G: NETWORKING AND LINKAGES',
+            'group_code'=>'section_g',
+            'available' => $international_moa || $staff_international_moa || $staff_sent_abroad || $international_membership || $national_moa || $staff_national_moa || $national_membership || $new_ktp || $benefited_ktp  || $joint_research_project || $joint_research_project_ru,
+            'modules'=>[
+                (object)[
+                    'name'=>'International MoA',
+                    'code'=>'international_moa',
+                    'available'=>$international_moa
+                ],
+                (object)[
+                    'name'=>'Staff Involved International MoA',
+                    'code'=>'staff_international_moa',
+                    'available'=>$staff_international_moa
+                ],
+                (object)[
+                    'name'=>'Staff Sent Abroad',
+                    'code'=>'staff_sent_abroad',
+                    'available'=>$staff_sent_abroad
+                ],
+                (object)[
+                    'name'=>'International Membership',
+                    'code'=>'international_membership',
+                    'available'=>$international_membership
+                ],
+                (object)[
+                    'name'=>'National MoA',
+                    'code'=>'national_moa',
+                    'available'=>$national_moa
+                ],
+                (object)[
+                    'name'=>'Staff Involved National MoA',
+                    'code'=>'staff_national_moa',
+                    'available'=>$staff_national_moa
+                ],
+                (object)[
+                    'name'=>'National Membership',
+                    'code'=>'national_membership',
+                    'available'=>$national_membership
+                ],
+                (object)[
+                    'name'=>'New KTP',
+                    'code'=>'new_ktp',
+                    'available'=>$new_ktp
+                ],
+                (object)[
+                    'name'=>'Benefited KTP',
+                    'code'=>'benefited_ktp',
+                    'available'=>$benefited_ktp
+                ],
+                (object)[
+                    'name'=>'Joint Research Projects',
+                    'code'=>'joint_research_project',
+                    'available'=>$joint_research_project
+                ],
+                (object)[
+                    'name'=>'Joint Research Projects Between RUs',
+                    'code'=>'joint_research_project_ru',
+                    'available'=>$joint_research_project_ru
+                ],
+            ]
+        ];
+        $section_h = (object)[
+            'group'=>'SECTION H: SUPPORT FACILITIES',
+            'group_code'=>'section_h',
+            'available' => $support_facilities || $library_facilities,
+            'modules'=>[
+                (object)[
+                    'name'=>'Support Facilities',
+                    'code'=>'support_facilities',
+                    'available'=>$support_facilities
+                ],
+                (object)[
+                    'name'=>'Library Facilities',
+                    'code'=>'library_facilities',
+                    'available'=>$library_facilities
+                ],
+            ]
+        ];
+
+        if(!$module){
+            return [
+                $section_a,
+                $section_b,
+                $section_c,
+                $section_d,
+                $section_e,
+                $section_f,
+                $section_g,
+                $section_h,
+            ];
+        }
+        else if($module == 'section_a') return $section_a;
+        else if($module == 'section_b') return $section_b;
+        else if($module == 'section_c') return $section_c;
+        else if($module == 'section_d') return $section_d;
+        else if($module == 'section_e') return $section_e;
+        else if($module == 'section_f') return $section_f;
+        else if($module == 'section_g') return $section_g;
+        else if($module == 'section_h') return $section_h;
     }
 
     public function myraSectionA($year) {
