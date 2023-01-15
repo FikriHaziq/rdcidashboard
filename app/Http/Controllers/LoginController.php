@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Traits\LoginApi;
 use Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -22,9 +23,17 @@ class LoginController extends Controller
         ]);
         // $auth = $this->authenticate($request->email, $request->password);
         // if($auth->status() == 200){
-        //     dd($this->getClaims($auth->json()['token']));
+        //     $token = $auth->json()['token'];
+        //     $tokenParts = explode(".", $token);  
+        //     $tokenHeader = base64_decode($tokenParts[0]);
+        //     $tokenPayload = base64_decode($tokenParts[1]);
+        //     $jwtHeader = json_decode($tokenHeader);
+        //     $jwtPayload = json_decode($tokenPayload);
+        //     dd($tokenHeader, $tokenPayload, $jwtHeader, $jwtPayload);
+        //     // dd($auth->json()['token']);
         // }
-        // dd($auth->json());
+        
+        // dd($auth->json(), $request->cookie('SSOJWT'));
         if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
             if(auth()->user()->role == 'super_admin'){
                 return redirect()->route('myra.index');
