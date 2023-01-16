@@ -230,17 +230,17 @@ trait GraphMyraTrait {
             'data_1' => [],
         ];
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) {
-            $bar1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('position',$this->staff_position('prof'))->count();
-            $bar1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('position',$this->staff_position('assoc_prof'))->count();
-            $bar1_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('position',$this->staff_position('senior_lecturer'))->count();
-            $bar1_4 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('position',$this->staff_position('lecturer'))->count();
-            $bar1_5 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('position',$this->staff_position('research_fellow'))->count();
-            $bar2_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
-            $bar2_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
-            $bar2_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
-            $line1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
-            $line1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
-            $line2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
+            $bar1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('position',$this->staff_position('prof'))->count();
+            $bar1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('position',$this->staff_position('assoc_prof'))->count();
+            $bar1_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('position',$this->staff_position('senior_lecturer'))->count();
+            $bar1_4 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('position',$this->staff_position('lecturer'))->count();
+            $bar1_5 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('position',$this->staff_position('research_fellow'))->count();
+            $bar2_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
+            $bar2_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
+            $bar2_3 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
+            $line1_1 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->count();
+            $line1_2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->count();
+            $line2 = MasterlistAcademicStaff::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status1', $this->status_active('active'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
             
             array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
@@ -259,7 +259,7 @@ trait GraphMyraTrait {
         $country_labels = [];
         $countries = [];
 
-        $countryRaws = MasterlistAcademicStaff::select('country')->where('ml_end_year', '>=', $start_year)->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)->orderBy('country')->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship',$this->filter_citizenship('foreign'))->distinct()->get();
+        $countryRaws = MasterlistAcademicStaff::select('country')->where('ml_end_year', '>=', $start_year)->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)->orderBy('country')->whereIn('status1', $this->status_active('active'))->whereIn('citizenship',$this->filter_citizenship('foreign'))->distinct()->get();
         foreach ($countryRaws as $key => $countryRaw) {
             $country = $this->country_code_label($countryRaw->country);
             array_push($country_queries, $country);
@@ -272,7 +272,7 @@ trait GraphMyraTrait {
         $total_country_cumulative = 0;
         foreach ($country_queries as $key => $value) {
             $country_data = MasterlistAcademicStaff::where('ml_end_year', '>=', $start_year)->select('staff_id')->where(function ($q) use ($faculty) {if($faculty)$q->where('faculty_short', $faculty);})->where('ml_end_year', '<=', $end_year)
-            ->whereIn('status1', ['ACTIVE', 'AKTIF'])->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('country', $value)->distinct()->count();
+            ->whereIn('status1', $this->status_active('active'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('country', $value)->distinct()->count();
             array_push($bar_3->data_1, $country_data);
             $total_country_cumulative += $country_data;
         }
@@ -318,16 +318,16 @@ trait GraphMyraTrait {
         // dd($test);
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) {
             // $line1_1 = ;
-            $line1_1 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
-            $line1_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('coursework'))->count();
-            $line1_3 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->count();
-            $line1_4 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('doctoral'))->whereIn('study_mode', $this->student_study_mode('coursework'))->count();
-            $bar1_1 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
-            $bar1_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', $this->filter_citizenship('local'))->count();
-            $bar1_3 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
-            $bar1_4 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->whereIn('citizenship', $this->filter_citizenship('local'))->count();
-            $bar3_1 = MasterlistUgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
-            $bar3_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+            $line1_1 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
+            $line1_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('coursework'))->count();
+            $line1_3 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->count();
+            $line1_4 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('doctoral'))->whereIn('study_mode', $this->student_study_mode('coursework'))->count();
+            $bar1_1 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
+            $bar1_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', $this->filter_citizenship('local'))->count();
+            $bar1_3 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
+            $bar1_4 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('degree_registered_for', $this->student_degree('phd'))->whereIn('citizenship', $this->filter_citizenship('local'))->count();
+            $bar3_1 = MasterlistUgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->count();
+            $bar3_2 = MasterlistPgStudent::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->count();
             
             array_push($year_range, (int)$i);
             array_push($line_1->data_1, $line1_1);
@@ -355,7 +355,7 @@ trait GraphMyraTrait {
         usort($study_area_queries, function($a, $b) {return strcmp($a['label'], $b['label']);});
         sort($study_area_labels);
         foreach ($study_area_queries as $key => $value) {
-            $study_area_data = MasterlistPgStudent::select('matric_no')->where(function ($q) use ($faculty, $end_year) {if($faculty){if($faculty == 'FKT' && $end_year != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->where('ml_end_year','>=', $start_year)->where('ml_end_year','<=', $end_year)->whereIn('study_area', $value)->distinct()->count();
+            $study_area_data = MasterlistPgStudent::select('matric_no')->where(function ($q) use ($faculty, $end_year) {if($faculty){$q->where('faculty_short', $faculty);}})->where('ml_end_year','>=', $start_year)->where('ml_end_year','<=', $end_year)->whereIn('study_area', $value)->distinct()->count();
             
             array_push($bar_2->data_1, $study_area_data);
         }
@@ -469,11 +469,11 @@ trait GraphMyraTrait {
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             if($faculty){
-                $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
-                $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
-                $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
-                $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
+                $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', ['PHD'])->count();
+                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
+                $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
+                $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
+                $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
                 $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
                 $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
                 $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
@@ -482,9 +482,9 @@ trait GraphMyraTrait {
             else{
                 $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('acad_qualification', ['PHD'])->count();
                 $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
-                $bar1_1 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '<', 40)->count();
-                $bar1_2 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>=', 40)->where('age', '<=', 50)->count();
-                $bar1_3 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', ['FULL TIME', 'SEPENUH MASA'])->whereIn('status1', ['ACTIVE', 'AKTIF'])->where('age', '>', 50)->count();
+                $bar1_1 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
+                $bar1_2 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
+                $bar1_3 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
                 $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
                 $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
                 $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
@@ -753,20 +753,20 @@ trait GraphMyraTrait {
                 $bar1_2 = null;
                 $bar1_3 = null;
                 $bar1_4 = null;
-                $bar2_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received');
-                $bar2_2 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['NATIONAL'])->sum('amount_received') + $bar2_1;
+                $bar2_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received');
+                $bar2_2 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['NATIONAL'])->sum('amount_received') + $bar2_1;
                 $bar2_3 = (int)($data->myra2_benchmark_target_2[0] ?? 0);
                 $bar2_4 = $bar2_3*2;
-                $bar3_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['PRIVATE'])->sum('amount_received');
+                $bar3_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['PRIVATE'])->sum('amount_received');
                 $bar3_2 = (int)($data->myra2_benchmark_target_2[1] ?? 0);
                 $bar3_3 = $bar3_2*2;
-                $bar4_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['INTERNATIONAL'])->sum('amount_received');
+                $bar4_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['INTERNATIONAL'])->sum('amount_received');
                 $bar4_2 = (int)($data->myra2_benchmark_target_2[2] ?? 0);
                 $bar4_3 = $bar4_2*2;
-                $bar5_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY'])->whereYear('start_date', $i)->sum('amount_pledged');
-                $bar6_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['NATIONAL'])->whereYear('start_date', $i)->sum('amount_pledged');
-                $bar7_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['PRIVATE'])->whereYear('start_date', $i)->sum('amount_pledged');
-                $bar8_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['INTERNATIONAL'])->whereYear('start_date', $i)->sum('amount_pledged');
+                $bar5_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['UNIVERSITY'])->whereYear('start_date', $i)->sum('amount_pledged');
+                $bar6_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['NATIONAL'])->whereYear('start_date', $i)->sum('amount_pledged');
+                $bar7_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['PRIVATE'])->whereYear('start_date', $i)->sum('amount_pledged');
+                $bar8_1 = MasterlistResearchGrant::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('sponsor_category', ['INTERNATIONAL'])->whereYear('start_date', $i)->sum('amount_pledged');
             }
             else{
                 $label = 'UTM';
@@ -852,7 +852,7 @@ trait GraphMyraTrait {
                 $section_d_data = $this->myraSectionD($i, $faculty);
                 $active_acad_staff = $section_d_data->calculation->active_acad_staff;
                 $line1_1 = $section_d_data->total_phd;
-                $line1_2 = MasterlistPhdGraduate::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->whereIn('got', $this->got('yes'))->count();
+                $line1_2 = MasterlistPhdGraduate::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('got', $this->got('yes'))->count();
                 $bar1_1 = $line1_1;
                 $bar1_2 = (int)($section_d_data->calculation->myra2_benchmark_target_1[0] ?? 0);
                 $phd_graduate_7 = $line1_2;
@@ -864,7 +864,7 @@ trait GraphMyraTrait {
                 $bar4_2 = (int)($section_d_data->calculation->myra1_benchmark_target_4[0] ?? 0);
             }
             else{
-                $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', ['ACTIVE', 'AKTIF'])->count();
+                $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $i)->whereIn('status1', $this->status_active('active'))->count();
                 $line1_1 = MasterlistPhdGraduate::where('ml_end_year', $i)->count();
                 $line1_2 = MasterlistPhdGraduate::where('ml_end_year', $i)->whereIn('got', $this->got('yes'))->count();
                 $bar1_1 = $line1_1;
@@ -935,7 +935,7 @@ trait GraphMyraTrait {
                 $pg_research_enrolled = $pg_master_research + $pg_phd_research;
                 $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_research_enrolled*100, 2) : 0;
                 $bar3_2 = (int)($section_d_data->calculation->myra1_benchmark_target_7[0] ?? 0);
-                $bar4_1 = MasterlistPostDoc::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty == 'FKT' && $i != 2022){{$q->where('school_short', 'SKT');}} else {$q->where('faculty_short', $faculty);}}})->count();
+                $bar4_1 = MasterlistPostDoc::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->count();
                 $bar4_2 = (int)($section_d_data->calculation->myra2_benchmark_target_8[0] ?? 0);
             }
             else{

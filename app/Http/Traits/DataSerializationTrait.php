@@ -3,16 +3,53 @@ namespace App\Http\Traits;
 use Illuminate\Support\Facades\DB;
 
 trait DataSerializationTrait {
+
+    public function status_active($type){
+        if($type == 'active'){
+            $data = [
+                'ACTIVE',
+                'AKTIF',
+            ];
+        }
+        else if($type == 'not_active'){
+            $data = [
+                'TIDAK',
+                null,
+            ];
+        }
+
+        return $data ?? [];
+    }
+
+    public function status_fulltime($type){
+        if($type == 'fulltime'){
+            $data = ['FULL TIME', 'SEPENUH MASA'];
+        }
+        else if($type == 'parttime'){
+            $data = ['PART TIME', 'SEPARUH MASA'];
+        }
+
+        return $data ?? [];
+    }
+
     public function staff_position($type){
         if($type == 'prof'){
             $data = [
                 'PROF.',
+                'PROF. TURUS III',
+                'PROFESOR TURUS III (VU04)',
+                'PROFESOR (VK05)',
+                'PROFESOR (VK06)',
+                'PROFESOR (VK07)',
+                'PROFESOR KUP (VK06)',
+                'PROFESSOR'
             ];
         }
         else if($type == 'assoc_prof'){
             $data = [
                 'ASSOC. PROF.',
-
+                'PROFESOR MADYA (DS53)',
+                'PROFESOR MADYA (DS54)'
             ];
         }
         else if($type == 'senior_lecturer'){
