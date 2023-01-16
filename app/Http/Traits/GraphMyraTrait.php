@@ -468,28 +468,15 @@ trait GraphMyraTrait {
         ];
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            if($faculty){
-                $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
-                $bar1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
-                $bar1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
-                $bar1_3 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
-                $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
-                $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
-                $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
-                $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;
-            }
-            else{
-                $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereIn('acad_qualification', ['PHD'])->count();
-                $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', ['MASTER', 'M.PHIL'])->count();
-                $bar1_1 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
-                $bar1_2 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
-                $bar1_3 = MasterlistResearchExperience::where('ml_end_year', $i)->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
-                $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
-                $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
-                $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
-                $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;
-            }
+            $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', $this->student_degree('phd'))->count();
+            $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', $this->student_degree('master'))->count();
+            $bar1_1 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
+            $bar1_2 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
+            $bar1_3 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
+            $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
+            $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
+            $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
+            $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;
             
             array_push($year_range, (int)$i);
             array_push($line_1->data_1, $line1_1);
@@ -539,6 +526,8 @@ trait GraphMyraTrait {
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
             $section_b_data = $this->myraSectionB($i, $faculty);
             // dd($section_b_data);
+            // dd(MasterlistAward::select('award_type')->where('ml_end_year', 2016)->distinct()->get()->toArray());
+
             $bar1_1 = $section_b_data->award_int;
             $bar1_2 = (int)($section_b_data->calculation->myra2_benchmark_target_4[0] ?? 0);
             $bar2_1 = $section_b_data->recog_int;

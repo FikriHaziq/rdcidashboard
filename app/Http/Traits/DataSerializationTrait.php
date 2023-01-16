@@ -88,7 +88,8 @@ trait DataSerializationTrait {
         else if($type == 'master'){
             $data = [
                 'SARJANA',
-                'MASTER'
+                'MASTER',
+                'M.PHIL'
             ];
         }
 
@@ -384,7 +385,8 @@ trait DataSerializationTrait {
                     'FELLOWSHIP',
                     'B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
                     'B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
-                    'RECOGNITIONS/STEWARDSHIP'
+                    'RECOGNITIONS/STEWARDSHIP',
+                    'RECOGNITION/STEWARDSHIP/FELLOWSHIP'
                 ];
             }
             else if($nat_type == 'international'){
@@ -393,7 +395,8 @@ trait DataSerializationTrait {
                     'STEWARDSHIP',
                     'FELLOWSHIP',
                     'B4B - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
-                    'RECOGNITIONS/STEWARDSHIP'
+                    'RECOGNITIONS/STEWARDSHIP',
+                    'RECOGNITION/STEWARDSHIP/FELLOWSHIP'
                 ];
             }
             else if($nat_type == 'national'){
@@ -402,7 +405,8 @@ trait DataSerializationTrait {
                     'STEWARDSHIP',
                     'FELLOWSHIP',
                     'B4D - FELLOWSHIP/ RECOGNITION/STEWARDSHIP',
-                    'RECOGNITIONS/STEWARDSHIP'
+                    'RECOGNITIONS/STEWARDSHIP',
+                    'RECOGNITION/STEWARDSHIP/FELLOWSHIP'
                 ];
             }
         }
