@@ -22,6 +22,7 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
         // $auth = $this->authenticate($request->email, $request->password);
+        // dd($auth);
         // if($auth->status() == 200){
         //     $token = $auth->json()['token'];
         //     $tokenParts = explode(".", $token);  
@@ -29,8 +30,12 @@ class LoginController extends Controller
         //     $tokenPayload = base64_decode($tokenParts[1]);
         //     $jwtHeader = json_decode($tokenHeader);
         //     $jwtPayload = json_decode($tokenPayload);
-        //     dd($tokenHeader, $tokenPayload, $jwtHeader, $jwtPayload);
+        //     // dd($tokenHeader, $tokenPayload, $jwtHeader, $jwtPayload);
         //     // dd($auth->json()['token']);
+        // }
+        // else {
+        //     session()->flash('error', "Incorrect email or password");
+        //     return redirect()->route('login')->with("error", 'Incorrect email or password');  
         // }
         
         // dd($auth->json(), $request->cookie('SSOJWT'));
@@ -52,6 +57,7 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request){
+        // dd(auth());
         Auth::logout();
      
         $request->session()->invalidate();

@@ -31,10 +31,11 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::name("login")->get("/login", [LoginController::class, "index"]);
     Route::name("login.post")->post("/login/post", [LoginController::class, "login"]);
-    Route::name("logout")->get("/logout", [LoginController::class, "logout"]);
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::name("logout")->get("/logout", [LoginController::class, "logout"]);
+
     Route::resource('dashboard', DashboardController::class, ['except' => ['create', 'store', 'show', 'update', 'destroy']]);
 
     Route::name("data.")->prefix("data")->group(function () {
