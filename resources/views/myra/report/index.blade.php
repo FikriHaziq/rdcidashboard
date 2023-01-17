@@ -1,11 +1,11 @@
 @component("layouts.app")
-@slot('module') Report @endslot
+@slot('module') Masterlist @endslot
 @slot("submodule") Myra @endslot
 @section('custom-css') @endsection
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
-        Report - Myra
+        Download Masterlist
     </h2>
     <div class="w-full w-sm-auto d-flex mt-4 mt-sm-0">
         <div class="input-group">

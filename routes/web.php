@@ -25,11 +25,15 @@ use App\Http\Controllers\Grant\FacultyAchievementController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return redirect(route('login'));
+});
+Route::middleware('guest')->group(function () {
+    Route::name("login")->get("/login", [LoginController::class, "index"]);
+    Route::name("login.post")->post("/login/post", [LoginController::class, "login"]);
+    Route::name("logout")->get("/logout", [LoginController::class, "logout"]);
+});
 
-
-Route::name("login")->get("/", [LoginController::class, "index"]);
-Route::name("login.post")->post("/login/post", [LoginController::class, "login"]);
-Route::name("logout")->get("/logout", [LoginController::class, "logout"]);
 Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', DashboardController::class, ['except' => ['create', 'store', 'show', 'update', 'destroy']]);
 

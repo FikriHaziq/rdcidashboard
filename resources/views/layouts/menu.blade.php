@@ -7,7 +7,7 @@
         <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
-    <x-menu-item active="myra.*" route="" icon="clipboard" parent="RDM" type="sub">
+    <x-menu-item active="myra.*" route="" icon="clipboard" parent="Insights" type="sub">
         @if(user()->role == 'super_admin')<x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>@endif
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
         
@@ -55,11 +55,11 @@
         </x-menu-item> --}}
     </x-menu-item>
     @endif
-    <x-menu-item active="report.*" route="" icon="file-text" parent="Report" type="sub">
+    <x-menu-item active="report.*" route="" icon="file-text" parent="Download Masterlist" type="sub">
         <x-menu-item active="report.myra.*" route="report.myra.index">Myra</x-menu-item>
     </x-menu-item>
     @if(user()->role == 'super_admin')
-    <x-menu-item active="masterlist.*" route="" icon="archive" parent="Master List" type="sub">
+    <x-menu-item active="masterlist.*" route="" icon="archive" parent="Upload Masterlist" type="sub">
         <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Myra</x-menu-item>
         <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>
     </x-menu-item>
