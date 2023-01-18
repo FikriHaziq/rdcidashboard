@@ -363,9 +363,9 @@
                     position: 'left',
                     // max: 2000,
                     min: 0,
-                    // ticks: {
-                    //     stepSize: 500
-                    // }
+                    ticks: {
+                        stepSize: 500
+                    },
                     title: {
                         display: true,
                         text: 'No. of Staff'
