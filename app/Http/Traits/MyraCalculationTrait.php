@@ -2804,7 +2804,7 @@ trait MyraCalculationTrait {
             $myra_year_5[0] = $important_data->member_national;
             $myra_year_5[1] = $important_data->other_national;
             $myra_year_6[0] = $important_data->new_ktp;
-            $myra_year_6[1] = 0;
+            $myra_year_6[1] = $important_data->rolling_ktp;
             $myra_year_6[2] = $important_data->benefited_ktp;
             $myra_year_7[0] = $important_data->joint_research_project;
             $myra_year_8[0] = $important_data->joint_research_project_ru;

@@ -158,7 +158,7 @@
                             </tr>
                             <tr>
                                 <td class="border border-slate-600 font-bold">b. Total Number of Rolling Community-Related Research Projects</td>
-                                <td class="border border-slate-600 font-bold"><input value="{{ 0 }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ $data->rolling_ktp }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
                             <tr>
                                 <td class="border border-slate-600 font-bold">c. Total Number of Communities Receiving/ Benefiting from the Knowledge/ Technology Diffusion Projects</td>

@@ -44,6 +44,7 @@ use App\Models\MasterList\MasterlistNationalMoa;
 use App\Models\MasterList\MasterlistStaffNationalMoa;
 use App\Models\MasterList\MasterlistMembershipNational;
 use App\Models\MasterList\MasterlistNewKtp;
+use App\Models\MasterList\MasterlistRollingKtp;
 use App\Models\MasterList\MasterlistBenefitedKtp;
 use App\Models\MasterList\MasterlistJointResearchProject;
 use App\Models\MasterList\MasterlistJointResearchRu;
@@ -109,6 +110,7 @@ trait MasterListMyraTrait {
         $staff_national_moa = DataAttachment::whereModule('staff_national_moa')->where('year', $year)->whereStatus('selected')->exists();
         $national_membership = DataAttachment::whereModule('national_membership')->where('year', $year)->whereStatus('selected')->exists();
         $new_ktp = DataAttachment::whereModule('new_ktp')->where('year', $year)->whereStatus('selected')->exists();
+        $rolling_ktp = DataAttachment::whereModule('rolling_ktp')->where('year', $year)->whereStatus('selected')->exists();
         $benefited_ktp = DataAttachment::whereModule('benefited_ktp')->where('year', $year)->whereStatus('selected')->exists();
         $joint_research_project = DataAttachment::whereModule('joint_research_project')->where('year', $year)->whereStatus('selected')->exists();
         $joint_research_project_ru = DataAttachment::whereModule('joint_research_project_ru')->where('year', $year)->whereStatus('selected')->exists();
@@ -341,7 +343,7 @@ trait MasterListMyraTrait {
         $section_g = (object)[
             'group'=>'SECTION G: NETWORKING AND LINKAGES',
             'group_code'=>'section_g',
-            'available' => $international_moa || $staff_international_moa || $staff_sent_abroad || $international_membership || $national_moa || $staff_national_moa || $national_membership || $new_ktp || $benefited_ktp  || $joint_research_project || $joint_research_project_ru,
+            'available' => $international_moa || $staff_international_moa || $staff_sent_abroad || $international_membership || $national_moa || $staff_national_moa || $national_membership || $new_ktp || $rolling_ktp || $benefited_ktp  || $joint_research_project || $joint_research_project_ru,
             'modules'=>[
                 (object)[
                     'name'=>'International MoA',
@@ -382,6 +384,11 @@ trait MasterListMyraTrait {
                     'name'=>'New KTP',
                     'code'=>'new_ktp',
                     'available'=>$new_ktp
+                ],
+                (object)[
+                    'name'=>'Rolling KTP',
+                    'code'=>'rolling_ktp',
+                    'available'=>$rolling_ktp
                 ],
                 (object)[
                     'name'=>'Benefited KTP',
@@ -1085,6 +1092,7 @@ trait MasterListMyraTrait {
         $member_national = MasterlistMembershipNational::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
         $other_national = MasterlistMembershipNational::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->whereNotIn('staff_type', ['MEMBER','AHLI'])->count();
         $new_ktp = MasterlistNewKtp::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
+        $rolling_ktp = MasterlistRollingKtp::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
         $benefited_ktp = MasterlistBenefitedKtp::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
         $joint_research_project = MasterlistJointResearchProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
         $joint_research_project_ru = MasterlistJointResearchRu::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
@@ -1113,6 +1121,7 @@ trait MasterListMyraTrait {
             'member_national' => $member_national,
             'other_national' => $other_national,
             'new_ktp' => $new_ktp,
+            'rolling_ktp' => $rolling_ktp,
             'benefited_ktp' => $benefited_ktp,
             'joint_research_project' => $joint_research_project,
             'joint_research_project_ru' => $joint_research_project_ru,
@@ -1141,6 +1150,7 @@ trait MasterListMyraTrait {
             'member_national' => $member_national,
             'other_national' => $other_national,
             'new_ktp' => $new_ktp,
+            'rolling_ktp' => $rolling_ktp,
             'benefited_ktp' => $benefited_ktp,
             'joint_research_project' => $joint_research_project,
             'joint_research_project_ru' => $joint_research_project_ru,

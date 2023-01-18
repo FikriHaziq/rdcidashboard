@@ -46,6 +46,7 @@ use App\Models\MasterList\MasterlistNationalMoa;
 use App\Models\MasterList\MasterlistStaffNationalMoa;
 use App\Models\MasterList\MasterlistMembershipNational;
 use App\Models\MasterList\MasterlistNewKtp;
+use App\Models\MasterList\MasterlistRollingKtp;
 use App\Models\MasterList\MasterlistBenefitedKtp;
 use App\Models\MasterList\MasterlistJointResearchProject;
 use App\Models\MasterList\MasterlistJointResearchRu;
@@ -104,6 +105,7 @@ use App\Imports\NationalMoaImport;
 use App\Imports\StaffNationalMoaImport;
 use App\Imports\NationalMembershipImport;
 use App\Imports\NewKtpImport;
+use App\Imports\RollingKtpImport;
 use App\Imports\BenefitedKtpImport;
 use App\Imports\JointResearchProjectImport;
 use App\Imports\JointResearchProjectRuImport;
@@ -281,6 +283,9 @@ class MasterlistController extends Controller
         }
         else if($module == 'new_ktp'){
             $module_name = "New KTP";
+        }
+        else if($module == 'rolling_ktp'){
+            $module_name = "Rolling KTP";
         }
         else if($module == 'benefited_ktp'){
             $module_name = "Benefited KTP";
@@ -479,6 +484,9 @@ class MasterlistController extends Controller
             }
             else if($module == 'new_ktp'){
                 Excel::import(new NewKtpImport($masterlist->year), $filepath);
+            }
+            else if($module == 'rolling_ktp'){
+                Excel::import(new RollingKtpImport($masterlist->year), $filepath);
             }
             else if($module == 'benefited_ktp'){
                 Excel::import(new BenefitedKtpImport($masterlist->year), $filepath);
@@ -699,6 +707,9 @@ class MasterlistController extends Controller
             }
             else if($module == 'new_ktp'){
                 MasterlistNewKtp::where('ml_end_year', $masterlist->year)->delete(); 
+            }
+            else if($module == 'rolling_ktp'){
+                MasterlistRollingKtp::where('ml_end_year', $masterlist->year)->delete(); 
             }
             else if($module == 'benefited_ktp'){
                 MasterlistBenefitedKtp::where('ml_end_year', $masterlist->year)->delete(); 
