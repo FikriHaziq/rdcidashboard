@@ -31,6 +31,8 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::name("login")->get("/login", [LoginController::class, "index"]);
     Route::name("login.post")->post("/login/post", [LoginController::class, "login"]);
+    Route::name("request-access")->get("/request-access/{staff_id?}", [LoginController::class, "requestAccess"]);
+    Route::name("request-access.post")->post("/request-access/post", [LoginController::class, "requestAccessPost"]);
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Traits\LoginApi;
 use Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -15,49 +15,102 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function requestAccess($staff_id = null) {
+        if(!$staff_id){
+            return redirect()->route('login');
+        }
+        else {
+            $staff = User::whereStaffId($staff_id)->where('status', '!=', 'rejected')->first();
+            if(!$staff)$staff = session()->get('staff_temp');
+            if($staff)return view('request-access', compact('staff'));
+            else return redirect()->route('login');
+        }
+    }
+
+    public function requestAccessPost(Request $request) {
+        $this->validate($request, [
+            'faculty_code'=>'required',
+        ],
+        [
+            'faculty_code.required'=>'Faculty is required'
+        ]);
+        $staff = session()->get('staff_temp');
+        $user = User::whereEmail($staff->email)->whereStatus('rejected')->first();
+        if(!$user){
+            $user = new User;
+            $user->password = bcrypt('fakulti1234');
+            $user->email = $staff->email;
+        }
+        $user->staff_id = $staff->employeeNumber;
+        $user->name = $staff->fullname;
+        $user->ic_no = $staff->nokp;
+        $user->role_radis = json_encode($staff->roles ?? []);
+        $user->role = 'unassigned';
+        $user->faculty_code = $request->faculty_code;
+        $user->status = 'pending';
+        $user->save();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('request-access', $user->staff_id);
+    }
+
     public function login(Request $request){
         $input = $request->all();
         $this->validate($request, [
             'email'=>'required',
             'password'=>'required'
         ]);
-        // $auth = $this->authenticate($request->email, $request->password);
+        //dev purpose : start
+        if($input['email'] == 'admin@rdci.com'){
+            if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
+                saveUser([
+                    'id' => auth()->user()->id,
+                    'staff_id' => null,
+                    'email' => auth()->user()->email,
+                    'name' => auth()->user()->name,
+                    'nric' => null,
+                    'role' =>  auth()->user()->role,
+                    'faculty' =>  auth()->user()->faculty_code,
+                    'faculty_code' => getFacultyByCode(auth()->user()->faculty_code),
+                ]);
+                if(user()->role == 'super_admin'){
+                    return redirect()->route('myra.index');
+                }
+                if(user()->role == 'admin'){
+                    return redirect()->route('myra.index');
+                }
+                if(user()->role == 'faculty'){
+                    return redirect()->route('myra.index');
+                }
+            }
+            else{
+                session()->flash('error', "Incorrect email or password");
+                return redirect()->route('login')->with("error", 'Incorrect email or password');   
+            } 
+        }
+        //dev purpose : end
+
+        $auth = $this->authenticate($request->email, $request->password);
         // dd($auth);
-        // if($auth->status() == 200){
-        //     $token = $auth->json()['token'];
-        //     $tokenParts = explode(".", $token);  
-        //     $tokenHeader = base64_decode($tokenParts[0]);
-        //     $tokenPayload = base64_decode($tokenParts[1]);
-        //     $jwtHeader = json_decode($tokenHeader);
-        //     $jwtPayload = json_decode($tokenPayload);
-        //     // dd($tokenHeader, $tokenPayload, $jwtHeader, $jwtPayload);
-        //     // dd($auth->json()['token']);
-        // }
-        // else {
-        //     session()->flash('error', "Incorrect email or password");
-        //     return redirect()->route('login')->with("error", 'Incorrect email or password');  
-        // }
-        
-        // dd($auth->json(), $request->cookie('SSOJWT'));
-        if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
-            if(auth()->user()->role == 'super_admin'){
+        if($auth->status() == 200){
+            $token = $auth->json()['token'];
+            $verify = $this->verifyAccountAccess($token);
+            if($verify->status){
+                // dd($verify);
                 return redirect()->route('myra.index');
             }
-            if(auth()->user()->role == 'admin'){
-                return redirect()->route('myra.index');
-            }
-            if(auth()->user()->role == 'faculty'){
-                return redirect()->route('myra.index');
+            else{
+                session()->put('staff_temp', $verify->data); 
+                return redirect()->route('request-access', $verify->data->employeeNumber ?? null);
             }
         }
-        else{
+        else {
             session()->flash('error', "Incorrect email or password");
-            return redirect()->route('login')->with("error", 'Incorrect email or password');   
-        }  
+            return redirect()->route('login')->with("error", 'Incorrect email or password');  
+        }
     }
 
     public function logout(Request $request){
-        // dd(auth());
         Auth::logout();
      
         $request->session()->invalidate();

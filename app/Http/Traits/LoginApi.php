@@ -4,6 +4,8 @@ namespace App\Http\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
+use Auth;
 
 trait LoginApi
 {
@@ -29,9 +31,57 @@ trait LoginApi
         $res = Http::get(env('UTM_HOST') . '/key?header=1');
         return $res["publicKey"];
     }
-    
-    public function getClaims($token)
+
+    public function serializeStaffData($data, $user = null)
     {
-        return Http::withToken($token)->get(env('UTM_HOST'))->json();
+        if(isset($data->email)){
+            if($user->faculty_code ?? false){
+                $faculty = getFacultyByCode($user->faculty_code);
+            }
+            return [
+                'id' => $user->id ?? null,
+                'staff_id' => $data->employeeNumber,
+                'email' => $data->email,
+                'name' => $data->fullname,
+                'nric' => $data->nokp,
+                'role' => $user->role ?? null,
+                'faculty' => $faculty->long ?? null,
+                'faculty_code' => $user->faculty_code ?? null,
+            ];
+        }
+
+        return null;
+    }
+    
+    public function getStaffInfo($token)
+    {
+        $tokenParts = explode(".", $token);  
+        $tokenHeader = base64_decode($tokenParts[0]);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtHeader = json_decode($tokenHeader);
+        $jwtPayload = json_decode($tokenPayload);
+        return (object)$jwtPayload;
+    }
+
+    public function verifyAccountAccess($token)
+    {
+        $result = (object)['status' => false, 'data' => null];
+        $staff = $this->getStaffInfo($token);
+        $user = User::whereEmail($staff->email)->first();
+        // dd($user);
+        if($user){
+            if($user->status == 'verified'){
+                Auth::login($user); 
+                saveUser($this->serializeStaffData($staff, $user));
+                $result->status = true;
+            }
+            else{
+                $result->data = $staff;
+            }
+        }
+        else{
+            $result->data = $staff;
+        }
+        return $result;
     }
 }

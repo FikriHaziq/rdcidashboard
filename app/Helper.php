@@ -1,8 +1,41 @@
 <?php
+/**
+ * Save authenticate user
+ *
+ * * @param object data
+ *
+ * @return object;
+ */
+if (!function_exists('saveUser')) {
+    function saveUser($data)
+    {
+        if (isset($data['email'])) {
+            $user = (object) [
+                'id' => $data['id'],
+                'staff_id' => $data['staff_id'],
+                'email' => $data['email'],
+                'name' => $data['name'],
+                'nric' => $data['nric'],
+                'role' => $data['role'],
+                'faculty' => $data['faculty'],
+                'faculty_code' => $data['faculty_code'],
+            ];
+        }
+        session()->put('user', $user);
+    }
+}
+
+/**
+ * Get authenticate user
+ *
+ * * @param none
+ *
+ * @return User user;
+ */
 if (!function_exists('user')) {
     function user()
     {
-        return auth()->user();
+        return session()->get('user');
     }
 }
 

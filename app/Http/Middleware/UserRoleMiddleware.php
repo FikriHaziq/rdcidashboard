@@ -17,7 +17,7 @@ class UserRoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if(Auth::check() && Auth::user()->role == $role){
+        if(session()->has('user') && (isset(user()->id) ?? false) && (user()->role ?? null) == $role){
             return $next($request);
         }
         return response()->json(["You don't have permission to access this page"]);
