@@ -1165,6 +1165,8 @@ trait MasterListMyraTrait {
         $support = MasterlistSupportFacility::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->count();
         $book = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'like', '%Book Printed%')->sum('no_of_title');
         $book_online = MasterlistLibraryFacility::where('ml_end_year', $year)->where('type', 'like', '%E-Book%')->sum('no_of_title');
+        $journal = MasterlistLibraryFacility::where('ml_end_year', $year)->whereIn('type', ['Journal Printed'])->sum('no_of_title');
+        $e_journal = MasterlistLibraryFacility::where('ml_end_year', $year)->whereIn('type', ['E-Journal'])->sum('no_of_title');
         $journal_subscribed = MasterlistLibraryFacility::where('ml_end_year', $year)->whereIn('type', ['E-Journal','Journal Printed'])->sum('no_of_title');
 
         //Calculation
@@ -1187,6 +1189,8 @@ trait MasterListMyraTrait {
             'support' => $support,
             'book' => $book,
             'book_online' => $book_online,
+            'journal' => $journal,
+            'e_journal' => $e_journal,
             'journal_subscribed' => $journal_subscribed,
             'calculation' => $calculation
         ];

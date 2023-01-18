@@ -1360,27 +1360,20 @@ trait GraphMyraTrait {
         $bar_5 = (object)[ 
             'data_1' => [],
         ];
+        $bar_6 = (object)[ 
+            'data_1' => [],
+        ];
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            if($faculty){
-                $section_h_data = $this->myraSectionH($i, $faculty);
-                $bar1_1 = $section_h_data->support;
-                $bar1_2 = (int)($section_h_data->calculation->myra2_benchmark_target_1[0] ?? 0);
-                $bar2_1 = $section_h_data->book + $section_h_data->book_online + $section_h_data->journal_subscribed;
-                $bar2_2 = 1200000;
-                $bar3_1 = $section_h_data->book;
-                $bar4_1 = $section_h_data->book_online;
-                $bar5_1 = $section_h_data->journal_subscribed;
-            }
-            else{
-                $bar1_1 = MasterlistSupportFacility::where('ml_end_year', $i)->count();
-                $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.lab.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_h')->first()->myra2_benchmark_target ?? 0);
-                $bar2_1 = MasterlistLibraryFacility::where('ml_end_year', $i)->sum('no_of_title');
-                $bar2_2 = 1200000;
-                $bar3_1 = MasterlistLibraryFacility::where('ml_end_year', $i)->where('type', 'like', '%Book Printed%')->sum('no_of_title');
-                $bar4_1 = MasterlistLibraryFacility::where('ml_end_year', $i)->where('type', 'like', '%E-Book%')->sum('no_of_title');
-                $bar5_1 = MasterlistLibraryFacility::where('ml_end_year', $i)->whereIn('type', ['E-Journal','Journal Printed'])->sum('no_of_title');
-            }
+            $section_h_data = $this->myraSectionH($i, $faculty);
+            $bar1_1 = $section_h_data->support;
+            $bar1_2 = (int)($section_h_data->calculation->myra2_benchmark_target_1[0] ?? 0);
+            $bar2_1 = $section_h_data->book + $section_h_data->book_online + $section_h_data->journal_subscribed;
+            $bar2_2 = 1200000;
+            $bar3_1 = (int)$section_h_data->book ?? 0;
+            $bar4_1 = (int)$section_h_data->book_online ?? 0;
+            $bar5_1 = (int)$section_h_data->journal ?? 0;
+            $bar6_1 = (int)$section_h_data->e_journal ?? 0;
             array_push($year_range, (int)$i);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
@@ -1389,6 +1382,7 @@ trait GraphMyraTrait {
             array_push($bar_3->data_1, $bar3_1);
             array_push($bar_4->data_1, $bar4_1);
             array_push($bar_5->data_1, $bar5_1);
+            array_push($bar_6->data_1, $bar6_1);
         }
 
         return (object)[
@@ -1398,6 +1392,7 @@ trait GraphMyraTrait {
             'bar_3' => $bar_3,
             'bar_4' => $bar_4,
             'bar_5' => $bar_5,
+            'bar_6' => $bar_6,
         ];
     }
 }

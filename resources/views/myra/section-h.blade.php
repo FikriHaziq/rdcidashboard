@@ -40,7 +40,7 @@
 </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-e"/>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-h"/>
 
 <div class="tab-contet box mt-5">
 <div class="tab-pane leading-relaxed p-5 active">
