@@ -61,7 +61,7 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
         //dev purpose : start
-        if($input['email'] == 'admin@rdci.com'){
+        if(in_array($input['email'], ['admin@rdci.com', 'fkt@rdci.com'])){
             if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
                 saveUser([
                     'id' => auth()->user()->id,
@@ -71,8 +71,9 @@ class LoginController extends Controller
                     'nric' => null,
                     'role' =>  auth()->user()->role,
                     'faculty' =>  auth()->user()->faculty_code,
-                    'faculty_code' => getFacultyByCode(auth()->user()->faculty_code),
+                    'faculty_code' => getFacultyByCode(auth()->user()->faculty_code)->code ?? null,
                 ]);
+                // dd(user());
                 if(user()->role == 'super_admin'){
                     return redirect()->route('myra.index');
                 }
