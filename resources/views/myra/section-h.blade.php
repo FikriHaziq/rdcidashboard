@@ -60,6 +60,9 @@
         <div class="col-md-6 col-sm-12 mb-5">
             <div class="p-5 text-center"><span><b>NUMBER OF TITLES OF JOURNALS SUBSCRIBED</b></span><br><div id="bar3"></div></div>
         </div>
+        <div class="col-md-6 col-sm-12 mb-5">
+            <div class="p-5 text-center"><span><b>NUMBER OF TITLES OF ONLINE JOURNALS SUBSCRIBED</b></span><br><div id="bar6"></div></div>
+        </div>
     </div>
 </div>
 </div>
@@ -71,21 +74,6 @@
     Highcharts.setOptions({
         title: {
             text: ''
-        },
-        legend: {
-            useHTML:true,
-            symbolWidth:0,
-            labelFormatter: function() {
-                var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
-                } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
-                }
-                return legend + '<span>' + this.name + '</span></div>';
-            }
         },
         plotOptions: {
             column: {
@@ -114,6 +102,21 @@
             renderTo: 'bar1',
             type: 'column'
         },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
+        },
         tooltip: {
             shared: true
         },
@@ -125,7 +128,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Support Facilities'
+                text: 'No. of Laboratory/Research Facilities'
             },
             gridLineWidth: 0
         },
@@ -148,6 +151,21 @@
             renderTo: 'bar2',
             type: 'column'
         },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
+        },
         tooltip: {
             shared: true
         },
@@ -159,7 +177,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Library Facilities'
+                text: 'No. of Titles'
             },
             gridLineWidth: 0
         },
@@ -193,7 +211,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Books'
+                text: 'No. of Titles'
             },
             gridLineWidth: 0
         },
@@ -223,7 +241,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Online Books'
+                text: 'No. of Titles'
             },
             gridLineWidth: 0
         },
@@ -253,7 +271,7 @@
         },
         yAxis: {
             title: {
-                text: 'No. of Journal Subscribed'
+                text: 'No. of Titles'
             },
             gridLineWidth: 0
         },
@@ -261,6 +279,36 @@
             {
                 name: 'ACHIEVEMENT',
                 data: data.bar_5.data_1,
+                pointWidth: 45,
+                color: '#c0beff'
+            },
+        ],
+    });
+
+    var chart6 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar6',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Titles'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: data.bar_6.data_1,
                 pointWidth: 45,
                 color: '#c0beff'
             },
