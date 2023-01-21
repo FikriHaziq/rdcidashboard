@@ -51,13 +51,13 @@
                 <div class="p-5 text-center"><span><b>POSTGRADUATES BY RESEARCH</b></span><br><canvas id="bar1"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span><b>POSTGRADUATES AREA OF STUDY</b></span><br><canvas id="bar2"></canvas></div>
-            </div>
-            <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span><b>POSTGRADUATES: LOCAL VS FOREIGN</b></span><br><canvas id="bar4"></canvas></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span><b>STUDENT: UNDERGRADUATE VS POSTGRADUATE</b></span><br><canvas id="bar3"></canvas></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span><b>POSTGRADUATES AREA OF STUDY</b></span><br><canvas id="bar2"></canvas></div>
             </div>
         </div>
     </div>
@@ -164,7 +164,7 @@
         }
     }
     // end sort
-    // console.log(dataSort);
+    console.log(sortedData);
 
     var bar2 = document.getElementById('bar2');
     var barChart2 = new Chart(bar2, {
@@ -180,34 +180,47 @@
                 },
             ]
         },
+        plugins: [ChartDataLabels],
         options: {
-            indexAxis: 'y',
+            // indexAxis: 'y',
             plugins: {
                 legend: {
                     display: false,
+                },
+                datalabels: {
+                    color: 'rgb(172, 62, 49)',
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: (value, ctx) => {
+                        return new Intl.NumberFormat('en-MY').format(value);
+                    }
                 }
             },
             scales: {
                 x: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    min: 0,
                     grid: {
                         display: false
                     },
                     title: {
                         display: true,
-                        text: 'No. of Student'
+                        text: 'Area of Study'
                     }
                 },
                 y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    min: 0,
                     ticks: {
                         autoSkip: false,
                         beginAtZero: true
                     },
                     grid: {
                         display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'No. of Student'
                     }
                 }
             }
