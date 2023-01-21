@@ -20,28 +20,28 @@
 <x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/overview"/>
 
 <div class="intro-y row mt-5">
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center"><b>TOTAL MARKS</b><br><canvas id="line1"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION B - <b>QUANTITY AND QUALITY OF RESEARCHERS</b><br><canvas id="line2"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION C - <b>QUANTITY AND QUALITY OF RESEARCH</b><br><canvas id="line3"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION D - <b>QUANTITY AND QUALITY OF POSTGRADUATES</b><br><canvas id="line4"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION E - <b>INNOVATION</b><br><canvas id="line5"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION F - <b>PROFESSIONAL SERVICES & GIFTS</b><br><canvas id="line6"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION G - <b>NETWORKING & LINKAGES</b><br><canvas id="line7"></canvas></div>
     </div>
-    <div class="col-md-4 col-sm-12 mb-5">
+    <div class="col-md-6 col-sm-12 mb-5">
         <div class="box p-5 text-center">SECTION H - <b>SUPPORT FACILITIES</b><br><canvas id="line8"></canvas></div>
     </div>
 </div>
