@@ -322,12 +322,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_5.data_2, data.bar_5.data_1, '#b9dba5', '#c0beff'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'solid'),
+                data: targetedData(data.year_range, data.bar_5.data_2, '#6600cc', 'solid'),
                 pointWidth: 45
             },
         ],
@@ -359,12 +359,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_6.data_2, data.bar_6.data_1, '#b9dba5', '#c0beff'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'solid'),
+                data: targetedData(data.year_range, data.bar_6.data_2, '#6600cc', 'solid'),
                 pointWidth: 45
             },
         ],

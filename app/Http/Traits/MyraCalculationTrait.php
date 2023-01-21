@@ -459,8 +459,8 @@ trait MyraCalculationTrait {
             $myra_year_1[6] = $important_data->q1_q2;
             $myra_year_1[7] = (float)$myra_year_1[0] > 0 ? (float)$myra_year_1[6]/(float)$myra_year_1[0] : 0;
             $myra_year_1[8] = $important_data->others_journal;
-            $myra_year_1[9] = (float)$important_data->book_indexed + (float)$important_data->book_not_indexed;
-            $myra_year_1[10] = (float)$important_data->chapter_indexed + (float)$important_data->chapter_not_indexed;
+            $myra_year_1[9] = (float)$important_data->book;
+            $myra_year_1[10] = (float)$important_data->chapter;
             $myra_year_1[11] = $important_data->policy_paper;
             $myra_year_1[12] = $important_data->other;
             $myra_year_2[0] = $important_data->home_pledge_new;
@@ -660,8 +660,9 @@ trait MyraCalculationTrait {
             $myra2_benchmark_mark_1[7] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[2]/100)*($myra2_subsubweightage_1[7]/100);
             $myra2_benchmark_mark_1[8] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[3]/100)*($myra2_subsubweightage_1[8]/100);
             $myra2_benchmark_mark_1[9] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[3]/100)*($myra2_subsubweightage_1[9]/100);
-            $myra2_benchmark_mark_1[10] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[3]/100)*($myra2_subsubweightage_1[10]/100);
-            $myra2_benchmark_mark_1[11] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[3]/100)*($myra2_subsubweightage_1[11]/100);
+            $myra2_benchmark_mark_1[10] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[4]/100)*($myra2_subsubweightage_1[10]/100);
+            
+            $myra2_benchmark_mark_1[11] = $myra2_global_weightage*($myra2_weightage_1/100)*($myra2_subweightage_1[5]/100)*($myra2_subsubweightage_1[11]/100);
             $myra2_benchmark_mark_2[0] = $myra2_global_weightage*($myra2_weightage_2/100)*($myra2_subweightage_2[0]/100)*($myra2_subsubweightage_2[0]/100);
             $myra2_benchmark_mark_2[1] = $myra2_global_weightage*($myra2_weightage_2/100)*($myra2_subweightage_2[1]/100)*($myra2_subsubweightage_2[1]/100);
             $myra2_benchmark_mark_2[2] = $myra2_global_weightage*($myra2_weightage_2/100)*($myra2_subweightage_2[2]/100)*($myra2_subsubweightage_2[2]/100);

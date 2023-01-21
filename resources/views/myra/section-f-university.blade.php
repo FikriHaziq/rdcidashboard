@@ -80,7 +80,7 @@
 @section('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
-
+    console.log(data);
     Highcharts.setOptions({
         title: {
             text: ''
@@ -414,7 +414,7 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: data.bar_8.data_1,
+                data: data.bar_9.data_1,
                 pointWidth: 45
             },
         ],
@@ -439,17 +439,17 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_8.data_2, data.bar_8.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_10.data_2, data.bar_10.data_1, '#b9dba5', '#c0beff'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_8.data_2, '#6600cc', 'dash'),
+                data: targetedData(data.year_range, data.bar_10.data_2, '#6600cc', 'dash'),
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
-                data: targetedData(data.year_range, data.bar_8.data_3, '#6600cc', 'solid'),
+                data: targetedData(data.year_range, data.bar_10.data_3, '#6600cc', 'solid'),
                 pointWidth: 45
             },
         ],

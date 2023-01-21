@@ -419,6 +419,7 @@ trait DataSerializationTrait {
         }
         else if($type == 'other'){
             $data = [
+                'OTHER RESEARCH AWARD',
                 'OTHER RESEARCH AWARDS',
                 'B4F - OTHER RESEARCH AWARDS'
             ];

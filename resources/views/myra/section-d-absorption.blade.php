@@ -80,7 +80,7 @@
 @section('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
-
+    console.log(data);
     Highcharts.setOptions({
         title: {
             text: ''

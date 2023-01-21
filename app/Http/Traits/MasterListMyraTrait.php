@@ -654,7 +654,6 @@ trait MasterListMyraTrait {
         $recog_nat = MasterlistAward::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->whereIn('nat_int', $this->nat_int('national'))->whereIn('award_type',$this->award_type('recognition_stewardship', 'national'))->count();
         $exhibition = MasterlistAward::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->whereIn('award_type',$this->award_type('exhibition', 'all'))->count();
         $other = MasterlistAward::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->whereIn('award_type',$this->award_type('other', 'all'))->count();
-
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->whereIn('status1', $this->status_active('active'))->count();
         $active_st = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->where('st', 'ST')->whereIn('status1', $this->status_active('active'))->count();
@@ -736,9 +735,11 @@ trait MasterListMyraTrait {
         $q1_q2_percent = $journal > 0 ? number_format($q1_q2/$journal*100, 2) : 0;
         $others_journal = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('others_journal')->count();
         $mycite = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('mycite')->count();
+        $book = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('research_book')->count();
         $book_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('research_book')->whereIn('book_status',['INDEXED',' INDEXED'])->count();
         $book_not_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('research_book')->whereNotIn('book_status',['INDEXED',' INDEXED'])->count();
         $book_national = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('research_book')->whereNational('Y')->count();
+        $chapter = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('chapter_research_book')->count();
         $chapter_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('chapter_research_book')->whereIn('book_status',['INDEXED',' INDEXED'])->count();
         $chapter_not_indexed = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('chapter_research_book')->whereNotIn('book_status',['INDEXED',' INDEXED'])->count();
         $case_studies = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year) {if($faculty){$q->where('faculty_short', $faculty);}})->wherePublicationType('case_studies')->count();
@@ -777,8 +778,10 @@ trait MasterListMyraTrait {
             'q1_q2' => $q1_q2,
             'others_journal' => $others_journal,
             'mycite' => $mycite,
+            'book' => $book,
             'book_indexed' => $book_indexed,
             'book_not_indexed' => $book_not_indexed,
+            'chapter' => $chapter,
             'chapter_indexed' => $chapter_indexed,
             'chapter_not_indexed' => $chapter_not_indexed,
             'case_studies' => $case_studies,
@@ -811,10 +814,12 @@ trait MasterListMyraTrait {
             'q1_q2_percent' => $q1_q2_percent,
             'others_journal' => $others_journal,
             'mycite' => $mycite,
+            'book' => $book,
             'book_indexed' => $book_indexed,
             'book_not_indexed' => $book_not_indexed,
             'book_national' => $book_national,
             'chapter_indexed' => $chapter_indexed,
+            'chapter' => $chapter,
             'chapter_not_indexed' => $chapter_not_indexed,
             'case_studies' => $case_studies,
             'policy_paper' => $policy_paper,

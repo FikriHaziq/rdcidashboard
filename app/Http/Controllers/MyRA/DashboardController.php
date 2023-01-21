@@ -104,6 +104,7 @@ class DashboardController extends Controller
         else $faculty = getFacultyByCode(user()->faculty_code)->short_overall;
         if ($tabs == 'ABSORPTION') {
             $data = $this->sectionD_data_A($start_year, $end_year, $faculty);
+            // dd($data);
             return view('myra.section-d-absorption', compact('start_year', 'end_year', 'faculty', 'data')); 
         }
         elseif ($tabs == 'ENROLLMENT') { 

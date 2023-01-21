@@ -54,7 +54,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="align-top border border-slate-600 font-bold" rowspan="7">1</td>
+                                <td class="align-top border border-slate-600 font-bold" rowspan="@if($year <= 2018) 3 @elseif($year >= 2019) 7 @endif">1</td>
                                 <td class="border border-slate-600 font-bold">Participation in International Inter-Institution Research Related Activities Under MoA</td>
                                 <td class="border border-slate-600 font-bold"></td>
                             </tr>
@@ -62,6 +62,7 @@
                                 <td class="border border-slate-600 font-bold">a. Total Number of MoAs Signed and Stamped  </td>
                                 <td class="border border-slate-600 font-bold text-center">{{ $data->total_int_moa }}</td>
                             </tr>
+                            @if($year >= 2019)
                             <tr>
                                 <td class="border border-slate-600 font-bold">&emsp;i. Industry </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_industry }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
@@ -78,6 +79,7 @@
                                 <td class="border border-slate-600 font-bold">&emsp;iv. Agency/ Research Institute  </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->int_moa_agency }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
+                            @endif
                             <tr>
                                 <td class="border border-slate-600 font-bold">b. Total Number of Staff Involved in Joint Research Projects Under MoA</td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->total_staff_int_moa }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
@@ -105,7 +107,7 @@
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->other_international }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
                             <tr>
-                                <td class="align-top border border-slate-600 font-bold" rowspan="7">4</td>
+                                <td class="align-top border border-slate-600 font-bold" rowspan="@if($year <= 2018) 3 @elseif($year >= 2019) 7 @endif">4</td>
                                 <td class="border border-slate-600 font-bold">Participation in National Inter-Institution Research Related Activities Under MoA</td>
                                 <td class="border border-slate-600 font-bold"></td>
                             </tr>
@@ -113,6 +115,7 @@
                                 <td class="border border-slate-600 font-bold">a. Total Number of MoAs Signed and Stamped  </td>
                                 <td class="border border-slate-600 font-bold text-center">{{ $data->total_nat_moa }}</td>
                             </tr>
+                            @if($year >= 2019)
                             <tr>
                                 <td class="border border-slate-600 font-bold">&emsp;i. Industry </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_industry }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
@@ -129,6 +132,7 @@
                                 <td class="border border-slate-600 font-bold">&emsp;iv. Agency/ Research Institute  </td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->nat_moa_agency }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
+                            @endif
                             <tr>
                                 <td class="border border-slate-600 font-bold">b. Total Number of Staff Involved in Joint Research Projects Under MoA</td>
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->total_staff_nat_moa }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>

@@ -113,11 +113,11 @@
                             </tr>
                             <tr>
                                 <td class="border border-slate-600 font-bold">&emsp;i. No. of Research Books  </td>
-                                <td class="border border-slate-600 font-bold"><input value="{{ $data->book_indexed + $data->book_not_indexed }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ $data->book }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
                             <tr>
                                 <td class="border border-slate-600 font-bold">&emsp;ii. No. of Chapters in Research Books  </td>
-                                <td class="border border-slate-600 font-bold"><input value="{{ $data->chapter_indexed + $data->chapter_not_indexed }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
+                                <td class="border border-slate-600 font-bold"><input value="{{ $data->chapter }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
                             <tr>
                                 <td class="border border-slate-600 font-bold">e. Policy Papers</td>
