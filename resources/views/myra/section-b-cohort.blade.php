@@ -18,6 +18,20 @@
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
     }
+    
+    .highcharts-legend-item rect{
+        display: none;
+    }
+
+    .custom-legend > img,
+        .custom-legend > span {
+            display: inline-block;
+    }
+
+    .custom-legend-img {
+        padding-bottom: 2px;
+        padding-right: 5px;
+    }
 </style>
 @endsection
 @slot('content')
@@ -48,9 +62,12 @@
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">
         <div class="row">
             <div class="col-md-6 col-sm-12 mb-5">
-                <div class="p-5 text-center"><span>SEC. B2 - <b>QUALIFICATION: PhD & PROFESSIONAL QUALIFICATION</b></span><br><canvas id="line1"></canvas></div>
+                <div class="p-5 text-center"><span>SEC. B2a - <b>PhD</b></span><br><div id="bar2"></div></div>
             </div>
             <div class="col-md-6 col-sm-12 mb-5">
+                <div class="p-5 text-center"><span>SEC. B2b - <b>PROFESSIONAL QUALIFICATION</b></span><br><div id="bar3"></div></div>
+            </div>
+            <div class="col-md-12 col-sm-12 mb-5">
                 <div class="p-5 text-center"><span>SEC. B3 - <b>COHORT</b></span><br><canvas id="bar1"></canvas></div>
             </div>
         </div>
@@ -70,6 +87,9 @@
     var type1_data = data.bar_1.data_1;
     var type2_data = data.bar_1.data_2;
     var type3_data = data.bar_1.data_3;
+
+    console.log(type2_data);
+    console.log(type2_percent);
 
     let type1 = type1_data.map((data, i) => {
         return { "data": type1_data[i], "percent": type1_percent[i] }
@@ -134,17 +154,19 @@
                         else if (value == v3) { type = 3; }
                         switch (type) {
                             case 1:
-                                return [type1[i].percent + '%', type1[i].data];
+                                return [type1[i].data];
                                 break;
                             case 2:
-                                return [type2[i].percent + '%', type2[i].data];
+                                return [type2[i].data];
                                 break;
                             case 3:
-                                return [type3[i].percent + '%', type3[i].data];
+                                return [type3[i].data];
                                 break;
                         }
                     },
-                    color: 'rgb(0, 0, 0)'
+                    color: 'rgb(0, 0, 0)',
+                    anchor: 'end',
+                    align: 'top'
                 },
                 tooltip: {
                     callbacks: {
@@ -165,17 +187,17 @@
                         display: true,
                         text: 'Year'
                     },
-                    stacked: true,
+                    // stacked: true,
                 },
                 y: {
                     grid: {
                         display: false
                     },
-                    stacked: true,
+                    // stacked: true,
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    max: 100,
+                    // max: 100,
                     grid: {
                         display: false
                     },
@@ -194,71 +216,119 @@
         }
     });
 
-    var line1 = document.getElementById('line1');
-    var lineChart1 = new Chart(line1, {
-        type: 'line',
-        data: {
-            labels: data.year_range,
-            datasets: [
-                {
-                    label: 'PhD',
-                    data: data.line_1.data_1,
-                    borderColor: ['rgb(230, 104, 38)'],
-                    backgroundColor: ['rgb(230, 104, 38)'],
-                    tension: 0.1,
-                    pointStyle: 'rectRot',
-                    pointRadius: 5,
-                },
-                {
-                    label: 'PRO-Q',
-                    data: data.line_1.data_2,
-                    borderColor: ['rgb(95, 160, 56)'],
-                    backgroundColor: ['rgb(95, 160, 56)'],
-                    tension: 0.1,
-                    pointStyle: 'rectRot',
-                    pointRadius: 5,
-                },
-            ]
+    Highcharts.setOptions({
+        title: {
+            text: ''
         },
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false,
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'rectRot',
-                    }
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                } else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
                 }
-            },
-            stacked: false,
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    },
-                },
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    // max: 6000,
-                    // min: 0,
-                    // ticks: {
-                    //     stepSize: 2000
-                    // }
-                },
+                return legend + '<span>' + this.name + '</span></div>';
             }
         },
+        plotOptions: {
+            column: {
+                grouping: false,
+                shadow: false,
+                borderWidth: 2,
+                dataLabels: {
+                    enabled: true,
+                    inside: false,
+                    formatter: function () {
+                        return Intl.NumberFormat('en-MY').format(this.y);
+                    }
+                }
+            }
+        },
+        accessibility: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        }
+    });
+
+    var chart2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar2',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Achievement'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.line_1.data_1, data.line_1.data_1, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.line_1.data_1, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
+    });
+
+    var chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'bar3',
+            type: 'column'
+        },
+        tooltip: {
+            shared: true,
+        },
+        legend: {
+            symbolRadius: 0
+        },
+        xAxis: {
+            categories: data.year_range,
+            title: {
+                text: 'Year'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'No. of Achievement'
+            },
+            gridLineWidth: 0
+        },
+        series: [
+            {
+                name: 'ACHIEVEMENT',
+                data: customizedData(data.year_range, data.line_1.data_2, data.line_1.data_2, '#b9dba5', '#c0beff'),
+                pointWidth: 45
+            },
+            {
+                name: '100% TARGET',
+                data: targetedData(data.year_range, data.line_1.data_2, '#6600cc', 'solid'),
+                pointWidth: 45
+            },
+        ],
     });
 </script>
 @endsection
