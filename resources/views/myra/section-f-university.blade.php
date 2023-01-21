@@ -134,8 +134,8 @@
                     enabled: true,
                     formatter: function () {
                         return new Intl.NumberFormat('en-MY', {
-                            style: 'currency',
-                            currency: 'MYR',
+                            // style: 'currency',
+                            // currency: 'MYR',
                             notation: 'compact',
                         }).format(this.y);
                     }
@@ -432,9 +432,28 @@
             renderTo: 'bar10',
             type: 'column'
         },
+        tooltip: {
+            shared: true,
+            formatter: function () {
+                return this.points.reduce(function (s, point) {
+                    return s + '<br/>' + point.series.name + ': <b>' +
+                        Intl.NumberFormat('en-MY', {
+                            // style: 'currency',
+                            // currency: 'MYR',
+                            notation: 'compact',
+                        }).format(point.y) + '%</b>';
+                }, '<b>' + this.x + '</b>');
+            }
+        },
         yAxis: {
             type: 'logarithmic',
-            max: 100000000
+            title: {
+                text: 'Percentage (%)'
+            },
+            labels: {
+                format: '{text} %'
+            },
+            gridLineWidth: 0
         },
         series: [
             {
@@ -458,6 +477,16 @@
                 grouping: false,
                 shadow: false,
                 borderWidth: 2,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function () {
+                        return new Intl.NumberFormat('en-MY', {
+                            // style: 'currency',
+                            // currency: 'MYR',
+                            notation: 'compact',
+                        }).format(this.y) + '%';
+                    }
+                }
             }
         },
     });

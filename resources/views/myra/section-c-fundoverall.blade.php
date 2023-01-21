@@ -119,7 +119,7 @@
         },
         yAxis: {
             title: {
-                text: 'Amount'
+                text: 'Amount (RM)'
             },
             labels: {
                 format: 'RM {text}'
@@ -132,8 +132,8 @@
                     enabled: true,
                     formatter: function () {
                         return new Intl.NumberFormat('en-MY', {
-                            style: 'currency',
-                            currency: 'MYR',
+                            // style: 'currency',
+                            // currency: 'MYR',
                             notation: 'compact',
                         }).format(this.y);
                     }
@@ -387,8 +387,8 @@
                     formatter: function () {
                         // console.log(this);
                         return new Intl.NumberFormat('en-MY', {
-                            style: 'currency',
-                            currency: 'MYR',
+                            // style: 'currency',
+                            // currency: 'MYR',
                             notation: 'compact',
                         }).format(this.point.alt);
                     }
