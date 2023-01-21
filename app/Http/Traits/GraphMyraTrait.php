@@ -454,10 +454,6 @@ trait GraphMyraTrait {
 
     public function sectionB_data_QC($start_year, $end_year, $faculty = null) {
         $year_range = [];
-        $line_1 = (object)[ //PhD & PROFESSIONAL QUALIFICATION
-            'data_1' => [],
-            'data_2' => [],
-        ]; 
         $bar_1 = (object)[  //COHORT
             'data_1' => [],
             'data_2' => [],
@@ -466,33 +462,47 @@ trait GraphMyraTrait {
             'data_5' => [],
             'data_6' => [],
         ];
+        $bar_2 = (object)[ //PhD
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
+        $bar_3 = (object)[ //PRO
+            'data_1' => [],
+            'data_2' => [],
+        ]; 
 
         for ($i=($end_year-$start_year <= 0?$end_year:$start_year); $i <= $end_year; $i++) { 
-            $line1_1 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('acad_qualification', $this->student_degree('phd'))->count();
-            $line1_2 = MasterlistProfessionalQualification::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereNotNull('professional_qualification_2')->whereIn('acad_qualification', $this->student_degree('master'))->count();
-            $bar1_1 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '<', 40)->count();
-            $bar1_2 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>=', 40)->where('age', '<=', 50)->count();
-            $bar1_3 = MasterlistResearchExperience::where('ml_end_year', $i)->where(function ($q) use ($faculty, $i) {if($faculty){if($faculty){$q->where('faculty_short', $faculty);}}})->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->where('age', '>', 50)->count();
+            $section_b_data = $this->myraSectionB($i, $faculty);
+            
+            $bar1_1 = $section_b_data->b40;
+            $bar1_2 = $section_b_data->a40;
+            $bar1_3 = $section_b_data->a50;
             $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
             $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
             $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
             $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;
-            
+            $bar2_1 = $section_b_data->phd;
+            $bar2_2 = (int)($section_b_data->calculation->myra2_benchmark_target_2[0] ?? 0);
+            $bar3_1 = $section_b_data->pro;
+            $bar3_2 = (int)($section_b_data->calculation->myra2_benchmark_target_2[1] ?? 0);
             array_push($year_range, (int)$i);
-            array_push($line_1->data_1, $line1_1);
-            array_push($line_1->data_2, $line1_2);
             array_push($bar_1->data_1, $bar1_1);
             array_push($bar_1->data_2, $bar1_2);
             array_push($bar_1->data_3, $bar1_3);
             array_push($bar_1->data_4, $bar1_4);
             array_push($bar_1->data_5, $bar1_5);
             array_push($bar_1->data_6, $bar1_6);
+            array_push($bar_2->data_1, $bar2_1);
+            array_push($bar_2->data_2, $bar2_2);
+            array_push($bar_3->data_1, $bar3_1);
+            array_push($bar_3->data_2, $bar3_2);
         }
 
         return (object)[
             'year_range' => $year_range,
-            'line_1' => $line_1,
             'bar_1' => $bar_1,
+            'bar_2' => $bar_2,
+            'bar_3' => $bar_3,
         ];
     }
 
