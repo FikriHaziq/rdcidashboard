@@ -23,12 +23,12 @@
                     <div class="-intro-x d-flex align-items-center pt-5">
                         <img class="" style="width: 30%;" src="{{ asset('images/utm-white.png') }}">
                         <span style="width: 20px;"></span>
-                        <img class="" style="width: 30%;" src="{{ asset('images/RDCI-white.png') }}">
+                        <img class="pb-2" style="width: 50%;" src="{{ asset('images/nexus-insight.png') }}">
                     </div>
                     <div class="my-auto">
                         <img class="-intro-x w-1/2 mt-n16" src="{{ asset('theme/images/illustration.svg') }}">
                         <div class="-intro-x text-white fw-medium fs-4xl lh-base mt-10">
-                            RDCI Dashboard
+                            UTM Insight@MyRA
                         </div>
                         <div class="-intro-x mt-5 fs-lg text-white text-opacity-70 dark-text-gray-500">Sign in to your account to continue.</div>
                     </div>
@@ -42,7 +42,7 @@
                             <h2 class="intro-x fw-bold fs-2xl fs-xl-3xl text-center text-xl-start">
                                 Sign In
                             </h2>
-                            <div class="intro-x mt-2 text-gray-500 d-xl-none text-center">A few more clicks to sign in to your account.<br> Welcome to RDCI Dashboard.</div>
+                            <div class="intro-x mt-2 text-gray-500 d-xl-none text-center">A few more clicks to sign in to your account.<br> Welcome to UTM Insight@MyRA.</div>
                             <div class="intro-x mt-8">
                                 <input type="text" name="email" class="intro-x login__input form-control py-3 px-4 border-gray-300 d-block" placeholder="Email">
                                 <input type="password" name="password" class="intro-x login__input form-control py-3 px-4 border-gray-300 d-block mt-4" placeholder="Password">
