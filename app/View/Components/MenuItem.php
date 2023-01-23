@@ -15,13 +15,14 @@ class MenuItem extends Component
     public $type;
     public $parent;
     public $icon;
+    public $target;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route = "", $rawUrl = false, $customTabVal = "", $active = "", $parent = "", $type = "", $icon = "")
+    public function __construct($route = "", $rawUrl = false, $customTabVal = "", $active = "", $parent = "", $type = "", $icon = "", $target = "0")
     {
         $this->route = $route;
         $this->rawUrl = $rawUrl;
@@ -30,6 +31,7 @@ class MenuItem extends Component
         $this->type = $type;
         $this->parent = $parent;
         $this->icon = $icon;
+        $this->target = $target;
     }
 
     /**

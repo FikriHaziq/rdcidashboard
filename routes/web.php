@@ -85,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
         Route::name("section-f")->get("section-f/{tabs?}", [MyRADashboardController::class, "sectionF"]);
         Route::name("section-g")->get("section-g/{tabs?}", [MyRADashboardController::class, "sectionG"]);
         Route::name("section-h")->get("section-h", [MyRADashboardController::class, "sectionH"]);
+        Route::name("glossary")->get("glossary", [MyRADashboardController::class, "glossary"]);
     });
 
     // Report Myra

@@ -64,5 +64,6 @@
         <x-menu-item active="masterlist.project-management.*" route="masterlist.project-management.index">Project Management</x-menu-item>
     </x-menu-item>
     @endif
+    <x-menu-item active="" route="myra.glossary" icon="book" target="1">Glossary</x-menu-item>
     <x-menu-item active="" route="logout" icon="log-out">Logout</x-menu-item>
 </x-menu-wrapper>

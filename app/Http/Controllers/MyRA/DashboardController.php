@@ -175,4 +175,9 @@ class DashboardController extends Controller
 
         return (object)['start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty];
     }
+
+    public function glossary()
+    {
+        return response()->file("glossary\Glosari MyRA II (Pindaan 2018).pdf");
+    }
 }
