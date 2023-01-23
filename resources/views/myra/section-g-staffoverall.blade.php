@@ -152,12 +152,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_1.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -174,12 +174,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_2.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_2.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -196,12 +196,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_3.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -218,12 +218,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_4.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -240,12 +240,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_5.data_2, data.bar_5.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_5.data_2, data.bar_5.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_5.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_5.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -262,12 +262,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_6.data_2, data.bar_6.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_6.data_2, data.bar_6.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_6.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_6.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -284,12 +284,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_7.data_2, data.bar_7.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_7.data_2, data.bar_7.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_7.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_7.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -306,12 +306,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_8.data_2, data.bar_8.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_8.data_2, data.bar_8.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_8.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_8.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],
@@ -328,12 +328,12 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_9.data_2, data.bar_9.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_9.data_2, data.bar_9.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_9.data_2, '#6600cc', 'sollid'),
+                data: targetedData(data.year_range, data.bar_9.data_2, '#000000', 'sollid'),
                 pointWidth: 45
             },
         ],

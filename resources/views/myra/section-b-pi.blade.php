@@ -305,19 +305,19 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#03c03c', '#fe0c03'),
                 marker: { symbol: 'url(rdcidashboard.utm.my/images/a-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_1.data_2, '#6600cc', 'dash'),
+                data: targetedData(data.year_range, data.bar_1.data_2, '#000000', 'dash'),
                 marker: { symbol: 'url(rdcidashboard.utm.my/images/h-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
-                data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#6600cc', 'solid'),
+                data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#000000', 'solid'),
                 marker: { symbol: 'url(https://rdcidashboard.utm.my/images/e-legend.png)' },
                 pointWidth: 45
             },
@@ -349,17 +349,17 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_2.data_2, data.bar_2.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_2.data_2, '#6600cc', 'dash'),
+                data: targetedData(data.year_range, data.bar_2.data_2, '#000000', 'dash'),
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
-                data: targetedData(data.year_range, doubleTarget(data.bar_2.data_2), '#6600cc', 'solid'),
+                data: targetedData(data.year_range, doubleTarget(data.bar_2.data_2), '#000000', 'solid'),
                 pointWidth: 45
             },
         ],
@@ -388,17 +388,17 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_3.data_2, data.bar_3.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_3.data_2, '#6600cc', 'dash'),
+                data: targetedData(data.year_range, data.bar_3.data_2, '#000000', 'dash'),
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
-                data: targetedData(data.year_range, doubleRatioTarget(data.bar_3.data_2), '#6600cc', 'solid'),
+                data: targetedData(data.year_range, doubleRatioTarget(data.bar_3.data_2), '#000000', 'solid'),
                 pointWidth: 45
             },
         ],
@@ -427,17 +427,17 @@
         series: [
             {
                 name: 'ACHIEVEMENT',
-                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#b9dba5', '#c0beff'),
+                data: customizedData(data.year_range, data.bar_4.data_2, data.bar_4.data_1, '#03c03c', '#fe0c03'),
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
-                data: targetedData(data.year_range, data.bar_4.data_2, '#6600cc', 'dash'),
+                data: targetedData(data.year_range, data.bar_4.data_2, '#000000', 'dash'),
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
-                data: targetedData(data.year_range, doubleRatioTarget(data.bar_4.data_2), '#6600cc', 'solid'),
+                data: targetedData(data.year_range, doubleRatioTarget(data.bar_4.data_2), '#000000', 'solid'),
                 pointWidth: 45
             },
         ],
