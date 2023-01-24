@@ -153,6 +153,23 @@
             renderTo: 'bar1',
             type: 'column'
         },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'UNIVERSITY') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/u-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == 'NATIONAL') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/n-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == 'PRIVATE') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/p-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                }  else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/i-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
+        },
         series: [
             {
                 name: 'UNIVERSITY',
@@ -367,12 +384,14 @@
             symbolWidth:0,
             labelFormatter: function() {
                 var legend = '';
-                if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                if (this.name == 'NATIONAL') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/b-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == 'UNIVERSITY') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/u-alt-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
-                } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/h-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                }  else {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/e-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 }
                 return legend + '<span>' + this.name + '</span></div>';
             }
@@ -430,11 +449,11 @@
             labelFormatter: function() {
                 var legend = '';
                 if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/a-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/h-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/e-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 }
                 return legend + '<span>' + this.name + '</span></div>';
             }
@@ -476,11 +495,11 @@
             labelFormatter: function() {
                 var legend = '';
                 if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/a-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/h-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/e-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 }
                 return legend + '<span>' + this.name + '</span></div>';
             }

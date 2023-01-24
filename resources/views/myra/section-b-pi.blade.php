@@ -251,11 +251,11 @@
             labelFormatter: function() {
                 var legend = '';
                 if (this.name == 'ACHIEVEMENT') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendA.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/a-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else if (this.name == '100% TARGET') {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendH.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/h-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 } else {
-                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/legendE.png" class="custom-legend-img" width="20" height="20"/>';
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/e-legend.png" class="custom-legend-img" width="20" height="20"/>';
                 }
                 return legend + '<span>' + this.name + '</span></div>';
             }
@@ -306,19 +306,16 @@
             {
                 name: 'ACHIEVEMENT',
                 data: customizedData(data.year_range, data.bar_1.data_2, data.bar_1.data_1, '#03c03c', '#fe0c03'),
-                marker: { symbol: 'url(rdcidashboard.utm.my/images/a-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '100% TARGET',
                 data: targetedData(data.year_range, data.bar_1.data_2, '#000000', 'dash'),
-                marker: { symbol: 'url(rdcidashboard.utm.my/images/h-legend.png)' },
                 pointWidth: 45
             },
             {
                 name: '200% TARGET',
                 data: targetedData(data.year_range, doubleTarget(data.bar_1.data_2), '#000000', 'solid'),
-                marker: { symbol: 'url(https://rdcidashboard.utm.my/images/e-legend.png)' },
                 pointWidth: 45
             },
         ],
