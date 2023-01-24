@@ -176,8 +176,10 @@ class DashboardController extends Controller
         return (object)['start_year'=>$start_year, 'end_year'=>$end_year, 'faculty'=>$faculty];
     }
 
-    public function glossary()
+    public function glossary($item)
     {
-        return response()->file("glossary\Glosari MyRA II (Pindaan 2018).pdf");
+        if ($item == 'MyRAI') { return response()->file("glossary\Glosari MyRA I (Pindaan 2018) FINAL 6.12.2019.pdf"); }
+        else if ($item == 'MyRAII') { return response()->file("glossary\Glosari MyRA II (Pindaan 2018) FINAL 6.12.2019.pdf"); }
+        else if ($item == 'EM') { return response()->file("glossary\SENARAI BAHAN BUKTI MyRA I _ II (PINDAAN 2018).pdf"); }
     }
 }
