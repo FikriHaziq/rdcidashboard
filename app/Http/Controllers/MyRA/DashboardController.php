@@ -178,6 +178,6 @@ class DashboardController extends Controller
 
     public function glossary()
     {
-        return response()->file(public_path("glossary\Glosari MyRA II (Pindaan 2018).pdf"));
+        return response()->file("glossary/Glosari MyRA II (Pindaan 2018).pdf");
     }
 }
