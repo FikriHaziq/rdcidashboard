@@ -23,7 +23,7 @@
                     <div class="-intro-x d-flex align-items-center pt-5">
                         <img class="" style="width: 30%;" src="{{ asset('images/utm-white.png') }}">
                         <span style="width: 20px;"></span>
-                        <img class="" style="width: 30%;" src="{{ asset('images/RDCI-white.png') }}">
+                        <img class="pb-2" style="width: 50%;" src="{{ asset('images/nexus-insight.png') }}">
                     </div>
                     <div class="my-auto">
                         <img class="-intro-x w-1/2 mt-n16" src="{{ asset('theme/images/illustration.svg') }}">
