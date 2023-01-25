@@ -26,7 +26,7 @@
                 <!-- END: Login Info -->
                 <!-- BEGIN: Login Form -->
                 <div class="g-col-2 g-col-xl-1 h-screen h-xl-auto d-flex py-5 py-xl-0 my-10 my-xl-0">
-                    <div class="my-auto mx-auto ms-xl-20 bg-white dark-bg-dark-1 bg-xl-transparent px-5 px-sm-8 py-8 p-xl-0 rounded-2 shadow-md shadow-xl-none w-full w-sm-3/4 w-lg-2/4 w-xl-auto">
+                    <div class="my-auto mx-auto ms-xl-20 bg-white dark-bg-dark-1 bg-xl-transparent px-5 px-sm-8 py-8 p-xl-0 rounded-2 shadow-md shadow-xl-none w-full w-sm-3/4 w-lg-96 w-xl-auto">
                         <form action="{{ route('login.post') }}" method="post">
                             @csrf
                             <h2 class="intro-x fw-bold fs-2xl fs-xl-3xl text-center text-xl-start">
@@ -42,7 +42,7 @@
                                     <input id="remember-me" type="checkbox" class="form-check-input border me-2">
                                     <label class="cursor-pointer select-none" for="remember-me">Remember me</label>
                                 </div>
-                                <a href="">Forgot Password?</a> 
+                                <a href="">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Forgot Password?</a> 
                             </div>
                             <div class="intro-x mt-5 mt-xl-8 text-center text-xl-start">
                                 <button type="submit" class="btn btn-primary py-3 px-4 w-full w-xl-32 me-xl-3 align-top">Login</button>

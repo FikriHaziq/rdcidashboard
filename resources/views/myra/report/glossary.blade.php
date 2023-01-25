@@ -29,7 +29,7 @@
             <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
                 <a class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center" href="{{ route('myra.glossary', [ 'item' => 'MyRAI']) }}" target="_blank"> 
                     <div class="me-auto">
-                        <div class="fs-lg fw-medium" style="color: black">Myra I</div>
+                        <div class="fs-lg fw-medium" style="color: black">Myra I (Pindaan 2018)</div>
                     </div>
 
                     <div class="ms-3 me-2 text-theme-6"><button class="btn btn-primary"> <i data-feather="download" class="w-5 h-5"></i> </button></div>
@@ -38,7 +38,7 @@
             <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
                 <a class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center" href="{{ route('myra.glossary', [ 'item' => 'MyRAII']) }}" target="_blank"> 
                     <div class="me-auto">
-                        <div class="fs-lg fw-medium" style="color: black">Myra II</div>
+                        <div class="fs-lg fw-medium" style="color: black">Myra II (Pindaan 2018)</div>
                     </div>
 
                     <div class="ms-3 me-2 text-theme-6"><button class="btn btn-primary"> <i data-feather="download" class="w-5 h-5"></i> </button></div>
