@@ -63,4 +63,10 @@ class ReportController extends Controller
             }
         }
     }
+
+    public function glossary($year = null)
+    {
+        if($year == null) $year = date('Y');
+        return view('myra.report.glossary', compact('year'));
+    }
 }

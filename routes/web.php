@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::name("report.")->prefix("report")->group(function () {
         Route::name("myra.index")->get("myra/{year?}", [MyRAReportController::class, "index"]);
         Route::name("myra.download")->get('myra/download/{masterlist}/{year}/{all?}', [MyRAReportController::class, 'downloadMasterlist']);
+        Route::name("myra.glossary")->get("glossary/{year?}", [MyRAReportController::class, "glossary"]);
     });
 });
 
