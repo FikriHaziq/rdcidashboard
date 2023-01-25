@@ -19,18 +19,8 @@
             <div class="grid columns-2 gap-4">
                 <!-- BEGIN: Login Info -->
                 <div class="g-col-2 g-col-xl-1 d-none d-xl-flex flex-column min-vh-screen">
-                    <!-- Change div to a for hyperlink -->
-                    <div class="-intro-x d-flex align-items-center pt-5">
-                        <img class="" style="width: 30%;" src="{{ asset('images/utm-white.png') }}">
-                        <span style="width: 20px;"></span>
-                        <img class="pb-2" style="width: 50%;" src="{{ asset('images/nexus-insight.png') }}">
-                    </div>
                     <div class="my-auto">
-                        <img class="-intro-x w-1/2 mt-n16" src="{{ asset('theme/images/illustration.svg') }}">
-                        <div class="-intro-x text-white fw-medium fs-4xl lh-base mt-10">
-                            RDCI Dashboard
-                        </div>
-                        <div class="-intro-x mt-5 fs-lg text-white text-opacity-70 dark-text-gray-500">Send a request to access the system.</div>
+                        <img class="-intro-x w-full mt-n16" src="{{ asset('images/insight-login.png') }}">
                     </div>
                 </div>
                 
