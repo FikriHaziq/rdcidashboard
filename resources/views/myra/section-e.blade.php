@@ -157,6 +157,19 @@
         tooltip: {
             shared: true
         },
+        legend: {
+            useHTML:true,
+            symbolWidth:0,
+            labelFormatter: function() {
+                var legend = '';
+                if (this.name == 'ACHIEVEMENT') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/a-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                } else if (this.name == '100% TARGET') {
+                    legend = '<div class="custom-legend"><img src="https://rdcidashboard.utm.my/images/e-legend.png" class="custom-legend-img" width="20" height="20"/>';
+                }
+                return legend + '<span>' + this.name + '</span></div>';
+            }
+        },
         xAxis: {
             categories: data.year_range,
             title: {
@@ -178,11 +191,6 @@
             {
                 name: '100% TARGET',
                 data: targetedData(data.year_range, data.bar_2.data_2, '#000000', 'dash'),
-                pointWidth: 45
-            },
-            {
-                name: '200% TARGET',
-                data: targetedData(data.year_range, doubleTarget(data.bar_2.data_2), '#000000', 'solid'),
                 pointWidth: 45
             },
         ],
