@@ -33,7 +33,8 @@
                                 Sign In
                             </h2>
                             <div class="intro-x mt-2 text-gray-500 d-xl-none text-center">A few more clicks to sign in to your account.<br> Welcome to UTM Insight@MyRA.</div>
-                            <div class="intro-x mt-8">
+                            <div class="intro-x mt-2 text-gray-500 text-center text-xl-start"><small>(Use the same ID as used for my.utm.my)</small></div>
+                            <div class="intro-x mt-8 mt-xl-2">
                                 <input type="text" name="email" class="intro-x login__input form-control py-3 px-4 border-gray-300 d-block" placeholder="Email">
                                 <input type="password" name="password" class="intro-x login__input form-control py-3 px-4 border-gray-300 d-block mt-4" placeholder="Password">
                             </div>
@@ -47,6 +48,9 @@
                             <div class="intro-x mt-5 mt-xl-8 text-center text-xl-start">
                                 <button type="submit" class="btn btn-primary py-3 px-4 w-full w-xl-32 me-xl-3 align-top">Login</button>
                                 {{-- <button class="btn btn-outline-secondary py-3 px-4 w-full w-xl-32 mt-3 mt-xl-0 align-top">Sign up</button> --}}
+                            </div>
+                            <div class="intro-x mt-5 mt-xl-8 text-center text-xl-start">
+                                <small><b><span style="color:#ff0000;">*</span>Recommended to use Mozilla Firefox* 16.x or higher, Chrome 23 or higher</b></small>
                             </div>
                         </form>
                     </div>
