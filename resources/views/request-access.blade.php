@@ -56,8 +56,8 @@
                                     <label for="regular-form-5" class="form-label">Faculty</label>
                                     <select name="faculty_code" class="intro-x login__input form-control py-3 px-4 d-block border-gray-300" @error('faculty_code') style="border-color: red!important" @enderror aria-label="Default select example">
                                         <option value="">--Choose faculty--</option>
-                                        @foreach (getFacultyByYear((int)date('Y')) ?? [] as $faculty_data)
-                                        <option value="{{ $faculty_data->code }}">{{ $faculty_data->short_overall }} - {{ $faculty_data->long }}</option>
+                                        @foreach (getFaculty2() ?? [] as $faculty_data)
+                                        <option value="{{ $faculty_data->code }}">{{ $faculty_data->parameter_name }} - {{ $faculty_data->description_1 }}</option>
                                         @endforeach
                                     </select>
                                     @error('faculty_code')<div class="mt-2" style="color: red">This field is required</div>@enderror

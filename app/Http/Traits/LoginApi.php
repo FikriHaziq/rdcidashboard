@@ -37,6 +37,7 @@ trait LoginApi
         if(isset($data->email)){
             if($user->faculty_code ?? false){
                 $faculty = getFacultyByCode($user->faculty_code);
+                $school = getSchoolByCode($user->school_code);
             }
             return [
                 'id' => $user->id ?? null,
@@ -45,8 +46,10 @@ trait LoginApi
                 'name' => $data->fullname,
                 'nric' => $data->nokp,
                 'role' => $user->role ?? null,
-                'faculty' => $faculty->long ?? null,
+                'faculty' => $faculty->description_1 ?? null,
                 'faculty_code' => $user->faculty_code ?? null,
+                'school' => $school->description_1 ?? null,
+                'school_code' => $user->school_code ?? null,
             ];
         }
 

@@ -14,7 +14,7 @@
             <ul class="dropdown-content bg-theme-26 dark-bg-dark-6 text-white">
                 <li class="p-2">
                     <div class="fw-medium text-white">{{ user()->name }}</div>
-                    <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">{{ user()->role == 'faculty' ? getFacultyByCode(user()->faculty_code)->long : ucwords(user()->role) }}</div>
+                    <div class="fs-xs text-theme-28 mt-0.5 dark-text-gray-600">{{ user()->role == 'faculty' ? getFacultyByCode(user()->faculty_code)->description_1 : ucwords(user()->role) }}</div>
                 </li>
                 <li>
                     <hr class="dropdown-divider border-theme-27 dark-border-dark-3">

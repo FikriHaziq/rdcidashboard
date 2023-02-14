@@ -38,7 +38,7 @@
         Section F: Professional Services and Gifts
     </h2>
 </div>
-<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-f/UNIVERSITY"/>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" :schoolCode="$school" endpoint="myra/section-f/UNIVERSITY"/>
 
 <div class="tab-content box mt-5">
     <div class="tab-pane leading-relaxed p-5 active" role="tabpanel">

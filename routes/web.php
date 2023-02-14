@@ -153,4 +153,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("grant-mestec")->post('grant-mestec/', [AjaxController::class, 'getGrantMestec']);
     Route::name("selectData")->get('select/data/{id}', [AjaxController::class, 'selectData']);
     Route::name("updateMyraData")->post('update-myra-data', [AjaxController::class, 'updateMyraMark']);
+    Route::name("getSchool")->get('getSchool/{faculty_id}', [AjaxController::class, 'getSchool']);
 });

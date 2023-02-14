@@ -19,6 +19,8 @@ if (!function_exists('saveUser')) {
                 'role' => $data['role'],
                 'faculty' => $data['faculty'],
                 'faculty_code' => $data['faculty_code'],
+                'school' => $data['school'],
+                'school_code' => $data['school_code'],
             ];
         }
         session()->put('user', $user);
@@ -147,10 +149,32 @@ if (!function_exists('getFaculty')) {
     }
 }
 
+if (!function_exists('getFaculty2')) {
+    function getFaculty2()
+    {
+        return \App\Models\Parameter::whereGroupId(1)->whereActive('Y')->orderBy('description_1')->get();
+    }
+}
+
+if (!function_exists('getSchoolByFaculty')) {
+    function getSchoolByFaculty($faculty_code)
+    {
+        $faculty = \App\Models\Parameter::whereCode($faculty_code)->first();
+        return \App\Models\Parameter::whereGroupId(2)->whereParentId($faculty->id ?? '')->whereActive('Y')->orderBy('description_1')->get();
+    }
+}
+
 if (!function_exists('getFacultyByCode')) {
     function getFacultyByCode($code)
     {
-        return collect(getFaculty())->where('code', $code)->first();
+        return \App\Models\Parameter::whereCode($code)->first();
+    }
+}
+
+if (!function_exists('getSchoolByCode')) {
+    function getSchoolByCode($code)
+    {
+        return \App\Models\Parameter::whereGroupId(2)->whereCode($code)->first();
     }
 }
 

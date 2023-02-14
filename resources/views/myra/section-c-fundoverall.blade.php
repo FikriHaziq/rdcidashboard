@@ -39,7 +39,7 @@
         Section C: Quantity and Quality of Research
     </h2>
 </div>
-<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/section-c/FUNDING-ALL"/>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" :schoolCode="$school" endpoint="myra/section-c/FUNDING-ALL"/>
 
 <div class="intro-y pr-1 mt-5">
     <div class="box p-2">

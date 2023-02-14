@@ -27,7 +27,7 @@
     </h2>
 </div>
 <!-- BEGIN: Wizard Layout -->
-<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" endpoint="myra/student-info"/>
+<x-myra-graph-filter :startYear="$start_year" :endYear="$end_year" :facultyCode="$faculty" :schoolCode="$school" endpoint="myra/student-info"/>
 
 <div class="intro-y pr-1 mt-5">
     <div class="box p-2">

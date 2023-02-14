@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\GeneralController as Api;
 use App\Http\Traits\MasterListMyraTrait;
 use App\Models\DataAttachment;
+use App\Models\Parameter;
 use App\Models\MyraCalculation;
 
 class AjaxController extends Controller
@@ -1523,6 +1524,14 @@ class AjaxController extends Controller
         return response()->json([
             "final" => $final,
         ], $status_code);
+    }
+
+    public function getSchool($faculty_id)
+    {
+        $schools = getSchoolByFaculty($faculty_id);
+        return response()->json([
+            "result" => $schools->toArray()
+        ], 200);
     }
 
 }

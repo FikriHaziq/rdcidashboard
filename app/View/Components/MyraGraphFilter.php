@@ -11,6 +11,7 @@ class MyraGraphFilter extends Component
     public $start_year;
     public $end_year;
     public $faculty;
+    public $school;
     public $endpoint;
 
     /**
@@ -18,11 +19,12 @@ class MyraGraphFilter extends Component
      *
      * @return void
      */
-    public function __construct($startYear, $endYear, $facultyCode, $endpoint)
+    public function __construct($startYear, $endYear, $facultyCode, $schoolCode, $endpoint)
     {
         $this->start_year = $startYear;
         $this->end_year = $endYear;
         $this->faculty = $facultyCode;
+        $this->school = $schoolCode;
         $this->endpoint = $endpoint;
     }
 

@@ -70,8 +70,10 @@ class LoginController extends Controller
                     'name' => auth()->user()->name,
                     'nric' => null,
                     'role' =>  auth()->user()->role,
-                    'faculty' =>  auth()->user()->faculty_code,
-                    'faculty_code' => getFacultyByCode(auth()->user()->faculty_code)->code ?? null,
+                    'faculty' =>  getFacultyByCode(auth()->user()->faculty_code)->description_1 ?? null,
+                    'faculty_code' => auth()->user()->faculty_code,
+                    'school' =>  getSchoolByCode(auth()->user()->school_code)->description_1 ?? null,
+                    'school_code' => auth()->user()->school_code,
                 ]);
                 // dd(user());
                 if(user()->role == 'super_admin'){
