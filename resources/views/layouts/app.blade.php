@@ -8,7 +8,7 @@
         <meta name="keywords" content="RDCI Dashboard">
         <meta name="author" content="LEFT4CODE & UJILARI">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>RDCI Dashboard | {{ $submodule ?? '' }}</title>
+        <title>{{ $module ?? 'RDCI Dashboard' }} | {{ $submodule ?? '' }}</title>
         <!-- BEGIN: CSS Assets-->
         <link href="{{ asset('theme/css/app.css') }}" rel="stylesheet" />
         @include('layouts.css')

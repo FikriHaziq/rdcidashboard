@@ -55,6 +55,12 @@
         </x-menu-item> --}}
     </x-menu-item>
     @endif
+    @if(user()->role == 'super_admin')
+    <x-menu-item active="dana-ru.*" route="" icon="hard-drive" parent="Dana RU" type="sub">
+        <x-menu-item active="dana-ru.cadangan-agihan.*" route="dana-ru.cadangan-agihan.index">Cadangan Agihan</x-menu-item>
+        <x-menu-item active="dana-ru.cadangan-agihan.*" rawUrl=true route="index/2023/?status=submitted&role=approver">Pengesahan Cadangan Agihan</x-menu-item>
+    </x-menu-item>
+    @endif
     <x-menu-item active="report.*" route="" icon="file-text" parent="Download" type="sub">
         <x-menu-item active="report.myra.index" route="report.myra.index">Masterlist</x-menu-item>
         <x-menu-item active="report.myra.glossary" route="report.myra.glossary">Glossary</x-menu-item>

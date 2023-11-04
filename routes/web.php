@@ -10,6 +10,7 @@ use App\Http\Controllers\Research\ManagementController as ManagementController;
 use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
+use App\Http\Controllers\DanaRU\CadanganAgihanController;
 
 // OLD
 use App\Http\Controllers\Grant\OverviewController as GrantOverviewController;
@@ -112,7 +113,6 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
         });
     });
     Route::name("myra.")->prefix("myra")->group(function () {
-
         Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
             Route::name('section-a')->get('section-a/{year?}', [RawDataController::class, 'sectionA']);
             Route::name('section-b')->get('section-b/{year?}', [RawDataController::class, 'sectionB']);
@@ -127,6 +127,14 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
     });
 });
 
+Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
+    Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
+        Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
+            Route::name('index')->get('/index/{year?}', [CadanganAgihanController::class, 'index']);
+            Route::name('create')->get('/create/{year?}', [CadanganAgihanController::class, 'create']);
+        });
+    });
+});
 
 // Grant Folder
 // Route::resource('active-grant', ActiveGrantController::class, ['except' => ['create', 'store', 'destroy']]);
