@@ -38,7 +38,7 @@
             </div>
             <!-- BEGIN: Notification -->
             <!-- BEGIN: General Report -->
-            <div class="g-col-12 g-col-lg-8 g-col-xl-6 mt-2">
+            <div class="g-col-8 mt-2">
                 <div class="intro-y d-block d-sm-flex align-items-center h-10">
                     <h2 class="fs-lg fw-medium truncate me-5">
                         RUMUSAN DANA
@@ -98,7 +98,7 @@
             </div>
             <!-- END: General Report -->
             <!-- BEGIN: Visitors -->
-            <div class="g-col-12 g-col-sm-6 g-col-lg-4 g-col-xl-3 mt-2">
+            <div class="g-col-4 g-col-sm-4 mt-2">
                 <div class="intro-y d-flex align-items-center h-10">
                     <h2 class="fs-lg fw-medium me-5">
                         GARIS PANDUAN AGIHAN (20%-60%-20%)
@@ -128,7 +128,7 @@
             </div>
             <!-- END: Visitors -->
             <!-- BEGIN: Users By Age -->
-            <div class="g-col-12 g-col-sm-6 g-col-lg-4 g-col-xl-3 mt-2 mt-lg-6 mt-xl-2">
+            <div class="g-col-12 g-col-sm-4 mt-2 mt-lg-6 mt-xl-2">
                 <div class="intro-y d-flex align-items-center h-10">
                     <h2 class="fs-lg fw-medium truncate me-5">
                         
