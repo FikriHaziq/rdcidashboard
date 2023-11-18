@@ -150,8 +150,9 @@ if (!function_exists('getFaculty')) {
 }
 
 if (!function_exists('getFaculty2')) {
-    function getFaculty2()
+    function getFaculty2($all = false)
     {
+        if($all) return \App\Models\Parameter::whereIn('group_id',[1,2])->whereActive('Y')->orderBy('description_1')->get();
         return \App\Models\Parameter::whereGroupId(1)->whereActive('Y')->orderBy('description_1')->get();
     }
 }
@@ -187,5 +188,26 @@ if (!function_exists('getFacultyByYear')) {
         if($year >= 2022) $year_filter = 2022;
         $faculties = collect(getFaculty())->whereIn('year', [$year_filter, NULL]);
         return $faculties->values();
+    }
+}
+
+if (!function_exists('getMrunList')) {
+    function getMrunList()
+    {
+        return \App\Models\Parameter::whereGroupId(3)->whereActive('Y')->get();
+    }
+}
+
+if (!function_exists('getBpkiList')) {
+    function getBpkiList()
+    {
+        return \App\Models\Parameter::whereGroupId(4)->orderBy('code')->whereActive('Y')->get();
+    }
+}
+
+if (!function_exists('getKpiTemplate')) {
+    function getKpiTemplate($type)
+    {
+        return \App\Models\DanaRU\DruKpiTemplate::whereType($type)->whereActive('Y')->get();
     }
 }

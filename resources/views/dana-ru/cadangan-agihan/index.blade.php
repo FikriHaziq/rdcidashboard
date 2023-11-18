@@ -10,21 +10,7 @@
 </style>
 @endsection
 @slot('content')
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <h2 class="fs-lg fw-medium me-auto">
-        Borang Cadangan Agihan {{ $year }}
-    </h2>
-    <div class="w-full w-sm-auto d-flex mt-4 mt-sm-0">
-        <div class="input-group">
-            <div class="input-group-text">TAHUN</div>
-            <select class="form-select me-sm-2" onchange="getList($(this))">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                <option value="{{$i}}" @if((int)$year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
-            </select>
-        </div>
-    </div>
-</div>
+<x-title hasYear :year="$year" :route="route('dana-ru.cadangan-agihan.index')">Borang Cadangan Agihan {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
@@ -217,28 +203,41 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            @for ($i = 0; $i < 19; $i++)
+                            @foreach ($plan_forms as $i=>$plan_form)
                             <tr class="intro-x">
                                 <td class="text-nowrap">{{ $i+1 }}</td>
-                                <td class="text-nowrap">TD</td>
-                                <td class="text-nowrap">DO</td>
-                                <td class="text-nowrap">PN. SITI RAHIMAH BINTI MOHD YUSOP</td>
-                                <td class="text-nowrap"></td>
-                                <td class="text-nowrap">RMC</td>
-                                <td class="text-nowrap">PELANTIKAN PASCA DOCTORAL </td>
-                                <td class="text-nowrap">Q.J130000.21A2.00000</td>
-                                <td class="text-nowrap">Warganegara: RM70,000 x 38 PD x 1 tahun = RM2,660,000
-                                    Bukan Warganegara: RM64,000 x 56 PD x 1 tahun = RM3,584,000
+                                <td class="text-nowrap">{{ $plan_form->mrun_details->parameter_name }}</td>
+                                <td class="text-nowrap">{{ $plan_form->bpki_details->parameter_name }}</td>
+                                <td class="text-nowrap">{{ $plan_form->pic->name }}</td>
+                                <td class="text-nowrap">
+                                    @foreach ($plan_form->members as $member)
+                                        {{ $member->name }} <br />
+                                    @endforeach
                                 </td>
-                                <td class="text-nowrap">RM 3,970,000.00</td>
+                                <td class="text-nowrap">{{ $plan_form->ptj->parameter_name }}</td>
+                                <td class="text-nowrap">{{ strtoupper($plan_form->sub_project->title ?? '') }} </td>
+                                <td class="text-nowrap">
+                                    @if($plan_form->sub_project->code != 'TMP')
+                                    Q.{{ $plan_form->ptj_code }}.{{ $plan_form->sub_project->project->code }}.{{ $plan_form->sub_project->code }}
+                                    @endif
+                                </td>
+                                <td class="text-nowrap">
+                                    @foreach ($plan_form->main_kpi as $main_kpi)
+                                        {{ $main_kpi->template->title }}: RM{{ number_format($main_kpi->amount, 2, '.', ',') }} x {{ $main_kpi->count }} = RM{{ number_format($main_kpi->total, 2, '.', ',') }} <br />
+                                    @endforeach
+                                    @foreach ($plan_form->kpi as $kpi)
+                                        {{ $kpi->template->title }}: RM{{ number_format($kpi->amount, 2, '.', ',') }} x {{ $kpi->count }} = RM{{ number_format($kpi->total, 2, '.', ',') }} <br />
+                                    @endforeach
+                                </td>
+                                <td class="text-nowrap">RM {{ number_format($plan_form->amount, 2, '.', ',') }}</td>
                                 <td class="table-report__action text-nowrap">
                                     <div class="d-flex justify-content-center align-items-center">
-                                        <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.create') }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
+                                        <a class="d-flex align-items-center me-3" href=""> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
                                         <a class="d-flex align-items-center text-theme-6" href=""> <i data-feather="trash-2" class="w-4 h-4 me-1"></i> Delete </a>
                                     </div>
                                 </td>
                             </tr>
-                            @endfor
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -249,12 +248,5 @@
 </div>
 @endslot
 @section('custom-js')
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
-<script>
-function getList(that) {
-    window.location = window.location.origin + '/dana-ru/cadangan-agihan/index/' + that.val();
-}
-</script>
 @endsection
 @endcomponent

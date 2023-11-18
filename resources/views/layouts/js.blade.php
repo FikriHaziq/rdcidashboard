@@ -116,4 +116,8 @@
         }
         return newSet;
     }
+
+    function getYearList(that, route) {
+        window.location = route + '/' + that.val();
+    }
 </script>

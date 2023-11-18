@@ -8,6 +8,8 @@ use App\Http\Traits\MasterListMyraTrait;
 use App\Models\DataAttachment;
 use App\Models\Parameter;
 use App\Models\MyraCalculation;
+use App\Models\DanaRU\DruProject;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -1531,6 +1533,22 @@ class AjaxController extends Controller
         $schools = getSchoolByFaculty($faculty_id);
         return response()->json([
             "result" => $schools->toArray()
+        ], 200);
+    }
+
+    public function getProjectList($program_id, $year)
+    {
+        $projects = DruProject::from('dru_projects as pro')
+        ->select([
+            DB::raw('UPPER(sub.title) as title'), 'sub.id as id', 'sub.code as sub_code', 'pro.code as pro_code', 'pro.is_fixed_subproject as fixed_subproject'
+        ])
+        ->join('dru_sub_projects as sub', function ($join) {
+            $join->on('pro.id', '=', 'sub.project_id')
+                ->where('sub.status','active');
+        })
+        ->where('pro.year', $year)->where('pro.program_id', $program_id)->where('pro.status','active')->get();
+        return response()->json([
+            "result" => $projects
         ], 200);
     }
 

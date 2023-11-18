@@ -132,6 +132,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
             Route::name('index')->get('/index/{year?}', [CadanganAgihanController::class, 'index']);
             Route::name('create')->get('/create/{year?}', [CadanganAgihanController::class, 'create']);
+            Route::name('store')->post('/store/{year?}', [CadanganAgihanController::class, 'store']);
         });
     });
 });
@@ -162,4 +163,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("selectData")->get('select/data/{id}', [AjaxController::class, 'selectData']);
     Route::name("updateMyraData")->post('update-myra-data', [AjaxController::class, 'updateMyraMark']);
     Route::name("getSchool")->get('getSchool/{faculty_id}', [AjaxController::class, 'getSchool']);
+    Route::name("getProjectList")->get('getProjectList/{program_id}/{year}', [AjaxController::class, 'getProjectList']);
 });

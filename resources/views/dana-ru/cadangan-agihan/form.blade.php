@@ -2,101 +2,222 @@
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
 @section('custom-css')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <style>
-    td.highlight {
-        background-color: whitesmoke !important;
-    }
+.ts-control {
+    -moz-padding-start: calc(.75rem - 3px);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%232d3748' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E);
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 16px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    color: #2d3748;
+    display: block;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.429;
+    padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    width: 100%;
+}
+.ts-control input::placeholder{font-size: .875rem; color: #A0AEC0;opacity: 1; /* Firefox */}
+.ts-control input::-ms-input-placeholderr{font-size: .875rem; color: #A0AEC0;}
 </style>
+
 @endsection
 @slot('content')
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
-    <h2 class="fs-lg fw-medium me-auto">
-        Borang Cadangan Agihan {{ $year }}
-    </h2>
-</div>
+<x-title>Borang Cadangan Agihan {{ $year }}</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
     <div class="intro-y col-12 col-xl-8">
-        <div class="intro-y box">
-            <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
-                <h2 class="fw-medium fs-base me-auto">
-                Input
-            </h2>
-            </div>
-            <div id="input" class="p-5">
-                <div class="form-inline">
-                    <label for="mrun" class="form-label w-sm-40">MRUN</label>
-                    <select id="mrun" class="form-control form-select" aria-label="Default select example">
-                        <option>--Sila pilih--</option>
-                        <option>TD</option>
-                        <option>RP</option>
-                        <option>WC</option>
-                        <option>BGC</option>
-                    </select>
+        <form id="form_1" action="{{ route('dana-ru.cadangan-agihan.store', $year) }}" method="post">
+        @csrf
+            <div class="intro-y box p-5">
+                <div class="grid columns-12 gap-6 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="mrun">MRUN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="mrun" name="mrun" class="form-select" onchange="getProjectList()">
+                            <option value="">--Sila pilih--</option>
+                            @foreach (getMrunList() as $mrun)
+                                <option value="{{ $mrun->id }}">{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="BPKI" class="form-label w-sm-40">BPKI</label>
-                    <select id="BPKI" class="form-control form-select" aria-label="Default select example">
-                        <option>--Sila pilih--</option>
-                        <option>DANA OPERASI</option>
-                        <option>GERAN PENYELIDIKAN</option>
-                        <option>PEMBELIAN & PENYELENGGARAAN ALATAN PENYELIDIKAN</option>
-                    </select>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="bpki">BPKI</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="bpki" name="bpki" class="form-select">
+                            <option value="">--Sila pilih--</option>
+                            @foreach (getBpkiList() as $bpki)
+                                <option value="{{ $bpki->id }}">{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="horizontal-form-1" class="form-label w-sm-40">KETUA PROGRAM</label>
-                    <input id="horizontal-form-1" type="text" class="form-control" placeholder="KETUA PROGRAM">
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="kp_name">KETUA PROGRAM</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group mb-2">
+                            <div class="input-group-text">NAMA</div> <input id="kp_name" name="kp_name" type="text" class="form-control" placeholder="NAMA KETUA PROGRAM" aria-describedby="kp_name">
+                        </div>
+                        <div class="grid columns-2 gap-3">
+                            <div class="g-col-1 input-group">
+                                <div class="input-group-text">EMEL</div> <input id="kp_email" name="kp_email" type="text" class="form-control" placeholder="EMEL KETUA PROGRAM" aria-describedby="kp_email">
+                            </div>
+                            <div class="g-col-1 input-group">
+                                <div class="input-group-text">IC</div> <input id="kp_ic" name="kp_ic" type="text" class="form-control" placeholder="NO. IC KETUA PROGRAM" aria-describedby="kp_ic">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="horizontal-form-1" class="form-label w-sm-40">PEGAWAI BERTANGGUNGJAWAB</label>
-                    <input id="horizontal-form-1" type="text" class="form-control" placeholder="PEGAWAI BERTANGGUNGJAWAB">
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="horizontal-form-1">PEGAWAI BERTANGGUNGJAWAB</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group mb-2">
+                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" class="form-control" placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
+                        </div>
+                        <div class="grid columns-2 gap-3">
+                            <div class="g-col-1 input-group">
+                                <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" class="form-control" placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                            </div>
+                            <div class="g-col-1 input-group">
+                                <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" class="form-control" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="PTJ PIC" class="form-label w-sm-40">PTJ PIC</label>
-                    <select id="PTJ PIC" class="form-control form-select" aria-label="Default select example">
-                        <option>--Sila pilih--</option>
-                        <option>RMC</option>
-                        <option>PUTM</option>
-                        <option>SPS</option>
-                        <option>JTNCPI</option>
-                    </select>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="ptj">PTJ PIC</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="ptj" name="ptj" class="form-select" onchange="getChargeline($(this).val(),'ptj')">
+                            <option value="">--Sila pilih--</option>
+                            @foreach (getFaculty2(true) as $faculty)
+                                <option value="{{ $faculty->id }}_{{ $faculty->original_code }}">{{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="JENIS AGIHAN" class="form-label w-sm-40">JENIS AGIHAN</label>
-                    <select id="JENIS AGIHAN" class="form-control form-select" aria-label="Default select example">
-                        <option>--Sila pilih--</option>
-                        <option>PELANTIKAN PASCA DOCTORAL </option>
-                        <option>INSENTIF PENERBITAN PENYELIDIKAN-JURNAL BERINDEKS</option>
-                        <option>INSENTIF PENERBITAN SISWAZAH</option>
-                        <option>MEMPERKASA PROGRAM/COE DARI SEGI PENGURUSAN BAKAT</option>
-                    </select>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="project">JENIS AGIHAN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="project" name="project" placeholder="JENIS AGIHAN" autocomplete="off">
+                        </select>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="horizontal-form-1" class="form-label w-sm-40">CHARGELINE</label>
-                    <input id="horizontal-form-1" type="text" class="form-control" placeholder="CHARGELINE">
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="cl_sub">CHARGELINE</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group">
+                            <div class="input-group-text">Q.</div> 
+                            <input id="cl_ptj" name="cl_ptj" type="text" readonly class="form-control" aria-describedby="cl_ptj">
+                            <div class="input-group-text">.</div> 
+                            <input id="cl_pro" name="cl_pro" type="text" readonly class="form-control" aria-describedby="cl_pro">
+                            <div class="input-group-text">.</div> 
+                            <input id="cl_sub" name="cl_sub" type="text" readonly class="form-control" aria-describedby="cl_sub">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="JENIS AGIHAN" class="form-label w-sm-40">KPI</label>
-                    <select id="JENIS AGIHAN" class="tom-select form-control" multiple>
-                        <option>Warganegara: RM70,000 x 38 PD x 1 tahun = RM2,660,000 </option>
-                        <option>Bukan Warganegara: RM64,000 x 56 PD x 1 tahun = RM3,584,000</option>
-                        <option>Q1/Q2: 850 - 1100 artikel tahun 2023 sahaja</option>
-                        <option>Q1: RM2000/artikel</option>
-                        <option>Q2: RM1500/artikel</option>
-                    </select>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="main_dist">ASAS AGIHAN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="intro-y overflow-x-auto">
+                            <table id="main_dist" class="table table-bordered">
+                                <thead class="table-dark border-b-0">
+                                    <tr>
+                                        <th class="text-nowrap w-50">ITEM</th>
+                                        <th class="text-nowrap">BIL</th>
+                                        <th class="text-nowrap">AMAUN (RM)</th>
+                                        <th class="text-nowrap">JUMLAH</th>
+                                        <th class="text-nowrap"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                </tbody>
+                                <tfoot class="bg-white">
+                                    <tr class="main_dist-footer-add-button intro-x text-center">
+                                        <td colspan="5">
+                                            <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('main_dist', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-inline mt-5">
-                    <label for="horizontal-form-1" class="form-label w-sm-40">PERUNTUKAN AGIHAN</label>
-                    <div class="form-control input-group">
-                        <div id="input-group-email" class="input-group-text">RM</div> <input type="text" class="form-control" placeholder="0.00" aria-label="0.00" aria-describedby="input-group-email">
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="kpi">KPI</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="intro-y overflow-x-auto">
+                            <table id="kpi" class="table table-bordered">
+                                <thead class="table-dark border-b-0">
+                                    <tr>
+                                        <th class="text-nowrap">ITEM</th>
+                                        <th class="text-nowrap">BIL</th>
+                                        <th class="text-nowrap">AMAUN (RM)</th>
+                                        <th class="text-nowrap">TOTAL</th>
+                                        <th class="text-nowrap"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                </tbody>
+                                <tfoot class="bg-white">
+                                    <tr class="kpi-footer-add-button intro-x text-center">
+                                        <td colspan="5">
+                                            <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('kpi', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="total_dist">PERUNTUKAN AGIHAN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group">
+                            <div class="input-group-text">RM</div> <input id="total_dist" name="total_dist" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="note">CATATAN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="CATATAN"></textarea>
                     </div>
                 </div>
                 <div class="mt-5 d-flex justify-content-end">
                     <a href="" class="btn btn-light me-3">Batal</a>
-                    <a href="{{ route('dana-ru.cadangan-agihan.index',['year'=>$year,'action'=>'save']) }}" class="btn btn-primary">Hantar</a>
+                    <button type="submit" form="form_1" class="btn btn-primary">Hantar</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -104,7 +225,181 @@
 @section('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
+
+    var eventHandler = function(name) {
+        return function() {
+            getChargeline(arguments[0], 'pro');
+        };
+    };
+    var project_select = new TomSelect("#project",{
+        create: true,
+        onChange: eventHandler('onChange'),
+        sortField: {
+            field: "text",
+            direction: "asc"
+        },
+        valueField: 'id',
+	    labelField: 'title',
+    });
+
+    function getProjectList() {
+        var program = $("#mrun").val();
+        var year = {!! $year !!};
+        var oldProject = '';
+        if (program) {
+            $.ajax({
+                url: "/ajax/getProjectList/" + program + "/" + year,
+                type: "GET",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res) {
+                    project_select.clear();
+                    project_select.clearOptions();
+                    if (res.result.length > 0) {
+                        $.each(res.result, function(i, val) {
+                            project_select.addOption({
+                                id: val.id + '_' + val.pro_code + '_' + val.sub_code + '_' + val.fixed_subproject ,
+                                title: val.title
+                            });
+                            // if(oldProject == val.code) $("#project").append("<option value='" + val.id + "' selected>" + val.title + "</option>");
+                            // else $("#project").append("<option value='" + val.id + "'>" + val.title + "</option>");
+                        });
+                    }
+                },
+            });
+        } else {
+        }
+    }
+
+    function getChargeline(value, type) {
+        if(type == 'ptj'){
+            data = value.split('_');
+            ptj = prependCode(data[1], 7);
+            $('#cl_ptj').val(ptj);
+        }
+        else if(type == 'pro'){
+            if(value.length > 0){
+                data = value.split('_');
+                if(data.length == 4){
+                    pro = data[1];
+                    sub = data[2];
+                    fixed_subproject = data[3];
+                    $('#cl_pro').val(pro);
+                    $('#cl_sub').val(sub);
+                    if(fixed_subproject == 'Y'){
+                        $('#cl_pro').prop('readonly', true);
+                        $('#cl_sub').prop('readonly', true);
+                    }
+                    else{
+                        $('#cl_pro').prop('readonly', true);
+                        $('#cl_sub').prop('readonly', true);
+                        // $('#cl_sub').prop('readonly', false);
+                    }
+                }
+                else{
+                    $('#cl_pro').val('');
+                    $('#cl_sub').val('');
+                    $('#cl_pro').prop('readonly', false);
+                    $('#cl_sub').prop('readonly', false);
+                }
+            }
+            else{
+                $('#cl_pro').val('');
+                $('#cl_sub').val('');
+                $('#cl_pro').prop('readonly', true);
+                $('#cl_sub').prop('readonly', true);
+            }
+            
+            
+        }
+    }
+
+    function prependCode(str,length){
+        res = str;
+        for (let i = 0; i < length - str.length; i++) {
+            res += '0';
+        }
+        return res;
+    }
+
+    var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
+    var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
+    $(".input-mask").inputmask(); 
+    function manageKpiItem(table, type, that = null) {
+        add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+        remove_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>';
+        big_add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-6 h-6 me-1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+        if(type == 'add'){
+            var rowCount = $('#'+table+' >tbody >tr').length;
+            index = rowCount;
+            kpiOptions = '<option value="">--Sila Pilih--</option>';
+            if(table == 'main_dist'){
+                mainTemplates.forEach(element => {
+                    kpiOptions += '<option value="'+element.id+'">'+element.title+'</option>'
+                });
+            }
+            else if(table == 'kpi'){
+                kpiTemplates.forEach(element => {
+                    kpiOptions += '<option value="'+element.id+'">'+element.title+'</option>'
+                });
+            }
+            
+            newRowContent = '<tr class="intro-x">'+
+                                '<td class="text-nowrap"><select name="'+table+'_item[]" class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'_bil[]" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'_amount[]" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'_total[]" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+                                '<td class="text-nowrap">'+
+                                '<div class="d-flex justify-content-center align-items-center">'+
+                                '<a class="d-flex align-items-center text-theme-10" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'add\')">'+add_icon+'</a>'+
+                                '<a class="d-flex align-items-center text-theme-6" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'remove\',$(this))">'+remove_icon+'</a>'+
+                                '</div></td></tr>';
+            if(rowCount == 0){
+                $('#'+table+' >tfoot >tr').remove();
+                newRowContent += '<tr class="bg-gray-400 border-b-0">'+
+                                    '<td class="text-end" colspan="3">JUMLAH KESELURUHAN (RM)</td>'+
+                                    '<td class="text-end">'+
+                                        '<input name="'+table+'_grand_total" type="text" value="" disabled class="form-control '+table+'_grand_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'">'+
+                                    '</td><td></td></tr>';
+                $("#"+table+" tbody").append(newRowContent);            
+            } 
+            else{
+                $("#"+table+" tbody tr:last").before(newRowContent);
+            }                
+            $(".input-mask").inputmask();        
+        }
+        else if(type == 'remove'){
+            that.closest('tr').remove();
+            var rowCount = $('#'+table+' >tbody >tr').length;
+            if(rowCount == 1){
+                $("#"+table+" tbody tr").remove(); 
+                footerContent = '<tr class="'+table+'-footer-add-button text-center">'+
+                                '<td colspan="5">'+
+                                    '<button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem(\''+table+'\', \'add\')">'+big_add_icon+' Tambah</button>'+
+                                '</td></tr>';
+                $('#'+table+' >tfoot').append(footerContent);
+            }
+            calculate(table);
+        }
+    }
+
+    function calculate(table) {
+        len = $("#"+table+" tbody ."+table+"_item").length;
+        grand_total = 0;
+        $("#"+table+" tbody ."+table+"_item").each(function(index) {
+            var bil = $("#"+table+" tbody ."+table+"_bil:eq("+index+")").val();
+            var amount = parseFloat($("#"+table+" tbody ."+table+"_amount:eq("+index+")").val().replaceAll(',',''));
+            var total = bil > 0 ? amount*bil : 0;
+            $("#"+table+" tbody ."+table+"_total:eq("+index+")").val(total);
+            grand_total += total;
+        });
+        $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
+        $("#total_dist").val(grand_total);
+    }
 </script>
 @endsection
 @endcomponent
