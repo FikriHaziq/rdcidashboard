@@ -211,3 +211,23 @@ if (!function_exists('getKpiTemplate')) {
         return \App\Models\DanaRU\DruKpiTemplate::whereType($type)->whereActive('Y')->get();
     }
 }
+
+if (!function_exists('getAppendedPtjCode')) {
+    function getAppendedPtjCode($code, $length)
+    {
+        $ptj_code = $code;
+        $res = $ptj_code;
+        for ($i=0; $i < ($length - strlen($ptj_code)); $i++) { 
+            $res .= '0';
+        }
+        return $res;
+    }
+}
+
+if (!function_exists('getProjectSecondCode')) {
+    function getProjectSecondCode($code)
+    {
+        if($code)return $code;
+        else return '00000';
+    }
+}

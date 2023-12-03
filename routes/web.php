@@ -11,6 +11,7 @@ use App\Http\Controllers\MyRA\DashboardController as MyRADashboardController;
 use App\Http\Controllers\MyRA\RawDataController as RawDataController;
 use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
 use App\Http\Controllers\DanaRU\CadanganAgihanController;
+use App\Http\Controllers\DanaRU\FinancialController;
 
 // OLD
 use App\Http\Controllers\Grant\OverviewController as GrantOverviewController;
@@ -131,8 +132,21 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
         Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
             Route::name('index')->get('/index/{year?}', [CadanganAgihanController::class, 'index']);
-            Route::name('create')->get('/create/{year?}', [CadanganAgihanController::class, 'create']);
+            Route::name('form')->get('/form/{year?}/{id?}', [CadanganAgihanController::class, 'form']);
+            Route::name('store-plan')->post('/store-plan/{year?}', [CadanganAgihanController::class, 'storePlan']);
             Route::name('store')->post('/store/{year?}', [CadanganAgihanController::class, 'store']);
+            Route::name("delete-plan")->get('/delete-plan/{id}', [CadanganAgihanController::class, "deletePlan"]);
+            Route::name("verification")->post('/verification/{id}/{type}', [CadanganAgihanController::class, "verification"]);
+            Route::name("verification.post")->post("/verification/post", [CadanganAgihanController::class, "verificationPost"]);
+            Route::name("file.download")->get('file/download/{id}', [CadanganAgihanController::class, 'downloadFile']);
+        });
+        Route::name('kewangan.')->prefix('kewangan')->group(function(){
+            Route::name('overall')->get('/overall', [FinancialController::class, 'overall']);
+            Route::name('agihan-program.index')->get('/agihan-program/index', [FinancialController::class, 'agihanProgramIndex']);
+            Route::name('perbelanjaan.')->prefix('perbelanjaan')->group(function(){
+                Route::name('program')->get('/program/{year?}', [FinancialController::class, 'program']);
+                Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
+            });
         });
     });
 });

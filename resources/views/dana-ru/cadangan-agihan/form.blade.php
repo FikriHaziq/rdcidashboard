@@ -27,6 +27,7 @@
 }
 .ts-control input::placeholder{font-size: .875rem; color: #A0AEC0;opacity: 1; /* Firefox */}
 .ts-control input::-ms-input-placeholderr{font-size: .875rem; color: #A0AEC0;}
+.ts-dropdown {z-index: 100;}
 </style>
 
 @endsection
@@ -39,28 +40,31 @@
             <div class="intro-y box p-5">
                 <div class="grid columns-12 gap-6 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
-                        <label for="mrun">MRUN</label>
+                        <label for="mrun">PROGRAM UTAMA</label>
                     </div>
+                    <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
                     <div class="g-col-9">
-                        <select id="mrun" name="mrun" class="form-select" onchange="getProjectList()">
+                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getMrunList() as $mrun)
-                                <option value="{{ $mrun->id }}">{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
+                                <option value="{{ $mrun->id }}" @if((old('mrun') ?? ($plan_form->mrun ?? '')) == $mrun->id) selected @endif>{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
                             @endforeach
                         </select>
+                        @error('mrun')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
-                        <label for="bpki">BPKI</label>
+                        <label for="bpki">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select">
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror">
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
-                                <option value="{{ $bpki->id }}">{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
+                                <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
                             @endforeach
                         </select>
+                        @error('bpki')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
@@ -68,15 +72,22 @@
                         <label for="kp_name">KETUA PROGRAM</label>
                     </div>
                     <div class="g-col-9">
-                        <div class="input-group mb-2">
-                            <div class="input-group-text">NAMA</div> <input id="kp_name" name="kp_name" type="text" class="form-control" placeholder="NAMA KETUA PROGRAM" aria-describedby="kp_name">
+                        <div class="input-group mb-2 @error('kp_name') border-theme-6 @enderror">
+                            <div class="input-group-text">NAMA</div> <input id="kp_name" name="kp_name" type="text" value="{{ old('kp_name') ?? ($plan_form->pic->name ?? '') }}" class="form-control @error('kp_name') border-theme-6 @enderror" placeholder="NAMA KETUA PROGRAM" aria-describedby="kp_name">
                         </div>
+                        @error('kp_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                         <div class="grid columns-2 gap-3">
-                            <div class="g-col-1 input-group">
-                                <div class="input-group-text">EMEL</div> <input id="kp_email" name="kp_email" type="text" class="form-control" placeholder="EMEL KETUA PROGRAM" aria-describedby="kp_email">
+                            <div class="g-col-1">
+                                <div class="input-group">
+                                    <div class="input-group-text">EMEL</div> <input id="kp_email" name="kp_email" type="text" value="{{ old('kp_email') ?? ($plan_form->pic->email ?? '')  }}" class="form-control @error('kp_email') border-theme-6 @enderror" placeholder="EMEL KETUA PROGRAM" aria-describedby="kp_email">
+                                </div>
+                                @error('kp_email')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
-                            <div class="g-col-1 input-group">
-                                <div class="input-group-text">IC</div> <input id="kp_ic" name="kp_ic" type="text" class="form-control" placeholder="NO. IC KETUA PROGRAM" aria-describedby="kp_ic">
+                            <div class="g-col-1">
+                                <div class="input-group">
+                                    <div class="input-group-text">IC</div> <input id="kp_ic" name="kp_ic" type="text" value="{{ old('kp_ic')?? ($plan_form->pic->nric ?? '') }}" class="form-control @error('kp_ic') border-theme-6 @enderror" placeholder="NO. IC KETUA PROGRAM" aria-describedby="kp_ic">
+                                </div>
+                                @error('kp_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
@@ -87,14 +98,21 @@
                     </div>
                     <div class="g-col-9">
                         <div class="input-group mb-2">
-                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" class="form-control" placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
+                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" value="{{ old('pb_name') ?? ($plan_form->member->name ?? '') }}" class="form-control @error('pb_name') border-theme-6 @enderror" placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
                         </div>
+                        @error('pb_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                         <div class="grid columns-2 gap-3">
-                            <div class="g-col-1 input-group">
-                                <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" class="form-control" placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                            <div class="g-col-1">
+                                <div class="input-group">
+                                    <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" value="{{ old('pb_email') ?? ($plan_form->member->email ?? '') }}" class="form-control @error('pb_email') border-theme-6 @enderror" placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                                </div>
+                                @error('pb_email')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
-                            <div class="g-col-1 input-group">
-                                <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" class="form-control" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                            <div class="g-col-1">
+                                <div class="input-group">
+                                    <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" value="{{ old('pb_ic') ?? ($plan_form->member->nric ?? '') }}" class="form-control @error('pb_ic') border-theme-6 @enderror" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                                </div>
+                                @error('pb_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>
@@ -104,12 +122,13 @@
                         <label for="ptj">PTJ PIC</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="ptj" name="ptj" class="form-select" onchange="getChargeline($(this).val(),'ptj')">
+                        <select id="ptj" name="ptj" class="form-select @error('ptj') border-theme-6 @enderror" onchange="getChargeline($(this).val(),'ptj')">
                             <option value="">--Sila pilih--</option>
                             @foreach (getFaculty2(true) as $faculty)
-                                <option value="{{ $faculty->id }}_{{ $faculty->original_code }}">{{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
+                                <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj') ?? ($plan_form->ptjInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>{{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
                             @endforeach
                         </select>
+                        @error('ptj')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
@@ -117,8 +136,9 @@
                         <label for="project">JENIS AGIHAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="project" name="project" placeholder="JENIS AGIHAN" autocomplete="off">
+                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" autocomplete="off">
                         </select>
+                        @error('project')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
@@ -209,11 +229,11 @@
                         <label for="note">CATATAN</label>
                     </div>
                     <div class="g-col-9">
-                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="CATATAN"></textarea>
+                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="CATATAN">{{ old('note') ?? ($plan_form->notes ?? '')  }}</textarea>
                     </div>
                 </div>
                 <div class="mt-5 d-flex justify-content-end">
-                    <a href="" class="btn btn-light me-3">Batal</a>
+                    <a href="{{ route('dana-ru.cadangan-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
                     <button type="submit" form="form_1" class="btn btn-primary">Hantar</button>
                 </div>
             </div>
@@ -228,7 +248,25 @@
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
-
+    var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
+    var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
+    var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null) ?? session()->getOldInput()) !!};
+    console.log(oldInput);
+    var main_dist = oldInput.main_dist;
+    var kpi = oldInput.kpi;
+    if (typeof main_dist !== 'undefined') {
+        main_dist.forEach(function(value, index) {
+            manageKpiItem('main_dist', 'add', null, value);
+        });
+    }
+    if (typeof kpi !== 'undefined') {
+        kpi.forEach(function(value, index) {
+            manageKpiItem('kpi', 'add', null, value);
+        });
+    }
+    console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
+    getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
+    getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
         return function() {
             getChargeline(arguments[0], 'pro');
@@ -245,7 +283,7 @@
 	    labelField: 'title',
     });
 
-    function getProjectList() {
+    function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
         var year = {!! $year !!};
         var oldProject = '';
@@ -262,9 +300,19 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             project_select.addOption({
-                                id: val.id + '_' + val.pro_code + '_' + val.sub_code + '_' + val.fixed_subproject ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.fixed_subproject ,
                                 title: val.title
                             });
+                            if(selectedValue){
+                                var selectedValueArr = selectedValue.split('_');
+                                if(selectedValueArr.length != 4){
+                                    project_select.addOption({id: selectedValue ,title: selectedValue});
+                                    project_select.addItem(selectedValue);
+                                }
+                                else {
+                                    project_select.addItem(selectedValue);
+                                }
+                            }
                             // if(oldProject == val.code) $("#project").append("<option value='" + val.id + "' selected>" + val.title + "</option>");
                             // else $("#project").append("<option value='" + val.id + "'>" + val.title + "</option>");
                         });
@@ -278,8 +326,10 @@
     function getChargeline(value, type) {
         if(type == 'ptj'){
             data = value.split('_');
-            ptj = prependCode(data[1], 7);
-            $('#cl_ptj').val(ptj);
+            if(data.length > 1){
+                ptj = prependCode(data[1], 7);
+                $('#cl_ptj').val(ptj);
+            }
         }
         else if(type == 'pro'){
             if(value.length > 0){
@@ -303,8 +353,8 @@
                 else{
                     $('#cl_pro').val('');
                     $('#cl_sub').val('');
-                    $('#cl_pro').prop('readonly', false);
-                    $('#cl_sub').prop('readonly', false);
+                    $('#cl_pro').prop('readonly', true);
+                    $('#cl_sub').prop('readonly', true);
                 }
             }
             else{
@@ -326,33 +376,52 @@
         return res;
     }
 
-    var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
-    var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
     $(".input-mask").inputmask(); 
-    function manageKpiItem(table, type, that = null) {
+    function manageKpiItem(table, type, that = null, rawData = null) {
         add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
         remove_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>';
         big_add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-6 h-6 me-1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
         if(type == 'add'){
-            var rowCount = $('#'+table+' >tbody >tr').length;
+            var rowCount = $('#'+table+' >tbody >tr:not(".grand-total")').length;
             index = rowCount;
             kpiOptions = '<option value="">--Sila Pilih--</option>';
             if(table == 'main_dist'){
                 mainTemplates.forEach(element => {
-                    kpiOptions += '<option value="'+element.id+'">'+element.title+'</option>'
+                    var _selected = '';
+                    if(rawData){
+                        if(typeof rawData.item !== 'undefined'){
+                            _selected = element.id == rawData.item ? 'selected': '';
+                        }
+                    }
+                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
                 });
             }
             else if(table == 'kpi'){
                 kpiTemplates.forEach(element => {
-                    kpiOptions += '<option value="'+element.id+'">'+element.title+'</option>'
+                    var _selected = '';
+                    if(rawData){
+                        if(typeof rawData.item !== 'undefined'){
+                            _selected = element.id == rawData.item ? 'selected': '';
+                        }
+                    }
+                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
                 });
             }
-            
-            newRowContent = '<tr class="intro-x">'+
-                                '<td class="text-nowrap"><select name="'+table+'_item[]" class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
-                                '<td class="text-nowrap"><input name="'+table+'_bil[]" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
-                                '<td class="text-nowrap"><input name="'+table+'_amount[]" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
-                                '<td class="text-nowrap"><input name="'+table+'_total[]" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+            var bil_data = '';
+            var amount_data = '';
+            var total_data = '';
+            var id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id">';
+            if(rawData){
+                if(rawData.id) id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id" value="'+rawData.id+'">';
+                bil_data = typeof rawData.bil !== 'undefined' ? rawData.bil : '';
+                amount_data = typeof rawData.amount !== 'undefined' ? rawData.amount : '';
+                total_data = typeof rawData.total !== 'undefined' ? rawData.total : '';
+            }
+            newRowContent = '<tr class="intro-x">'+ id_input +
+                                '<td class="text-nowrap"><select name="'+table+'['+index+'][item]" class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'['+index+'][bil]" value="'+bil_data+'" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'['+index+'][amount]" value="'+amount_data+'" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'['+index+'][total]" value="'+total_data+'" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
                                 '<td class="text-nowrap">'+
                                 '<div class="d-flex justify-content-center align-items-center">'+
                                 '<a class="d-flex align-items-center text-theme-10" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'add\')">'+add_icon+'</a>'+
@@ -360,7 +429,7 @@
                                 '</div></td></tr>';
             if(rowCount == 0){
                 $('#'+table+' >tfoot >tr').remove();
-                newRowContent += '<tr class="bg-gray-400 border-b-0">'+
+                newRowContent += '<tr class="grand-total bg-gray-400 border-b-0">'+
                                     '<td class="text-end" colspan="3">JUMLAH KESELURUHAN (RM)</td>'+
                                     '<td class="text-end">'+
                                         '<input name="'+table+'_grand_total" type="text" value="" disabled class="form-control '+table+'_grand_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'">'+
@@ -369,13 +438,14 @@
             } 
             else{
                 $("#"+table+" tbody tr:last").before(newRowContent);
-            }                
+            }           
+            calculate(table);     
             $(".input-mask").inputmask();        
         }
         else if(type == 'remove'){
             that.closest('tr').remove();
-            var rowCount = $('#'+table+' >tbody >tr').length;
-            if(rowCount == 1){
+            var rowCount = $('#'+table+' >tbody >tr:not(".grand-total")').length;
+            if(rowCount == 0){
                 $("#"+table+" tbody tr").remove(); 
                 footerContent = '<tr class="'+table+'-footer-add-button text-center">'+
                                 '<td colspan="5">'+
@@ -383,7 +453,14 @@
                                 '</td></tr>';
                 $('#'+table+' >tfoot').append(footerContent);
             }
-            calculate(table);
+            
+            $('#'+table+' >tbody >tr:not(".grand-total")').each(function(index) {
+                $(this).find('.'+table+'_id').attr('name', table+'['+index+'][id]');
+                $(this).find('.'+table+'_item').attr('name', table+'['+index+'][item]');
+                $(this).find('.'+table+'_bil').attr('name', table+'['+index+'][bil]');
+                $(this).find('.'+table+'_amount').attr('name', table+'['+index+'][amount]');
+                $(this).find('.'+table+'_total').attr('name', table+'['+index+'][total]');
+            });
         }
     }
 
@@ -398,7 +475,7 @@
             grand_total += total;
         });
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
-        $("#total_dist").val(grand_total);
+        if(table == 'main_dist')$("#total_dist").val(grand_total);
     }
 </script>
 @endsection

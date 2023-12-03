@@ -1540,12 +1540,8 @@ class AjaxController extends Controller
     {
         $projects = DruProject::from('dru_projects as pro')
         ->select([
-            DB::raw('UPPER(sub.title) as title'), 'sub.id as id', 'sub.code as sub_code', 'pro.code as pro_code', 'pro.is_fixed_subproject as fixed_subproject'
+            DB::raw('UPPER(pro.title) as title'), 'pro.id as id', 'pro.code as code', DB::raw('IFNULL(pro.code_2, "00000") as code_2'), 'pro.is_fixed_subproject as fixed_subproject'
         ])
-        ->join('dru_sub_projects as sub', function ($join) {
-            $join->on('pro.id', '=', 'sub.project_id')
-                ->where('sub.status','active');
-        })
         ->where('pro.year', $year)->where('pro.program_id', $program_id)->where('pro.status','active')->get();
         return response()->json([
             "result" => $projects

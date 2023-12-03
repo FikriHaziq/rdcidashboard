@@ -18,6 +18,7 @@ class CreateDruProjectsTable extends Migration
             $table->integer('year');
             $table->text('title');
             $table->string('code');
+            $table->string('code_2')->nullable();
             $table->integer('program_id')->nullable();
             $table->string('is_fixed_subproject')->default('N');
             $table->string('type')->default('single');

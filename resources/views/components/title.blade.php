@@ -1,4 +1,4 @@
-<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
+<div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5 mb-6">
     <h2 class="fs-lg fw-medium me-auto">
         {{ $slot }}
     </h2>

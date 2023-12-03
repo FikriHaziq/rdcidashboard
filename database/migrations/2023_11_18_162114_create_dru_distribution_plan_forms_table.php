@@ -20,7 +20,7 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->integer('mrun');
             $table->integer('bpki');
             $table->integer('ptj_id');
-            $table->integer('sub_project_id');
+            $table->integer('project_id');
             $table->decimal('amount', 18, 9);
             $table->text('notes')->nullable();
             $table->timestamps();

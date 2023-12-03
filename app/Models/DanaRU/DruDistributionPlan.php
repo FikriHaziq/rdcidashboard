@@ -4,8 +4,55 @@ namespace App\Models\DanaRU;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ApprovalApp;
 
 class DruDistributionPlan extends Model
 {
     use HasFactory;
+
+    public function log()
+    {
+        return $this->hasMany(ApprovalApp::class, 'app_id')->orderBy('index');
+    }
+
+    public function forms()
+    {
+        return $this->hasMany(DruDistributionPlanForm::class, 'distribution_plan_id');
+    }
+
+    public function infographicData()
+    {
+        $do = 0;
+        $gp = 0;
+        $pp = 0;
+        $total = 0;
+        
+        foreach ($this->forms as $key => $form) {
+            if($form->bpki == 50)$do += $form->amount;
+            elseif($form->bpki == 51)$gp += $form->amount;
+            elseif($form->bpki == 52)$pp += $form->amount;
+            $total += $form->amount;
+        }
+        $do_percent = $do/$this->amount*100;
+        $gp_percent = $gp/$this->amount*100;
+        $pp_percent = $pp/$this->amount*100;
+
+        return $data = [
+            'do'=>$do,
+            'gp'=>$gp,
+            'pp'=>$pp,
+            'do_percent' => $do_percent,
+            'gp_percent' => $gp_percent,
+            'pp_percent' => $pp_percent,
+            'do_color' => $do_percent > 20 ? 6 : 10,
+            'gp_color' => $gp_percent > 60 ? 6 : 10,
+            'pp_color' => $pp_percent > 20 ? 6 : 10,
+            'total' => $total
+        ];
+    }
+
+    public function baselineCost($percent)
+    {
+        return $this->amount * $percent/100;
+    }
 }

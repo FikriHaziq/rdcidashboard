@@ -16,6 +16,7 @@ class CreateDruDistributionPlansTable extends Migration
         Schema::create('dru_distribution_plans', function (Blueprint $table) {
             $table->id();
             $table->integer('year');
+            $table->decimal('amount', 18, 9);
             $table->integer('c_id');
             $table->string('status')->default('draft');
             $table->timestamps();

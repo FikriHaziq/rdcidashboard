@@ -25,9 +25,9 @@ class DruDistributionPlanForm extends Model
         return $this->belongsTo(Parameter::class, 'bpki');
     }
 
-    public function sub_project()
+    public function project()
     {
-        return $this->belongsTo(DruSubProject::class, 'sub_project_id');
+        return $this->belongsTo(DruProject::class, 'project_id');
     }
 
     public function ptj()
@@ -40,29 +40,57 @@ class DruDistributionPlanForm extends Model
         return $this->hasOne(DruMember::class, 'distribution_plan_form_id')->wheretype('leader');
     }
 
-    public function members()
+    public function member()
     {
-        return $this->hasMany(DruMember::class, 'distribution_plan_form_id')->wheretype('member');
-    }
-
-    public function getPtjCodeAttribute()
-    {
-        $length = 7;
-        $ptj_code = $this->ptj->original_code;
-        $res = $ptj_code;
-        for ($i=0; $i < ($length - strlen($ptj_code)); $i++) { 
-            $res .= '0';
-        }
-        return $res;
+        return $this->hasOne(DruMember::class, 'distribution_plan_form_id')->wheretype('member');
     }
 
     public function main_kpi()
     {
-        return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('main');
+        return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('main')->orderBy('id');
     }
 
     public function kpi()
     {
-        return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('kpi');
+        return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('kpi')->orderBy('id');
+    }
+
+    public function getPtjInputDataAttribute()
+    {
+        return $this->ptj ? $code = $this->ptj->id . '_' . $this->ptj->original_code : null;
+    }
+
+    public function getProjectInputDataAttribute()
+    {
+        $project = $this->project;
+        $code_2 = $project->code_2 ?? '00000';
+        return $project->status == 'active' ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->is_fixed_subproject : $project->title;
+    }
+
+    public function getKpiInputDataAttribute()
+    {
+        $data = [
+            'main_dist'=>[],
+            'kpi'=>[],
+        ];
+        foreach ($this->main_kpi as $key => $main_kpi) {
+            array_push($data['main_dist'], [
+                'id' =>$main_kpi->id,
+                'item' =>$main_kpi->kpi_template_id,
+                'bil' =>$main_kpi->count,
+                'amount' =>$main_kpi->amount,
+                'total' =>$main_kpi->total,
+            ]);
+        }
+        foreach ($this->kpi as $key => $kpi) {
+            array_push($data['kpi'][], [
+                'id' =>$kpi->id,
+                'item' =>$kpi->kpi_template_id,
+                'bil' =>$kpi->count,
+                'amount' =>$kpi->amount,
+                'total' =>$kpi->total,
+            ]);
+        }
+        return $data;
     }
 }
