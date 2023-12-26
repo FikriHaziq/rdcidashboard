@@ -33,9 +33,9 @@ class DruDistributionPlan extends Model
             elseif($form->bpki == 52)$pp += $form->amount;
             $total += $form->amount;
         }
-        $do_percent = $do/$this->amount*100;
-        $gp_percent = $gp/$this->amount*100;
-        $pp_percent = $pp/$this->amount*100;
+        $do_percent = $this->amount > 0 ? $do/$this->amount*100 : 0;
+        $gp_percent = $this->amount > 0 ? $gp/$this->amount*100 : 0;
+        $pp_percent = $this->amount > 0 ? $pp/$this->amount*100 : 0;
 
         return $data = [
             'do'=>$do,
