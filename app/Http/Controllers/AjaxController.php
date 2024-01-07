@@ -9,6 +9,7 @@ use App\Models\DataAttachment;
 use App\Models\Parameter;
 use App\Models\MyraCalculation;
 use App\Models\DanaRU\DruProject;
+use App\Models\DanaRU\DruDistributionPlanForm;
 use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
@@ -1546,6 +1547,25 @@ class AjaxController extends Controller
         return response()->json([
             "result" => $projects
         ], 200);
+    }
+
+    public function approveDruDistributionPlanForm(Request $request)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+
+        $plan_form = DruDistributionPlanForm::find($request->plan_id);
+        if($plan_form){
+            $plan_form->approved = 'Y';
+            $plan_form->reference_no = $request->ref_no;
+            $plan_form->save();
+            $status_code = 200;
+            $result = 'Passed';
+        }
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
     }
 
 }

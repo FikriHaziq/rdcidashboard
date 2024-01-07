@@ -5,6 +5,7 @@ namespace App\Models\DanaRU;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ApprovalApp;
+use App\Models\Status;
 
 class DruDistributionPlan extends Model
 {
@@ -18,6 +19,11 @@ class DruDistributionPlan extends Model
     public function forms()
     {
         return $this->hasMany(DruDistributionPlanForm::class, 'distribution_plan_id');
+    }
+
+    public function getStatus()
+    {
+        return $this->belongsTo(Status::class, 'status');
     }
 
     public function infographicData()

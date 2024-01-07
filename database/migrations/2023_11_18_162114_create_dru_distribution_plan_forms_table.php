@@ -23,6 +23,9 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->integer('project_id');
             $table->decimal('amount', 18, 9);
             $table->text('notes')->nullable();
+            $table->string('approved')->default('N');
+            $table->string('broadcast')->default('N');
+            $table->string('reference_no')->nullable();
             $table->timestamps();
         });
     }

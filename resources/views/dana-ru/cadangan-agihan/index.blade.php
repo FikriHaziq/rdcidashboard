@@ -32,26 +32,26 @@
                 <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
                     <ul class="nav nav-pills w-full w-lg-1/2  bg-theme-8 bg-opacity-50 dark-bg-dark-2 rounded-2 p-1" id="pills-tab" role="tablist">
                         <li class="nav-item flex-1" role="presentation">
-                            <button class="nav-link w-full py-1.5 px-2 active" id="list-tab" data-bs-toggle="pill" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="true">Senarai Cadangan Agihan</button>
+                            <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, [null,'list'])) active @endif" id="list-tab" data-bs-toggle="pill" data-bs-target="#list" type="button" role="tab" aria-controls="list" aria-selected="true">Senarai Cadangan Agihan</button>
                         </li>
-                        @if (in_array($plan->status,['submitted']))
+                        @if ((getAccessControl('dru_pca_1') && in_array($plan->status,[2, 3])) || (getAccessControl('dru_pca_2') && in_array($plan->status,[4])))
                         <li class="nav-item flex-1" role="presentation">
-                            <button class="nav-link w-full py-1.5 px-2" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">Pengesahan</button>
+                            <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['verification'])) active @endif" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">Pengesahan {{ $plan->getStatus->next_level_desc }}</button>
                         </li>
                         @endif
                         <li class="nav-item flex-1" role="presentation">
-                            <button class="nav-link w-full py-1.5 px-2" id="timeline-tab" data-bs-toggle="pill" data-bs-target="#timeline" type="button" role="tab" aria-controls="timeline" aria-selected="false">Timeline</button>
+                            <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['timeline'])) active @endif" id="timeline-tab" data-bs-toggle="pill" data-bs-target="#timeline" type="button" role="tab" aria-controls="timeline" aria-selected="false">Timeline</button>
                         </li>
                     </ul>
                 </div>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="p-5 tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+                    <div class="p-5 tab-pane fade show @if(in_array($tab, [null,'list'])) active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
                         <div class="intro-y d-block d-sm-flex align-items-center h-10">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Cadangan Agihan
                             </h2>
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                                @if (in_array($plan->status,['draft', 'amendment']))
+                                @if (in_array($plan->status,[1, 5]))
                                 <a href="{{ route('dana-ru.cadangan-agihan.form') }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                                 <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
@@ -81,7 +81,7 @@
                                         <th class="text-nowrap">KPI {{ $year }}</th>
                                         <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                         <th class="text-nowrap">CATATAN</th>
-                                        @if (in_array($plan->status,['draft', 'amendment', 'verified']))
+                                        @if (in_array($plan->status,[1, 4, 5, 6]))
                                         <th class="text-nowrap"></th>
                                         @endif
                                     </tr>
@@ -110,14 +110,14 @@
                                         <td class="text-nowrap">
                                             {!! $plan_form->notes !!}
                                         </td>
-                                        @if (in_array($plan->status,['draft', 'amendment']))
+                                        @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
                                         <td class="table-report__action text-nowrap">
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
                                                 <a class="d-flex align-items-center text-theme-6" onclick="deleteData({{$plan_form->plan_form_id}})"> <i data-feather="trash-2" class="w-4 h-4 me-1"></i> Delete </a>
                                             </div>
                                         </td>
-                                        @elseif($plan->status == 'verified')
+                                        @elseif(getAccessControl('dru_bca') && in_array($plan->status, [4,6]))
                                         <td class="table-report__action text-nowrap">
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
@@ -134,34 +134,40 @@
                             </table>
                         </div>
                     </div>
-                    @if (in_array($plan->status,['submitted']))
-                    <div class="p-5 tab-pane fade show " id="verification" role="tabpanel" aria-labelledby="verification-tab">
+                    @if (in_array($plan->status,[2, 3, 4]))
+                    <div class="p-5 tab-pane fade show @if(in_array($tab, ['verification'])) active @endif" id="verification" role="tabpanel" aria-labelledby="verification-tab">
                         <div class="intro-y box mt-5">
                             <form action="{{ route('dana-ru.cadangan-agihan.verification.post') }}" method="post" id="verification-form">
                                 @csrf
-                                <div class="px-5 pt-5"> <label for="vertical-form-1" class="form-label">Cabutan Minit</label> </div>
+                                <div class="px-5 pt-5"> <label for="vertical-form-1" class="form-label">Cabutan Minit </label> <span class="text-theme-6">*</span> </div>
                                 <div class="px-5 pb-5">
                                     <input class="filepond" name="file_upload" id="file_upload" type="file" />
+                                    @error('file_upload')<div class="text-theme-6 mt-2 status-error">{{ $message }}</div>@enderror
                                 </div> 
+                                <input type="hidden" name="year" value="{{ $plan->year }}">
                                 <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                                 <div class="px-5">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select id="status" name="status" class="form-select w-1/2"> 
+                                    <label for="status" class="form-label">Status <span class="text-theme-6">*</span></label>
+                                    <select id="status" name="status" class="form-select w-1/2 @error('status') border-theme-6 @enderror"> 
                                         <option value="" selected>--Sila pilih--</option>
-                                        <option value="amendment">Amendment</option>
-                                        <option value="verified">Verified</option>
+                                        @foreach (getStatusOptions($plan->status) as $status)
+                                        <option value="{{ $status->id }}" @if(old('status') == $status->id) selected @endif>{{ $status->name }}</option>
+                                        @endforeach
                                     </select>
-                                    <div class="text-theme-6 mt-2 status-error" style="display: none">Sila pilih status</div>
+                                    @error('status')<div class="text-theme-6 mt-2 status-error">{{ $message }}</div>@enderror
+                                </div>
+                                <div class="px-5 mt-5">
+                                    <label for="comment" class="form-label">Catatan</label>
+                                    <textarea class="form-control" name="comment" id="" rows="10" placeholder="Catatan..."></textarea>
                                 </div>
                             </form>
                             <div class="p-5">                         
-                                {{-- <button class="btn btn-warning" onclick="checkFile()">Check</button> --}}
-                                <button type="button" onclick="submitForm()" class="btn btn-primary">Upload</button>
+                                <button type="submit" form="verification-form" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </div>
                     @endif
-                    <div class="p-5 tab-pane fade show" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                    <div class="p-5 tab-pane fade show @if(in_array($tab, ['timeline'])) active @endif" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
                         <div class="intro-y d-block d-sm-flex align-items-center h-10">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Timeline
@@ -171,9 +177,10 @@
                             <table class="table table-bordered mt-6 ">
                                 <thead class="table-dark border-b-0">
                                     <tr>
-                                        <th class="text-nowrap">No.</th>
+                                        <th class="text-nowrap">NO.</th>
                                         <th class="text-nowrap">STATUS</th>
                                         <th class="text-nowrap">SUPPORTING DOCUMENT</th>
+                                        <th class="text-nowrap">CATATAN</th>
                                         <th class="text-nowrap">DISAHKAN OLEH</th>
                                         <th class="text-nowrap">TARIKH</th>
                                     </tr>
@@ -182,14 +189,15 @@
                                     @forelse ($plan->log as $i=>$log)
                                     <tr class="intro-x">
                                         <td class="text-nowrap">{{ $i+1 }}</td>
-                                        <td class="text-nowrap">{{ strtoupper($log->status) }}</td>
+                                        <td class="text-nowrap">{{ strtoupper($log->getStatus->description ?? $log->getStatus->name) }}</td>
                                         <td class="text-nowrap">
                                             @foreach ($log->files as $file)
                                                 <a href="{{ route('dana-ru.cadangan-agihan.file.download', $file->id) }}" style="color:blue">{{ $file->filename }}</a>
                                             @endforeach
                                         </td>
+                                        <td class="text-nowrap">{{ $log->comment }}</td>
                                         <td class="text-nowrap">{{ strtoupper($log->user->name) }}</td>
-                                        <td class="text-nowrap">{{ date($log->created_at) }}</td>
+                                        <td class="text-nowrap">{{ date($log->created_at) }} <button class="btn btn-sm btn-rounded-primary ms-3">View Log</button></td>
                                     </tr>
                                     @empty
                                     <tr class="intro-x bg-gray-300">
@@ -239,17 +247,6 @@
             }
         },
     });
-
-    function submitForm() {
-        var status = $('#status');
-        if(status.val() == ''){
-            status.addClass('border-theme-6');
-            $('.status-error').show();
-        }
-        else{
-            var x = $('#verification-form').submit();
-        }
-    }
 
     function deleteData(id) {
         swal({

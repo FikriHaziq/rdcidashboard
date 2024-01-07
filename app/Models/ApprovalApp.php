@@ -16,6 +16,11 @@ class ApprovalApp extends Model
         return $this->hasMany(DruDataAttachment::class, 'parent_id');
     }
 
+    public function getStatus()
+    {
+        return $this->belongsTo(Status::class, 'status');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'c_id');

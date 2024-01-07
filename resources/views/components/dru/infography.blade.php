@@ -12,8 +12,10 @@
                 <div class="text-gray-600 dark-text-gray-600 fs-xs">DANA DITERIMA</div>
                 <div class="position-relative fs-3xl mt-2 fw-medium">
                     RM {{ number_format($plan->amount, 2, '.', ',') }}
-                    @if (in_array($plan->status, ['draft','amendment']))
+                    @if (getAccessControl('dru_bca'))
+                    @if (in_array($plan->status, [1,4,5]))
                     <span class="ms-6"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editFund"> <i data-feather="edit" class="w-4 h-4"></i></button></span>                       
+                    @endif
                     @endif
                 </div>
                 <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA TELAH DIAGIH</div>
@@ -21,10 +23,11 @@
                 <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA BELUM DIAGIH</div>
                 <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($plan->amount - $infoData['total']), 2, '.', ',') }} </div>
                 {{-- <div class="report-box-2__indicator bg-theme-9 tooltip cursor-pointer" title="47% Higher than last month"> 47% <i data-feather="chevron-up" class="w-4 h-4 ms-0.5"></i> </div> --}}
-                @if($plan->status == 'draft')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">Draft</div>@endif
-                @if($plan->status == 'submitted')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">Submitted</div>@endif
-                @if($plan->status == 'amendment')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">Amendment</div>@endif
-                @if($plan->status == 'verified')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">Verified</div>@endif
+                @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
             </div>
         </div>
     </div>

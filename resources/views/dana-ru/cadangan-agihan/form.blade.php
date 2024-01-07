@@ -44,7 +44,7 @@
                     </div>
                     <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
                     <div class="g-col-9">
-                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" onchange="getProjectList()">
+                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" @if($plan->status == 6) disabled @endif onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getMrunList() as $mrun)
                                 <option value="{{ $mrun->id }}" @if((old('mrun') ?? ($plan_form->mrun ?? '')) == $mrun->id) selected @endif>{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
@@ -55,10 +55,10 @@
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
-                        <label for="bpki">SKOP PERBELANJAAN</label>
+                        <label for="bpki, #project">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror">
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if($plan->status == 6) disabled @endif>
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
                                 <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
@@ -136,7 +136,7 @@
                         <label for="project">JENIS AGIHAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" autocomplete="off">
+                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" @if($plan->status == 6) disabled @endif autocomplete="off">
                         </select>
                         @error('project')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
@@ -251,12 +251,12 @@
     var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
     var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
     var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null) ?? session()->getOldInput()) !!};
-    console.log(oldInput);
+    var plan_status = {!! $plan->status !!};
     var main_dist = oldInput.main_dist;
     var kpi = oldInput.kpi;
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
-            manageKpiItem('main_dist', 'add', null, value);
+            manageKpiItem('main_dist', 'add', null, value, plan_status);
         });
     }
     if (typeof kpi !== 'undefined') {
@@ -297,26 +297,33 @@
                 success: function(res) {
                     project_select.clear();
                     project_select.clearOptions();
+                    project_select.destroy();
+                    optionsData = [];
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
-                            project_select.addOption({
+                            optionsData.push({
                                 id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.fixed_subproject ,
                                 title: val.title
                             });
                             if(selectedValue){
                                 var selectedValueArr = selectedValue.split('_');
-                                if(selectedValueArr.length != 4){
-                                    project_select.addOption({id: selectedValue ,title: selectedValue});
-                                    project_select.addItem(selectedValue);
-                                }
-                                else {
-                                    project_select.addItem(selectedValue);
-                                }
+                                if(selectedValueArr.length != 4)optionsData.push({id: selectedValue ,title: selectedValue});
                             }
-                            // if(oldProject == val.code) $("#project").append("<option value='" + val.id + "' selected>" + val.title + "</option>");
-                            // else $("#project").append("<option value='" + val.id + "'>" + val.title + "</option>");
                         });
                     }
+                    project_select = new TomSelect("#project",{
+                        create: true,
+                        onChange: eventHandler('onChange'),
+                        options: optionsData,
+                        searchField: "title",
+                        sortField: {
+                            field: "text",
+                            direction: "asc"
+                        },
+                        valueField: 'id',
+                        labelField: 'title',
+                    });
+                    project_select.addItem(selectedValue);
                 },
             });
         } else {
@@ -377,7 +384,7 @@
     }
 
     $(".input-mask").inputmask(); 
-    function manageKpiItem(table, type, that = null, rawData = null) {
+    function manageKpiItem(table, type, that = null, rawData = null, plan_status = null) {
         add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
         remove_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-square w-6 h-6 me-1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>';
         big_add_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-6 h-6 me-1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
@@ -385,6 +392,10 @@
             var rowCount = $('#'+table+' >tbody >tr:not(".grand-total")').length;
             index = rowCount;
             kpiOptions = '<option value="">--Sila Pilih--</option>';
+            edit_main_dist = table == 'main_dist' && plan_status == 6;
+            disabled_prop = edit_main_dist ? 'disabled' : '';
+            readonly_prop = edit_main_dist ? 'readonly' : '';
+            d_none_prop = edit_main_dist ? 'd-none' : '';
             if(table == 'main_dist'){
                 mainTemplates.forEach(element => {
                     var _selected = '';
@@ -418,14 +429,14 @@
                 total_data = typeof rawData.total !== 'undefined' ? rawData.total : '';
             }
             newRowContent = '<tr class="intro-x">'+ id_input +
-                                '<td class="text-nowrap"><select name="'+table+'['+index+'][item]" class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
-                                '<td class="text-nowrap"><input name="'+table+'['+index+'][bil]" value="'+bil_data+'" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
-                                '<td class="text-nowrap"><input name="'+table+'['+index+'][amount]" value="'+amount_data+'" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+                                '<td class="text-nowrap"><select name="'+table+'['+index+'][item]" '+disabled_prop+' class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'['+index+'][bil]" '+readonly_prop+' value="'+bil_data+'" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
+                                '<td class="text-nowrap"><input name="'+table+'['+index+'][amount]" '+readonly_prop+' value="'+amount_data+'" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][total]" value="'+total_data+'" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
                                 '<td class="text-nowrap">'+
                                 '<div class="d-flex justify-content-center align-items-center">'+
-                                '<a class="d-flex align-items-center text-theme-10" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'add\')">'+add_icon+'</a>'+
-                                '<a class="d-flex align-items-center text-theme-6" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'remove\',$(this))">'+remove_icon+'</a>'+
+                                '<a class="d-flex align-items-center text-theme-10 '+d_none_prop+'" style="background-color:white " onclick="manageKpiItem(\''+table+'\', \'add\')">'+add_icon+'</a>'+
+                                '<a class="d-flex align-items-center text-theme-6 '+d_none_prop+'" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'remove\',$(this))">'+remove_icon+'</a>'+
                                 '</div></td></tr>';
             if(rowCount == 0){
                 $('#'+table+' >tfoot >tr').remove();
@@ -477,6 +488,10 @@
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
         if(table == 'main_dist')$("#total_dist").val(grand_total);
     }
+
+    $('form').bind('submit', function () {
+        $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);
+    });
 </script>
 @endsection
 @endcomponent

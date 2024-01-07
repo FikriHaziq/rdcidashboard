@@ -55,17 +55,19 @@
         </x-menu-item> --}}
     </x-menu-item>
     @endif
-    @if(user()->role == 'super_admin')
     <x-menu-item active="dana-ru.*" route="" icon="hard-drive" parent="Dana RU" type="sub">
-        <x-menu-item active="dana-ru.cadangan-agihan.*" route="dana-ru.cadangan-agihan.index">Cadangan Agihan</x-menu-item>
-        <x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Peruntukan Keseluruhan</x-menu-item>
-        <x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Agihan Program</x-menu-item>
+        @if(user()->role == 'super_admin' || getAccessControl('dru_bca'))<x-menu-item active="dana-ru.cadangan-agihan.*" route="dana-ru.cadangan-agihan.index">Cadangan Agihan</x-menu-item>@endif
+        {{-- @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Peruntukan Keseluruhan</x-menu-item>@endif
+        @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Agihan Program</x-menu-item>@endif --}}
+        @if(user()->role == 'super_admin' || getAccessControl('dru_pa'))<x-menu-item active="dana-ru.kewangan.pengesahan-agihan.index" route="dana-ru.kewangan.pengesahan-agihan.index">Pengesahan Agihan</x-menu-item>@endif
+        @if(user()->role == 'super_admin')
         <x-menu-item active="dana-ru.kewangan.perbelanjaan.*" route="" parent="Perincian Perbelanjaan" type="sub">
             <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.program">Program</x-menu-item>
             <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.sub-projek">Sub Projek</x-menu-item>
         </x-menu-item>
+        @endif
+        <x-menu-item active="dana-ru.senarai-agihan.index" route="dana-ru.senarai-agihan.index">Senarai Agihan</x-menu-item>
     </x-menu-item>
-    @endif
     <x-menu-item active="report.*" route="" icon="file-text" parent="Download" type="sub">
         <x-menu-item active="report.myra.index" route="report.myra.index">Masterlist</x-menu-item>
         <x-menu-item active="report.myra.glossary" route="report.myra.glossary">Glossary</x-menu-item>

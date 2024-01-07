@@ -15,82 +15,33 @@ use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class CadanganAgihanController extends Controller
 {
-    public function index(Request $request ,$year=null)
+    public function index(Request $request ,$year=null, $tab=null)
     {
-        DB::statement("SET SQL_MODE=''");
         if(!$year)$year = date('Y');
-        if($request->status == 'submitted'&& $request->role != 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya dihantar");
-        if($request->status == 'verified' && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
-        if($request->status == 'amendment' && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
+        if($request->status == 2 && $request->role != 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya dihantar");
+        if($request->status == 4 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
+        if($request->status == 5 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
         if($request->action == 'save')session()->flash('success', "Data telah berjaya dikemaskini");
         $plan = DruDistributionPlan::where('year', $year)->first();
         // dd($plan->log);
-        $plan_forms = DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
-            ->select([
-                'plan_form.id as plan_form_id',
-                'mrun.parameter_name as mrun_code', 'bpki.parameter_name as bpki_code',
-                'pic.name as pic_name', 'member.name as member_name',
-                'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
-                DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
-                DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
-            ])
-            ->join('dru_distribution_plans as plan', function ($join) use ($year) {
-                $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
-                    ->where('plan.year',$year);
-            })
-            ->join('parameters as mrun', function ($join) {
-                $join->on('mrun.id', '=', 'plan_form.mrun')
-                    ->where('mrun.active','Y');
-            })
-            ->join('parameters as bpki', function ($join) {
-                $join->on('bpki.id', '=', 'plan_form.bpki')
-                    ->where('bpki.active','Y');
-            })
-            ->join('parameters as ptj', function ($join) {
-                $join->on('ptj.id', '=', 'plan_form.ptj_id')
-                    ->where('ptj.active','Y');
-            })
-            ->join('dru_members as pic', function ($join) {
-                $join->on('pic.distribution_plan_form_id', '=', 'plan_form.id')->where('pic.type','leader');
-            })
-            ->leftjoin('dru_members as member', function ($join) {
-                $join->on('member.distribution_plan_form_id', '=', 'plan_form.id')->where('member.type','member');
-            })
-            ->leftjoin('dru_kpis as main_kpi', function ($join) {
-                $join->on('main_kpi.distribution_plan_form_id', '=', 'plan_form.id')
-                ->where('main_kpi.type','main')->where('main_kpi.status','active');
-            })
-            ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
-                $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
-                ->where('main_kpi_template.active','Y');
-            })
-            ->leftjoin('dru_kpis as kpi', function ($join) {
-                $join->on('kpi.distribution_plan_form_id', '=', 'plan_form.id')
-                ->where('kpi.type','kpi')->where('kpi.status','active');
-            })
-            ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
-                $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
-                ->where('kpi_template.active','Y');
-            })
-            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
-            ->groupBy('plan_form.id')->where('plan.year', $year)
-            ->get();
+        $plan_forms = getDistributionFormPlans($year)->get();
             // dd($plan_forms);
         // $plan_forms = DruDistributionPlanForm::get();
 
-        return view('dana-ru.cadangan-agihan.index', compact('year', 'request', 'plan','plan_forms'));
+        return view('dana-ru.cadangan-agihan.index', compact('year', 'request', 'plan', 'plan_forms', 'tab'));
     }
 
     public function form($year=null, $id = null)
     {
         if(!$year)$year = date('Y');
         $plan_form = DruDistributionPlanForm::find($id);
+        $plan = $plan_form->distribution_plan;
         // dd($plan_form->projectInputData);
-        return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form'));
+        return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form', 'plan'));
     }
 
     public function storePlan(Request $request, $year=null)
@@ -107,7 +58,7 @@ class CadanganAgihanController extends Controller
             $plan->year = $year;
             $plan->amount = (float)str_replace( ",", "", $request->fund);
             $plan->c_id = user()->id;
-            $plan->status = 'draft';
+            $plan->status = 1;
             $plan->save();
         }
         else{
@@ -120,7 +71,7 @@ class CadanganAgihanController extends Controller
 
     public function store(Request $request, $year=null)
     {
-        // dd($request->all());
+        dd($request->all());
         $request->validate([
             'mrun' => 'required',
             'bpki' => 'required',
@@ -152,7 +103,7 @@ class CadanganAgihanController extends Controller
             $plan = new DruDistributionPlan;
             $plan->year = $year;
             $plan->c_id = user()->id;
-            $plan->status = 'draft';
+            $plan->status = 1;
             $plan->save();
         }
         $ptj = explode('_',$request->ptj);
@@ -236,6 +187,9 @@ class CadanganAgihanController extends Controller
             array_push($kpi_arr, $kpi_data['id']);
         }
         DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->delete();
+
+        $approvalApp = ApprovalApp::whereAppId($plan->id)->orderBy('index', 'desc')->first();
+        if($approvalApp)storeLogData($plan, $approvalApp->id, 'UPDATE', 'Kemaskini Cadangan Agihan', ['plan_form_id' => $plan_form->id]);
         // dd(DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->get(), $kpi_arr, $request->all());
         // dd(DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->get());
 
@@ -262,10 +216,13 @@ class CadanganAgihanController extends Controller
     public function verification(Request $request, $id, $type)
     {
         $order = ApprovalApp::whereAppId($id)->orderBy('index', 'desc')->first()->index ?? 0;
-        $order++;
-        $status = '';
-        if($type == 'submit') $status = 'submitted';
+        $status = 0;
+        if($type == 'submit') {
+            if($order > 0)$status = 3;
+            else $status = 2;
+        }
         else $status = $request->status;
+        $order++;
         // dd($order);
         $plan = DruDistributionPlan::find($id);
         if($plan){
@@ -278,6 +235,8 @@ class CadanganAgihanController extends Controller
             $approvalApp->save();
             $plan->status = $status;
             $plan->save();
+
+            storeLogData($plan, $approvalApp->id, 'SUBMIT');
         }
         else{
             session()->flash('error', "Something went wrong");
@@ -289,9 +248,20 @@ class CadanganAgihanController extends Controller
 
     public function verificationPost(Request $request)
     {
-        // dd(storage_path());
-        
-
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'file_upload' => 'required',
+            'status' => 'required',
+        ],
+        [
+            'file_upload.required' => 'Sila muat naik cabutan minit.',
+            'status.required' => 'Sila pilih status.',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=>$request->year, 'tab'=>'verification'])
+                ->withErrors($validator)
+                ->withInput();
+        }
         $order = ApprovalApp::whereAppId($request->plan_id)->orderBy('index', 'desc')->first()->index ?? 0;
         $order++;
         $status = $request->status;
@@ -315,7 +285,7 @@ class CadanganAgihanController extends Controller
                 $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
 
                 if($temporaryFile){
-                    $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                    $data->addMedia(storage_path('app/doc/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
                     // unlink(storage_path('app/data/tmp/'.$temporaryFile->folder.'/'.$temporaryFile->filename));
                     // rmdir(storage_path('app/data/tmp/'.$temporaryFile->folder));
                     $temporaryFile->delete();
@@ -328,7 +298,7 @@ class CadanganAgihanController extends Controller
             return back();
         }
         session()->flash('success', "Borang telah berjaya disahkan.");
-        return redirect()->back();
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=>$request->year]);
     }
 
     public function downloadFile($id)
