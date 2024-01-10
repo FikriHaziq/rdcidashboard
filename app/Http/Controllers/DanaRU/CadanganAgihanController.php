@@ -15,6 +15,7 @@ use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Validator;
 
 class CadanganAgihanController extends Controller
@@ -39,7 +40,7 @@ class CadanganAgihanController extends Controller
     {
         if(!$year)$year = date('Y');
         $plan_form = DruDistributionPlanForm::find($id);
-        $plan = $plan_form->distribution_plan;
+        $plan = $plan_form->distribution_plan ?? null;
         // dd($plan_form->projectInputData);
         return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form', 'plan'));
     }
@@ -285,7 +286,8 @@ class CadanganAgihanController extends Controller
                 $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
 
                 if($temporaryFile){
-                    $data->addMedia(storage_path('app/doc/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                    // File::ensureDirectoryExists(storage_path('/app/doc'.$file['folder']));
+                    $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
                     // unlink(storage_path('app/data/tmp/'.$temporaryFile->folder.'/'.$temporaryFile->filename));
                     // rmdir(storage_path('app/data/tmp/'.$temporaryFile->folder));
                     $temporaryFile->delete();
@@ -295,7 +297,7 @@ class CadanganAgihanController extends Controller
         }
         else{
             session()->flash('error', "Something went wrong");
-            return back();
+            // return back();
         }
         session()->flash('success', "Borang telah berjaya disahkan.");
         return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=>$request->year]);

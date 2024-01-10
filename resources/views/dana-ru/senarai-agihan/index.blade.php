@@ -68,32 +68,9 @@
                                 <td class="text-nowrap text-center">
                                     <div class="d-flex">
                                         <a href="{{ route('dana-ru.senarai-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}" class="btn btn-sm btn-rounded-primary" onclick=""><i class="p-1" data-feather="eye"></i></a>
-                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark ms-2">Lampiran A</button>
-                                    </div>
-                                    {{-- <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
-                                        <div class="g-col-9"><input id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control form-control-sm" placeholder="NO. RUJUKAN"></div>
-                                        <div class="g-col-3">
-                                            <button id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">{{ $plan_form->plan_form_ref_no ? 'Update' : 'Approve' }}</button>
-                                            <button id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
-                                            <button id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> {{ $plan_form->plan_form_ref_no ? 'Updated' : 'Approved' }}</button>
-                                            <button id="error_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
-                                        </div>
-                                    </div> --}}
-                                </td>
-                                {{-- @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
-                                <td class="table-report__action text-nowrap">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
-                                        <a class="d-flex align-items-center text-theme-6" onclick="deleteData({{$plan_form->plan_form_id}})"> <i data-feather="trash-2" class="w-4 h-4 me-1"></i> Delete </a>
+                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark ms-2">Lampiran A</a>
                                     </div>
                                 </td>
-                                @elseif(getAccessControl('dru_bca') && in_array($plan->status, [4,6]))
-                                <td class="table-report__action text-nowrap">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
-                                    </div>
-                                </td>
-                                @endif --}}
                             </tr>
                             @empty
                             <tr class="intro-x bg-gray-300">

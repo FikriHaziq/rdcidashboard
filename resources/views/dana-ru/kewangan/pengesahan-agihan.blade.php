@@ -88,7 +88,7 @@
                                 
                                 <td class="text-nowrap text-center" style="min-width: 440px">
                                     <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
-                                        <div class="g-col-9"><input id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control form-control-sm" placeholder="NO. RUJUKAN"></div>
+                                        <div class="g-col-9"><input id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control form-control-sm" placeholder="NO. RUJUKAN PINDAHAN UTMFIN"></div>
                                         <div class="g-col-3">
                                             <button id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">{{ $plan_form->plan_form_ref_no ? 'Update' : 'Approve' }}</button>
                                             <button id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>

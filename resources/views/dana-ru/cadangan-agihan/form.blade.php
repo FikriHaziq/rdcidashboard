@@ -44,7 +44,7 @@
                     </div>
                     <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
                     <div class="g-col-9">
-                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" @if($plan->status == 6) disabled @endif onchange="getProjectList()">
+                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6) disabled @endif onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getMrunList() as $mrun)
                                 <option value="{{ $mrun->id }}" @if((old('mrun') ?? ($plan_form->mrun ?? '')) == $mrun->id) selected @endif>{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
@@ -58,7 +58,7 @@
                         <label for="bpki, #project">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if($plan->status == 6) disabled @endif>
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6) disabled @endif>
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
                                 <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
@@ -136,7 +136,7 @@
                         <label for="project">JENIS AGIHAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" @if($plan->status == 6) disabled @endif autocomplete="off">
+                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" @if(($plan->status ?? 0) == 6) disabled @endif autocomplete="off">
                         </select>
                         @error('project')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
@@ -251,7 +251,7 @@
     var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
     var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
     var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null) ?? session()->getOldInput()) !!};
-    var plan_status = {!! $plan->status !!};
+    var plan_status = {!! ($plan->status ?? 0) !!};
     var main_dist = oldInput.main_dist;
     var kpi = oldInput.kpi;
     if (typeof main_dist !== 'undefined') {
@@ -285,6 +285,7 @@
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
+        console.log(program);
         var year = {!! $year !!};
         var oldProject = '';
         if (program) {
