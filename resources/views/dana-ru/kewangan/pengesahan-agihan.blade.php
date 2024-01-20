@@ -40,11 +40,14 @@
                         Senarai Agihan
                     </h2>
                     <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                        <a href="" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                            Borang Lampiran A
-                            <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="download" class="w-4 h-4"></i> </span>
+                        <a href="" class="btn btn-outline-secondary w-64 position-relative justify-content-start rounded-pill me-4">
+                            Template Borang Lampiran A
+                            <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
                         </a>
-                        <form id="submission-form" action="#" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Broadcast </button></form>
+                        @if($plan_forms_count > 0)
+                        <button type="submit" form="update-plan-form" class="btn btn-primary me-4" name="type" value="update"> Set ALL UTMFIN Ref. No. </button>
+                        <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="approve"> Approve ALL </button>
+                        @endif
                     </div>
                 </div>
                 <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
@@ -65,61 +68,61 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            @forelse ($plan_forms as $i=>$plan_form)
-                            <tr class="intro-x">
-                                <td class="text-nowrap">{{ $i+1 }}</td>
-                                <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
-                                <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
-                                <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
-                                <td class="text-nowrap">{{ $plan_form->member_name }}</td>
-                                <td class="text-nowrap">{{ $plan_form->ptj }}</td>
-                                <td class="text-nowrap">{{ strtoupper($plan_form->pro_title) }} </td>
-                                <td class="text-nowrap">
-                                    @if($plan_form->pro_status == 'active')
-                                    Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
-                                    @endif
-                                </td>
-                                {{-- <td class="text-nowrap">
-                                    {!! $plan_form->main_kpi_details !!}
-                                    <br />
-                                    {!! $plan_form->kpi_details !!}
-                                </td> --}}
-                                <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
-                                
-                                <td class="text-nowrap text-center" style="min-width: 440px">
-                                    <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
-                                        <div class="g-col-9"><input id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control form-control-sm" placeholder="NO. RUJUKAN PINDAHAN UTMFIN"></div>
-                                        <div class="g-col-3">
-                                            <button id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">{{ $plan_form->plan_form_ref_no ? 'Update' : 'Approve' }}</button>
-                                            <button id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
-                                            <button id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> {{ $plan_form->plan_form_ref_no ? 'Updated' : 'Approved' }}</button>
-                                            <button id="error_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
+                            <form id="update-plan-form" action="{{ route('dana-ru.kewangan.pengesahan-agihan.post') }}" method="POST">
+                                @csrf
+                                @forelse ($plan_forms as $i=>$plan_form)
+                                <tr class="intro-x">
+                                    <td class="text-nowrap">{{ $i+1 }}</td>
+                                    <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
+                                    <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
+                                    <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
+                                    <td class="text-nowrap">{{ $plan_form->member_name }}</td>
+                                    <td class="text-nowrap">{{ $plan_form->ptj }}</td>
+                                    <td class="text-nowrap">{{ strtoupper($plan_form->pro_title) }} </td>
+                                    <td class="text-nowrap">
+                                        @if($plan_form->pro_status == 'active')
+                                        Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
+                                        @endif
+                                    </td>
+                                    {{-- <td class="text-nowrap">
+                                        {!! $plan_form->main_kpi_details !!}
+                                        <br />
+                                        {!! $plan_form->kpi_details !!}
+                                    </td> --}}
+                                    <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                    
+                                    <td class="text-nowrap text-center" style="min-width: 450px">
+                                        <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
+                                            <div class="g-col-9">
+                                                <div class="input-group">
+                                                    <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
+                                                    <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') disabled @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
+                                                    @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Set</button>@endif
+                                                </div>
+                                            </div>
+                                            <div class="g-col-3">
+                                                @if($plan_form->plan_form_approved == 'Y')
+                                                <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
+                                                @else
+                                                <button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>
+                                                <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
+                                                <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
+                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="text-nowrap text-center">
-                                    <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i></a>
-                                </td>
-                                {{-- @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
-                                <td class="table-report__action text-nowrap">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
-                                        <a class="d-flex align-items-center text-theme-6" onclick="deleteData({{$plan_form->plan_form_id}})"> <i data-feather="trash-2" class="w-4 h-4 me-1"></i> Delete </a>
-                                    </div>
-                                </td>
-                                @elseif(getAccessControl('dru_bca') && in_array($plan->status, [4,6]))
-                                <td class="table-report__action text-nowrap">
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
-                                    </div>
-                                </td>
-                                @endif --}}
-                            </tr>
-                            @empty
-                            <tr class="intro-x bg-gray-300">
-                                <td class="text-center" colspan="11">No record.</td>
-                            </tr>
-                            @endforelse
+                                    </td>
+                                    <td class="text-nowrap text-center">
+                                        <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr class="intro-x bg-gray-300">
+                                    <td class="text-center" colspan="11">No record.</td>
+                                </tr>
+                                @endforelse
+                            </form>
                         </tbody>
                     </table>
                 </div>
@@ -131,6 +134,31 @@
 @endslot
 @section('custom-js')
 <script>
+    function setRefNo(id){
+        if($('#ref_no_'+id).val() != ''){
+            var data = new FormData();
+            data.append("plan_id", id);
+            data.append("ref_no", $('#ref_no_'+id).val());
+            $.ajax({
+                url: "/ajax/update-utmfin-refno/",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: "post",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res) {
+                    toastr_alert('success', 'UTMFIN Ref. No. is successfully update.')
+                },
+                error: function(data) {
+                    toastr_alert('error', 'Something went wrong.')
+                }
+            });
+        }
+    }
+
     function approve(id){
         if($('#ref_no_'+id).val() != ''){
             $('#ref_no_'+id).removeClass('border-theme-6');
@@ -141,7 +169,6 @@
             var data = new FormData();
             data.append("plan_id", id);
             data.append("ref_no", $('#ref_no_'+id).val());
-            console.log(data);
             $.ajax({
                 url: "/ajax/approve-distribution-plan/",
                 cache: false,

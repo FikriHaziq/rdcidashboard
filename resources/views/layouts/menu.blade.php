@@ -63,7 +63,6 @@
         @if(user()->role == 'super_admin')
         <x-menu-item active="dana-ru.kewangan.perbelanjaan.*" route="" parent="Perincian Perbelanjaan" type="sub">
             <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.program">Program</x-menu-item>
-            <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.sub-projek">Sub Projek</x-menu-item>
         </x-menu-item>
         @endif
         <x-menu-item active="dana-ru.senarai-agihan.index" route="dana-ru.senarai-agihan.index">Senarai Agihan</x-menu-item>

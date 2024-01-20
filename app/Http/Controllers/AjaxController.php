@@ -1568,4 +1568,21 @@ class AjaxController extends Controller
         ], $status_code);
     }
 
+    public function updateUtmFinRefNo(Request $request)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+
+        $plan_form = DruDistributionPlanForm::find($request->plan_id);
+        if($plan_form){
+            $plan_form->reference_no = $request->ref_no;
+            $plan_form->save();
+            $status_code = 200;
+            $result = 'Passed';
+        }
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
+    }
 }

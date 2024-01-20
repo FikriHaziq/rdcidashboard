@@ -22,16 +22,16 @@
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Program
                             </h2>
-                            <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
+                            {{-- <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
                                 Jana Borang Lampiran A
                                 <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="upload" class="w-4 h-4"></i> </span>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                            <a href="{{ route('dana-ru.kewangan.perbelanjaan.sub-projek') }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
+                            {{-- <a href="{{ route('dana-ru.kewangan.perbelanjaan.sub-projek') }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
                                 Pergi ke Sub Projek
                                 <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="arrow-right" class="w-4 h-4"></i> </span>
-                            </a>
+                            </a> --}}
                             {{-- @if (in_array($plan->status,['draft', 'amendment']))
                             <a href="{{ route('dana-ru.cadangan-agihan.form') }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                             <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
@@ -58,55 +58,31 @@
                                     <th class="text-nowrap">TITLE</th>
                                     <th class="text-nowrap">ALLOCATION (RM)</th>
                                     <th class="text-nowrap">EXPENSES (RM)</th>
+                                    <th class="text-nowrap">BALANCES (RM)</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
-                                {{-- @forelse ($plan->log as $i=>$log)
-                                <tr class="intro-x">
-                                    <td class="text-nowrap">{{ $i+1 }}</td>
-                                    <td class="text-nowrap">{{ strtoupper($log->status) }}</td>
-                                    <td class="text-nowrap">
-                                        @foreach ($log->files as $file)
-                                            <a href="{{ route('dana-ru.cadangan-agihan.file.download', $file->id) }}" style="color:blue">{{ $file->filename }}</a>
-                                        @endforeach
+                                @forelse ($plan_forms as $i=>$plan_form)
+                                <td class="text-center">{{$i}}</td>
+                                    <td class="text-center">{{ $plan_form->mrun_code }}</td>
+                                    <td class="text-center">{{ $plan_form->bpki_code }}</td>
+                                    <td class="text-center">
+                                        @if($plan_form->pro_status == 'active')
+                                        Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
+                                        @endif
                                     </td>
-                                    <td class="text-nowrap">{{ strtoupper($log->user->name) }}</td>
-                                    <td class="text-nowrap">{{ date($log->created_at) }}</td>
-                                </tr>
+                                    <td class="text-center">{{ $plan_form->pro_title }}</td>
+                                    <td class="text-nowrap">{{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                    <td class="text-nowrap text-theme-10">{{ number_format($plan_form->total_expenses, 2, '.', ',') }}</td>
+                                    @php
+                                        $balance = $plan_form->plan_form_amount - $plan_form->total_expenses;
+                                    @endphp
+                                    <td class="text-nowrap {{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">{{ number_format($balance, 2, '.', ',') }}</td>
                                 @empty
                                 <tr class="intro-x bg-gray-300">
-                                    <td class="text-center" colspan="11">No record.</td>
+                                    <td class="text-center" colspan="8">No record.</td>
                                 </tr>
-                                @endforelse --}}
-                                @for ($i = 1; $i < 21; $i += 3)
-                                <tr>
-                                    <td class="text-center">{{$i}}</td>
-                                    <td class="text-center">TD</td>
-                                    <td class="text-center">DO</td>
-                                    <td class="text-center">21A1.00A00</td>
-                                    <td class="text-center">SKIM ZAMALAH</td>
-                                    <td class="text-center">2,800,000.00</td>
-                                    <td class="text-center">2,800,000.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">{{$i + 1}}</td>
-                                    <td class="text-center">TD</td>
-                                    <td class="text-center">DO</td>
-                                    <td class="text-center">21A1.00A00</td>
-                                    <td class="text-center">SKIM ZAMALAH</td>
-                                    <td class="text-center">2,800,000.00</td>
-                                    <td class="text-center">2,800,000.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">{{$i + 2}}</td>
-                                    <td class="text-center">TD</td>
-                                    <td class="text-center">DO</td>
-                                    <td class="text-center">21A1.00A00</td>
-                                    <td class="text-center">SKIM ZAMALAH</td>
-                                    <td class="text-center">2,800,000.00</td>
-                                    <td class="text-center text-theme-6">3,800,000.00</td>
-                                </tr>
-                                @endfor
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

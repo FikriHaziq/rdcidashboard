@@ -15,7 +15,7 @@ class DocGeneratorController extends Controller
         DB::statement("SET SQL_MODE=''");
         $form = DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
         ->select([
-            'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.updated_at as plan_form_updated_at',
+            'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.updated_at as plan_form_updated_at', 'plan_form.pic_declaration_date as plan_form_declaration_date',
             'mrun.description_1 as mrun_desc', 'bpki.parameter_name as bpki_code',
             'pic.name as pic_name', 'member.name as member_name',
             'ptj.description_1 as ptj','ptj.original_code as ptj_code',
@@ -71,21 +71,6 @@ class DocGeneratorController extends Controller
             $filename = 'Q_'. getAppendedPtjCode($form->ptj_code, 7) . '_' . $form->pro_code . '_' . getProjectSecondCode($form->pro_code_2).'_'.date('d_m_Y');
         }
 
-        // dd($filename);
-        // $data = [
-        //     "ptj_pic" => $form->ptj,
-        //     "mrun" => $form->mrun_desc,
-        //     "project" => $form->pro_title,
-        //     "chargeline" => $chargeline,
-        //     "ref_no" => $form->plan_form_ref_no,
-        //     "amount" => number_format($form->plan_form_amount, 2, '.', ','),
-        //     "main_dist" => $main_dist,
-        //     "pic_name" => $form->pic_name,
-        //     "member_name" => $form->member_name,
-        //     "year" => $form->plan_year,
-        //     "updated_at" => date('j/n/Y', strtotime($form->plan_form_updated_at)),
-        // ];
-        // dd($data);
         $templateProcessor = new TemplateProcessor('wordTemplate/lampiran_a_template.docx');
         $templateProcessor->setValue("ptj_pic", $form->ptj);
         $templateProcessor->setValue("mrun", $form->mrun_desc);
@@ -97,7 +82,7 @@ class DocGeneratorController extends Controller
         $templateProcessor->setValue("pic_name", $form->pic_name);
         $templateProcessor->setValue("member_name", $form->member_name);
         $templateProcessor->setValue("year", $form->plan_year);
-        $templateProcessor->setValue("updated_at", date('j/n/Y', strtotime($form->plan_form_updated_at)));
+        $templateProcessor->setValue("updated_at", $form->plan_form_declaration_date ? date('j/n/Y', strtotime($form->plan_form_declaration_date)): '');
 
         File::ensureDirectoryExists(storage_path('/app/data/doc'));
         File::cleanDirectory(storage_path('/app/data/doc'));

@@ -26,6 +26,7 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->string('approved')->default('N');
             $table->string('broadcast')->default('N');
             $table->string('reference_no')->nullable();
+            $table->datetime('pic_declaration_date')->nullable();
             $table->timestamps();
         });
     }

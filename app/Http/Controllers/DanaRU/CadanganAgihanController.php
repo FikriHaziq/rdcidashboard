@@ -72,7 +72,6 @@ class CadanganAgihanController extends Controller
 
     public function store(Request $request, $year=null)
     {
-        dd($request->all());
         $request->validate([
             'mrun' => 'required',
             'bpki' => 'required',

@@ -35,7 +35,7 @@
 <x-title>Borang Agihan {{ $year }}</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
     <div class="intro-y col-12 col-xl-8">
-        <form id="form_1" action="" method="post">
+        <form id="form_1" action="{{ route('dana-ru.senarai-agihan.kpi-update', $plan_form->id) }}" method="post">
         @csrf
             <div class="intro-y box p-5">
                 <div class="grid columns-12 gap-6 pb-2">
@@ -227,7 +227,7 @@
                 <hr class="mt-3">
                 <div class="grid columns-12 gap-6 mt-3 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
-                        <label for="kpi">KPI Yang Telah Dicapai</label>
+                        <label for="mykpi">KPI Yang Telah Dicapai</label>
                     </div>
                     <div class="g-col-9">
                         <div class="intro-y overflow-x-auto">
@@ -244,7 +244,7 @@
                                 <tbody class="bg-white">
                                 </tbody>
                                 <tfoot class="bg-white">
-                                    <tr class="kpi-footer-add-button intro-x text-center">
+                                    <tr class="mykpi-footer-add-button intro-x text-center">
                                         <td colspan="5">
                                             <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('mykpi', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
                                         </td>
@@ -256,17 +256,37 @@
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="total_fund">JUMLAH DANA</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group">
+                            <div class="input-group-text">RM</div> <input id="total_fund" name="total_fund" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="total_expenses">PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
                         <div class="input-group">
-                            <div class="input-group-text">RM</div> <input id="total_expenses" name="total_expenses" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+                            <div class="input-group-text">RM</div> <input id="total_expenses" name="total_expenses" type="text" class="form-control input-mask text-theme-10" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="balance">BAKI DANA</label>
+                    </div>
+                    <div class="g-col-9">
+                        <div class="input-group">
+                            <div class="input-group-text">RM</div> <input id="balance" name="balance" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
                         </div>
                     </div>
                 </div>
                 <div class="mt-5 d-flex justify-content-end">
                     <a href="{{ route('dana-ru.senarai-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
-                    <button type="button" form="form_1" class="btn btn-primary">Simpan</button>
+                    <button type="submit" form="form_1" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
         </form>
@@ -286,6 +306,8 @@
     var plan_status = {!! $plan->status !!};
     var main_dist = oldInput.main_dist;
     var kpi = oldInput.kpi;
+    var mykpi = oldInput.pic_kpi;
+    console.log(mykpi);
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
             manageKpiItem('main_dist', 'add', null, value, plan_status);
@@ -294,6 +316,11 @@
     if (typeof kpi !== 'undefined') {
         kpi.forEach(function(value, index) {
             manageKpiItem('kpi', 'add', null, value);
+        });
+    }
+    if (typeof mykpi !== 'undefined') {
+        mykpi.forEach(function(value, index) {
+            manageKpiItem('mykpi', 'add', null, value);
         });
     }
     console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
@@ -529,8 +556,22 @@
             grand_total += total;
         });
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
-        if(table == 'main_dist')$("#total_dist").val(grand_total);
-        else if(table == 'mykpi')$("#total_expenses").val(grand_total);
+        if(table == 'main_dist')$("#total_dist, #total_fund").val(grand_total);
+        else if(table == 'mykpi'){
+            $("#total_expenses").val(grand_total);
+            var total_fund = parseFloat($("#total_fund").val().replaceAll(',',''));
+            var balance = total_fund - grand_total;
+            $("#balance").val(balance);
+            if(balance > 0){
+                $("#balance").addClass('text-theme-9');
+                $("#balance").removeClass('text-theme-6');
+            }
+            else if(balance < 0){
+                $("#balance").removeClass('text-theme-9');
+                $("#balance").addClass('text-theme-6');
+            }
+            else $("#balance").addClass('text-theme-6 text-theme-9');
+        }
     }
 
     $('form').bind('submit', function () {

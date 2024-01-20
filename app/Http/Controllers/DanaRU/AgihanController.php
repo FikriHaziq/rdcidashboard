@@ -5,6 +5,8 @@ namespace App\Http\Controllers\DanaRU;
 use App\Http\Controllers\Controller;
 use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
+use App\Models\DanaRU\DruKpiPic;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AgihanController extends Controller
@@ -13,10 +15,70 @@ class AgihanController extends Controller
     {
         if(!$year)$year = date('Y');
         $plan = DruDistributionPlan::where('year', $year)->first();
-        $plan_forms = getDistributionFormPlans($year)->where('pic.email', user()->email)->get();
+        $plan_forms = getDistributionFormPlans($year)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
         // $plan_forms = DruDistributionPlanForm::get();
-
         return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plan', 'plan_forms'));
+    }
+
+    public function show($plan_id)
+    {
+        DB::statement("SET SQL_MODE=''");
+        $plan_form = DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+            ->select([
+                'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.updated_at as plan_form_updated_at', 'plan_form.pic_declaration_date as plan_form_declaration_date',
+                'mrun.description_1 as mrun_desc', 'bpki.parameter_name as bpki_code',
+                'pic.name as pic_name', 'member.name as member_name',
+                'ptj.description_1 as ptj','ptj.original_code as ptj_code',
+                DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
+                DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
+                DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
+                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+            ])
+            ->join('dru_distribution_plans as plan', function ($join) {
+                $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
+            })
+            ->join('parameters as mrun', function ($join) {
+                $join->on('mrun.id', '=', 'plan_form.mrun')
+                    ->where('mrun.active','Y');
+            })
+            ->join('parameters as bpki', function ($join) {
+                $join->on('bpki.id', '=', 'plan_form.bpki')
+                    ->where('bpki.active','Y');
+            })
+            ->join('parameters as ptj', function ($join) {
+                $join->on('ptj.id', '=', 'plan_form.ptj_id')
+                    ->where('ptj.active','Y');
+            })
+            ->join('dru_members as pic', function ($join) {
+                $join->on('pic.distribution_plan_form_id', '=', 'plan_form.id')->where('pic.type','leader');
+            })
+            ->leftjoin('dru_members as member', function ($join) {
+                $join->on('member.distribution_plan_form_id', '=', 'plan_form.id')->where('member.type','member');
+            })
+            ->leftjoin('dru_kpis as main_kpi', function ($join) {
+                $join->on('main_kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('main_kpi.type','main')->where('main_kpi.status','active');
+            })
+            ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
+                $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
+                ->where('main_kpi_template.active','Y');
+            })
+            ->leftjoin('dru_kpis as kpi', function ($join) {
+                $join->on('kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('kpi.type','kpi')->where('kpi.status','active');
+            })
+            ->leftjoin('dru_kpi_pics as kpi_pic', function ($join) {
+                $join->on('kpi_pic.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('kpi_pic.status','active');
+            })
+            ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
+                ->where('kpi_template.active','Y');
+            })
+            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+            ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
+        dd($plan_form);
+        return view('dana-ru.senarai-agihan.show', compact('plan_form'));
     }
 
     public function form($year=null, $id = null)
@@ -24,7 +86,37 @@ class AgihanController extends Controller
         if(!$year)$year = date('Y');
         $plan_form = DruDistributionPlanForm::find($id);
         $plan = $plan_form->distribution_plan;
-        // dd($plan_form->projectInputData);
         return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'plan'));
+    }
+
+    public function declare($plan_id)
+    {
+        $plan_form = DruDistributionPlanForm::find($plan_id);
+        $plan_form->pic_declaration_date = now();
+        $plan_form->save();
+        session()->flash('success', "Lampiran A telah berjaya disahkan.");
+        return back();
+    }
+
+    public function kpiUpdate($plan_id, Request $request)
+    {
+        $kpi_arr = [];
+        foreach (($request->mykpi ?? []) as $key => $kpi_data) {
+            if($kpi_data['id'])$kpi = DruKpiPic::find($kpi_data['id']);
+            else $kpi = new DruKpiPic;
+            $kpi->distribution_plan_form_id = $plan_id;
+            $kpi->kpi_template_id = $kpi_data['item'];
+            $kpi->count = $kpi_data['bil'];
+            $kpi->amount = (float)str_replace( ",", "", $kpi_data['amount']);
+            $kpi->total = (float)str_replace( ",", "", $kpi_data['total']);
+            $kpi->status = 'active';
+            $kpi->c_id = user()->id;
+            $kpi->save();
+            array_push($kpi_arr, $kpi_data['id']);
+        }
+        DruKpiPic::whereDistributionPlanFormId($plan_id)->whereNotIn('id', $kpi_arr)->delete();
+
+        session()->flash('success', "KPI telah berjaya disimpan.");
+        return back();
     }
 }

@@ -34,7 +34,9 @@
                                 <th class="text-nowrap">JENIS AGIHAN</th>
                                 <th class="text-nowrap">CHARGELINE</th>
                                 <th class="text-nowrap">KPI {{ $year }}</th>
-                                <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
+                                <th class="text-nowrap">PERUNTUKAN AGIHAN {{ $year }}</th>
+                                <th class="text-nowrap">PERBELANJAAN {{ $year }}</th>
+                                <th class="text-nowrap">BAKI PERUNTUKAN {{ $year }}</th>
                                 {{-- <th class="text-nowrap">CATATAN</th> --}}
                                 {{-- @if (in_array($plan->status,[1, 4, 5, 6])) --}}
                                 <th class="text-nowrap"></th>
@@ -62,19 +64,24 @@
                                     {!! $plan_form->kpi_details !!}
                                 </td>
                                 <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                <td class="text-nowrap text-theme-10">RM {{ number_format($plan_form->total_expenses, 2, '.', ',') }}</td>
+                                @php
+                                    $balance = $plan_form->plan_form_amount - $plan_form->total_expenses;
+                                @endphp
+                                <td class="text-nowrap {{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">RM {{ number_format($balance, 2, '.', ',') }}</td>
                                 {{-- <td class="text-nowrap">
                                     {!! $plan_form->notes !!}
                                 </td> --}}
                                 <td class="text-nowrap text-center">
                                     <div class="d-flex">
-                                        <a href="{{ route('dana-ru.senarai-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}" class="btn btn-sm btn-rounded-primary" onclick=""><i class="p-1" data-feather="eye"></i></a>
-                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark ms-2">Lampiran A</a>
+                                        <a href="{{ route('dana-ru.senarai-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark">Lampiran A</a>
+                                        @if($plan_form->plan_form_declaration_date)<a href="{{ route('dana-ru.senarai-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}" class="btn btn-sm btn-rounded-primary ms-2"><i class="p-1" data-feather="eye"></i></a>@endif
                                     </div>
                                 </td>
                             </tr>
                             @empty
                             <tr class="intro-x bg-gray-300">
-                                <td class="text-center" colspan="11">No record.</td>
+                                <td class="text-center" colspan="13">No record.</td>
                             </tr>
                             @endforelse
                         </tbody>

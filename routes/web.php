@@ -145,6 +145,9 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     Route::name('kewangan.')->prefix('kewangan')->group(function(){
         Route::name('overall')->get('/overall', [FinancialController::class, 'overall']);
         Route::name('pengesahan-agihan.index')->get('/pengesahan-agihan/index/{year?}', [FinancialController::class, 'pengesahanAgihanIndex']);
+        Route::name('pengesahan-agihan.show')->get('/pengesahan-agihan/show/{plan_id}', [FinancialController::class, 'pengesahanAgihanShow']);
+        Route::name('pengesahan-agihan.approve')->post('/pengesahan-agihan/approve/{plan_id}', [FinancialController::class, 'pengesahanAgihanSingleApprove']);
+        Route::name('pengesahan-agihan.post')->post('/pengesahan-agihan/post', [FinancialController::class, 'pengesahanAgihanPost']);
         Route::name('agihan-program.index')->get('/agihan-program/index', [FinancialController::class, 'agihanProgramIndex']);
         Route::name('perbelanjaan.')->prefix('perbelanjaan')->group(function(){
             Route::name('program')->get('/program/{year?}', [FinancialController::class, 'program']);
@@ -154,7 +157,10 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
 
     Route::name('senarai-agihan.')->prefix('senarai-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}', [AgihanController::class, 'index']);
+        Route::name('show')->get('/show/{plan_id}', [AgihanController::class, 'show']);
         Route::name('form')->get('/form/{year?}/{id?}', [AgihanController::class, 'form']);
+        Route::name('declare')->post('/declare/{plan_id}', [AgihanController::class, 'declare']);
+        Route::name('kpi-update')->post('/kpi-update/{plan_id}', [AgihanController::class, 'kpiUpdate']);
     });
 
     // });
@@ -192,4 +198,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("getSchool")->get('getSchool/{faculty_id}', [AjaxController::class, 'getSchool']);
     Route::name("getProjectList")->get('getProjectList/{program_id}/{year}', [AjaxController::class, 'getProjectList']);
     Route::name("approveDruDistributionPlanForm")->post('approve-distribution-plan', [AjaxController::class, 'approveDruDistributionPlanForm']);
+    Route::name("updateUtmFinRefNo")->post('update-utmfin-refno', [AjaxController::class, 'updateUtmFinRefNo']);
 });

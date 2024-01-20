@@ -55,6 +55,11 @@ class DruDistributionPlanForm extends Model
         return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('kpi')->orderBy('id');
     }
 
+    public function pic_kpi()
+    {
+        return $this->hasMany(DruKpiPic::class, 'distribution_plan_form_id')->whereStatus('active')->orderBy('id');
+    }
+
     public function getPtjInputDataAttribute()
     {
         return $this->ptj ? $code = $this->ptj->id . '_' . $this->ptj->original_code : null;
@@ -72,6 +77,7 @@ class DruDistributionPlanForm extends Model
         $data = [
             'main_dist'=>[],
             'kpi'=>[],
+            'pic_kpi'=>[],
         ];
         foreach ($this->main_kpi as $key => $main_kpi) {
             array_push($data['main_dist'], [
@@ -83,12 +89,21 @@ class DruDistributionPlanForm extends Model
             ]);
         }
         foreach ($this->kpi as $key => $kpi) {
-            array_push($data['kpi'][], [
+            array_push($data['kpi'], [
                 'id' =>$kpi->id,
                 'item' =>$kpi->kpi_template_id,
                 'bil' =>$kpi->count,
                 'amount' =>$kpi->amount,
                 'total' =>$kpi->total,
+            ]);
+        }
+        foreach ($this->pic_kpi as $key => $pic_kpi) {
+            array_push($data['pic_kpi'], [
+                'id' =>$pic_kpi->id,
+                'item' =>$pic_kpi->kpi_template_id,
+                'bil' =>$pic_kpi->count,
+                'amount' =>$pic_kpi->amount,
+                'total' =>$pic_kpi->total,
             ]);
         }
         return $data;
