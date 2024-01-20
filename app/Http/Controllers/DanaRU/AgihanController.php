@@ -77,7 +77,7 @@ class AgihanController extends Controller
             })
             ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
-        dd($plan_form);
+        // dd($plan_form);
         return view('dana-ru.senarai-agihan.show', compact('plan_form'));
     }
 
