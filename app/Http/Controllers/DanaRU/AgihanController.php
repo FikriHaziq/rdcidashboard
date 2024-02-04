@@ -7,16 +7,23 @@ use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruKpiPic;
 use Illuminate\Support\Facades\DB;
+use App\Models\DanaRU\DruDataAttachment;
+use App\Models\TemporaryFile;
+use App\Models\ApprovalApp;
+use Illuminate\Support\Facades\File;
+use Validator;
 use Illuminate\Http\Request;
 
 class AgihanController extends Controller
 {
     public function index(Request $request ,$year=null)
     {
-        if(!$year)$year = date('Y');
+        if(!$year){
+            $plan = DruDistributionPlan::orderBy('year', 'desc')->first();
+            $year = $plan->year ?? date('Y');
+        }
         $plan = DruDistributionPlan::where('year', $year)->first();
         $plan_forms = getDistributionFormPlans($year)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
-        // $plan_forms = DruDistributionPlanForm::get();
         return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plan', 'plan_forms'));
     }
 
@@ -81,12 +88,13 @@ class AgihanController extends Controller
         return view('dana-ru.senarai-agihan.show', compact('plan_form'));
     }
 
-    public function form($year=null, $id = null)
+    public function form($year=null, $id = null, $tab = null)
     {
         if(!$year)$year = date('Y');
         $plan_form = DruDistributionPlanForm::find($id);
         $plan = $plan_form->distribution_plan;
-        return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'plan'));
+        $edit = in_array($plan_form->pic_submission_status, [null, 10, 11]);
+        return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'plan', 'tab', 'edit'));
     }
 
     public function declare($plan_id)
@@ -100,6 +108,53 @@ class AgihanController extends Controller
 
     public function kpiUpdate($plan_id, Request $request)
     {
+        $request->validate([
+            'justification' => 'required',
+            'mykpi' => 'required',
+            'file_upload' => 'required',
+        ],
+        [
+            'justification.required' => 'Sila masukkan justifikasi.',
+            'mykpi.required' => 'Sila masukkan KPI.',
+            'file_upload.required' => 'Sila muat naik bukti.',
+        ]);
+
+        $order = ApprovalApp::whereAppId($plan_id)->whereModuleId(2)->orderBy('index', 'desc')->first()->index ?? 0;
+        $order++;
+        $status = 8;
+        $plan_form = DruDistributionPlanForm::find($plan_id);
+        if($plan_form){
+            $approvalApp = new ApprovalApp;
+            $approvalApp->index = $order;
+            $approvalApp->module_id = 2;
+            $approvalApp->app_id = $plan_form->id;
+            $approvalApp->c_id = user()->id;
+            $approvalApp->status = $status;
+            $approvalApp->save();
+            $plan_form->pic_justification = $request->justification;
+            $plan_form->pic_submission_status = $status;
+            $plan_form->commitment = (float)str_replace( ",", "", $request->commitment);
+            $plan_form->save();
+
+            foreach ($plan_form->pic_evidences as $key => $evidence) {
+                $evidence->is_active = 'N';
+                $evidence->save();
+            }
+            
+            foreach ($request->file_upload as $key => $file) {
+                $data = new DruDataAttachment;
+                $data->table = 'plan_form';
+                $data->parent_id = $plan_form->id;
+                $fileRaw = collect(json_decode($file));
+                $data->filename = $fileRaw[0]->filename;
+                $temporaryFile = TemporaryFile::where('folder', $fileRaw[0]->folder)->first();
+                if($temporaryFile){
+                    $data->addMedia(storage_path('app/data/tmp/'.$fileRaw[0]->folder.'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                    $temporaryFile->delete();
+                }
+                $data->save();
+            }
+        }
         $kpi_arr = [];
         foreach (($request->mykpi ?? []) as $key => $kpi_data) {
             if($kpi_data['id'])$kpi = DruKpiPic::find($kpi_data['id']);
@@ -115,6 +170,7 @@ class AgihanController extends Controller
             array_push($kpi_arr, $kpi_data['id']);
         }
         DruKpiPic::whereDistributionPlanFormId($plan_id)->whereNotIn('id', $kpi_arr)->delete();
+        // storeLogData($plan, $approvalApp->id, 'SUBMIT');
 
         session()->flash('success', "KPI telah berjaya disimpan.");
         return back();

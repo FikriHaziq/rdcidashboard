@@ -237,6 +237,7 @@ if (!function_exists('getStatusOptions')) {
     {
         if(in_array($pending_status, [2, 3]))return \App\Models\Status::whereIn('id', [4,5])->orderBy('sort')->get();
         else if(in_array($pending_status, [4]))return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
+        else if(in_array($pending_status, [8, 9]))return \App\Models\Status::whereIn('id', [10,11])->orderBy('sort')->get();
     }
 }
 
@@ -263,6 +264,7 @@ if (!function_exists('storeLogData')) {
                 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
+                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(pic_kpi_template.title,": RM", FORMAT(pic_kpi.amount, 2), " x ", pic_kpi.count, " = RM", FORMAT(pic_kpi.total, 2))) ORDER BY pic_kpi.id ASC SEPARATOR "<br>") as pic_kpi_details'),
                 'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($plan) {
@@ -303,6 +305,14 @@ if (!function_exists('storeLogData')) {
                 $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
                 ->where('kpi_template.active','Y');
             })
+            ->leftjoin('dru_kpi_pics as pic_kpi', function ($join) {
+                $join->on('pic_kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('pic_kpi.status','active');
+            })
+            ->leftjoin('dru_kpi_templates as pic_kpi_template', function ($join) {
+                $join->on('pic_kpi_template.id', '=', 'pic_kpi.kpi_template_id')
+                ->where('pic_kpi_template.active','Y');
+            })
             ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan.year', $plan->year)
             ->get();
@@ -322,6 +332,7 @@ if (!function_exists('storeLogData')) {
                 'chargeline' => $plan_form->pro_status == 'active' ? 'Q'.getAppendedPtjCode($plan_form->ptj_code, 7).'.'. $plan_form->pro_code .'.'. getProjectSecondCode($plan_form->pro_code_2) : '',
                 'main_kpi_details' => $plan_form->main_kpi_details,
                 'kpi_details' => $plan_form->kpi_details,
+                'pic_kpi_details' => $plan_form->pic_kpi_details,
                 'amount' => number_format($plan_form->plan_form_amount, 2, '.', ','),
                 'notes' => $plan_form->notes,
             ];
@@ -343,14 +354,15 @@ if (!function_exists('getDistributionFormPlans')) {
         \Illuminate\Support\Facades\DB::statement("SET SQL_MODE=''");
         return \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
             ->select([
-                'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date',
+                'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                 'mrun.parameter_name as mrun_code', 'bpki.parameter_name as bpki_code',
                 'pic.name as pic_name', 'member.name as member_name',
+                'pic_status.description as pic_submission_status_label',
                 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                 \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -389,6 +401,9 @@ if (!function_exists('getDistributionFormPlans')) {
             ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
                 $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
                 ->where('kpi_template.active','Y');
+            })
+            ->leftjoin('statuses as pic_status', function ($join) {
+                $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
             })
             ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan.year', $year);

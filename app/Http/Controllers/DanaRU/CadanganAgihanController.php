@@ -22,7 +22,10 @@ class CadanganAgihanController extends Controller
 {
     public function index(Request $request ,$year=null, $tab=null)
     {
-        if(!$year)$year = date('Y');
+        if(!$year){
+            $plan = DruDistributionPlan::orderBy('year', 'desc')->first();
+            $year = $plan->year ?? date('Y');
+        }
         if($request->status == 2 && $request->role != 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya dihantar");
         if($request->status == 4 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
         if($request->status == 5 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
@@ -188,7 +191,7 @@ class CadanganAgihanController extends Controller
         }
         DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->delete();
 
-        $approvalApp = ApprovalApp::whereAppId($plan->id)->orderBy('index', 'desc')->first();
+        $approvalApp = ApprovalApp::whereAppId($plan->id)->whereModuleId(1)->orderBy('index', 'desc')->first();
         if($approvalApp)storeLogData($plan, $approvalApp->id, 'UPDATE', 'Kemaskini Cadangan Agihan', ['plan_form_id' => $plan_form->id]);
         // dd(DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->get(), $kpi_arr, $request->all());
         // dd(DruKpi::whereDistributionPlanFormId($plan_form->id)->whereNotIn('id', $kpi_arr)->get());
@@ -215,7 +218,7 @@ class CadanganAgihanController extends Controller
 
     public function verification(Request $request, $id, $type)
     {
-        $order = ApprovalApp::whereAppId($id)->orderBy('index', 'desc')->first()->index ?? 0;
+        $order = ApprovalApp::whereAppId($id)->whereModuleId(1)->orderBy('index', 'desc')->first()->index ?? 0;
         $status = 0;
         if($type == 'submit') {
             if($order > 0)$status = 3;
@@ -228,6 +231,7 @@ class CadanganAgihanController extends Controller
         if($plan){
             $approvalApp = new ApprovalApp;
             $approvalApp->index = $order;
+            $approvalApp->module_id = 1;
             $approvalApp->app_id = $id;
             $approvalApp->c_id = user()->id;
             $approvalApp->status = $status;
@@ -262,13 +266,14 @@ class CadanganAgihanController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $order = ApprovalApp::whereAppId($request->plan_id)->orderBy('index', 'desc')->first()->index ?? 0;
+        $order = ApprovalApp::whereAppId($request->plan_id)->whereModuleId(1)->orderBy('index', 'desc')->first()->index ?? 0;
         $order++;
         $status = $request->status;
         $plan = DruDistributionPlan::find($request->plan_id);
         if($plan){
             $approvalApp = new ApprovalApp;
             $approvalApp->index = $order;
+            $approvalApp->module_id = 1;
             $approvalApp->app_id = $request->plan_id;
             $approvalApp->c_id = user()->id;
             $approvalApp->status = $status;
@@ -277,6 +282,7 @@ class CadanganAgihanController extends Controller
             $plan->status = $status;
             $plan->save();
             $data = new DruDataAttachment;
+            $data->table = 'approval_app';
             $data->parent_id = $approvalApp->id;
             $file = collect(json_decode($request->file_upload));
             if($request->file_upload){
@@ -285,10 +291,7 @@ class CadanganAgihanController extends Controller
                 $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
 
                 if($temporaryFile){
-                    // File::ensureDirectoryExists(storage_path('/app/doc'.$file['folder']));
                     $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
-                    // unlink(storage_path('app/data/tmp/'.$temporaryFile->folder.'/'.$temporaryFile->filename));
-                    // rmdir(storage_path('app/data/tmp/'.$temporaryFile->folder));
                     $temporaryFile->delete();
                 }
             }

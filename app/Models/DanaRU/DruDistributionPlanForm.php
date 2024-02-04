@@ -4,6 +4,8 @@ namespace App\Models\DanaRU;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ApprovalApp;
+use App\Models\Status;
 use App\Models\Parameter;
 
 class DruDistributionPlanForm extends Model
@@ -60,6 +62,21 @@ class DruDistributionPlanForm extends Model
         return $this->hasMany(DruKpiPic::class, 'distribution_plan_form_id')->whereStatus('active')->orderBy('id');
     }
 
+    public function pic_status()
+    {
+        return $this->belongsTo(Status::class, 'pic_submission_status');
+    }
+
+    public function pic_evidences()
+    {
+        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereIsActive('Y');
+    }
+
+    public function pic_logs()
+    {
+        return $this->hasMany(ApprovalApp::class, 'app_id')->whereModuleId(2)->orderBy('index');
+    }
+
     public function getPtjInputDataAttribute()
     {
         return $this->ptj ? $code = $this->ptj->id . '_' . $this->ptj->original_code : null;
@@ -77,7 +94,7 @@ class DruDistributionPlanForm extends Model
         $data = [
             'main_dist'=>[],
             'kpi'=>[],
-            'pic_kpi'=>[],
+            'mykpi'=>[],
         ];
         foreach ($this->main_kpi as $key => $main_kpi) {
             array_push($data['main_dist'], [
@@ -98,7 +115,7 @@ class DruDistributionPlanForm extends Model
             ]);
         }
         foreach ($this->pic_kpi as $key => $pic_kpi) {
-            array_push($data['pic_kpi'], [
+            array_push($data['mykpi'], [
                 'id' =>$pic_kpi->id,
                 'item' =>$pic_kpi->kpi_template_id,
                 'bil' =>$pic_kpi->count,

@@ -22,29 +22,8 @@
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Program
                             </h2>
-                            {{-- <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
-                                Jana Borang Lampiran A
-                                <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="upload" class="w-4 h-4"></i> </span>
-                            </button> --}}
                         </div>
                         <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                            {{-- <a href="{{ route('dana-ru.kewangan.perbelanjaan.sub-projek') }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill">
-                                Pergi ke Sub Projek
-                                <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="arrow-right" class="w-4 h-4"></i> </span>
-                            </a> --}}
-                            {{-- @if (in_array($plan->status,['draft', 'amendment']))
-                            <a href="{{ route('dana-ru.cadangan-agihan.form') }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
-                            <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                Jana Kertas Kerja
-                                <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
-                            </button>
-                            <form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>
-                            @else
-                            <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                Muat Turun Kertas Kerja
-                                <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="download" class="w-4 h-4"></i> </span>
-                            </button>
-                            @endif --}}
                         </div>
                     </div>
                     <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
@@ -58,12 +37,16 @@
                                     <th class="text-nowrap">TITLE</th>
                                     <th class="text-nowrap">ALLOCATION (RM)</th>
                                     <th class="text-nowrap">EXPENSES (RM)</th>
+                                    <th class="text-nowrap">COMMITMENT (RM)</th>
                                     <th class="text-nowrap">BALANCES (RM)</th>
+                                    <th class="text-nowrap">PIC SUBMISSION STATUS</th>
+                                    <th class="text-nowrap"></th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
                                 @forelse ($plan_forms as $i=>$plan_form)
-                                <td class="text-center">{{$i}}</td>
+                                <tr class="intro-x">
+                                    <td class="text-center">{{$i}}</td>
                                     <td class="text-center">{{ $plan_form->mrun_code }}</td>
                                     <td class="text-center">{{ $plan_form->bpki_code }}</td>
                                     <td class="text-center">
@@ -72,12 +55,45 @@
                                         @endif
                                     </td>
                                     <td class="text-center">{{ $plan_form->pro_title }}</td>
-                                    <td class="text-nowrap">{{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
-                                    <td class="text-nowrap text-theme-10">{{ number_format($plan_form->total_expenses, 2, '.', ',') }}</td>
+                                    <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
                                     @php
-                                        $balance = $plan_form->plan_form_amount - $plan_form->total_expenses;
+                                        $total_expenses = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->total_expenses : 0;
+                                        $commitment = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->plan_form_commitment : 0;
+                                        $balance = $plan_form->plan_form_amount - $total_expenses;
+                                        $total_expenses_percent = $total_expenses/$plan_form->plan_form_amount*100;
+                                        $commitment_percent = $commitment/$plan_form->plan_form_amount*100;
+                                        $balance_percent = $balance/$plan_form->plan_form_amount*100;
                                     @endphp
-                                    <td class="text-nowrap {{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">{{ number_format($balance, 2, '.', ',') }}</td>
+                                    <td class="text-nowrap">
+                                        <div class="d-flex align-item-center justify-content-center">
+                                            <div class="text-theme-10">RM {{ number_format(($total_expenses), 2, '.', ',') }}</div>
+                                            <div class="bg-theme-{{ $total_expenses_percent > 100 ? '6': '10' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($total_expenses_percent, 2, '.', ',') }} %</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <div class="d-flex align-item-center justify-content-center">
+                                            <div class="text-theme-10">RM {{ number_format(($commitment), 2, '.', ',') }}</div>
+                                            <div class="bg-theme-{{ $commitment_percent > 100 ? '6': '10' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($commitment_percent, 2, '.', ',') }} %</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <div class="d-flex align-item-center justify-content-center">
+                                            <div class="{{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">RM {{ number_format(($balance), 2, '.', ',') }}</div>
+                                            <div class="bg-theme-{{ $balance_percent > 100 ? '6': '9' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($balance_percent, 2, '.', ',') }} %</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        @if(!$plan_form->plan_form_pic_submission_status)<div class="bg-gray-500 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                        @elseif($plan_form->plan_form_pic_submission_status == 8)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                        @elseif($plan_form->plan_form_pic_submission_status == 9)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                        @elseif($plan_form->plan_form_pic_submission_status == 10)<div class="bg-theme-9 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                        @elseif($plan_form->plan_form_pic_submission_status == 11)<div class="bg-theme-12 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('dana-ru.kewangan.perbelanjaan.program.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-rounded-primary ms-2"><i class="p-1" data-feather="eye"></i></a>
+                                    </td>
+                                </tr>
                                 @empty
                                 <tr class="intro-x bg-gray-300">
                                     <td class="text-center" colspan="8">No record.</td>

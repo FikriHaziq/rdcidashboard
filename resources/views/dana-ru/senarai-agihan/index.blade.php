@@ -36,7 +36,10 @@
                                 <th class="text-nowrap">KPI {{ $year }}</th>
                                 <th class="text-nowrap">PERUNTUKAN AGIHAN {{ $year }}</th>
                                 <th class="text-nowrap">PERBELANJAAN {{ $year }}</th>
+                                <th class="text-nowrap">KOMITMEN {{ $year }}</th>
                                 <th class="text-nowrap">BAKI PERUNTUKAN {{ $year }}</th>
+                                <th class="text-nowrap">PIC SUBMISSION STATUS</th>
+
                                 {{-- <th class="text-nowrap">CATATAN</th> --}}
                                 {{-- @if (in_array($plan->status,[1, 4, 5, 6])) --}}
                                 <th class="text-nowrap"></th>
@@ -64,18 +67,44 @@
                                     {!! $plan_form->kpi_details !!}
                                 </td>
                                 <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
-                                <td class="text-nowrap text-theme-10">RM {{ number_format($plan_form->total_expenses, 2, '.', ',') }}</td>
                                 @php
-                                    $balance = $plan_form->plan_form_amount - $plan_form->total_expenses;
+                                    $total_expenses = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->total_expenses : 0;
+                                    $commitment = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->plan_form_commitment : 0;
+                                    $balance = $plan_form->plan_form_amount - $total_expenses;
+                                    $total_expenses_percent = $total_expenses/$plan_form->plan_form_amount*100;
+                                    $commitment_percent = $commitment/$plan_form->plan_form_amount*100;
+                                    $balance_percent = $balance/$plan_form->plan_form_amount*100;
+
                                 @endphp
-                                <td class="text-nowrap {{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">RM {{ number_format($balance, 2, '.', ',') }}</td>
-                                {{-- <td class="text-nowrap">
-                                    {!! $plan_form->notes !!}
-                                </td> --}}
+                                <td class="text-nowrap">
+                                    <div class="d-flex align-item-center justify-content-center">
+                                        <div class="text-theme-10">RM {{ number_format(($total_expenses), 2, '.', ',') }}</div>
+                                        <div class="bg-theme-{{ $total_expenses_percent > 100 ? '6': '10' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($total_expenses_percent, 2, '.', ',') }} %</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex align-item-center justify-content-center">
+                                        <div class="text-theme-10">RM {{ number_format(($commitment), 2, '.', ',') }}</div>
+                                        <div class="bg-theme-{{ $commitment_percent > 100 ? '6': '10' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($commitment_percent, 2, '.', ',') }} %</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex align-item-center justify-content-center">
+                                        <div class="{{ $balance < 0 ? 'text-theme-6' : 'text-theme-9' }}">RM {{ number_format(($balance), 2, '.', ',') }}</div>
+                                        <div class="bg-theme-{{ $balance_percent > 100 ? '6': '9' }} rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">{{ number_format($balance_percent, 2, '.', ',') }} %</div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    @if(!$plan_form->plan_form_pic_submission_status)<div class="bg-gray-500 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 8)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 9)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 10)<div class="bg-theme-9 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 11)<div class="bg-theme-12 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @endif
+                                </td>
                                 <td class="text-nowrap text-center">
                                     <div class="d-flex">
-                                        <a href="{{ route('dana-ru.senarai-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark">Lampiran A</a>
-                                        @if($plan_form->plan_form_declaration_date)<a href="{{ route('dana-ru.senarai-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}" class="btn btn-sm btn-rounded-primary ms-2"><i class="p-1" data-feather="eye"></i></a>@endif
+                                        <a href="{{ $plan_form->plan_form_declaration_date ? route('dana-ru.senarai-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) : route('dana-ru.senarai-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-rounded-primary ms-2"><i class="p-1" data-feather="eye"></i></a>
                                     </div>
                                 </td>
                             </tr>

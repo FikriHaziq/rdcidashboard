@@ -5,14 +5,21 @@ namespace App\Http\Controllers\DanaRU;
 use App\Http\Controllers\Controller;
 use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
+use App\Models\DanaRU\DruDataAttachment;
+use App\Models\TemporaryFile;
+use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
+use Validator;
 use Illuminate\Http\Request;
 
 class FinancialController extends Controller
 {
     public function pengesahanAgihanIndex($year = null)
     {
-        if(!$year)$year = date('Y');
+        if(!$year){
+            $plan = DruDistributionPlan::orderBy('year', 'desc')->first();
+            $year = $plan->year ?? date('Y');
+        }
         $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
         $plan_forms = getDistributionFormPlans($year)->get();
         $plan_forms_count = DruDistributionPlanForm::whereDistributionPlanId($plan->id ?? 0)->whereApproved('N')->count();
@@ -120,10 +127,76 @@ class FinancialController extends Controller
 
     public function program($year = null)
     {
-        if(!$year)$year = date('Y');
+        if(!$year){
+            $plan = DruDistributionPlan::whereStatus(6)->orderBy('year', 'desc')->first();
+            $year = $plan->year ?? date('Y');
+        }
         $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
         $plan_forms = getDistributionFormPlans($year)->where('plan_form.pic_declaration_date','!=', NULL)->get();
         return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'plan_forms'));
+    }
+
+    public function programShow($id, $tab = null)
+    {
+        $plan_form = DruDistributionPlanForm::find($id);
+        $plan = $plan_form->distribution_plan;
+        $year = $plan->year;
+        $edit = false;
+        return view('dana-ru.kewangan.perbelanjaan.program-show', compact('year', 'plan_form', 'plan', 'tab', 'edit'));
+    }
+
+    public function programVerificationPost(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ],
+        [
+            'status.required' => 'Sila pilih status.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('dana-ru.kewangan.perbelanjaan.program.show', ['id'=>$id, 'tab'=>'verification'])
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $order = ApprovalApp::whereAppId($id)->whereModuleId(2)->orderBy('index', 'desc')->first()->index ?? 0;
+        $order++;
+        $status = $request->status;
+        $plan_form = DruDistributionPlanForm::find($id);
+        if($plan_form){
+            $approvalApp = new ApprovalApp;
+            $approvalApp->index = $order;
+            $approvalApp->module_id = 2;
+            $approvalApp->app_id = $id;
+            $approvalApp->c_id = user()->id;
+            $approvalApp->status = $status;
+            $approvalApp->comment = $request->comment ?? null;
+            $approvalApp->save();
+            $plan_form->pic_submission_status = $status;
+            $plan_form->save();
+            
+            if($request->file_upload){
+                $data = new DruDataAttachment;
+                $data->table = 'approval_app';
+                $data->parent_id = $approvalApp->id;
+                $file = collect(json_decode($request->file_upload));
+                $data->filename = $file['filename'];
+                $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
+
+                if($temporaryFile){
+                    $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                    $temporaryFile->delete();
+                }
+                $data->save();
+            }
+        }
+        else{
+            session()->flash('error', "Something went wrong");
+            // return back();
+        }
+        session()->flash('success', "Borang telah berjaya disahkan.");
+        return redirect()->route('dana-ru.kewangan.perbelanjaan.program', ['year'=>$request->year]);
     }
 
     public function subProject($year = null)

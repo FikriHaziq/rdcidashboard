@@ -39,22 +39,40 @@ class FileController extends Controller
         return redirect()->back();
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, $multiple = null)
     {
-        if($request->file('file_upload')){
-            $file = $request->file('file_upload');
-            $filename = $file->getClientOriginalName();
-            $folder = uniqid() . '-' . now()->timestamp;
-            $file->storeAs('data/tmp/'.$folder, $filename);
+        if($multiple == "multiple"){
+            $file_arr = [];
+            foreach ($request->file('file_upload') as $key => $file) {
+                $filename = $file->getClientOriginalName();
+                $folder = uniqid() . '-' . now()->timestamp;
+                $file->storeAs('data/tmp/'.$folder, $filename);
 
-            TemporaryFile::create([
-                'folder' => $folder,
-                'filename' => $filename,
-            ]);
-
-            // return '';
-            return ["folder"=>$folder, "filename"=>$filename];
+                TemporaryFile::create([
+                    'folder' => $folder,
+                    'filename' => $filename,
+                ]);
+                array_push($file_arr, ["folder"=>$folder, "filename"=>$filename]);
+            }
+            return $file_arr;
         }
-        return '';
+        else {
+            if($request->file('file_upload')){
+                $file = $request->file('file_upload');
+                $filename = $file->getClientOriginalName();
+                $folder = uniqid() . '-' . now()->timestamp;
+                $file->storeAs('data/tmp/'.$folder, $filename);
+    
+                TemporaryFile::create([
+                    'folder' => $folder,
+                    'filename' => $filename,
+                ]);
+    
+                // return '';
+                return ["folder"=>$folder, "filename"=>$filename];
+            }
+        }
+        
+        return ;
     }
 }

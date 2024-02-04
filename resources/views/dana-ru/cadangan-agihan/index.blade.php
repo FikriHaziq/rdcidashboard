@@ -36,7 +36,7 @@
                         </li>
                         @if ((getAccessControl('dru_pca_1') && in_array($plan->status,[2, 3])) || (getAccessControl('dru_pca_2') && in_array($plan->status,[4])))
                         <li class="nav-item flex-1" role="presentation">
-                            <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['verification'])) active @endif" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">Pengesahan {{ $plan->getStatus->next_level_desc }}</button>
+                            <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['verification'])) active @endif" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">{{ $plan->getStatus->next_level_desc }}</button>
                         </li>
                         @endif
                         <li class="nav-item flex-1" role="presentation">
@@ -45,7 +45,7 @@
                     </ul>
                 </div>
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="p-5 tab-pane fade show @if(in_array($tab, [null,'list'])) active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
+                    <div class="p-5 tab-pane fade @if(in_array($tab, [null,'list'])) show active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
                         <div class="intro-y d-block d-sm-flex align-items-center h-10">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Cadangan Agihan
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                     @if (in_array($plan->status,[2, 3, 4]))
-                    <div class="p-5 tab-pane fade show @if(in_array($tab, ['verification'])) active @endif" id="verification" role="tabpanel" aria-labelledby="verification-tab">
+                    <div class="p-5 tab-pane fade @if(in_array($tab, ['verification'])) show active @endif" id="verification" role="tabpanel" aria-labelledby="verification-tab">
                         <div class="intro-y box mt-5">
                             <form action="{{ route('dana-ru.cadangan-agihan.verification.post') }}" method="post" id="verification-form">
                                 @csrf
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     @endif
-                    <div class="p-5 tab-pane fade show @if(in_array($tab, ['timeline'])) active @endif" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                    <div class="p-5 tab-pane fade @if(in_array($tab, ['timeline'])) show active @endif" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
                         <div class="intro-y d-block d-sm-flex align-items-center h-10">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Timeline

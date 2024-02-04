@@ -3,224 +3,237 @@
 <div class="intro-y row mt-5">
     <div class="col-4">
         <div class="grid grid-cols-12 gap-3">
-            <div class="g-col-4 box p-5 cursor-pointer zoom-in" style="background-color: rgb(100, 181, 246)">
-                <div class="fw-medium fs-xs text-white">Registered Projects</div>
-                <div class="fw-bold fs-lg text-white">15,503</div>
+            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #4AC4D2">
+                <div class="fw-medium fs-base text-white">Belanja</div>
+                <div class="fw-bold fs-lg text-white">532,660,000</div>
             </div>
-            <div class="g-col-4 box p-5 cursor-pointer zoom-in" style="background-color: rgb(229, 115, 115);">
-                <div class="fw-medium fs-xs text-white">Active Projects</div>
-                <div class="fw-bold fs-lg text-white">2,861</div>
-            </div>
-            <div class="g-col-4 box p-5 cursor-pointer zoom-in" style="background-color: rgb(129, 199, 132);">
-                <div class="fw-medium fs-xs text-white">2021 Projects</div>
-                <div class="fw-bold fs-lg text-white">378</div>
+            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #8430CE;">
+                <div class="fw-medium fs-base text-white">Agihan</div>
+                <div class="fw-bold fs-lg text-white">568,650,000</div>
             </div>
         </div>
     </div>
     <div class="col-8">
         <div class="row">
-            <div class="col-4">
+            <div class="col-6">
                 <div class="mb-2"> 
                     <select class="tom-select w-full">
-                        <option>SPONSOR CATEGORY</option>
-                        <option>UNIVERSITY</option>
-                        <option>PRIVATE</option>
-                        <option>NATIONAL</option>
-                        <option>INTERNATIONAL</option>
+                        <option>TITLE</option>
+                        <option>Tier 1</option>
+                        <option>Skim Zamalah</option>
+                        <option>Flagship Project</option>
+                        <option>GUP Tier 2 + Encouregement grant'</option>
+                        <option>Pelantikan Pasca Doctoral</option>
+                        <option>Insentif PenerbitanPenyelidikan - Jurnal Indeks'</option>
+                        <option>Naiktaraf Makmal Penyelidikan</option>
+                        <option>Hi Impact Research Lab</option>
+                        <option>Matching grant (untuk geran swasta dan antarabangsa)/RACE'</option>
+                        <option>Pengurusan IPR</option>
+                        <option>Trans Disciplinary Research Grant'</option>
+                        <option>Pembelian buku dan langganan secara online dan scival expert'</option>
+                        <option>Naik taraf Hi-CoE/Gabung CoE'</option>
+                        <option>UTM Seed Fund untuk pra-komersialisasi'</option>
                     </select>
-                </div>
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>SUBSPONSOR</option>
-                        <option>RESEARCH UNIVERSITY GRANT</option>
-                        <option>POST DOCTORAL FELLOWSHIP</option>
-                        <option>MINISTRY OF EDUCATION</option>
-                    </select>
-                </div>      
+                </div>     
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <div class="mb-2"> 
                     <select class="tom-select w-full">
-                        <option>FACULTY</option>
-                        <option>UTMSPACE-KL</option>
-                        <option>MJIIT</option>
-                        <option>FSSH-KL</option>
-                        <option>FSSH-JB</option>
-                    </select>
-                </div>
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>SCHOOL</option>
-                        <option>SEKOLAH KEJURUTERAAN KIMIA & TENAGA | J5105</option>
-                        <option>SEKOLAH KEJURUTERAAN ELEKTRIK | J5104</option>
-                        <option>FAKULTI ALAM BINA & UKUR | J5200</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>YEAR START</option>
+                        <option>YEAR</option>
+                        <option>2022</option>
+                        <option>2021</option>
+                        <option>2020</option>
                         <option>2019</option>
-                        <option>2014</option>
+                        <option>2018</option>
+                        <option>2017</option>
                         <option>2016</option>
-                    </select> 
-                </div>
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>STAFF NAME</option>
-                        <option>AHMAD FAUZI BIN ISMAIL</option>
-                        <option>THAREK BIN ABD RAHMAN</option>
-                        <option>ROSLI BIN MD. ILLIAS</option>
-                    </select> 
+                        <option>2015</option>
+                        <option>2014</option>
+                        <option>2013</option>
+                        <option>2012</option>
+                    </select>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>
+<div class="intro-y grid grid-cols-12 gap-3 mt-3">
+    <div class="g-col-12 d-flex">
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <div id="chart1">
                 </div>
             </div>
         </div>
     </div>
 </div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body"><canvas id="pie1" width="800"></canvas></div>
+    <div class="g-col-6 d-flex align-items-stretch">
+        <div class="card w-full p-5">
+            <div class="intro-y overflow-x-auto overflow-y-auto mt-8 mt-sm-0">
+                <table class="table table-bordered">
+                    <thead class="table-dark border-b-0">
+                        <tr>
+                            <th class="text-nowrap">BPKI</th>
+                            <th class="text-nowrap">PROGRAM UTAMA</th>
+                            <th class="text-nowrap">KOD PROGRAM</th>
+                            <th class="text-nowrap">TITLE</th>
+                            <th class="text-nowrap">ALLOCATION</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {{-- @forelse ($plan->log as $i=>$log)
+                        <tr class="intro-x">
+                            <td class="text-nowrap">{{ $i+1 }}</td>
+                            <td class="text-nowrap">{{ strtoupper($log->status) }}</td>
+                            <td class="text-nowrap">
+                                @foreach ($log->files as $file)
+                                    <a href="{{ route('dana-ru.cadangan-agihan.file.download', $file->id) }}" style="color:blue">{{ $file->filename }}</a>
+                                @endforeach
+                            </td>
+                            <td class="text-nowrap">{{ strtoupper($log->user->name) }}</td>
+                            <td class="text-nowrap">{{ date($log->created_at) }}</td>
+                        </tr>
+                        @empty
+                        <tr class="intro-x bg-gray-300">
+                            <td class="text-center" colspan="11">No record.</td>
+                        </tr>
+                        @endforelse --}}
+                        @for ($i = 1; $i < 5; $i++)
+                        <tr>
+                            <td class="text-center">DO</td>
+                            <td class="text-center">TD</td>
+                            <td class="text-center">21A1.00A00</td>
+                            <td class="text-center">SKIM ZAMALAH</td>
+                            <td class="text-center">134.279 M</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">DO</td>
+                            <td class="text-center">TD</td>
+                            <td class="text-center">21A1.00A00</td>
+                            <td class="text-center">SKIM ZAMALAH</td>
+                            <td class="text-center">134.279 M</td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-100">
-            <div class="card-body"><canvas id="pie2" width="800"></canvas></div>
-        </div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-full">&nbsp;</div>
-    </div>
-    <div class="g-col-3 d-flex align-items-stretch">
-        <div class="card w-full">&nbsp;</div>
-    </div>
-</div>
-<div class="intro-y row mt-3">
-    <div class="col-4">
-        <div class="row">
-            <div class="col"><div class="card w-full">&nbsp;</div></div>
-        </div>
-        <div class="row mt-3">
-            <div class="col"><div class="card w-full d-flex align-items-stretch">&nbsp;</div></div>
-        </div>
-    </div>
-    <div class="col-8">
-        <div class="row">
-            <div class="col"><div class="card w-full">&nbsp;</div></div>
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <div class="card w-100 d-flex align-items-stretch">
-                    <div class="card-body"><canvas id="mixed" width="800" height="300"></canvas></div>
-                </div>
+    <div class="g-col-6 d-flex align-items-stretch">
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <div id="pie1"></div>
             </div>
         </div>
     </div>
 </div>
 @endslot
 @section('custom-js')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    var pie1 = document.getElementById('pie1');
-    var pieChart1 = new Chart(pie1, {
-        type: 'doughnut',
-        data: {
-            labels: ['ACTIVE', 'END WITHOUT FINAL REPORT', 'ENDED', 'COMPLETED', 'TERMINATED'],
-            datasets: [
-                {
-                    label: 'DATA',
-                    data: ['2399', '187', '173', '92', '10'],
-                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(218, 174, 89)', 'rgb(72, 72, 72)', 'rgb(218, 218, 218)', 'rgb(32, 40, 62)'],
-                },
-            ]
+    var options1 = {
+          series: [{
+          name: 'Allocation',
+          data: [134000000, 59000000, 56000000, 49000000, 42000000, 22000000, 16000000, 16000000, 11000000, 10000000, 9000000, 9000000, 8000000, 7000000]
+        }, {
+          name: 'Expenses',
+          data: [136000000, 50000000, 58000000, 45000000, 40000000, 18000000, 20000000, 16000000, 10000000, 6000000, 7000000, 10000000, 6000000, 7000000]
+        }],
+          chart: {
+          type: 'bar',
+          height: 500
         },
-        options: {
-            aspectRatio: 1,
-            elements: {
-                arc: {
-                    borderWidth: 0,
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                    },
-                    display: false,
-                }
-            },
-        }
-    });
-
-    var pie2 = document.getElementById('pie2');
-    var pieChart2 = new Chart(pie2, {
-        type: 'doughnut',
-        data: {
-            labels: ['FRGS', 'UTM-TDR', 'UTMER', 'TIER 2', 'OTR', 'IIIG', 'CR DTD', 'CRG', 'PDRU', 'ETC'],
-            datasets: [
-                {
-                    label: 'DATA',
-                    data: ['434', '247', '229', '196', '189', '186', '173', '140', '126', '941'],
-                    backgroundColor: ['rgb(172, 62, 49)', 'rgb(72, 72, 72)', 'rgb(201, 84, 66)', 'rgb(156, 43, 34)', 'rgb(218, 174, 89)', 'rgb(252, 181, 244)', 'rgb(218, 218, 218)', 'rgb(32, 40, 62)', 'rgb(72, 138, 153)', 'rgb(136, 17, 72)'],
-                },
-            ]
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
         },
-        options: {
-            aspectRatio: 1,
-            elements: {
-                arc: {
-                    borderWidth: 0,
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                }
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: [
+            'Tier 1',
+            'Skim Zamalah',
+            'Flagship Project',
+            ['GUP Tier 2 + ','Encouregement grant'],
+            'Pelantikan Pasca Doctoral',
+            ['Insentif Penerbitan','Penyelidikan - Jurnal Indeks'],
+            'Naiktaraf Makmal Penyelidikan',
+            'Hi Impact Research Lab',
+            ['Matching grant (untuk geran ','swasta dan antarabangsa)','/RACE'],
+            'Pengurusan IPR',
+            ['Trans Disciplinary ','Research Grant'],
+            ['Pembelian buku dan ','langganan secara online dan ','scival expert'],
+            ['Naik taraf Hi-CoE','/Gabung CoE'],
+            ['UTM Seed Fund untuk ','pra-komersialisasi'],
+        ],
+        },
+        yaxis: {
+          title: {
+            text: 'RM '
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return "RM " + val
             }
+          }
         }
-    });
+        };
 
-    var mixed = document.getElementById('mixed');
-    var mixedChart = new Chart(mixed, {
-        data: {
-            labels: ['1979', '1980', '1981', '1982', '1983', '1984', '1985', '1986', '1987', '1988', '1989', '1990', '1991', '1992', '1993', '1994', '1995', '1996', '1997', '1998', '1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020', '2021'],
-            datasets: [
-                {
-                    type: 'line',
-                    label: 'No Of Project',
-                    yAxisID: 'project-axis',
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 1, 150, 471, 216, 488, 342, 1198, 1095, 732, 1288, 972, 1120, 734, 1078, 1251, 1023, 378],
-                    backgroundColor: 'rgba(172, 62, 49)',
-                    borderColor: 'rgba(172, 62, 49)',
-                },
-                {
-                    type: 'bar',
-                    label: 'Allocation',
-                    data: [0, 0, 0, 0, 0, 2711700, 3638000, 5908007, 3580000, 2837000, 2873000, 5832000, 7721000, 23301000, 8422000, 10589000, 23576000, 26546000, 5843000, 98943000, 22423000, 29517000, 6372000, 0, 132000, 1590000, 545786, 23180000, 122612000, 28604000, 78955000, 27904000, 108603000, 99052000, 82466000, 99418000, 91490000, 81964000, 59946000, 98336000, 99297000, 82184000, 39198000],
-                    backgroundColor: 'rgba(72, 72, 72)',
-                    borderColor: 'rgba(72, 72, 72)',
-                }
-            ],
+        var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
+        chart1.render();
+
+    var options = {
+          series: [134000000, 59000000, 56000000, 49000000, 42000000, 22000000, 16000000, 16000000, 11000000, 10000000, 9000000, 9000000, 8000000, 7000000],
+          chart: {
+          type: 'pie',
+          width: '100%'
         },
-        options: {
-            scales: {
-                yAxes: [
-                    {
-                        display: true,
-                        stacked: true,
-                        beginAtZero: true
-                    },
-                    {
-                        id: 'project-axis',
-                        display: false,
-                        stacked: false,
-                        beginAtZero: true,
-                        suggestedMax: 1300
-                    }
-                ]
+        labels: [
+            'Tier 1',
+            'Skim Zamalah',
+            'Flagship Project',
+            ['GUP Tier 2 + ','Encouregement grant'],
+            'Pelantikan Pasca Doctoral',
+            ['Insentif Penerbitan','Penyelidikan - Jurnal Indeks'],
+            'Naiktaraf Makmal Penyelidikan',
+            'Hi Impact Research Lab',
+            ['Matching grant (untuk geran ','swasta dan antarabangsa)','/RACE'],
+            'Pengurusan IPR',
+            ['Trans Disciplinary ','Research Grant'],
+            ['Pembelian buku dan ','langganan secara online dan ','scival expert'],
+            ['Naik taraf Hi-CoE','/Gabung CoE'],
+            ['UTM Seed Fund untuk ','pra-komersialisasi'],
+        ],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
             }
-        }
-    });
+          }
+        }]
+        };
+
+    var chart = new ApexCharts(document.querySelector("#pie1"), options);
+    chart.render();
 </script>
 @endsection
 @endcomponent

@@ -16,7 +16,9 @@ class CreateDruDataAttachmentsTable extends Migration
         Schema::create('dru_data_attachments', function (Blueprint $table) {
             $table->id();
             $table->integer('parent_id');
+            $table->string('table')->default('approval_app');
             $table->string('filename');
+            $table->string('is_active')->default('Y');
             $table->timestamps();
         });
     }

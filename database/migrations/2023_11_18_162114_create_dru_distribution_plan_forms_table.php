@@ -21,8 +21,10 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->integer('bpki');
             $table->integer('ptj_id');
             $table->integer('project_id');
-            $table->decimal('amount', 18, 9);
+            $table->decimal('amount', 18, 2);
+            $table->decimal('commitment', 18, 2)->nullable();
             $table->text('notes')->nullable();
+            $table->text('pic_justification')->nullable();
             $table->string('approved')->default('N');
             $table->string('broadcast')->default('N');
             $table->string('reference_no')->nullable();

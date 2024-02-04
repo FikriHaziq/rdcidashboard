@@ -13,7 +13,7 @@ class ApprovalApp extends Model
 
     public function files()
     {
-        return $this->hasMany(DruDataAttachment::class, 'parent_id');
+        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('approval_app')->whereIsActive('Y');
     }
 
     public function getStatus()

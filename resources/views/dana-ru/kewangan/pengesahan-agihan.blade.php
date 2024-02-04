@@ -45,8 +45,8 @@
                             <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
                         </a>
                         @if($plan_forms_count > 0)
-                        <button type="submit" form="update-plan-form" class="btn btn-primary me-4" name="type" value="update"> Set ALL UTMFIN Ref. No. </button>
-                        <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="approve"> Approve ALL </button>
+                        <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="update"> Save ALL UTMFIN Ref. No. </button>
+                        {{-- <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="approve"> Approve ALL </button> --}}
                         @endif
                     </div>
                 </div>
@@ -63,6 +63,7 @@
                                 <th class="text-nowrap">JENIS AGIHAN</th>
                                 <th class="text-nowrap">CHARGELINE</th>
                                 <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
+                                <th class="text-nowrap">PIC DECLARATION STATUS</th>
                                 <th class="text-nowrap">ACTION</th>
                                 <th class="text-nowrap">LAMPIRAN A</th>
                             </tr>
@@ -84,12 +85,14 @@
                                         Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
                                         @endif
                                     </td>
-                                    {{-- <td class="text-nowrap">
-                                        {!! $plan_form->main_kpi_details !!}
-                                        <br />
-                                        {!! $plan_form->kpi_details !!}
-                                    </td> --}}
                                     <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                    <td class="text-nowrap">
+                                        @if($plan_form->plan_form_declaration_date)
+                                        <div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">DECLARED</div>
+                                        @else
+                                        <div class="bg-gray-400 rounded-pill justify-content-center text-white d-flex align-items-center p-1">NOT DECLARED</div>
+                                        @endif
+                                    </td>
                                     
                                     <td class="text-nowrap text-center" style="min-width: 450px">
                                         <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
@@ -97,24 +100,24 @@
                                                 <div class="input-group">
                                                     <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
                                                     <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') disabled @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
-                                                    @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Set</button>@endif
+                                                    @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Save</button>@endif
                                                 </div>
                                             </div>
                                             <div class="g-col-3">
                                                 @if($plan_form->plan_form_approved == 'Y')
                                                 <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
                                                 @else
-                                                <button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>
+                                                {{-- <button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>
                                                 <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
                                                 <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
-                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
+                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button> --}}
                                                 @endif
                                             </div>
                                         </div>
                                     </td>
                                     <td class="text-nowrap text-center">
-                                        <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" onclick=""><i class="p-1" data-feather="eye"></i></a>
-                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                        <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
                                     </td>
                                 </tr>
                                 @empty

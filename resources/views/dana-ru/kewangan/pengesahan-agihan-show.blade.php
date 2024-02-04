@@ -170,11 +170,10 @@
                                 <td class="fw-bold">9.</td>
                                 <td class="fw-bold">Perakuan Penerimaan Agihan Tahun {{ $plan_form->plan_year }}</td>
                                 <td>
-                                    <p class="text-justify">Saya dengan ini berjanji akan memastikan peruntukan yang diterima digunakan selaras dengan perancangan projek/program ini bagi mencapai sasaran KPI Tahun 2023. Saya juga akan mematuhi semua syarat-syarat agihan yang ditetapkan oleh Urusetia dan juga memastikan perbelanjaan dilaksanakan dengan mematuhi semua peraturan kewangan yang ditetapkan.</p>
                                     <div class="border border-dark rounded p-5 mt-4" @if($plan_form->plan_form_declaration_date) style="background-color: #dbfff1" @endif>
-                                        <div class="d-flex align-items-center">
-                                            <input id="declaration" type="checkbox" class="form-check-input border me-2" @if($plan_form->plan_form_declaration_date) checked  @endif disabled>
-                                            <label class="cursor-pointer select-none" for="declaration">Saya setuju.</label>
+                                        <div class="d-flex">
+                                            <input id="declaration" type="checkbox" style="width: 50px" class="form-check-input border me-2" @if($plan_form->plan_form_declaration_date) checked  @endif disabled>
+                                            <label class="cursor-pointer select-none" for="declaration"><p class="text-justify">Saya dengan ini berjanji akan memastikan peruntukan yang diterima digunakan selaras dengan perancangan projek/program ini bagi mencapai sasaran KPI Tahun 2023. Saya juga akan mematuhi semua syarat-syarat agihan yang ditetapkan oleh Urusetia dan juga memastikan perbelanjaan dilaksanakan dengan mematuhi semua peraturan kewangan yang ditetapkan.</p></label>
                                         </div>
                                         <div class="grid columns-12 gap-6 mt-4">
                                             <div class="g-col-3">

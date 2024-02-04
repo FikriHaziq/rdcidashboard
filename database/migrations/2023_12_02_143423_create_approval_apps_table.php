@@ -16,6 +16,7 @@ class CreateApprovalAppsTable extends Migration
         Schema::create('approval_apps', function (Blueprint $table) {
             $table->id();
             $table->integer('index');
+            $table->integer('module_id')->default(1);
             $table->integer('app_id');
             $table->text('comment')->nullable();
             $table->string('status');

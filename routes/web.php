@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::name("data.")->prefix("data")->group(function () {
         Route::name("store")->post("store", [FileController::class, "store"]);
-        Route::name("upload")->post("upload", [FileController::class, "upload"]);
+        Route::name("upload")->post("upload/{multiple?}", [FileController::class, "upload"]);
     });
     // Dashboard Grant
     Route::name("grant.")->prefix("grant")->group(function () {
@@ -151,6 +151,8 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('agihan-program.index')->get('/agihan-program/index', [FinancialController::class, 'agihanProgramIndex']);
         Route::name('perbelanjaan.')->prefix('perbelanjaan')->group(function(){
             Route::name('program')->get('/program/{year?}', [FinancialController::class, 'program']);
+            Route::name('program.show')->get('/program/show/{id}/{tab?}', [FinancialController::class, 'programShow']);
+            Route::name("program.verification.post")->post("/program/verification/post/{id}", [FinancialController::class, "programVerificationPost"]);
             Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
         });
     });
@@ -158,7 +160,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     Route::name('senarai-agihan.')->prefix('senarai-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}', [AgihanController::class, 'index']);
         Route::name('show')->get('/show/{plan_id}', [AgihanController::class, 'show']);
-        Route::name('form')->get('/form/{year?}/{id?}', [AgihanController::class, 'form']);
+        Route::name('form')->get('/form/{year?}/{id?}/{tab?}', [AgihanController::class, 'form']);
         Route::name('declare')->post('/declare/{plan_id}', [AgihanController::class, 'declare']);
         Route::name('kpi-update')->post('/kpi-update/{plan_id}', [AgihanController::class, 'kpiUpdate']);
     });
