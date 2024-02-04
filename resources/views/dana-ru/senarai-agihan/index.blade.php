@@ -95,7 +95,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    @if(!$plan_form->plan_form_pic_submission_status)<div class="bg-gray-500 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @if(!$plan_form->plan_form_pic_submission_status)<div class="bg-gray-500 rounded-pill justify-content-center text-white d-flex align-items-center p-1">N/A</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 8)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 9)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 10)<div class="bg-theme-9 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
