@@ -211,7 +211,9 @@
                                 <tfoot class="bg-white">
                                     <tr class="mykpi-footer-add-button intro-x text-center">
                                         <td colspan="5">
-                                            <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('mykpi', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                            @if($edit)<button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('mykpi', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                            @else No Record
+                                            @endif
                                         </td>
                                     </tr>
                                 </tfoot>
