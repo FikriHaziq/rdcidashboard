@@ -47,6 +47,7 @@ if (!function_exists('dummyUserEmail')) {
         return [
             'superadmin@rdci.com',
             'admin@rdci.com',
+            'jtncpiadmin@rdci.com',
             'jtncpistaff@rdci.com',
             'fkt@rdci.com',
         ];
