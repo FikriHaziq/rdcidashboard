@@ -201,11 +201,13 @@
             <div class="d-flex p-5 align-item-center border-top border-gray-200 dark-border-dark-5">
                 <a class="btn btn-light" href="{{ route('dana-ru.kewangan.pengesahan-agihan.index', $plan_form->plan_year) }}">Back</a>
                 <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
+                    @if(user()->role == 'super_admin' || getAccessControl('dru_pa'))
                     @if($plan_form->plan_form_approved != 'Y' && $plan_form->plan_form_ref_no)
                     <form id="approve-form" action="{{ route('dana-ru.kewangan.pengesahan-agihan.approve', $plan_form->plan_form_id) }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-primary"> Approve</button>
                     </form>
+                    @endif
                     @endif
                 </div>
             </div>
