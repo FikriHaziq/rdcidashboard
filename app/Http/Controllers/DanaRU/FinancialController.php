@@ -87,6 +87,7 @@ class FinancialController extends Controller
     public function pengesahanAgihanPost(Request $request)
     {
         $fill_count = 0;
+        // dd($request->all());
         foreach ($request->plan_form_id as $key => $id) {
             if($request->ref_no[$key]){
                 $plan_form = DruDistributionPlanForm::whereId($id)->whereApproved('N')->first();

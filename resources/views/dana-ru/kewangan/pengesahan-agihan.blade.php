@@ -105,7 +105,7 @@
                                             <div class="g-col-9">
                                                 <div class="input-group">
                                                     <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
-                                                    <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') disabled @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
+                                                    <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') readonly @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
                                                     @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Save</button>@endif
                                                 </div>
                                             </div>
