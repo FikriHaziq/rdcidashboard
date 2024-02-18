@@ -34,19 +34,25 @@
             </div>
             @endif
             <x-dru.infography :year="$year" :plan="$plan" />
+            @php
+                $admin_access = getAccessControl('dru_pa');
+                $staff_access = getAccessControl('dru_pa_s');
+            @endphp
             <div class="g-col-12 mt-6 box p-5">
                 <div class="intro-y d-block d-sm-flex align-items-center h-10">
                     <h2 class="fs-lg fw-medium truncate me-5">
                         Senarai Agihan
                     </h2>
                     <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
+                        @if($admin_access)
                         <a href="" class="btn btn-outline-secondary w-64 position-relative justify-content-start rounded-pill me-4">
                             Template Borang Lampiran A
                             <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
                         </a>
+                        @endif
                         @if($plan_forms_count > 0)
-                        <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="update"> Save ALL UTMFIN Ref. No. </button>
-                        {{-- <button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="approve"> Approve ALL </button> --}}
+                        <button type="submit" form="update-plan-form" class="btn btn-primary me-4" name="type" value="update"> Save ALL UTMFIN Ref. No. </button>
+                        @if($admin_access)<button type="submit" form="update-plan-form" class="btn btn-primary" name="type" value="approve"> Approve ALL </button>@endif
                         @endif
                     </div>
                 </div>
@@ -107,10 +113,10 @@
                                                 @if($plan_form->plan_form_approved == 'Y')
                                                 <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
                                                 @else
-                                                {{-- <button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>
+                                                @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
                                                 <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
                                                 <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
-                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button> --}}
+                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
                                                 @endif
                                             </div>
                                         </div>

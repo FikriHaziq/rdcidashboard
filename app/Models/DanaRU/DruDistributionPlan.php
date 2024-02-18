@@ -13,7 +13,7 @@ class DruDistributionPlan extends Model
 
     public function log()
     {
-        return $this->hasMany(ApprovalApp::class, 'app_id')->whereModuleId(1)->orderBy('index');
+        return $this->hasMany(ApprovalApp::class, 'app_id')->whereModuleId(1)->orderBy('index', 'desc');
     }
 
     public function forms()

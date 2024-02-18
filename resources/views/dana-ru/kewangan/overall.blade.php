@@ -1,153 +1,177 @@
 @component("layouts.app")
+@slot("module") Peruntukan Keseluruhan @endslot
+@section('custom-css')
+<link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
+@endsection
 @slot("content")
+<div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
+    <h2 class="fs-lg fw-medium truncate me-5">
+        PERUNTUKAN KESELURUHAN
+    </h2>
+</div>
 <div class="intro-y row mt-5">
-    <div class="col-4">
-        <div class="grid grid-cols-12 gap-3">
-            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #4AC4D2">
-                <div class="fw-medium fs-base text-white">Belanja</div>
-                <div class="fw-bold fs-lg text-white">532,660,000</div>
-            </div>
-            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #8430CE;">
-                <div class="fw-medium fs-base text-white">Agihan</div>
-                <div class="fw-bold fs-lg text-white">568,650,000</div>
-            </div>
-        </div>
-    </div>
     <div class="col-8">
-        <div class="row">
-            <div class="col-6">
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>TITLE</option>
-                        <option>Tier 1</option>
-                        <option>Skim Zamalah</option>
-                        <option>Flagship Project</option>
-                        <option>GUP Tier 2 + Encouregement grant'</option>
-                        <option>Pelantikan Pasca Doctoral</option>
-                        <option>Insentif PenerbitanPenyelidikan - Jurnal Indeks'</option>
-                        <option>Naiktaraf Makmal Penyelidikan</option>
-                        <option>Hi Impact Research Lab</option>
-                        <option>Matching grant (untuk geran swasta dan antarabangsa)/RACE'</option>
-                        <option>Pengurusan IPR</option>
-                        <option>Trans Disciplinary Research Grant'</option>
-                        <option>Pembelian buku dan langganan secara online dan scival expert'</option>
-                        <option>Naik taraf Hi-CoE/Gabung CoE'</option>
-                        <option>UTM Seed Fund untuk pra-komersialisasi'</option>
-                    </select>
-                </div>     
-            </div>
-            <div class="col-6">
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>YEAR</option>
-                        <option>2022</option>
-                        <option>2021</option>
-                        <option>2020</option>
-                        <option>2019</option>
-                        <option>2018</option>
-                        <option>2017</option>
-                        <option>2016</option>
-                        <option>2015</option>
-                        <option>2014</option>
-                        <option>2013</option>
-                        <option>2012</option>
-                    </select>
-                </div>     
-            </div>
-        </div>
-    </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-12 d-flex">
-        <div class="card" style="width: 100%">
-            <div class="card-body">
-                <div id="chart1">
-                </div>
+        <div class="grid grid-cols-12 gap-3">
+            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #8430CE;">
+                <div class="fw-medium fs-base text-white">Jumlah Peruntukan KPT</div>
+                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_allocation'], 2, '.', ',') }}</div>
             </div>
         </div>
     </div>
 </div>
 <div class="intro-y grid grid-cols-12 gap-3 mt-3">
     <div class="g-col-6 d-flex align-items-stretch">
-        <div class="card w-full p-5">
-            <div class="intro-y overflow-x-auto overflow-y-auto mt-8 mt-sm-0">
-                <table class="table table-bordered">
-                    <thead class="table-dark border-b-0">
-                        <tr>
-                            <th class="text-nowrap">BPKI</th>
-                            <th class="text-nowrap">PROGRAM UTAMA</th>
-                            <th class="text-nowrap">KOD PROGRAM</th>
-                            <th class="text-nowrap">TITLE</th>
-                            <th class="text-nowrap">ALLOCATION</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        {{-- @forelse ($plan->log as $i=>$log)
-                        <tr class="intro-x">
-                            <td class="text-nowrap">{{ $i+1 }}</td>
-                            <td class="text-nowrap">{{ strtoupper($log->status) }}</td>
-                            <td class="text-nowrap">
-                                @foreach ($log->files as $file)
-                                    <a href="{{ route('dana-ru.cadangan-agihan.file.download', $file->id) }}" style="color:blue">{{ $file->filename }}</a>
-                                @endforeach
-                            </td>
-                            <td class="text-nowrap">{{ strtoupper($log->user->name) }}</td>
-                            <td class="text-nowrap">{{ date($log->created_at) }}</td>
-                        </tr>
-                        @empty
-                        <tr class="intro-x bg-gray-300">
-                            <td class="text-center" colspan="11">No record.</td>
-                        </tr>
-                        @endforelse --}}
-                        @for ($i = 1; $i < 5; $i++)
-                        <tr>
-                            <td class="text-center">DO</td>
-                            <td class="text-center">TD</td>
-                            <td class="text-center">21A1.00A00</td>
-                            <td class="text-center">SKIM ZAMALAH</td>
-                            <td class="text-center">134.279 M</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">DO</td>
-                            <td class="text-center">TD</td>
-                            <td class="text-center">21A1.00A00</td>
-                            <td class="text-center">SKIM ZAMALAH</td>
-                            <td class="text-center">134.279 M</td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="g-col-6 d-flex align-items-stretch">
         <div class="card" style="width: 100%">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 text-center">
+                <h2 class="font-medium text-base mr-auto" style="font-size: 20px">Peruntukan Dana RU</h2>
+            </div>
             <div class="card-body">
+                <div id="bar1"></div>
+            </div>
+            <hr class="mb-5" style="border: 1px solid black">
+            <div class="card-body" style="margin-left:150px; margin-right:150px;">
                 <div id="pie1"></div>
             </div>
         </div>
     </div>
+    <div class="g-col-3 d-flex align-items-stretch">
+        <div class="card" style="width: 100%">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 text-center">
+                <h2 class="font-medium text-base mr-auto" style="font-size: 20px">Peruntukan KPT Program</h2>
+            </div>
+            <div class="card-body">
+                <div id="bar2"></div>
+            </div>
+            <hr class="mb-5" style="border: 1px solid black">
+            <div class="card-body">
+                <div id="pie2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="g-col-3 d-flex align-items-stretch">
+        <div class="card" style="width: 100%">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 text-center">
+                <h2 class="font-medium text-base mr-auto" style="font-size: 20px">Peruntukan KPT BPKI</h2>
+            </div>
+            <div class="card-body">
+                <div id="bar3"></div>
+            </div>
+            <hr class="mb-5" style="border: 1px solid black">
+            <div class="card-body">
+                <div id="pie3"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
 @endslot
 @section('custom-js')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
 <script>
+    var chart_data = {!! json_encode($chart_data) !!};
+    console.log(chart_data);
+    $('#file-table').DataTable({
+        "bLengthChange": false,
+        "bFilter": false,
+        "bInfo": false
+    });
     var options1 = {
+        series: [
+            {
+                name: 'KPT',
+                data: chart_data.bar1_kpt
+            }, 
+            {
+                name: 'Pelarasan',
+                data: chart_data.bar1_pelarasan
+            }
+        ],
+        chart: {
+            type: 'bar',
+            height: 350,
+            stacked: true,
+            toolbar: {
+                show: true
+            },
+            zoom: {
+                enabled: true
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                legend: {
+                    position: 'bottom',
+                    offsetX: -10,
+                    offsetY: 0
+                }
+            }
+        }],
+        plotOptions: {
+            bar:{
+                horizontal: false,
+                borderRadius: 10,
+                dataLabels: {
+                    enabled: false,
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: chart_data.bar1_title,
+        },
+        legend: {
+            position: 'top',
+        },
+        fill: {
+            opacity: 1
+        }
+    };
+
+    var bar1 = new ApexCharts(document.querySelector("#bar1"), options1);
+    bar1.render();
+
+    var options2 = {
+          series: chart_data.pie1_value,
+          chart: {
+          type: 'donut',
+          width: '100%'
+        },
+        labels: chart_data.bar1_title,
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 100
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+    var pie1 = new ApexCharts(document.querySelector("#pie1"), options2);
+    pie1.render();
+
+    var options3 = {
           series: [{
           name: 'Allocation',
-          data: [134000000, 59000000, 56000000, 49000000, 42000000, 22000000, 16000000, 16000000, 11000000, 10000000, 9000000, 9000000, 8000000, 7000000]
+          data: chart_data.bar2_expenses
         }, {
           name: 'Expenses',
-          data: [136000000, 50000000, 58000000, 45000000, 40000000, 18000000, 20000000, 16000000, 10000000, 6000000, 7000000, 10000000, 6000000, 7000000]
+          data: chart_data.bar2_allocations
         }],
           chart: {
           type: 'bar',
-          height: 500
+          height: '100%'
         },
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: '55%',
             endingShape: 'rounded'
           },
         },
@@ -160,22 +184,7 @@
           colors: ['transparent']
         },
         xaxis: {
-          categories: [
-            'Tier 1',
-            'Skim Zamalah',
-            'Flagship Project',
-            ['GUP Tier 2 + ','Encouregement grant'],
-            'Pelantikan Pasca Doctoral',
-            ['Insentif Penerbitan','Penyelidikan - Jurnal Indeks'],
-            'Naiktaraf Makmal Penyelidikan',
-            'Hi Impact Research Lab',
-            ['Matching grant (untuk geran ','swasta dan antarabangsa)','/RACE'],
-            'Pengurusan IPR',
-            ['Trans Disciplinary ','Research Grant'],
-            ['Pembelian buku dan ','langganan secara online dan ','scival expert'],
-            ['Naik taraf Hi-CoE','/Gabung CoE'],
-            ['UTM Seed Fund untuk ','pra-komersialisasi'],
-        ],
+          categories: chart_data.bar2_title,
         },
         yaxis: {
           title: {
@@ -194,36 +203,21 @@
         }
         };
 
-        var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
-        chart1.render();
+    var bar2 = new ApexCharts(document.querySelector("#bar2"), options3);
+    bar2.render();
 
-    var options = {
-          series: [134000000, 59000000, 56000000, 49000000, 42000000, 22000000, 16000000, 16000000, 11000000, 10000000, 9000000, 9000000, 8000000, 7000000],
+    var options4 = {
+          series: chart_data.pie2_value,
           chart: {
-          type: 'pie',
+          type: 'donut',
           width: '100%'
         },
-        labels: [
-            'Tier 1',
-            'Skim Zamalah',
-            'Flagship Project',
-            ['GUP Tier 2 + ','Encouregement grant'],
-            'Pelantikan Pasca Doctoral',
-            ['Insentif Penerbitan','Penyelidikan - Jurnal Indeks'],
-            'Naiktaraf Makmal Penyelidikan',
-            'Hi Impact Research Lab',
-            ['Matching grant (untuk geran ','swasta dan antarabangsa)','/RACE'],
-            'Pengurusan IPR',
-            ['Trans Disciplinary ','Research Grant'],
-            ['Pembelian buku dan ','langganan secara online dan ','scival expert'],
-            ['Naik taraf Hi-CoE','/Gabung CoE'],
-            ['UTM Seed Fund untuk ','pra-komersialisasi'],
-        ],
+        labels: chart_data.bar2_title,
         responsive: [{
           breakpoint: 480,
           options: {
             chart: {
-              width: 200
+              width: 100
             },
             legend: {
               position: 'bottom'
@@ -232,8 +226,80 @@
         }]
         };
 
-    var chart = new ApexCharts(document.querySelector("#pie1"), options);
-    chart.render();
+    var pie2 = new ApexCharts(document.querySelector("#pie2"), options4);
+    pie2.render();
+
+    var options5 = {
+          series: [{
+          name: 'Allocation',
+          data: chart_data.bar3_expenses
+        }, {
+          name: 'Expenses',
+          data: chart_data.bar3_allocations
+        }],
+          chart: {
+          type: 'bar',
+          height: '100%'
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: chart_data.bar3_title,
+        },
+        yaxis: {
+          title: {
+            text: 'RM '
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return "RM " + val
+            }
+          }
+        }
+        };
+
+    var bar3 = new ApexCharts(document.querySelector("#bar3"), options5);
+    bar3.render();
+
+    var options6 = {
+          series: chart_data.pie3_value,
+          chart: {
+          type: 'donut',
+          width: '100%'
+        },
+        labels: chart_data.bar3_title,
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 100
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+    var pie3 = new ApexCharts(document.querySelector("#pie3"), options6);
+    pie3.render();
 </script>
 @endsection
 @endcomponent

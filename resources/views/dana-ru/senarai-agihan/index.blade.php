@@ -38,7 +38,7 @@
                                 <th class="text-nowrap">PERBELANJAAN {{ $year }}</th>
                                 <th class="text-nowrap">KOMITMEN {{ $year }}</th>
                                 <th class="text-nowrap">BAKI PERUNTUKAN {{ $year }}</th>
-                                <th class="text-nowrap">PIC SUBMISSION STATUS</th>
+                                <th class="text-center" style="min-width:200px!important">REPORT STATUS</th>
 
                                 {{-- <th class="text-nowrap">CATATAN</th> --}}
                                 {{-- @if (in_array($plan->status,[1, 4, 5, 6])) --}}
@@ -68,9 +68,9 @@
                                 </td>
                                 <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
                                 @php
-                                    $total_expenses = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->total_expenses : 0;
-                                    $commitment = $plan_form->plan_form_pic_submission_status == 10 ? $plan_form->plan_form_commitment : 0;
-                                    $balance = $plan_form->plan_form_amount - $total_expenses;
+                                    $total_expenses = $plan_form->total_expenses ?? 0;
+                                    $commitment = $plan_form->plan_form_commitment ?? 0;
+                                    $balance = $plan_form->plan_form_amount - $total_expenses - $commitment;
                                     $total_expenses_percent = $total_expenses/$plan_form->plan_form_amount*100;
                                     $commitment_percent = $commitment/$plan_form->plan_form_amount*100;
                                     $balance_percent = $balance/$plan_form->plan_form_amount*100;
@@ -95,11 +95,13 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    @if(!$plan_form->plan_form_pic_submission_status)<div class="bg-gray-500 rounded-pill justify-content-center text-white d-flex align-items-center p-1">N/A</div>
+                                    @if($plan_form->plan_form_pic_submission_status == 7)<div class="bg-gray-600 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 8)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 9)<div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
-                                    @elseif($plan_form->plan_form_pic_submission_status == 10)<div class="bg-theme-9 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 10)<div class="bg-theme-18 rounded-pill justify-content-center text-black d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @elseif($plan_form->plan_form_pic_submission_status == 12)<div class="bg-theme-9 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
                                     @elseif($plan_form->plan_form_pic_submission_status == 11)<div class="bg-theme-12 rounded-pill justify-content-center text-white d-flex align-items-center p-1">{{ strtoupper($plan_form->pic_submission_status_label) }}</div>
+                                    @else <div class="bg-theme-8 rounded-pill justify-content-center text-white d-flex align-items-center p-1">N/A</div>
                                     @endif
                                 </td>
                                 <td class="text-nowrap text-center">

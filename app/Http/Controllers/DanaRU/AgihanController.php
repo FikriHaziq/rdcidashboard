@@ -11,6 +11,7 @@ use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class AgihanController extends Controller
         }
         $plan = DruDistributionPlan::where('year', $year)->first();
         $plan_forms = getDistributionFormPlans($year)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
+        // dd($plan_forms[0]->plan_form_pic_submission_status == null);
         return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plan', 'plan_forms'));
     }
 
@@ -93,7 +95,7 @@ class AgihanController extends Controller
         if(!$year)$year = date('Y');
         $plan_form = DruDistributionPlanForm::find($id);
         $plan = $plan_form->distribution_plan;
-        $edit = in_array($plan_form->pic_submission_status, [null, 10, 11]);
+        $edit = in_array($plan_form->pic_submission_status, [null, 7, 10, 11]);
         return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'plan', 'tab', 'edit'));
     }
 
@@ -121,38 +123,49 @@ class AgihanController extends Controller
 
         $order = ApprovalApp::whereAppId($plan_id)->whereModuleId(2)->orderBy('index', 'desc')->first()->index ?? 0;
         $order++;
-        $status = 8;
+        $status = $request->submit_btn;
         $plan_form = DruDistributionPlanForm::find($plan_id);
         if($plan_form){
-            $approvalApp = new ApprovalApp;
-            $approvalApp->index = $order;
-            $approvalApp->module_id = 2;
-            $approvalApp->app_id = $plan_form->id;
-            $approvalApp->c_id = user()->id;
-            $approvalApp->status = $status;
-            $approvalApp->save();
+            if($status != 7){
+                $approvalApp = new ApprovalApp;
+                $approvalApp->index = $order;
+                $approvalApp->module_id = 2;
+                $approvalApp->app_id = $plan_form->id;
+                $approvalApp->c_id = user()->id;
+                $approvalApp->status = $status;
+                $approvalApp->save();
+
+                foreach (array_diff($plan_form->pic_evidences_id_array, ($request->existing_files ?? [])) as $key => $deleted_file) {
+                    $existing_data = DruDataAttachment::find($deleted_file);
+                    $existing_data->is_active = 'N';
+                    $existing_data->save();
+                }
+            }
+            else{
+                foreach (array_diff($plan_form->pic_evidences_id_array, ($request->existing_files ?? [])) as $key => $deleted_file) {
+                    DruDataAttachment::find($deleted_file)->delete();
+                }
+            }
             $plan_form->pic_justification = $request->justification;
             $plan_form->pic_submission_status = $status;
             $plan_form->commitment = (float)str_replace( ",", "", $request->commitment);
             $plan_form->save();
-
-            foreach ($plan_form->pic_evidences as $key => $evidence) {
-                $evidence->is_active = 'N';
-                $evidence->save();
-            }
             
             foreach ($request->file_upload as $key => $file) {
                 $data = new DruDataAttachment;
                 $data->table = 'plan_form';
                 $data->parent_id = $plan_form->id;
                 $fileRaw = collect(json_decode($file));
-                $data->filename = $fileRaw[0]->filename;
-                $temporaryFile = TemporaryFile::where('folder', $fileRaw[0]->folder)->first();
-                if($temporaryFile){
-                    $data->addMedia(storage_path('app/data/tmp/'.$fileRaw[0]->folder.'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
-                    $temporaryFile->delete();
+                if(count($fileRaw)){
+                    $data->filename = $fileRaw[0]->filename;
+                    $temporaryFile = TemporaryFile::where('folder', $fileRaw[0]->folder)->first();
+                    if($temporaryFile){
+                        $data->addMedia(storage_path('app/data/tmp/'.$fileRaw[0]->folder.'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                        $temporaryFile->delete();
+                        $data->save();
+                        Storage::deleteDirectory('data/tmp/'.$fileRaw[0]->folder);
+                    }
                 }
-                $data->save();
             }
         }
         $kpi_arr = [];

@@ -16,6 +16,7 @@ use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class CadanganAgihanController extends Controller
@@ -293,9 +294,10 @@ class CadanganAgihanController extends Controller
                 if($temporaryFile){
                     $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
                     $temporaryFile->delete();
+                    $data->save();
+                    Storage::deleteDirectory('data/tmp/'.$file['folder']);
                 }
             }
-            $data->save();
         }
         else{
             session()->flash('error', "Something went wrong");

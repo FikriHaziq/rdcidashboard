@@ -61,7 +61,7 @@ class LoginController extends Controller
             'password'=>'required'
         ]);
         //dev purpose : start
-        if(in_array($input['email'], ['superadmin@rdci.com', 'admin@rdci.com', 'fkt@rdci.com'])){
+        if(in_array($input['email'], dummyUserEmail())){
             if(auth()->attempt(['email' => $input["email"], 'password' => $input['password']])){
                 saveUser([
                     'id' => auth()->user()->id,

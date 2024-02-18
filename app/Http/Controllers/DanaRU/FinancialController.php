@@ -7,8 +7,10 @@ use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
+use App\Models\MasterList\MasterlistDruAllocation;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -117,12 +119,135 @@ class FinancialController extends Controller
 
     public function overall()
     {
-        return view('dana-ru.kewangan.overall');
+        DB::statement("SET SQL_MODE=''");
+        $year_options = MasterlistDruAllocation::select('year')->orderBy('year', 'desc')->distinct()->get();
+        $program_options = MasterlistDruAllocation::select('program')->orderBy('program')->distinct()->get();
+        $bpki_options = MasterlistDruAllocation::select('bpki')->orderBy('bpki')->distinct()->get();
+        $years = [];
+        $allocations = [];
+        $pelarasan = [];
+        $pie1_value = [];
+        $bar2_title = [];
+        $bar2_expenses = [];
+        $bar2_allocations = [];
+        $pie2_value = [];
+        $bar3_title = [];
+        $bar3_expenses = [];
+        $bar3_allocations = [];
+        $pie3_value = [];
+        foreach ($year_options as $key => $options) {
+            $amount = MasterlistDruAllocation::select(['amount'])->where('year',$options->year)->sum('amount');
+            $kpt = (float)$amount;
+            $value_pelarasan = $kpt;
+            array_push($years, $options->year);
+            array_push($allocations, $kpt);
+            array_push($pelarasan, $value_pelarasan);
+            array_push($pie1_value, $kpt + $value_pelarasan);
+        }
+        foreach ($program_options as $key => $options) {
+            $amount = MasterlistDruAllocation::select(['amount'])->where('program',$options->program)->sum('amount');
+            $bar2_value1 = (float)$amount;
+            $bar2_value2 = (float)$amount;
+            array_push($bar2_title, $options->program);
+            array_push($bar2_expenses, $bar2_value1);
+            array_push($bar2_allocations, $bar2_value2);
+            array_push($pie2_value, $bar2_value1 + $bar2_value2);
+        }
+        foreach ($bpki_options as $key => $options) {
+            $amount = MasterlistDruAllocation::select(['amount'])->where('bpki',$options->bpki)->sum('amount');
+            $bar3_value1 = (float)$amount;
+            $bar3_value2 = (float)$amount;
+            array_push($bar3_title, $options->bpki);
+            array_push($bar3_expenses, $bar3_value1);
+            array_push($bar3_allocations, $bar3_value2);
+            array_push($pie3_value, $bar3_value1 + $bar3_value2);
+        }
+        $total_allocation = MasterlistDruAllocation::select(['amount'])->sum('amount');
+        $chart_data = [
+            "total_allocation"=>(float)$total_allocation,
+            "bar1_title"=>$years,
+            "bar1_kpt"=>$allocations,
+            "bar1_pelarasan"=>$pelarasan,
+            "pie1_value"=>$pie1_value,
+            "bar2_title"=>$bar2_title,
+            "bar2_expenses"=>$bar2_expenses,
+            "bar2_allocations"=>$bar2_allocations,
+            "pie2_value"=>$pie2_value,
+            "bar3_title"=>$bar3_title,
+            "bar3_expenses"=>$bar3_expenses,
+            "bar3_allocations"=>$bar3_allocations,
+            "pie3_value"=>$pie3_value,
+        ];
+        // dd($chart_data);
+        // foreach ($title_options as $key => $options) {
+        //     $amount = MasterlistDruAllocation::select(['amount'])->where('tabung_induk',$options->tabung_induk)->sum('amount');
+        //     array_push($allocations, [
+        //         'bpki'=> $options->bpki,
+        //         'program'=> $options->program,
+        //         'tabung_induk'=> $options->tabung_induk,
+        //         'jenis_agihan'=> $options->jenis_agihan,
+        //         'amount'=> $amount,
+        //     ]);
+        // }
+        // usort($allocations, function($a, $b) {return $a['amount'] < $b['amount'];});
+        // $allocation_bar1_title = [];
+        // $allocation_bar1_allocation = [];
+        // $allocation_bar1_expenses = [];
+        // foreach ($allocations as $key => $allocation) {
+        //     if($key < 10){
+        //         array_push($allocation_bar1_title, $allocation['jenis_agihan']);
+        //         array_push($allocation_bar1_allocation, (float)$allocation['amount']);
+        //         array_push($allocation_bar1_expenses, (float)$allocation['amount']);
+        //     }
+        // }
+        // $total_expenses = 0;
+        // $chart_data = [
+        //     "total_allocation"=>(float)$total_allocation,
+        //     "total_expenses"=>(float)$total_expenses,
+        //     "bar1_title"=>$allocation_bar1_title,
+        //     "bar1_allocation"=>$allocation_bar1_allocation,
+        //     "bar1_expenses"=>$allocation_bar1_expenses,
+        // ];
+        return view('dana-ru.kewangan.overall', compact('chart_data'));
     }
 
     public function agihanProgramIndex()
     {
-        return view('dana-ru.kewangan.overall');
+        DB::statement("SET SQL_MODE=''");
+        $year_options = MasterlistDruAllocation::select('year')->orderBy('year', 'desc')->distinct()->get();
+        $title_options = MasterlistDruAllocation::select(['bpki','program','tabung_induk','jenis_agihan','amount'])->orderBy('jenis_agihan')->groupBy('jenis_agihan')->get();
+        $allocations = [];
+        foreach ($title_options as $key => $options) {
+            $amount = MasterlistDruAllocation::select(['amount'])->where('tabung_induk',$options->tabung_induk)->sum('amount');
+            array_push($allocations, [
+                'bpki'=> $options->bpki,
+                'program'=> $options->program,
+                'tabung_induk'=> $options->tabung_induk,
+                'jenis_agihan'=> $options->jenis_agihan,
+                'amount'=> $amount,
+            ]);
+        }
+        usort($allocations, function($a, $b) {return $a['amount'] < $b['amount'];});
+        $allocation_bar1_title = [];
+        $allocation_bar1_allocation = [];
+        $allocation_bar1_expenses = [];
+        foreach ($allocations as $key => $allocation) {
+            if($key < 10){
+                array_push($allocation_bar1_title, $allocation['jenis_agihan']);
+                array_push($allocation_bar1_allocation, (float)$allocation['amount']);
+                array_push($allocation_bar1_expenses, (float)$allocation['amount']);
+            }
+        }
+        $total_allocation = MasterlistDruAllocation::select(['amount'])->sum('amount');
+        $total_expenses = 0;
+        $chart_data = [
+            "total_allocation"=>(float)$total_allocation,
+            "total_expenses"=>(float)$total_expenses,
+            "bar1_title"=>$allocation_bar1_title,
+            "bar1_allocation"=>$allocation_bar1_allocation,
+            "bar1_expenses"=>$allocation_bar1_expenses,
+        ];
+        return view('dana-ru.kewangan.agihan-dashboard', compact('year_options', 'title_options','allocations','chart_data'));
     }
 
     public function program($year = null)
@@ -187,8 +312,9 @@ class FinancialController extends Controller
                 if($temporaryFile){
                     $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
                     $temporaryFile->delete();
+                    $data->save();
+                    Storage::deleteDirectory('data/tmp/'.$file['folder']);
                 }
-                $data->save();
             }
         }
         else{

@@ -13,6 +13,7 @@ use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
 use App\Http\Controllers\DanaRU\CadanganAgihanController;
 use App\Http\Controllers\DanaRU\FinancialController;
 use App\Http\Controllers\DanaRU\AgihanController;
+use App\Http\Controllers\DanaRU\MasterlistController as DruMasterlistController;
 use App\Http\Controllers\DocGeneratorController;
 
 // OLD
@@ -47,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::name("data.")->prefix("data")->group(function () {
         Route::name("store")->post("store", [FileController::class, "store"]);
         Route::name("upload")->post("upload/{multiple?}", [FileController::class, "upload"]);
+        Route::delete('revert', [FileController::class, 'revert'])->name('revert');
     });
     // Dashboard Grant
     Route::name("grant.")->prefix("grant")->group(function () {
@@ -114,6 +116,12 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
             Route::name("import.")->get('/import/{id}', [MasterlistController::class, "pm_import"]);
             Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "pm_delete"]);
         });
+        Route::name("project-management.")->prefix("project-management")->group(function () {
+            Route::name('index')->get('/index/{year?}', [MasterlistController::class, 'pm_index']);
+            Route::name("list")->get('/list/{module}/{year}', [MasterlistController::class, "pm_list"]);
+            Route::name("import.")->get('/import/{id}', [MasterlistController::class, "pm_import"]);
+            Route::name("delete.")->get('/delete/{id}', [MasterlistController::class, "pm_delete"]);
+        });
     });
     Route::name("myra.")->prefix("myra")->group(function () {
         Route::name('self-assessment.')->prefix('self-assessment')->group(function(){
@@ -131,7 +139,13 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
 });
 
 Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
-    // Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
+    Route::name('masterlist.')->prefix('masterlist')->group(function(){
+        Route::name('allocation')->get('/allocation', [DruMasterlistController::class, 'allocationIndex']);
+        Route::name("allocation.import")->get('/allocation/import/{id}', [DruMasterlistController::class, "allocationImport"]);
+        Route::name("allocation.delete")->get('/allocation/delete/{id}', [DruMasterlistController::class, "allocationDelete"]);
+
+        Route::name('expenses')->get('/expenses', [DruMasterlistController::class, 'expensesIndex']);
+    });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
         Route::name('form')->get('/form/{year?}/{id?}', [CadanganAgihanController::class, 'form']);

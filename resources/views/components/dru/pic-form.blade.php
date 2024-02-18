@@ -278,21 +278,37 @@
                         <label for="file_upload">BUKTI PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        @if(!$edit)
-                        @foreach ($plan_form->pic_evidences as $evidence)
-                        <a href="{{ route('dana-ru.cadangan-agihan.file.download', $evidence->id) }}" class="btn btn-xs btn-dark me-3"><i class="p-1" data-feather="download"></i> {{ $evidence->filename }} </a>
-                        @endforeach
-                        @endif
                         @if($edit)
                         <input class="filepond" name="file_upload[]" id="file_upload" type="file" multiple />
                         @error('file_upload')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                        @endif
+                        @if($plan_form->pic_evidences)
+                        <div class="existing-file-container">
+                            @foreach ($plan_form->pic_evidences as $evidence)
+                            @php
+                                $media = $evidence->getFirstMedia('druDataAttachment');
+                            @endphp
+                            @if($media)
+                            <div class="file-btn">
+                                <input type="hidden" name="existing_files[]" value="{{ $evidence->id }}">
+                                <a href="{{ route('dana-ru.cadangan-agihan.file.download', $evidence->id) }}" class="file-action-btn"><i class="file-icon-padding" data-feather="download"></i></a>
+                                <div class="file-info">
+                                    <span class="file-info-main">{{ $media->file_name }}</span>
+                                    <span class="file-info-sub">{{ number_format(($media->size/1000000), 2, '.', ',') ?? 0 }} MB</span>
+                                </div>
+                                @if($edit)<button type="button" onclick="deleteExistingFile($(this))" class="file-action-btn remove-btn"><i class="file-icon-padding" data-feather="x"></i></button>@endif
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
                         @endif
                     </div>
                 </div>
                 @if($edit)
                 <div class="mt-5 d-flex justify-content-end">
                     <a href="{{ route('dana-ru.senarai-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
-                    <button type="submit" form="form_1" class="btn btn-primary">Simpan</button>
+                    @if(in_array($plan_form->pic_submission_status, [null, 7]))<button type="submit" name="submit_btn" form="form_1" value="7" class="btn btn-info text-white me-3">Simpan</button>@endif
+                    <button type="submit" name="submit_btn" form="form_1" value="8" class="btn btn-primary">Hantar</button>
                 </div>
                 @endif
             </div>
@@ -323,15 +339,15 @@
     }
     if (typeof kpi !== 'undefined') {
         kpi.forEach(function(value, index) {
-            manageKpiItem('kpi', 'add', null, value);
+            manageKpiItem('kpi', 'add', null, value, plan_status);
         });
     }
     if (typeof mykpi !== 'undefined') {
         mykpi.forEach(function(value, index) {
-            manageKpiItem('mykpi', 'add', null, value);
+            manageKpiItem('mykpi', 'add', null, value, plan_status);
         });
     }
-    console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
+    // console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
@@ -365,10 +381,11 @@
     
     FilePond.setOptions({
         server: {
-            url: '/data/upload/'+multiple,
+            process: '/data/upload/'+multiple,
+            revert: '/data/revert/',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
+            },
         },
     });
 
@@ -551,7 +568,7 @@
                 $("#"+table+" tbody tr:last").before(newRowContent);
             }           
             calculate(table);     
-            $(".input-mask").inputmask();        
+            $(".input-mask").inputmask(); 
         }
         else if(type == 'remove'){
             that.closest('tr').remove();
@@ -571,7 +588,8 @@
                 $(this).find('.'+table+'_bil').attr('name', table+'['+index+'][bil]');
                 $(this).find('.'+table+'_amount').attr('name', table+'['+index+'][amount]');
                 $(this).find('.'+table+'_total').attr('name', table+'['+index+'][total]');
-            });
+            });-
+            calculate(table); 
         }
     }
 
@@ -632,6 +650,12 @@
                 $("#balance").addClass('text-theme-6');
             }
         }
+    }
+
+    function deleteExistingFile(that){
+        let parent_class = that.parent().prop('class');
+        that.parent().remove();
+        if($('.'+parent_class).length <= 0)$('.existing-file-container').remove();
     }
 
     $('form').bind('submit', function () {

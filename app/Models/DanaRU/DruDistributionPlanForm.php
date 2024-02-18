@@ -69,12 +69,24 @@ class DruDistributionPlanForm extends Model
 
     public function pic_evidences()
     {
-        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereIsActive('Y');
+        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereIsActive('Y');  
+    }
+
+    public function getPicEvidencesIdArrayAttribute()
+    {
+        $idArr = [];
+        foreach ($this->pic_evidences as $key => $evidence) {
+            array_push($idArr, $evidence->id);
+            // $mediaItem = $evidence->getFirstMedia('druDataAttachment');
+            // $fileid = asset('storage/' . $mediaItem->id . '/' . $mediaItem->file_name);
+        }
+        
+        return $idArr;
     }
 
     public function pic_logs()
     {
-        return $this->hasMany(ApprovalApp::class, 'app_id')->whereModuleId(2)->orderBy('index');
+        return $this->hasMany(ApprovalApp::class, 'app_id')->whereModuleId(2)->orderBy('index', 'desc');
     }
 
     public function getPtjInputDataAttribute()

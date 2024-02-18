@@ -41,6 +41,18 @@ if (!function_exists('user')) {
     }
 }
 
+if (!function_exists('dummyUserEmail')) {
+    function dummyUserEmail()
+    {
+        return [
+            'superadmin@rdci.com',
+            'admin@rdci.com',
+            'jtncpistaff@rdci.com',
+            'fkt@rdci.com',
+        ];
+    }
+}
+
 if (!function_exists('getUtmApiUrl')) {
     function getUtmApiUrl()
     {
@@ -237,7 +249,7 @@ if (!function_exists('getStatusOptions')) {
     {
         if(in_array($pending_status, [2, 3]))return \App\Models\Status::whereIn('id', [4,5])->orderBy('sort')->get();
         else if(in_array($pending_status, [4]))return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
-        else if(in_array($pending_status, [8, 9]))return \App\Models\Status::whereIn('id', [10,11])->orderBy('sort')->get();
+        else if(in_array($pending_status, [8, 9]))return \App\Models\Status::whereIn('id', [10,11,12])->orderBy('sort')->get();
     }
 }
 
@@ -427,5 +439,22 @@ if (!function_exists('getAccessControl')) {
 
         if(count($filtered_array) > 0) return true;
         else return false;
+    }
+}
+
+if (!function_exists('getAmountColor')) {
+    function getColorAmount($amount)
+    {
+        $result = ['opacity'=>1, 'text_color'=>'white'];
+        $count = 0;
+        for ($i=100000000; $i > 0; $i -= 5000000) { 
+            $count++;
+            if($amount < $i){
+                $opacity = (1-0.045*$count);
+                $text_color = $opacity > 0.65 ? 'white': 'black';
+                $result = ['opacity'=>$opacity, 'text_color'=>$text_color];
+            }
+        }
+        return $result;
     }
 }

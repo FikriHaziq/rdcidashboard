@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\DataAttachment;
+use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -25,15 +26,15 @@ class FileController extends Controller
         $data->module = $request->module;
         $data->year = $request->year;
         $data->filename = $file['filename'];
-        $data->status = 'not-selected';
+        $data->status = $request->status ?? 'not-selected';
         $data->save();
 
         $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
 
         if($temporaryFile){
             $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('dataAttachment');
-            rmdir(storage_path('app/data/tmp/'.$temporaryFile->folder));
             $temporaryFile->delete();
+            Storage::deleteDirectory('app/data/tmp/'.$file['folder']);
         }
 
         return redirect()->back();
@@ -73,6 +74,12 @@ class FileController extends Controller
             }
         }
         
-        return ;
+        return null;
+    }
+
+    public function revert(Request $request)
+    {
+        Storage::deleteDirectory('data/tmp/'.$request->folder);
+        return ["folder"=>$request->folder, "filename"=>$request->filename];
     }
 }
