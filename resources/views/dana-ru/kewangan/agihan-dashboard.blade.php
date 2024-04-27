@@ -10,19 +10,7 @@
     </h2>
 </div>
 <div class="intro-y row mt-5">
-    <div class="col-4">
-        <div class="grid grid-cols-12 gap-3">
-            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #4AC4D2">
-                <div class="fw-medium fs-base text-white">Belanja</div>
-                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_expenses'], 2, '.', ',') }}</div>
-            </div>
-            <div class="g-col-6 box p-5 cursor-pointer zoom-in" style="background-color: #8430CE;">
-                <div class="fw-medium fs-base text-white">Agihan</div>
-                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_allocation'], 2, '.', ',') }}</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-8">
+    <div class="col-12">
         <div class="row">
             <div class="col-6">
                 <div class="mb-2"> 
@@ -43,6 +31,28 @@
                         @endforeach
                     </select>
                 </div>     
+            </div>
+        </div>
+    </div>
+</div>
+<div class="intro-y row mt-5">
+    <div class="col-12">
+        <div class="grid grid-cols-12 gap-3">
+            <div class="g-col-3 box p-5 cursor-pointer zoom-in" style="background-color: #8430CE;">
+                <div class="fw-medium fs-base text-white">Agihan</div>
+                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_allocation'], 2, '.', ',') }}</div>
+            </div>
+            <div class="g-col-3 box p-5 cursor-pointer zoom-in" style="background-color: #4AC4D2">
+                <div class="fw-medium fs-base text-white">Belanja</div>
+                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_expenses'], 2, '.', ',') }}</div>
+            </div>
+            <div class="g-col-3 box p-5 cursor-pointer zoom-in" style="background-color: #d1ce27">
+                <div class="fw-medium fs-base text-white">Baki</div>
+                <div class="fw-bold fs-lg text-white">RM {{ number_format($chart_data['total_balance'], 2, '.', ',') }}</div>
+            </div>
+            <div class="g-col-3 box p-5 cursor-pointer zoom-in" style="background-color: #6e6567;">
+                <div class="fw-medium fs-base text-white">Peratus Belanja</div>
+                <div class="fw-bold fs-lg text-white">{{ number_format($chart_data['total_expenses_percent'], 2, '.', ',') }} %</div>
             </div>
         </div>
     </div>
@@ -142,10 +152,10 @@
     var options1 = {
           series: [{
           name: 'Allocation',
-          data: chart_data.bar1_allocation
+          data: chart_data.bar1_year_allocation
         }, {
           name: 'Expenses',
-          data: chart_data.bar1_expenses
+          data: chart_data.bar1_year_expenses
         }],
           chart: {
           type: 'bar',
@@ -167,7 +177,7 @@
           colors: ['transparent']
         },
         xaxis: {
-          categories: chart_data.bar1_title,
+          categories: chart_data.bar1_year,
         },
         yaxis: {
           title: {

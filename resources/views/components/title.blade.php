@@ -12,9 +12,9 @@
         <div class="input-group">
             <div class="input-group-text">TAHUN</div>
             <select class="form-select" onchange="getYearList($(this), '{{ $route }}')">
-                @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
+                @foreach ($yearOptions as $i)
                 <option value="{{$i}}" @if((int)$year===(int)$i) selected @endif>{{$i}}</option>
-                @endfor
+                @endforeach
             </select>
         </div>
     </div>

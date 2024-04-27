@@ -8,6 +8,7 @@ use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\MasterList\MasterlistDruAllocation;
+use App\Models\MasterList\MasterlistDruExpenses;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -229,21 +230,36 @@ class FinancialController extends Controller
             ]);
         }
         usort($allocations, function($a, $b) {return $a['amount'] < $b['amount'];});
+        // dd($allocations);
+        $allocation_bar1_year = MasterlistDruAllocation::select('year')->orderBy('year')->distinct()->pluck('year')->toArray();
         $allocation_bar1_title = [];
+        $allocation_bar1_year_allocation = [];
         $allocation_bar1_allocation = [];
+        $allocation_bar1_year_expenses = [];
         $allocation_bar1_expenses = [];
+        foreach ($allocation_bar1_year as $key => $year) {
+            $allocation = MasterlistDruAllocation::select(['amount'])->where('year',$year)->sum('amount');
+            $expense = MasterlistDruExpenses::select(['amount'])->where('year',$year)->sum('amount');
+            array_push($allocation_bar1_year_allocation, (float)$allocation);
+            array_push($allocation_bar1_year_expenses, (float)$expense);
+        }
         foreach ($allocations as $key => $allocation) {
-            if($key < 10){
+            if($key < 20){
                 array_push($allocation_bar1_title, $allocation['jenis_agihan']);
                 array_push($allocation_bar1_allocation, (float)$allocation['amount']);
                 array_push($allocation_bar1_expenses, (float)$allocation['amount']);
             }
         }
         $total_allocation = MasterlistDruAllocation::select(['amount'])->sum('amount');
-        $total_expenses = 0;
+        $total_expenses = MasterlistDruExpenses::select(['amount'])->sum('amount');
         $chart_data = [
             "total_allocation"=>(float)$total_allocation,
             "total_expenses"=>(float)$total_expenses,
+            "total_balance"=>(float)$total_allocation-(float)$total_expenses,
+            "total_expenses_percent"=>(float)$total_expenses/(float)$total_allocation*100,
+            "bar1_year"=>$allocation_bar1_year,
+            "bar1_year_allocation"=>$allocation_bar1_year_allocation,
+            "bar1_year_expenses"=>$allocation_bar1_year_expenses,
             "bar1_title"=>$allocation_bar1_title,
             "bar1_allocation"=>$allocation_bar1_allocation,
             "bar1_expenses"=>$allocation_bar1_expenses,

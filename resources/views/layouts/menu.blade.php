@@ -56,9 +56,9 @@
     </x-menu-item>
     @endif
     <x-menu-item active="dana-ru.*" route="" icon="hard-drive" parent="Dana RU" type="sub">
+        @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Dashboard</x-menu-item>@endif
+        {{-- @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Dashboard</x-menu-item>@endif --}}
         @if(user()->role == 'super_admin' || getAccessControl('dru_bca'))<x-menu-item active="dana-ru.cadangan-agihan.*" route="dana-ru.cadangan-agihan.index">Cadangan Agihan</x-menu-item>@endif
-        @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Peruntukan Keseluruhan</x-menu-item>@endif
-        @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Agihan Program</x-menu-item>@endif
         @if(user()->role == 'super_admin' || getAccessControl('dru_pa') || getAccessControl('dru_pa_s'))<x-menu-item active="dana-ru.kewangan.pengesahan-agihan.index" route="dana-ru.kewangan.pengesahan-agihan.index">Pengesahan Agihan</x-menu-item>@endif
         @if(user()->role == 'super_admin')
         <x-menu-item active="dana-ru.kewangan.perbelanjaan.*" route="" parent="Perincian Perbelanjaan" type="sub">
@@ -70,6 +70,10 @@
         <x-menu-item active="dana-ru.masterlist.*" route="" parent="Masterlist" type="sub">
             <x-menu-item active="dana-ru.masterlist.allocation" route="dana-ru.masterlist.allocation">Allocation</x-menu-item>
             <x-menu-item active="dana-ru.masterlist.expenses" route="dana-ru.masterlist.expenses">Expenses</x-menu-item>
+        </x-menu-item>
+        <x-menu-item active="dana-ru.maintenance.*" route="" parent="Maintenance" type="sub">
+            <x-menu-item active="dana-ru.maintenance.tabung-induk" route="dana-ru.maintenance.tabung-induk">Tabung Induk</x-menu-item>
+            <x-menu-item active="dana-ru.maintenance.project" rawUrl="true" route="{{ route('dana-ru.maintenance.project') }}">Project</x-menu-item>
         </x-menu-item>
         @endif
     </x-menu-item>

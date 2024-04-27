@@ -13,6 +13,7 @@ use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
 use App\Http\Controllers\DanaRU\CadanganAgihanController;
 use App\Http\Controllers\DanaRU\FinancialController;
 use App\Http\Controllers\DanaRU\AgihanController;
+use App\Http\Controllers\DanaRU\MaintenanceController;
 use App\Http\Controllers\DanaRU\MasterlistController as DruMasterlistController;
 use App\Http\Controllers\DocGeneratorController;
 
@@ -145,6 +146,27 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name("allocation.delete")->get('/allocation/delete/{id}', [DruMasterlistController::class, "allocationDelete"]);
 
         Route::name('expenses')->get('/expenses', [DruMasterlistController::class, 'expensesIndex']);
+        Route::name('expenses.year')->get('/expenses/year/{year?}', [DruMasterlistController::class, 'expensesYearIndex']);
+        Route::name("expenses.import")->get('/expenses/import/{id}', [DruMasterlistController::class, "expensesImport"]);
+        Route::name("expenses.process")->get('/expenses/process/{type}/{year}', [DruMasterlistController::class, "expensesProcessData"]);
+        Route::name("expenses.delete")->get('/expenses/delete/{id}', [DruMasterlistController::class, "expensesDelete"]);
+    });
+    Route::name('maintenance.')->prefix('maintenance')->group(function(){
+        Route::name('tabung-induk')->get('/tabung-induk', [MaintenanceController::class, 'tabungIndukIndex']);
+        Route::name('tabung-induk.create')->get('/tabung-induk/create', [MaintenanceController::class, 'tabungIndukCreate']);
+        Route::name('tabung-induk.store')->post('/tabung-induk/store', [MaintenanceController::class, 'tabungIndukStore']);
+        Route::name('tabung-induk.edit')->get('/tabung-induk/edit/{id}', [MaintenanceController::class, 'tabungIndukEdit']);
+        Route::name('tabung-induk.update')->post('/tabung-induk/update/{id}', [MaintenanceController::class, 'tabungIndukUpdate']);
+        Route::name('tabung-induk.delete')->get('/tabung-induk/delete/{id}', [MaintenanceController::class, 'tabungIndukDelete']);
+        Route::name('tabung-induk.activate-all')->get('/tabung-induk/activate-all', [MaintenanceController::class, 'tabungIndukActivateAll']);
+        Route::name('project')->get('/project/index/{year?}', [MaintenanceController::class, 'projectIndex']);
+        Route::name('project.create')->get('/project/create/{year?}', [MaintenanceController::class, 'projectCreate']);
+        Route::name('project.store')->post('/project/store', [MaintenanceController::class, 'projectStore']);
+        Route::name('project.edit')->get('/project/edit/{id}', [MaintenanceController::class, 'projectEdit']);
+        Route::name('project.update')->post('/project/update/{id}', [MaintenanceController::class, 'projectUpdate']);
+        Route::name('project.delete')->get('/project/delete/{id}', [MaintenanceController::class, 'projectDelete']);
+        Route::name('project.activate-all')->get('/project/activate-all/{year}', [MaintenanceController::class, 'projectActivateAll']);
+        Route::name('project.duplicate')->get('/project/duplicate/{from_year}/{to_year}', [MaintenanceController::class, 'projectDuplicate']);
     });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);

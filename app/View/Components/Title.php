@@ -8,6 +8,7 @@ class Title extends Component
 {
     public $hasYear;
     public $year;
+    public $yearOptions;
     public $route;
     public $hasButton;
     public $buttonLabel;
@@ -17,7 +18,7 @@ class Title extends Component
      *
      * @return void
      */
-    public function __construct($hasYear = false, $year = null, $route = '', $hasButton = false, $buttonRoute = null, $buttonLabel = null)
+    public function __construct($hasYear = false, $year = null, $yearOptions = null, $route = '', $hasButton = false, $buttonRoute = null, $buttonLabel = null)
     {
         $this->hasYear = $hasYear;
         $this->year = $year;
@@ -25,6 +26,14 @@ class Title extends Component
         $this->hasButton = $hasButton;
         $this->buttonRoute = $buttonRoute;
         $this->buttonLabel = $buttonLabel;
+
+        if($yearOptions) $this->yearOptions = $yearOptions;
+        else {
+            $this->yearOptions = [];
+            for ($i = date('Y') - 8; $i <= date('Y'); $i++){
+                array_push($this->yearOptions, $i);
+            }
+        }
     }
 
     /**

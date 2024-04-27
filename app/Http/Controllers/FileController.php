@@ -17,16 +17,19 @@ class FileController extends Controller
             "file_upload.required_if" => "File is required",
         ]);
         $file = collect(json_decode($request->file_upload));
-        $others = DataAttachment::where('year', $request->year)->whereModule($request->module)->get();
-        foreach ($others as $key => $other) {
-            $other->status = 'not-selected';
-            $other->save();
+        if($request->module != 'expenses'){
+            $others = DataAttachment::where('year', $request->year)->whereModule($request->module)->get();
+            foreach ($others as $key => $other) {
+                $other->status = 'not-selected';
+                $other->save();
+            }
         }
         $data = new DataAttachment;
         $data->module = $request->module;
         $data->year = $request->year;
         $data->filename = $file['filename'];
         $data->status = $request->status ?? 'not-selected';
+        $data->value1 = $request->migration;
         $data->save();
 
         $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();

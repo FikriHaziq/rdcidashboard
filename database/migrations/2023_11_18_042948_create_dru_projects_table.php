@@ -22,6 +22,8 @@ class CreateDruProjectsTable extends Migration
             $table->integer('program_id')->nullable();
             $table->string('is_fixed_subproject')->default('N');
             $table->string('type')->default('single');
+            $table->integer('main_fund_id')->nullable();
+            $table->tinyInteger('is_draft')->default(0);
             $table->string('status')->default('active');
             $table->timestamps();
         });
