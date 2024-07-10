@@ -66,8 +66,14 @@ class MasterlistController extends Controller
 
     public function expensesIndex()
     {
+        DB::statement("SET SQL_MODE=''");
         $files = DataAttachment::whereModule('expenses')->get();
-        $migration_years = MasterlistDruExpensesYear::orderBy('year', 'desc')->get();
+        $migration_years = MasterlistDruExpensesYear::from('masterlist_dru_expenses_years as mdeu')->select([
+            'mdeu.year','mdeu.amount_status','mdeu.project_status','mdeu.main_fund_status',
+            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year AND dp.is_draft=1) AS draft_project"),
+            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year limit 1) AS project_count"),
+        ])
+        ->orderBy('mdeu.year', 'desc')->get();
         // dd($migration_years);
         return view('dana-ru.masterlist.expenses', compact('files', 'migration_years'));
     }
@@ -104,7 +110,12 @@ class MasterlistController extends Controller
     public function expensesYearIndex($year = null, Request $request)
     {
         $yearOptions = MasterlistDruExpensesYear::select('year')->distinct()->pluck('year')->toArray();
-        $expenses_year = MasterlistDruExpensesYear::where('year', $year)->first();
+        $expenses_year = MasterlistDruExpensesYear::from('masterlist_dru_expenses_years as mdeu')->select([
+            'mdeu.year','mdeu.amount_status','mdeu.project_status','mdeu.main_fund_status',
+        DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year AND dp.is_draft=1) draft_project"),
+            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year limit 1) AS project_count"),
+        ])
+        ->where('mdeu.year', $year)->first();
         if ($request->ajax()) {
             return DatatableController::expenses($year);
         }

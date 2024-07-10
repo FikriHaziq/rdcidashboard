@@ -5,7 +5,9 @@ namespace App\Http\Controllers\DanaRU;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DanaRU\DruMainFund;
+use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruProject;
+use App\Models\DanaRU\DruKpiTemplate;
 use App\Models\MasterList\MasterlistDruExpensesYear;
 use App\Http\Controllers\DatatableController;
 
@@ -222,13 +224,16 @@ class MaintenanceController extends Controller
     }
 
     public function projectActivateAll($year){
-        DruProject::whereIsDraft(1)->whereNotNull('program_id')->where('year', $year)
+        DruProject::from('dru_projects as dp')
+        ->select('dp.id as dp_id')
+        ->leftJoin('dru_main_funds AS dmf', 'dmf.id', '=', 'dp.main_fund_id')
+        ->where('dp.is_draft', 1)->whereNotNull('dmf.program_id')->where('dmf.is_draft', 0)->where('dp.year', $year)
         ->chunkById(100, function ($chunks) {
             foreach ($chunks as $chunk) {
-                DruProject::where('id', $chunk->id)
+                DruProject::where('id', $chunk->dp_id)
                     ->update(['is_draft' => 0]);
             }
-        });
+        }, 'dp_id');
         session()->flash('success', "Data is successfully activated");
         return back();
     }
@@ -256,5 +261,201 @@ class MaintenanceController extends Controller
         });
         session()->flash('success', "Data is successfully activated");
         return redirect()->route('dana-ru.maintenance.project', $to_year);
+    }
+
+    public function tabungAgihanIndex(Request $request){
+        if ($request->ajax()) {
+            return DatatableController::distFund();
+        }
+        return view('dana-ru.maintenance.dist-fund.index');
+    }
+
+    public function tabungAgihanCreate(){
+        return view('dana-ru.maintenance.dist-fund.create');
+    }
+
+    public function tabungAgihanStore(Request $request){
+        // $request->validate([
+        //     'program_id' => 'required',
+        //     'code' => 'required|unique:dru_main_funds,code',
+        //     'name' => 'required',
+        //     'status' => 'required',
+        // ],
+        // [
+        //     'program_id.required' => 'Sila pilih program utama.',
+        //     'code.required' => 'Sila masukkan kod.',
+        //     'code.unique' => 'Kod ini telah didaftar.',
+        //     'name.required' => 'Sila masukkan deskripsi.',
+        //     'status.required' => 'Sila pilih status.',
+        // ]);
+        // $main_fund = new DruMainFund;
+        // $main_fund->program_id = $request->program_id;
+        // $main_fund->code = $request->code;
+        // $main_fund->name = $request->name;
+        // $main_fund->apply_to_all = 1;
+        // $main_fund->is_draft = $request->submit_btn;
+        // $main_fund->status = $request->status;
+        // $main_fund->save();
+        session()->flash('success', "Tabung agihan telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.tabung-agihan');
+    }
+
+    public function tabungAgihanEdit($id){
+        $dist_fund = DruDistFund::find($id);
+        return view('dana-ru.maintenance.dist-fund.edit', compact('dist_fund'));
+    }
+
+    public function tabungAgihanUpdate($id, Request $request){
+        // $request->validate([
+        //     'program_id' => 'required',
+        //     'code' => 'required|unique:dru_main_funds,code,'.$id,
+        //     'name' => 'required',
+        //     'status' => 'required',
+        // ],
+        // [
+        //     'program_id.required' => 'Sila pilih program utama.',
+        //     'code.required' => 'Sila masukkan kod.',
+        //     'code.unique' => 'Kod ini telah didaftar.',
+        //     'name.required' => 'Sila masukkan deskripsi.',
+        //     'status.required' => 'Sila pilih status.',
+        // ]);
+        // $main_fund = DruMainFund::find($id);
+        // $main_fund->program_id = $request->program_id;
+        // $main_fund->code = $request->code;
+        // $main_fund->name = $request->name;
+        // $main_fund->apply_to_all = 1;
+        // $main_fund->is_draft = $request->submit_btn;
+        // $main_fund->status = $request->status;
+        // $main_fund->save();
+        session()->flash('success', "Tabung Agihan telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.tabung-agihan');
+    }
+
+    public function tabungAgihanDelete($id){
+        // $main_fund = DruMainFund::find($id)->delete();
+        session()->flash('success', "Tabung Agihan telah berjaya dipadam.");
+        return redirect()->route('dana-ru.maintenance.tabung-agihan');
+    }
+
+    public function tabungAgihanActivateAll(){
+        // DruMainFund::whereIsDraft(1)->whereNotNull('program_id')
+        // ->chunkById(100, function ($chunks) {
+        //     foreach ($chunks as $chunk) {
+        //         DruMainFund::where('id', $chunk->id)
+        //             ->update(['is_draft' => 0]);
+        //     }
+        // });
+        session()->flash('success', "Data is successfully activated");
+        return back();
+    }
+    
+    public function asasAgihanIndex(Request $request){
+        if ($request->ajax()) {
+            return DatatableController::mainKpi();
+        }
+        return view('dana-ru.maintenance.main-kpi.index');
+    }
+
+    public function asasAgihanCreate(){
+        return view('dana-ru.maintenance.main-kpi.create');
+    }
+
+    public function asasAgihanStore(Request $request){
+        $request->validate([
+            'title' => 'required',
+        ],
+        [
+            'title.required' => 'Sila isi tajuk.',
+        ]);
+        $main_kpi = new DruKpiTemplate;
+        $main_kpi->title = $request->title;
+        $main_kpi->type = "main";
+        $main_kpi->display_level = "all";
+        $main_kpi->active = $request->active;
+        $main_kpi->save();
+        session()->flash('success', "Asas agihan telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.asas-agihan');
+    }
+
+    public function asasAgihanEdit($id){
+        $main_kpi = DruKpiTemplate::find($id);
+        return view('dana-ru.maintenance.main-kpi.edit', compact('main_kpi'));
+    }
+
+    public function asasAgihanUpdate($id, Request $request){
+        $request->validate([
+            'title' => 'required',
+        ],
+        [
+            'title.required' => 'Sila isi tajuk.',
+        ]);
+        $main_kpi = DruKpiTemplate::find($id);
+        $main_kpi->title = $request->title;
+        $main_kpi->active = $request->active;
+        $main_kpi->updated_at = now();
+        $main_kpi->save();
+        session()->flash('success', "Asas Agihan telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.asas-agihan');
+    }
+
+    public function asasAgihanDelete($id){
+        $main_kpi = DruKpiTemplate::find($id)->delete();
+        session()->flash('success', "Asas Agihan telah berjaya dipadam.");
+        return redirect()->route('dana-ru.maintenance.asas-agihan');
+    }
+
+    public function kpiIndex(Request $request){
+        if ($request->ajax()) {
+            return DatatableController::kpi();
+        }
+        return view('dana-ru.maintenance.kpi.index');
+    }
+
+    public function kpiCreate(){
+        return view('dana-ru.maintenance.kpi.create');
+    }
+
+    public function kpiStore(Request $request){
+        $request->validate([
+            'title' => 'required',
+        ],
+        [
+            'title.required' => 'Sila isi tajuk.',
+        ]);
+        $kpi = new DruKpiTemplate;
+        $kpi->title = $request->title;
+        $kpi->type = "kpi";
+        $kpi->display_level = "all";
+        $kpi->active = $request->active;
+        $kpi->save();
+        session()->flash('success', "KPI telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.kpi');
+    }
+
+    public function kpiEdit($id){
+        $kpi = DruKpiTemplate::find($id);
+        return view('dana-ru.maintenance.kpi.edit', compact('kpi'));
+    }
+
+    public function kpiUpdate($id, Request $request){
+        $request->validate([
+            'title' => 'required',
+        ],
+        [
+            'title.required' => 'Sila isi tajuk.',
+        ]);
+        $kpi = DruKpiTemplate::find($id);
+        $kpi->title = $request->title;
+        $kpi->active = $request->active;
+        $kpi->updated_at = now();
+        $kpi->save();
+        session()->flash('success', "KPI telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.kpi');
+    }
+
+    public function kpiDelete($id){
+        $kpi = DruKpiTemplate::find($id)->delete();
+        session()->flash('success', "KPI telah berjaya dipadam.");
+        return redirect()->route('dana-ru.maintenance.kpi');
     }
 }

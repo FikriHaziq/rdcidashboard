@@ -13,6 +13,7 @@ use App\Http\Controllers\MyRA\ReportController as MyRAReportController;
 use App\Http\Controllers\DanaRU\CadanganAgihanController;
 use App\Http\Controllers\DanaRU\FinancialController;
 use App\Http\Controllers\DanaRU\AgihanController;
+use App\Http\Controllers\DanaRU\SearchController;
 use App\Http\Controllers\DanaRU\MaintenanceController;
 use App\Http\Controllers\DanaRU\MasterlistController as DruMasterlistController;
 use App\Http\Controllers\DocGeneratorController;
@@ -167,6 +168,25 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('project.delete')->get('/project/delete/{id}', [MaintenanceController::class, 'projectDelete']);
         Route::name('project.activate-all')->get('/project/activate-all/{year}', [MaintenanceController::class, 'projectActivateAll']);
         Route::name('project.duplicate')->get('/project/duplicate/{from_year}/{to_year}', [MaintenanceController::class, 'projectDuplicate']);
+        Route::name('tabung-agihan')->get('/tabung-agihan', [MaintenanceController::class, 'tabungAgihanIndex']);
+        Route::name('tabung-agihan.create')->get('/tabung-agihan/create', [MaintenanceController::class, 'tabungAgihanCreate']);
+        Route::name('tabung-agihan.store')->post('/tabung-agihan/store', [MaintenanceController::class, 'tabungAgihanStore']);
+        Route::name('tabung-agihan.edit')->get('/tabung-agihan/edit/{id}', [MaintenanceController::class, 'tabungAgihanEdit']);
+        Route::name('tabung-agihan.update')->post('/tabung-agihan/update/{id}', [MaintenanceController::class, 'tabungAgihanUpdate']);
+        Route::name('tabung-agihan.delete')->get('/tabung-agihan/delete/{id}', [MaintenanceController::class, 'tabungAgihanDelete']);
+        Route::name('tabung-agihan.activate-all')->get('/tabung-agihan/activate-all', [MaintenanceController::class, 'tabungAgihanActivateAll']);
+        Route::name('asas-agihan')->get('/asas-agihan', [MaintenanceController::class, 'asasAgihanIndex']);
+        Route::name('asas-agihan.create')->get('/asas-agihan/create', [MaintenanceController::class, 'asasAgihanCreate']);
+        Route::name('asas-agihan.store')->post('/asas-agihan/store', [MaintenanceController::class, 'asasAgihanStore']);
+        Route::name('asas-agihan.edit')->get('/asas-agihan/edit/{id}', [MaintenanceController::class, 'asasAgihanEdit']);
+        Route::name('asas-agihan.update')->post('/asas-agihan/update/{id}', [MaintenanceController::class, 'asasAgihanUpdate']);
+        Route::name('asas-agihan.delete')->get('/asas-agihan/delete/{id}', [MaintenanceController::class, 'asasAgihanDelete']);
+        Route::name('kpi')->get('/kpi', [MaintenanceController::class, 'kpiIndex']);
+        Route::name('kpi.create')->get('/kpi/create', [MaintenanceController::class, 'kpiCreate']);
+        Route::name('kpi.store')->post('/kpi/store', [MaintenanceController::class, 'kpiStore']);
+        Route::name('kpi.edit')->get('/kpi/edit/{id}', [MaintenanceController::class, 'kpiEdit']);
+        Route::name('kpi.update')->post('/kpi/update/{id}', [MaintenanceController::class, 'kpiUpdate']);
+        Route::name('kpi.delete')->get('/kpi/delete/{id}', [MaintenanceController::class, 'kpiDelete']);
     });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
@@ -199,6 +219,11 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('form')->get('/form/{year?}/{id?}/{tab?}', [AgihanController::class, 'form']);
         Route::name('declare')->post('/declare/{plan_id}', [AgihanController::class, 'declare']);
         Route::name('kpi-update')->post('/kpi-update/{plan_id}', [AgihanController::class, 'kpiUpdate']);
+    });
+
+    Route::name('carian.')->prefix('carian')->group(function(){
+        Route::name('index')->get('/', [SearchController::class, 'index']);
+        Route::name('project')->get('/project', [SearchController::class, 'projectList']);
     });
 
     // });
@@ -237,4 +262,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("getProjectList")->get('getProjectList/{program_id}/{year}', [AjaxController::class, 'getProjectList']);
     Route::name("approveDruDistributionPlanForm")->post('approve-distribution-plan', [AjaxController::class, 'approveDruDistributionPlanForm']);
     Route::name("updateUtmFinRefNo")->post('update-utmfin-refno', [AjaxController::class, 'updateUtmFinRefNo']);
+    Route::name("addDistFund")->post('add-dist-fund', [AjaxController::class, 'addDistFund']);
 });

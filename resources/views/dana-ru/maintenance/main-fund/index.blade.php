@@ -12,6 +12,14 @@
         <a href="{{ route('dana-ru.maintenance.tabung-induk.create') }}" class="btn btn-primary me-4"><i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i>Tabung Induk</a>
         <button class="btn btn-warning me-4" onclick="activate()"><i data-feather="target" class="d-none d-sm-block w-4 h-4 me-2"></i>Activate All</button>
     </div>
+    <div class="mb-n6 intro-y p-5">
+        <div class="alert alert-secondary-soft text-gray-800 alert-dismissible fade show d-flex align-items-center" role="alert">
+            <div class="bg-theme-6 bg-opacity-20 w-12 h-4 align-items-center px-2 me-2"></div>
+            <span>Tabung induk masih belum mempunyai program.</span>
+            <div class="bg-warning bg-opacity-20 w-12 h-4 align-items-center px-2 me-2 ms-8"></div>
+            <span>Tabung induk masih berstatus draft.</span>
+        </div>
+    </div>
     <div class="p-5" id="hoverable-table">
         <div class="preview">
             <div class="overflow-x-auto table-responsive">
@@ -23,7 +31,7 @@
                             <th class="whitespace-nowrap">CODE</th>
                             <th class="whitespace-nowrap">NAME</th>
                             <th class="whitespace-nowrap">YEAR</th>
-                            <th class="whitespace-nowrap">IS DRAFT?</th>
+                            <th class="whitespace-nowrap">MIGRATION STATUS</th>
                             <th class="whitespace-nowrap">STATUS</th>
                             <th class="whitespace-nowrap">CREATED AT</th>
                             <th class="whitespace-nowrap">UPDATED AT</th>

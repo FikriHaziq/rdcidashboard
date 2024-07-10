@@ -254,6 +254,10 @@ class CadanganAgihanController extends Controller
     public function verificationPost(Request $request)
     {
         // dd($request->all());
+        // if($request->status==6){
+        //     $plan = DruDistributionPlan::find($request->plan_id);
+        //     dd($plan->forms);
+        // }
         $validator = Validator::make($request->all(), [
             'file_upload' => 'required',
             'status' => 'required',

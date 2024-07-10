@@ -26,7 +26,7 @@
         </div>
     </div>
     @endif
-    @if(!$expenses_year->amount_status)
+    @if(!$expenses_year->amount_status || ($expenses_year->amount_status && ($expenses_year->draft_project > 0 || $expenses_year->project_count == 0)))
     <div class="g-col-12 mb-n6 intro-y">
         <div class="alert alert-dark-soft alert-dismissible fade show d-flex align-items-center" role="alert">
             <i data-feather="dollar-sign" class="w-6 h-6 me-2"></i>
@@ -40,7 +40,9 @@
     <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
         <button class="btn btn-warning-soft me-4" onclick="processData('main_fund', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Tabung Induk</button>
         <button class="btn btn-primary-soft me-4" onclick="processData('project', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Projek</button>
-        <button class="btn btn-dark-soft me-4" onclick="processData('expenses', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Perbelanjaan</button>
+        <button class="btn btn-dark-soft me-4 @if($expenses_year->draft_project > 0 || $expenses_year->project_count == 0) tooltip @endif" title="Terdapat projek yang masih belum dikemaskini" @if($expenses_year->draft_project == 0 && $expenses_year->project_count > 0) onclick="processData('expenses', {{ $year }})" @endif>
+            <i data-feather="upload" class="d-sm-block w-4 h-4 me-2"></i>Perbelanjaan @if($expenses_year->draft_project > 0 || $expenses_year->project_count == 0)<i data-feather="alert-circle" class="text-theme-6 d-sm-block w-5 h-5 ms-2">@endif</i>
+        </button>
     </div>
     <div class="p-5" id="hoverable-table">
         <div class="preview">
@@ -92,7 +94,7 @@
             {data: 'sodo',name: 'sodo'},
             {data: 'month',name: 'month'},
             {data: 'mde_amount',name: 'amount'},
-            {data: 'tabung_induk',name: 'tabung_induk'},
+            {data: 'formula_tabung_induk',name: 'formula_tabung_induk'},
         ],
     });
 

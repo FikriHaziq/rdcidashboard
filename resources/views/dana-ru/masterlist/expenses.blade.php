@@ -81,23 +81,23 @@
         <div class="grid grid-cols-12 gap-5">
             @foreach ($migration_years as $migration_year)
             <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
-                @if ($migration_year->amount_status && $migration_year->project_status && $migration_year->main_fund_status)
+                @if ($migration_year->amount_status && $migration_year->project_status && ($migration_year->main_fund_status && $migration_year->draft_project == 0 && $migration_year->project_count > 0))
                 <a href="{{ route('dana-ru.masterlist.expenses.year', $migration_year->year) }}" class="btn btn-success-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
                     <div class="me-auto">
                         <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
                     </div>
                     <div class="me-2 @if($migration_year->project_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Projek"><i data-feather="briefcase" class="w-6 h-6"></i></div>
                     <div class="me-2 @if($migration_year->main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
-                    <div class="@if($migration_year->amount_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->main_fund_status && $migration_year->draft_project == 0 && $migration_year->project_count > 0) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
                 </a>
-                @elseif ($migration_year->amount_status || $migration_year->project_status || $migration_year->main_fund_status)
+                @elseif ($migration_year->amount_status || $migration_year->project_status || ($migration_year->main_fund_status && $migration_year->draft_project == 0 && $migration_year->project_count > 0))
                 <a href="{{ route('dana-ru.masterlist.expenses.year', $migration_year->year) }}" class="btn btn-warning-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
                     <div class="me-auto">
                         <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
                     </div>
                     <div class="me-2 @if($migration_year->project_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Projek"><i data-feather="briefcase" class="w-6 h-6"></i></div>
                     <div class="me-2 @if($migration_year->main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
-                    <div class="@if($migration_year->amount_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->main_fund_status && $migration_year->draft_project == 0 && $migration_year->project_count > 0) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
                 </a>
                 @else
                 <a href="{{ route('dana-ru.masterlist.expenses.year', $migration_year->year) }}" class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
@@ -106,7 +106,7 @@
                     </div>
                     <div class="me-2 @if($migration_year->project_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Projek"><i data-feather="briefcase" class="w-6 h-6"></i></div>
                     <div class="me-2 @if($migration_year->main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
-                    <div class="@if($migration_year->amount_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->main_fund_status && $migration_year->draft_project == 0 && $migration_year->project_count > 0) text-theme-9 @else text-theme-6 @endif tooltip" title="Perbelanjaan"><i data-feather="dollar-sign" class="w-6 h-6"></i></div>
                 </a>
                 @endif
             </div>

@@ -9,6 +9,7 @@ use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\MasterList\MasterlistDruAllocation;
 use App\Models\MasterList\MasterlistDruExpenses;
+use App\Models\MasterList\MasterlistDruExpensesYear;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -239,7 +240,7 @@ class FinancialController extends Controller
         $allocation_bar1_expenses = [];
         foreach ($allocation_bar1_year as $key => $year) {
             $allocation = MasterlistDruAllocation::select(['amount'])->where('year',$year)->sum('amount');
-            $expense = MasterlistDruExpenses::select(['amount'])->where('year',$year)->sum('amount');
+            $expense = MasterlistDruExpensesYear::select(['total'])->where('year',$year)->where('amount_status', 1)->sum('total');
             array_push($allocation_bar1_year_allocation, (float)$allocation);
             array_push($allocation_bar1_year_expenses, (float)$expense);
         }
@@ -251,7 +252,7 @@ class FinancialController extends Controller
             }
         }
         $total_allocation = MasterlistDruAllocation::select(['amount'])->sum('amount');
-        $total_expenses = MasterlistDruExpenses::select(['amount'])->sum('amount');
+        $total_expenses = MasterlistDruExpensesYear::select(['total'])->where('amount_status', 1)->sum('total');
         $chart_data = [
             "total_allocation"=>(float)$total_allocation,
             "total_expenses"=>(float)$total_expenses,

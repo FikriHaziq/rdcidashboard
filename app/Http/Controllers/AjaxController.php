@@ -9,6 +9,7 @@ use App\Models\DataAttachment;
 use App\Models\Parameter;
 use App\Models\MyraCalculation;
 use App\Models\DanaRU\DruProject;
+use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use Illuminate\Support\Facades\DB;
 
@@ -1581,6 +1582,43 @@ class AjaxController extends Controller
             $status_code = 200;
             $result = 'Passed';
         }
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
+    }
+
+    public function addDistFund(Request $request)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+        $projects = DruProject::whereIn('id', $request->project_id)->get();
+        $insert_data = [];
+        foreach ($projects as $project) {
+            $data = [
+                'year' => $project->year,
+                'title' => $project->title,
+                'code' => $project->code,
+                'code_2' => $project->code_2,
+                'program_id' => $project->program_id,
+                'main_fund_id' => $project->main_fund_id,
+                'is_draft' => 1,
+                'updated_at' => now()
+            ];
+            $insert_data[] = $data;
+        }
+        $insert_data = collect($insert_data);
+        $chunks = $insert_data->chunk(100);
+        foreach ($chunks as $chunk) {
+            foreach ($chunk as $key => $item) {
+                DruDistFund::updateOrCreate(
+                    ['year' => $item['year'], 'code' => $item['code'], 'code_2' => $item['code_2'], 'faculty_code' => null],
+                    $item
+                ); 
+            }
+        }
+        $status_code = 200;
+        $result = 'Passed';
         return response()->json([
             "result" => $result,
         ], $status_code);

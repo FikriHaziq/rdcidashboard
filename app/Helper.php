@@ -212,27 +212,47 @@ if (!function_exists('getMainFund')) {
 }
 
 if (!function_exists('getMainFundByFormula')) {
-    function getMainFundByFormula($code, $code_2)
+    function getMainFundByFormula($code, $code_2, $mode="STD", $alias = "tabung_induk")
     {
-        $tabung_induk_code = '';
-        if(in_array($code, ["21A2","21A3","21A4","21A5","21A6","22B2","22B3","22B4","22B5","22B7","22B8","22B9","22C2","22C3","23C1","23C3","23C6","23C7","23C9","24C1","24C2","24C3","24C4","3801"])) $tabung_induk_code = $code;
-        else if($code == '21A1' && $code_2 == '00A00') $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == '21A1' && $code_2 == '00A36') $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "22B6" && $code_2 == "00D24") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "22B6" && $code_2 == "00D27") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "23C4" && $code_2 == "00B54") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "23C4" && $code_2 == "01D31") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "23C5" && $code_2 == "00D95") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "23C5" && $code_2 != "00D95") $tabung_induk_code = "23C5.00000";
-        else if($code == "23C8" && $code_2 == "00B56") $tabung_induk_code = $code . '.' . $code_2;
-        else if($code == "23C8" && $code_2 == "01D42") $tabung_induk_code = $code . '.' . $code_2;
-        else if((substr($code, 0, 2).'00' == '3100') && $code_2 == '00A37') $tabung_induk_code = '3100.00A37';
-        else if(substr($code, 0, 2).'00' == '3100') $tabung_induk_code = '3100.00000';
-        else if((substr($code, 0, 2).'00' == '3000') && substr($code_2, 2, 1) == 'D') $tabung_induk_code = '3000.99D99';
-        else if(substr($code, 0, 2).'00' == '3000') $tabung_induk_code = '3000.00000';
-        else $tabung_induk_code = substr($code, 0, 2).'00';
-        return $tabung_induk_code;
-        // return \App\Models\DanaRU\DruMainFund::whereNotNull('program_id')->whereStatus('active')->orderBy('code')->get();
+        if($mode == "STD"){
+            $tabung_induk_code = '';
+            if(in_array($code, ["21A2","21A3","21A4","21A5","21A6","22B2","22B3","22B4","22B5","22B7","22B8","22B9","22C2","22C3","23C1","23C3","23C6","23C7","23C9","24C1","24C2","24C3","24C4","3801"])) $tabung_induk_code = $code;
+            else if($code == '21A1' && $code_2 == '00A00') $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == '21A1' && $code_2 == '00A36') $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "22B6" && $code_2 == "00D24") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "22B6" && $code_2 == "00D27") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "23C4" && $code_2 == "00B54") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "23C4" && $code_2 == "01D31") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "23C5" && $code_2 == "00D95") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "23C5" && $code_2 != "00D95") $tabung_induk_code = "23C5.00000";
+            else if($code == "23C8" && $code_2 == "00B56") $tabung_induk_code = $code . '.' . $code_2;
+            else if($code == "23C8" && $code_2 == "01D42") $tabung_induk_code = $code . '.' . $code_2;
+            else if((substr($code, 0, 2).'00' == '3100') && $code_2 == '00A37') $tabung_induk_code = '3100.00A37';
+            else if(substr($code, 0, 2).'00' == '3100') $tabung_induk_code = '3100.00000';
+            else if((substr($code, 0, 2).'00' == '3000') && substr($code_2, 2, 1) == 'D') $tabung_induk_code = '3000.99D99';
+            else if(substr($code, 0, 2).'00' == '3000') $tabung_induk_code = '3000.00000';
+            else $tabung_induk_code = substr($code, 0, 2).'00';
+            return $tabung_induk_code;
+        }
+        else if($mode == "MYSQL"){
+            return "CASE 
+            WHEN ".$code." IN ('21A2','21A3','21A4','21A5','21A6','22B2','22B3','22B4','22B5','22B7','22B8','22B9','22C2','22C3','23C1','23C3','23C6','23C7','23C9','24C1','24C2','24C3','24C4','3801') THEN ".$code."
+            WHEN ".$code." = '21A1' AND ".$code_2." = '00A00' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '21A1' AND ".$code_2." = '00A36' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '22B6' AND ".$code_2." = '00D24' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '22B6' AND ".$code_2." = '00D27' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '23C4' AND ".$code_2." = '00B54' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '23C4' AND ".$code_2." = '01D31' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '23C5' AND ".$code_2." = '00D95' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '23C5' AND ".$code_2." != '00D95' THEN '23C5.00000'
+            WHEN ".$code." = '23C8' AND ".$code_2." = '00B56' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN ".$code." = '23C8' AND ".$code_2." = '01D42' THEN CONCAT(".$code.", '.', ".$code_2.")
+            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3100' AND ".$code_2." = '00A37' THEN '3100.00A37'
+            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3100' THEN '3100.00000'
+            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' AND SUBSTRING(".$code_2.",3,1) = 'D' THEN '3000.99D99'
+            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' THEN '3000.00000'
+            ELSE CONCAT(LEFT(".$code.", 2), '00') END as ".$alias;
+        }
     }
 }
 
