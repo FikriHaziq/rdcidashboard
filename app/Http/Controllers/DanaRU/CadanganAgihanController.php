@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DanaRU;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DanaRU\DruProject;
+use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruSubProject;
 use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
@@ -112,22 +113,23 @@ class CadanganAgihanController extends Controller
         }
         $ptj = explode('_',$request->ptj);
         $ptj_id = $ptj[0];
+        $ptj_original_code = $ptj[1];
         $project = explode('_',$request->project);
         if(count($project) == 4){
             $project_id = $project[0];
         }
         else{
-            $dru_project = new DruProject;
-            $dru_project->year = $year;
-            $dru_project->title = $project[0];
-            $dru_project->code = 'TMP';
-            $dru_project->program_id = $request->mrun;
-            $dru_project->is_fixed_subproject = 'N';
-            $dru_project->type = 'single';
-            $dru_project->status = 'temp';
-            $dru_project->save();
+            $dru_dist_fund = new DruDistFund;
+            $dru_dist_fund->year = $year;
+            $dru_dist_fund->title = $project[0];
+            $dru_dist_fund->faculty_code = $ptj_original_code;
+            $dru_dist_fund->code = 'TMP';
+            $dru_dist_fund->program_id = $request->mrun;
+            $dru_dist_fund->is_draft = 1;
+            $dru_dist_fund->status = 'temp';
+            $dru_dist_fund->save();
 
-            $project_id = $dru_project->id;
+            $project_id = $dru_dist_fund->id;
         }
         $plan_form = DruDistributionPlanForm::find($request->plan_form_id);
         if(!$plan_form)$plan_form = new DruDistributionPlanForm;

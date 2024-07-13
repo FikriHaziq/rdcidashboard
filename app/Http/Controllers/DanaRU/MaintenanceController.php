@@ -8,7 +8,8 @@ use App\Models\DanaRU\DruMainFund;
 use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruKpiTemplate;
-use App\Models\MasterList\MasterlistDruExpensesYear;
+use App\Models\Parameter;
+use App\Models\MasterList\MasterlistDruYear;
 use App\Http\Controllers\DatatableController;
 
 class MaintenanceController extends Controller
@@ -100,7 +101,7 @@ class MaintenanceController extends Controller
     }
 
     public function projectIndex(Request $request, $year = null){
-        $yearData = MasterlistDruExpensesYear::select('year')->distinct()->first();
+        $yearData = MasterlistDruYear::select('year')->distinct()->first();
         $yearOptions = [];
         for ($i=$yearData->year; $i <= date('Y'); $i++) { 
             array_push($yearOptions, $i);
@@ -113,7 +114,7 @@ class MaintenanceController extends Controller
     }
 
     public function projectCreate($year = null){
-        $yearData = MasterlistDruExpensesYear::select('year')->distinct()->first();
+        $yearData = MasterlistDruYear::select('year')->distinct()->first();
         $yearOptions = [];
         for ($i=$yearData->year; $i <= date('Y'); $i++) { 
             array_push($yearOptions, $i);
@@ -319,32 +320,32 @@ class MaintenanceController extends Controller
         //     'name.required' => 'Sila masukkan deskripsi.',
         //     'status.required' => 'Sila pilih status.',
         // ]);
-        // $main_fund = DruMainFund::find($id);
-        // $main_fund->program_id = $request->program_id;
-        // $main_fund->code = $request->code;
-        // $main_fund->name = $request->name;
-        // $main_fund->apply_to_all = 1;
-        // $main_fund->is_draft = $request->submit_btn;
-        // $main_fund->status = $request->status;
-        // $main_fund->save();
+        $main_fund = DruDistFund::find($id);
+        $main_fund->title = $request->title;
+        $main_fund->faculty_code = $request->faculty_code;
+        $main_fund->code = $request->code;
+        $main_fund->code_2 = $request->code_2;
+        $main_fund->is_draft = $request->submit_btn;
+        $main_fund->status = $request->status;
+        $main_fund->save();
         session()->flash('success', "Tabung Agihan telah berjaya disimpan.");
         return redirect()->route('dana-ru.maintenance.tabung-agihan');
     }
 
     public function tabungAgihanDelete($id){
-        // $main_fund = DruMainFund::find($id)->delete();
+        $main_fund = DruDistFund::find($id)->delete();
         session()->flash('success', "Tabung Agihan telah berjaya dipadam.");
         return redirect()->route('dana-ru.maintenance.tabung-agihan');
     }
 
     public function tabungAgihanActivateAll(){
-        // DruMainFund::whereIsDraft(1)->whereNotNull('program_id')
-        // ->chunkById(100, function ($chunks) {
-        //     foreach ($chunks as $chunk) {
-        //         DruMainFund::where('id', $chunk->id)
-        //             ->update(['is_draft' => 0]);
-        //     }
-        // });
+        DruDistFund::whereIsDraft(1)
+        ->chunkById(100, function ($chunks) {
+            foreach ($chunks as $chunk) {
+                DruDistFund::where('id', $chunk->id)
+                    ->update(['is_draft' => 0]);
+            }
+        });
         session()->flash('success', "Data is successfully activated");
         return back();
     }
@@ -456,6 +457,86 @@ class MaintenanceController extends Controller
     public function kpiDelete($id){
         $kpi = DruKpiTemplate::find($id)->delete();
         session()->flash('success', "KPI telah berjaya dipadam.");
+        return redirect()->route('dana-ru.maintenance.kpi');
+    }
+
+    public function facultyIndex(Request $request){
+        if ($request->ajax()) {
+            return DatatableController::faculty();
+        }
+        return view('dana-ru.maintenance.faculty.index');
+    }
+
+    public function facultyCreate($original_code = null, $short = null){
+        return view('dana-ru.maintenance.faculty.create', compact('original_code', 'short'));
+    }
+
+    public function facultyStore(Request $request){
+        $request->validate([
+            'code' => 'required|unique:parameters,code',
+            'original_code' => 'required',
+            'parameter_name' => 'required',
+            'description_1' => 'required',
+            'active' => 'required',
+        ],
+        [
+            'code.required' => 'Sila masukkan kod.',
+            'code.unique' => 'Fakulti ini telah berdaftar.',
+            'original_code.required' => 'Sila masukkan kod asal.',
+            'parameter_name.required' => 'Sila masukkan nama singkatan fakulti.',
+            'description_1.required' => 'Sila masukkan kod nama penuh fakulti.',
+            'active.required' => 'Sila pilih status.',
+        ]);
+        $faculty = new Parameter;
+        $faculty->group_id = $request->parent_id ? 2 : 1;
+        $faculty->code = $request->code;
+        $faculty->original_code = $request->original_code;
+        $faculty->parameter_name = $request->parameter_name;
+        $faculty->parent_id = $request->parent_id;
+        $faculty->description_1 = $request->description_1;
+        $faculty->active = $request->active;
+        $faculty->save();
+        session()->flash('success', "Fakulti telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.faculty');
+    }
+
+    public function facultyEdit($id){
+        $faculty = Parameter::find($id);
+        return view('dana-ru.maintenance.faculty.edit', compact('faculty'));
+    }
+
+    public function facultyUpdate($id, Request $request){
+        $request->validate([
+            'code' => 'required|unique:parameters,code,'.$id,
+            'original_code' => 'required',
+            'parameter_name' => 'required',
+            'description_1' => 'required',
+            'active' => 'required',
+        ],
+        [
+            'code.required' => 'Sila masukkan kod.',
+            'code.unique' => 'Fakulti ini telah berdaftar.',
+            'original_code.required' => 'Sila masukkan kod asal.',
+            'parameter_name.required' => 'Sila masukkan nama singkatan fakulti.',
+            'description_1.required' => 'Sila masukkan kod nama penuh fakulti.',
+            'active.required' => 'Sila pilih status.',
+        ]);
+        $faculty = Parameter::find($id);
+        $faculty->group_id = $request->parent_id ? 2 : 1;
+        $faculty->code = $request->code;
+        $faculty->original_code = $request->original_code;
+        $faculty->parameter_name = $request->parameter_name;
+        $faculty->parent_id = $request->parent_id;
+        $faculty->description_1 = $request->description_1;
+        $faculty->active = $request->active;
+        $faculty->save();
+        session()->flash('success', "Fakulti telah berjaya disimpan.");
+        return redirect()->route('dana-ru.maintenance.faculty');
+    }
+
+    public function facultyDelete($id){
+        $kpi = Parameter::find($id)->delete();
+        session()->flash('success', "Fakulti telah berjaya dipadam.");
         return redirect()->route('dana-ru.maintenance.kpi');
     }
 }

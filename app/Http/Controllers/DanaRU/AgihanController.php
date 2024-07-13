@@ -8,8 +8,10 @@ use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruKpiPic;
 use Illuminate\Support\Facades\DB;
 use App\Models\DanaRU\DruDataAttachment;
+use App\Models\MasterList\MasterlistDruExpenses;
 use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
+use App\Http\Controllers\DatatableController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Validator;
@@ -41,7 +43,7 @@ class AgihanController extends Controller
                 DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
@@ -84,7 +86,7 @@ class AgihanController extends Controller
                 $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
                 ->where('kpi_template.active','Y');
             })
-            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
         // dd($plan_form);
         return view('dana-ru.senarai-agihan.show', compact('plan_form'));
@@ -187,5 +189,20 @@ class AgihanController extends Controller
 
         session()->flash('success', "KPI telah berjaya disimpan.");
         return back();
+    }
+
+    public function expensesRecord(Request $request, $plan_id)
+    {
+        $plan_form = DruDistributionPlanForm::find($plan_id);
+        $plan = $plan_form->distribution_plan;
+        $dru_dist_fund = $plan_form->project;
+        $total = MasterlistDruExpenses::select('amount')->where('year', $plan->year)
+        ->where('ptj', $dru_dist_fund->faculty_code)
+        ->where('project', $dru_dist_fund->code)
+        ->where('sub_project', $dru_dist_fund->code_2)->sum('amount');
+        if ($request->ajax()) {
+            return DatatableController::expensesRecord($plan->year, $dru_dist_fund->faculty_code, $dru_dist_fund->code, $dru_dist_fund->code_2);
+        }
+        return view('dana-ru.senarai-agihan.expenses-record', compact('plan_form', 'total'));
     }
 }

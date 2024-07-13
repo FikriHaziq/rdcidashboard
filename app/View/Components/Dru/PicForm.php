@@ -3,12 +3,14 @@
 namespace App\View\Components\Dru;
 
 use Illuminate\View\Component;
+use App\Models\MasterList\MasterlistDruExpenses;
 
 class PicForm extends Component
 {
     public $year;
     public $plan;
     public $plan_form;
+    public $expenses;
     public $edit;
     /**
      * Create a new component instance.
@@ -21,6 +23,11 @@ class PicForm extends Component
         $this->plan = $plan;
         $this->plan_form = $planform;
         $this->edit = $edit;
+        $dru_dist_fund = $this->plan_form->project;
+        $this->expenses = MasterlistDruExpenses::where('year', $year)
+        ->where('ptj', $dru_dist_fund->faculty_code)
+        ->where('project', $dru_dist_fund->code)
+        ->where('sub_project', $dru_dist_fund->code_2)->orderBy('month')->count();
     }
 
     /**

@@ -8,15 +8,82 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DatatableController extends Controller
 {
+    public static function allocations($year)
+    {
+        $tabung_induk_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+        $query = DB::table('masterlist_dru_allocations AS mda')
+            ->select([
+                'mda.id',
+                DB::raw($tabung_induk_sql),
+                'p.code as program',
+                'b.code as bpki',
+                'mda.ptj',
+                'mda.ptj_code',
+                DB::raw('RPAD(ptj_code, 7, "0") AS ptj_fullcode'),
+                'dmf.id as dmf_id',
+                'dmf.code as dmf_code',
+                'dmf.is_draft as dmf_is_draft',
+                'dmf.status as dmf_status',
+                'f.id as f_id',
+                'f.original_code as f_original_code',
+                'mda.project',
+                'mda.sub_project',
+                'mda.jenis_agihan',
+                'mda.expenditure_type',
+                'mda.year',
+                'mda.amount',
+                DB::raw("FORMAT(mda.amount, 2) as mda_amount"),
+            ])
+            ->leftJoin('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', DB::raw(getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL')));
+            })
+            ->leftJoin('parameters AS f', function ($join){
+                $join->on('f.original_code', '=', 'mda.ptj_code');
+            })
+            ->leftJoin('parameters AS p', function ($join){
+                $join->on('p.id', '=', 'mda.program_id');
+            })
+            ->leftJoin('parameters AS b', function ($join){
+                $join->on('b.id', '=', 'mda.bpki_id');
+            })
+            ->where('mda.year', $year);
+        $query = $query->get();
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tabung_induk', function ($row) {
+                $text_color = 'text-theme-6';
+                if($row->dmf_id && $row->dmf_is_draft != 1 && $row->dmf_status == "active") $text_color = '';
+                return '<span class="'.$text_color.'">'.$row->formula_tabung_induk.'</span>';
+            })
+            ->addColumn('faculty_short', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj.'</a>';
+                return $html;
+            })
+            ->addColumn('faculty_code', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
+                return $html;
+            })
+            ->rawColumns(['tabung_induk', 'faculty_short','faculty_code'])
+            ->make(true);
+    }
+
     public static function expenses($year)
     {
         $tabung_induk_sql = getMainFundByFormula('mde.project', 'mde.sub_project', 'MYSQL', 'formula_tabung_induk');
         $query = DB::table('masterlist_dru_expenses AS mde')
             ->select([
                 'mde.id',
-                DB::raw("CONCAT('Q.',mde.ptj,'.',mde.project,'.',mde.sub_project) as pusat_kos"),
+                DB::raw("CONCAT('Q.',RPAD(mde.ptj, 7, '0'),'.',mde.project,'.',mde.sub_project) as pusat_kos"),
                 'mde.jenis_agihan',
                 'mde.ptj',
+                DB::raw('RPAD(mde.ptj, 7, "0") AS ptj_fullcode'),
+                'dmf.id as dmf_id',
+                'dmf.is_draft as dmf_is_draft',
+                'dmf.status as dmf_status',
+                'f.id as f_id',
+                'f.original_code as f_original_code',
                 'mde.project',
                 'mde.sub_project',
                 'mde.sodo_long as sodo',
@@ -25,17 +92,28 @@ class DatatableController extends Controller
                 DB::raw("FORMAT(mde.amount, 2) as mde_amount"),
                 DB::raw($tabung_induk_sql)
                 // 'mde.tabung_induk',
-            ])->where('mde.year', $year);
+            ])
+            ->leftJoin('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', DB::raw(getMainFundByFormula('mde.project', 'mde.sub_project', 'MYSQL')));
+            })
+            ->leftJoin('parameters AS f', function ($join){
+                $join->on('f.original_code', '=', 'mde.ptj');
+            })
+            ->where('mde.year', $year);
         $query = $query->get();
         return DataTables::of($query)
             ->addIndexColumn()
-            // ->addColumn('date_start', function ($row) {
-            //     return date("d/m/Y", strtotime($row->request_start_date));
-            // })
-            // ->addColumn('date_end', function ($row) {
-            //     return date("d/m/Y", strtotime($row->request_end_date));
-            // })
-            // ->rawColumns(['date_start', 'date_end'])
+            ->addColumn('tabung_induk', function ($row) {
+                $text_color = 'text-theme-6';
+                if($row->dmf_id && $row->dmf_is_draft != 1 && $row->dmf_status == "active") $text_color = '';
+                return '<span class="'.$text_color.'">'.$row->formula_tabung_induk.'</span>';
+            })
+            ->addColumn('faculty_code', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
+                return $html;
+            })
+            ->rawColumns(['tabung_induk','faculty_code'])
             ->make(true);
     }
 
@@ -151,11 +229,14 @@ class DatatableController extends Controller
                 'ddf.title',
                 'ddf.code as ddf_code',
                 'ddf.code_2 as ddf_code_2',
+                DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
+                'ddf.faculty_code as ddf_faculty_code',
                 'p.code as program',
                 'dmf.id as dmf_id',
                 'dmf.code as dmf_code',
                 'f.id as f_id',
                 'f.code as f_code',
+                'f.code as f_original_code',
                 'ddf.is_draft as ddf_is_draft',
                 'ddf.status as ddf_status',
                 'ddf.created_at as ddf_created_at',
@@ -165,7 +246,7 @@ class DatatableController extends Controller
                 $join->on('dmf.id', '=', 'ddf.main_fund_id');
             })
             ->leftJoin('parameters AS f', function ($join){
-                $join->on('f.code', '=', 'ddf.faculty_code');
+                $join->on('f.original_code', '=', 'ddf.faculty_code');
             })
             ->leftJoin('parameters AS p', function ($join){
                 $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
@@ -179,8 +260,8 @@ class DatatableController extends Controller
                 return $html;
             })
             ->addColumn('faculty', function ($row) {
-                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.tabung-induk.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->f_code.'</a>';
-                else $html = '<span>N/A</span>';
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', $row->ddf_faculty_code).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
                 return $html;
             })
             ->addColumn('tabung_induk', function ($row) {
@@ -190,7 +271,8 @@ class DatatableController extends Controller
             })
             ->addColumn('status_label', function ($row) {
                 if($row->ddf_status == 'active') $html = '<div class="bg-theme-9 bg-opacity-60 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Active</div>';
-                else $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Not Active</div>';
+                else if($row->ddf_status == 'not-active') $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Not Active</div>';
+                else $html = '<div class="bg-theme-6 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Temporary</div>';
                 return $html;
             })
             ->addColumn('action', function ($row) {
@@ -262,52 +344,173 @@ class DatatableController extends Controller
             ->make(true);
     }
 
-    public static function projectSearchList($request)
+    public static function faculty()
     {
-        $query = DB::table('dru_projects AS dp')
+        $query = DB::table('parameters AS f')
             ->select([
-                'dp.id as dp_id',
-                'dp.year as dp_year',
-                'dp.title',
-                'dp.code as dp_code',
-                'dp.code_2 as dp_code_2',
+                'f.id as f_id',
+                'f.code',
+                'f.original_code',
+                'f.parameter_name as f_name',
+                'f.description_1 as f_desc',
+                'pf.id as pf_id',
+                DB::raw("IFNULL(pf.parameter_name, '') as p_faculty"),
+                'f.active',
+                'f.created_at',
+                'f.updated_at',
+            ])
+            ->leftJoin('parameters AS pf', function ($join){
+                $join->on('pf.id', '=', 'f.parent_id');
+            })
+            ->whereIn('f.group_id', [1, 2]);
+        $query = $query->get();
+            return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('main_faculty', function ($row) {
+                if($row->pf_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->pf_id).'" class="btn-link text-theme-10">'.$row->p_faculty.'</a>';
+                else $html = '<span></span>';
+                return $html;
+            })
+            ->addColumn('status_label', function ($row) {
+                if($row->active == 'Y') $html = '<div class="bg-theme-9 bg-opacity-60 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Active</div>';
+                else $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Not Active</div>';
+                return $html;
+            })
+            ->addColumn('action', function ($row) {
+                $edit_icon ='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit w-4 h-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+                $delete_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash w-4 h-4"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+                $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn btn-sm btn-primary ms-2">'.$edit_icon.'</a>';
+                $html .= '<button onclick="deleteData('.$row->f_id.')" class="btn btn-sm btn-danger ms-2">'.$delete_icon.'</button>';
+                return $html;
+            })
+            ->rawColumns(['main_faculty', 'status_label', 'action'])
+            ->make(true);
+    }
+
+    public static function allocationSearchList($request)
+    {
+        $tabung_induk_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+        $query = DB::table('masterlist_dru_allocations AS mda')
+            ->select([
+                'mda.id',
+                DB::raw($tabung_induk_sql),
                 'p.code as program',
+                'b.code as bpki',
+                'mda.ptj',
+                'mda.ptj_code',
+                DB::raw('RPAD(ptj_code, 7, "0") AS ptj_fullcode'),
                 'dmf.id as dmf_id',
                 'dmf.code as dmf_code',
-                'dp.status as dp_status',
+                'dmf.is_draft as dmf_is_draft',
                 'dmf.status as dmf_status',
-                'dp.created_at as dp_created_at',
-                'dp.updated_at as dp_updated_at',
+                'f.id as f_id',
+                'f.original_code as f_original_code',
+                'mda.project',
+                'mda.sub_project',
+                'mda.jenis_agihan',
+                'mda.expenditure_type',
+                'mda.year',
+                'mda.amount',
+                DB::raw("FORMAT(mda.amount, 2) as mda_amount"),
             ])
             ->leftJoin('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.id', '=', 'dp.main_fund_id');
+                $join->on('dmf.code', '=', DB::raw(getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL')));
+            })
+            ->leftJoin('parameters AS f', function ($join){
+                $join->on('f.original_code', '=', 'mda.ptj_code');
             })
             ->leftJoin('parameters AS p', function ($join){
-                $join->on('p.id', '=', 'dmf.program_id')->where('p.active', 'Y');
+                $join->on('p.id', '=', 'mda.program_id');
             })
-            ->where('dp.is_draft', 0)->where('dmf.is_draft', 0)->where('dp.status', 'active')->orderBy('dp.year', 'desc')->orderBy('dp.title');
-            // $query = $query->where('dp.year', '<=', $request->end_year);
-        // if($request->start_year)$query = $query->where('dp.year', '>=', $request->start_year);
-        // if($request->end_year)$query = $query->where('dp.year', '<=', $request->end_year);
+            ->leftJoin('parameters AS b', function ($join){
+                $join->on('b.id', '=', 'mda.bpki_id');
+            });
         $query = $query->get();
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tabung_induk', function ($row) {
-                if($row->dmf_id) $html = '<a href="'.route('dana-ru.maintenance.tabung-induk.edit', $row->dmf_id).'" class="btn-link text-theme-10">'.$row->dmf_code.'</a>';
-                else $html = '';
+                $text_color = 'text-theme-6';
+                if($row->dmf_id && $row->dmf_is_draft != 1 && $row->dmf_status == "active") $text_color = '';
+                return '<span class="'.$text_color.'">'.$row->formula_tabung_induk.'</span>';
+            })
+            ->addColumn('faculty_short', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj.'</a>';
+                return $html;
+            })
+            ->addColumn('faculty_code', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
                 return $html;
             })
             ->addColumn('checkbox', function($row){
-                return '<input type="checkbox" name="projects[]" value="'.$row->dp_id.'">';
+                return '<input type="checkbox" name="projects[]" value="'.$row->id.'">';
             })
-            // ->addColumn('action', function ($row) {
-            //     // $edit_icon ='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit w-4 h-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
-            //     // $delete_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash w-4 h-4"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
-            //     // $html = '<a href="'.route('dana-ru.maintenance.project.edit', $row->dp_id).'" class="btn btn-sm btn-primary ms-2">'.$edit_icon.'</a>';
-            //     $html = '';
-            //     return $html;
-            // })
-            ->rawColumns(['checkbox', 'tabung_induk', 'action'])
+            ->rawColumns(['checkbox','tabung_induk', 'faculty_short','faculty_code'])
+            ->make(true);
+    
+    }
+
+    public static function expensesSearchList($request)
+    {
+        $query = DB::table('masterlist_dru_expenses AS mde')
+            ->select([
+                'mde.id',
+                DB::raw("CONCAT('Q.',RPAD(mde.ptj, 7, '0'),'.',mde.project,'.',mde.sub_project) as pusat_kos"),
+                'mde.jenis_agihan',
+                'mde.ptj',
+                'mde.tabung_induk as formula_tabung_induk',
+                DB::raw('RPAD(mde.ptj, 7, "0") AS ptj_fullcode'),
+                'dmf.id as dmf_id',
+                'dmf.is_draft as dmf_is_draft',
+                'dmf.status as dmf_status',
+                'f.id as f_id',
+                'f.original_code as f_original_code',
+                'mde.project',
+                'mde.sub_project',
+                'mde.sodo_long as sodo',
+                'mde.month',
+                'mde.amount',
+                DB::raw("FORMAT(mde.amount, 2) as mde_amount"),
+                // 'mde.tabung_induk',
+            ])
+            ->leftJoin('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mde.tabung_induk');
+            })
+            ->leftJoin('parameters AS f', function ($join){
+                $join->on('f.original_code', '=', 'mde.ptj');
+            });
+        $query = $query->get();
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('faculty_code', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
+                return $html;
+            })
+            ->addColumn('checkbox', function($row){
+                return '<input type="checkbox" name="projects[]" value="'.$row->id.'">';
+            })
+            ->rawColumns(['checkbox', 'faculty_code'])
+            ->make(true);
+    
+    }
+
+    public static function expensesRecord($year, $ptj, $code, $code_2)
+    {
+        $query = DB::table('masterlist_dru_expenses AS mde')
+            ->select([
+                'mde.id',
+                DB::raw("CONCAT('Q.',RPAD(mde.ptj, 7, '0'),'.',mde.project,'.',mde.sub_project) as pusat_kos"),
+                'mde.sodo_long as sodo',
+                'mde.month',
+                'mde.amount',
+                DB::raw("FORMAT(mde.amount, 2) as mde_amount")
+            ])
+            ->where('mde.year', $year)->where('mde.ptj', $ptj)->where('mde.project', $code)->where('mde.sub_project', $code_2)->orderBy('month');
+        $query = $query->get();
+        return DataTables::of($query)
+            ->addIndexColumn()
             ->make(true);
     }
 }

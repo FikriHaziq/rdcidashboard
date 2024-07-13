@@ -122,10 +122,10 @@
                         <label for="ptj">PTJ PIC</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="ptj" name="ptj" class="form-select @error('ptj') border-theme-6 @enderror" onchange="getChargeline($(this).val(),'ptj')">
+                        <select id="ptj" name="ptj" class="form-select @error('ptj') border-theme-6 @enderror" onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getFaculty2(true) as $faculty)
-                                <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj') ?? ($plan_form->ptjInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>{{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
+                                <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj') ?? ($plan_form->ptjInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>[{{$faculty->original_code}}] {{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
                             @endforeach
                         </select>
                         @error('ptj')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
@@ -285,12 +285,13 @@
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
-        console.log(program);
-        var year = {!! $year !!};
+        var faculty = $("#ptj").val();
         var oldProject = '';
-        if (program) {
+        if (program && faculty) {
+            const faculty_arr = faculty.split('_');
+            const faculty_id = faculty_arr[0];
             $.ajax({
-                url: "/ajax/getProjectList/" + program + "/" + year,
+                url: "/ajax/getProjectList/" + program + "/" + faculty_id,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -303,7 +304,7 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.fixed_subproject ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
                                 title: val.title
                             });
                             if(selectedValue){
@@ -345,29 +346,33 @@
                 if(data.length == 4){
                     pro = data[1];
                     sub = data[2];
-                    fixed_subproject = data[3];
+                    ptj = data[3];
+                    $('#cl_ptj').val(ptj);
                     $('#cl_pro').val(pro);
                     $('#cl_sub').val(sub);
-                    if(fixed_subproject == 'Y'){
-                        $('#cl_pro').prop('readonly', true);
-                        $('#cl_sub').prop('readonly', true);
-                    }
-                    else{
-                        $('#cl_pro').prop('readonly', true);
-                        $('#cl_sub').prop('readonly', true);
-                        // $('#cl_sub').prop('readonly', false);
-                    }
+                    $('#cl_ptj').prop('readonly', true);
+                    $('#cl_pro').prop('readonly', true);
+                    $('#cl_sub').prop('readonly', true);
                 }
                 else{
+                    data = $('#ptj').val().split('_');
+                    $('#cl_ptj').val('');
+                    if(data.length > 1){
+                        ptj = prependCode(data[1], 7);
+                        $('#cl_ptj').val(ptj);
+                    }
                     $('#cl_pro').val('');
                     $('#cl_sub').val('');
+                    $('#cl_ptj').prop('readonly', true);
                     $('#cl_pro').prop('readonly', true);
                     $('#cl_sub').prop('readonly', true);
                 }
             }
             else{
+                $('#cl_ptj').val('');
                 $('#cl_pro').val('');
                 $('#cl_sub').val('');
+                $('#cl_ptj').prop('readonly', true);
                 $('#cl_pro').prop('readonly', true);
                 $('#cl_sub').prop('readonly', true);
             }

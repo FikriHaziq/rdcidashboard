@@ -21,7 +21,7 @@ class DocGeneratorController extends Controller
             'ptj.description_1 as ptj','ptj.original_code as ptj_code',
             DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
             DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-            'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+            'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
         ])
         ->join('dru_distribution_plans as plan', function ($join) {
             $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
@@ -60,21 +60,21 @@ class DocGeneratorController extends Controller
             $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
             ->where('kpi_template.active','Y');
         })
-        ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+        ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
         ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
 
         $filename = 'Q_'.date('d_m_Y');
         $chargeline = 'TIADA';
         $main_dist = str_replace("<br>", '</w:t><w:br/><w:t>', $form->main_kpi_details);
-        if($form->pro_status == "active") {
-            $chargeline = 'Q.'. getAppendedPtjCode($form->ptj_code, 7) . '.' . $form->pro_code . '.' . getProjectSecondCode($form->pro_code_2);
-            $filename = 'Q_'. getAppendedPtjCode($form->ptj_code, 7) . '_' . $form->pro_code . '_' . getProjectSecondCode($form->pro_code_2).'_'.date('d_m_Y');
+        if($form->ddf_status == "active") {
+            $chargeline = 'Q.'. getAppendedPtjCode($form->ptj_code, 7) . '.' . $form->ddf_code . '.' . getProjectSecondCode($form->ddf_code_2);
+            $filename = 'Q_'. getAppendedPtjCode($form->ptj_code, 7) . '_' . $form->ddf_code . '_' . getProjectSecondCode($form->ddf_code_2).'_'.date('d_m_Y');
         }
 
         $templateProcessor = new TemplateProcessor('wordTemplate/lampiran_a_template.docx');
         $templateProcessor->setValue("ptj_pic", $form->ptj);
         $templateProcessor->setValue("mrun", $form->mrun_desc);
-        $templateProcessor->setValue("project", $form->pro_title);
+        $templateProcessor->setValue("project", $form->ddf_title);
         $templateProcessor->setValue("chargeline", $chargeline);
         $templateProcessor->setValue("ref_no", $form->plan_form_ref_no);
         $templateProcessor->setValue("amount", number_format($form->plan_form_amount, 2, '.', ','));

@@ -17,8 +17,8 @@
                     <div class="g-col-9">
                         <select id="faculty_code" name="faculty_code" class="form-select @error('faculty_code') border-theme-6 @enderror">
                             <option value="">--Sila pilih--</option>
-                            @foreach (getFaculty2(true) as $faculty)
-                                <option value="{{ $faculty->code }}" @if(old('faculty_code') == $faculty->code) selected @endif>[{{ $faculty->code }}] {{ $faculty->description_1 }}</option>
+                            @foreach (getFaculty2(true, true) as $faculty)
+                                <option value="{{ $faculty->original_code }}" @if($dist_fund->faculty_code == $faculty->original_code) selected @endif>[{{ $faculty->code }}] {{ $faculty->description_1 }}</option>
                             @endforeach
                         </select>
                         @error('faculty_code')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
@@ -60,6 +60,7 @@
                             <option value="">--Sila pilih--</option>
                             <option value="active" @if($dist_fund->status == "active") selected @endif selected>Active</option>
                             <option value="not-active" @if($dist_fund->status == "not-active") selected @endif>Not Active</option>
+                            <option value="temp" @if($dist_fund->status == "temp") selected @endif>Temporary</option>
                         </select>
                         @error('status')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>

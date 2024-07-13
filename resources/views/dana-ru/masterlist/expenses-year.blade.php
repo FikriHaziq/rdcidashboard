@@ -17,32 +17,16 @@
         </div>
     </div>
     @endif
-    @if(!$expenses_year->project_status)
-    <div class="g-col-12 mb-n6 intro-y">
-        <div class="alert alert-primary-soft alert-dismissible fade show d-flex align-items-center" role="alert">
-            <i data-feather="briefcase" class="w-6 h-6 me-2"></i>
-            <span>Terdapat beberapa data untuk projek yang belum diproses.</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <i data-feather="x" class="w-4 h-4"></i> </button>
-        </div>
-    </div>
-    @endif
-    @if(!$expenses_year->amount_status || ($expenses_year->amount_status && ($expenses_year->draft_project > 0 || $expenses_year->project_count == 0)))
-    <div class="g-col-12 mb-n6 intro-y">
-        <div class="alert alert-dark-soft alert-dismissible fade show d-flex align-items-center" role="alert">
-            <i data-feather="dollar-sign" class="w-6 h-6 me-2"></i>
-            <span>Terdapat beberapa data untuk jumlah perbelanjaan yang belum diproses.</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <i data-feather="x" class="w-4 h-4"></i> </button>
-        </div>
-    </div>
-    @endif
 </div>
 <div class="intro-y box mt-6">
     <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
-        <button class="btn btn-warning-soft me-4" onclick="processData('main_fund', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Tabung Induk</button>
-        <button class="btn btn-primary-soft me-4" onclick="processData('project', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Projek</button>
-        <button class="btn btn-dark-soft me-4 @if($expenses_year->draft_project > 0 || $expenses_year->project_count == 0) tooltip @endif" title="Terdapat projek yang masih belum dikemaskini" @if($expenses_year->draft_project == 0 && $expenses_year->project_count > 0) onclick="processData('expenses', {{ $year }})" @endif>
-            <i data-feather="upload" class="d-sm-block w-4 h-4 me-2"></i>Perbelanjaan @if($expenses_year->draft_project > 0 || $expenses_year->project_count == 0)<i data-feather="alert-circle" class="text-theme-6 d-sm-block w-5 h-5 ms-2">@endif</i>
-        </button>
+        <button class="btn btn-warning-soft me-4" onclick="processData('main_fund', 'expenses', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Tabung Induk</button>
+    </div>
+    <div class="mb-n6 intro-y p-5">
+        <div class="alert alert-secondary-soft text-gray-800 alert-dismissible fade show d-flex align-items-center" role="alert">
+            <div class="bg-warning bg-opacity-20 w-12 h-4 align-items-center px-2 me-2"></div>
+            <span>Terdapat beberapa data yang masih belum dikemaskini.</span>
+        </div>
     </div>
     <div class="p-5" id="hoverable-table">
         <div class="preview">
@@ -88,17 +72,21 @@
             {data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'pusat_kos',name: 'pusat_kos'},
             {data: 'jenis_agihan',name: 'jenis_agihan'},
-            {data: 'ptj',name: 'ptj'},
+            {data: 'faculty_code',name: 'f_original_code'},
             {data: 'project',name: 'project'},
             {data: 'sub_project',name: 'sub_project'},
             {data: 'sodo',name: 'sodo'},
             {data: 'month',name: 'month'},
             {data: 'mde_amount',name: 'amount'},
-            {data: 'formula_tabung_induk',name: 'formula_tabung_induk'},
+            {data: 'tabung_induk',name: 'formula_tabung_induk'},
         ],
+        createdRow: function (row, data, dataIndex) {
+            if (data.dmf_id && data.dmf_is_draft != 1 && data.dmf_status && data.f_id) {}
+            else $(row).addClass('bg-warning bg-opacity-20');          
+        }
     });
 
-    function processData(type, year) {
+    function processData(fund_type, type, year) {
         swal({
             title: 'Confirm?',
             text: "Are you sure to process the data?",
@@ -109,7 +97,7 @@
             confirmButtonText: 'Yes, process it!'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = window.location.origin + '/dana-ru/masterlist/expenses/process/'+ type +'/' + year;
+                    window.location.href = window.location.origin + '/dana-ru/masterlist/process/'+ fund_type +'/' + type +'/' + year;
                     swal({
                         title: 'Processing',
                         text: "It might take a few minutes to process.",

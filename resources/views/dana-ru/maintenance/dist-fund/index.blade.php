@@ -67,7 +67,7 @@
             {data: 'ddf_year',name: 'ddf_year'},
             {data: 'title',name: 'title'},
             {data: 'program',name: 'program'},
-            {data: 'faculty',name: 'faculty_code'},
+            {data: 'faculty',name: 'f_original_code'},
             {data: 'ddf_code',name: 'ddf_code'},
             {data: 'ddf_code_2',name: 'ddf_code_2'},
             {data: 'tabung_induk',name: 'dmf_code'},
@@ -83,7 +83,7 @@
             {className: "text-center", targets: [0,1,3,4,5,6,7,8,9]}
         ],
         createdRow: function (row, data, dataIndex) {
-            if (!data.f_code || data.dmf_is_draft == 1 || data.dmf_status != "active"){
+            if (!data.f_code){
                 $(row).addClass('bg-theme-6 bg-opacity-20');
             }
             else if (data.ddf_is_draft == 1) {

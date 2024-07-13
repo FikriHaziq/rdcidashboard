@@ -143,6 +143,7 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
 Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     Route::name('masterlist.')->prefix('masterlist')->group(function(){
         Route::name('allocation')->get('/allocation', [DruMasterlistController::class, 'allocationIndex']);
+        Route::name('allocation.year')->get('/allocation/year/{year?}', [DruMasterlistController::class, 'allocationYearIndex']);
         Route::name("allocation.import")->get('/allocation/import/{id}', [DruMasterlistController::class, "allocationImport"]);
         Route::name("allocation.delete")->get('/allocation/delete/{id}', [DruMasterlistController::class, "allocationDelete"]);
 
@@ -151,6 +152,8 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name("expenses.import")->get('/expenses/import/{id}', [DruMasterlistController::class, "expensesImport"]);
         Route::name("expenses.process")->get('/expenses/process/{type}/{year}', [DruMasterlistController::class, "expensesProcessData"]);
         Route::name("expenses.delete")->get('/expenses/delete/{id}', [DruMasterlistController::class, "expensesDelete"]);
+
+        Route::name("process")->get('/process/{fund_type}/{type}/{year}', [DruMasterlistController::class, "processData"]);
     });
     Route::name('maintenance.')->prefix('maintenance')->group(function(){
         Route::name('tabung-induk')->get('/tabung-induk', [MaintenanceController::class, 'tabungIndukIndex']);
@@ -187,6 +190,12 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('kpi.edit')->get('/kpi/edit/{id}', [MaintenanceController::class, 'kpiEdit']);
         Route::name('kpi.update')->post('/kpi/update/{id}', [MaintenanceController::class, 'kpiUpdate']);
         Route::name('kpi.delete')->get('/kpi/delete/{id}', [MaintenanceController::class, 'kpiDelete']);
+        Route::name('faculty')->get('/faculty', [MaintenanceController::class, 'facultyIndex']);
+        Route::name('faculty.create')->get('/faculty/create/{original_code?}/{short?}', [MaintenanceController::class, 'facultyCreate']);
+        Route::name('faculty.store')->post('/faculty/store', [MaintenanceController::class, 'facultyStore']);
+        Route::name('faculty.edit')->get('/faculty/edit/{id}', [MaintenanceController::class, 'facultyEdit']);
+        Route::name('faculty.update')->post('/faculty/update/{id}', [MaintenanceController::class, 'facultyUpdate']);
+        Route::name('faculty.delete')->get('/faculty/delete/{id}', [MaintenanceController::class, 'facultyDelete']);
     });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
@@ -219,11 +228,13 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('form')->get('/form/{year?}/{id?}/{tab?}', [AgihanController::class, 'form']);
         Route::name('declare')->post('/declare/{plan_id}', [AgihanController::class, 'declare']);
         Route::name('kpi-update')->post('/kpi-update/{plan_id}', [AgihanController::class, 'kpiUpdate']);
+        Route::name('expenses-record')->get('/expenses-record/{plan_id}', [AgihanController::class, 'expensesRecord']);
     });
 
     Route::name('carian.')->prefix('carian')->group(function(){
         Route::name('index')->get('/', [SearchController::class, 'index']);
-        Route::name('project')->get('/project', [SearchController::class, 'projectList']);
+        Route::name('allocation')->get('/allocation', [SearchController::class, 'allocationList']);
+        Route::name('expenses')->get('/expenses', [SearchController::class, 'expensesList']);
     });
 
     // });

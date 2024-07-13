@@ -73,8 +73,8 @@
             <x-menu-item active="dana-ru.masterlist.expenses" route="dana-ru.masterlist.expenses">Expenses</x-menu-item>
         </x-menu-item>
         <x-menu-item active="dana-ru.maintenance.*" route="" parent="Maintenance" type="sub">
+            <x-menu-item active="dana-ru.maintenance.faculty.*" route="dana-ru.maintenance.faculty">Fakulti</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.tabung-induk.*" route="dana-ru.maintenance.tabung-induk">Tabung Induk</x-menu-item>
-            <x-menu-item active="dana-ru.maintenance.project.*" rawUrl="true" route="{{ route('dana-ru.maintenance.project') }}">Project</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.tabung-agihan.*" route="dana-ru.maintenance.tabung-agihan">Tabung Agihan</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.asas-agihan.*" route="dana-ru.maintenance.asas-agihan">Asas Agihan</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.kpi.*" route="dana-ru.maintenance.kpi">KPI</x-menu-item>

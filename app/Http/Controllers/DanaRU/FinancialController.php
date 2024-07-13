@@ -9,7 +9,8 @@ use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\MasterList\MasterlistDruAllocation;
 use App\Models\MasterList\MasterlistDruExpenses;
-use App\Models\MasterList\MasterlistDruExpensesYear;
+use App\Models\MasterList\MasterlistDruYear;
+use App\Models\DanaRU\DruMainFund;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -41,7 +42,7 @@ class FinancialController extends Controller
                 'ptj.description_1 as ptj','ptj.original_code as ptj_code',
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
@@ -80,7 +81,7 @@ class FinancialController extends Controller
                 $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
                 ->where('kpi_template.active','Y');
             })
-            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
         // dd($plan_form);
         return view('dana-ru.kewangan.pengesahan-agihan-show', compact('plan_form'));
@@ -218,7 +219,20 @@ class FinancialController extends Controller
     {
         DB::statement("SET SQL_MODE=''");
         $year_options = MasterlistDruAllocation::select('year')->orderBy('year', 'desc')->distinct()->get();
-        $title_options = MasterlistDruAllocation::select(['bpki','program','tabung_induk','jenis_agihan','amount'])->orderBy('jenis_agihan')->groupBy('jenis_agihan')->get();
+        $tabung_induk_allocation_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+        $title_options = DB::table('masterlist_dru_allocations as mda')
+        ->select(['b.code as bpki', 'p.code as program', 'dmf.name as jenis_agihan', 'dmf.code as tabung_induk'])
+        ->join('dru_main_funds AS dmf', function ($join){
+            $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+        })
+        ->leftJoin('parameters AS p', function ($join){
+            $join->on('p.id', '=', 'mda.program_id');
+        })
+        ->leftJoin('parameters AS b', function ($join){
+            $join->on('b.id', '=', 'mda.bpki_id');
+        })
+        ->whereNotNull('p.id')->groupBy('dmf.code')->get();
+        // dd($title_options);
         $allocations = [];
         foreach ($title_options as $key => $options) {
             $amount = MasterlistDruAllocation::select(['amount'])->where('tabung_induk',$options->tabung_induk)->sum('amount');
@@ -232,15 +246,30 @@ class FinancialController extends Controller
         }
         usort($allocations, function($a, $b) {return $a['amount'] < $b['amount'];});
         // dd($allocations);
-        $allocation_bar1_year = MasterlistDruAllocation::select('year')->orderBy('year')->distinct()->pluck('year')->toArray();
+        $allocation_bar1_year = DB::table('masterlist_dru_allocations as mda')
+            ->select(['mda.year'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->orderBy('mda.year')->distinct()->pluck('year')->toArray();
+            
+        // $allocation_bar1_year = MasterlistDruAllocation::select('year')->orderBy('year')->distinct()->pluck('year')->toArray();
+        // dd($allocation_bar1_year);
         $allocation_bar1_title = [];
         $allocation_bar1_year_allocation = [];
         $allocation_bar1_allocation = [];
         $allocation_bar1_year_expenses = [];
         $allocation_bar1_expenses = [];
         foreach ($allocation_bar1_year as $key => $year) {
-            $allocation = MasterlistDruAllocation::select(['amount'])->where('year',$year)->sum('amount');
-            $expense = MasterlistDruExpensesYear::select(['total'])->where('year',$year)->where('amount_status', 1)->sum('total');
+            $allocation = DB::table('masterlist_dru_allocations as mda')
+            ->select(['mda.amount'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->where('mda.year',$year)->sum('amount');
+            $expense = DB::table('masterlist_dru_expenses as mde')
+            ->select(['mde.amount'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mde.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->where('mde.year',$year)->sum('amount');
             array_push($allocation_bar1_year_allocation, (float)$allocation);
             array_push($allocation_bar1_year_expenses, (float)$expense);
         }
@@ -251,8 +280,16 @@ class FinancialController extends Controller
                 array_push($allocation_bar1_expenses, (float)$allocation['amount']);
             }
         }
-        $total_allocation = MasterlistDruAllocation::select(['amount'])->sum('amount');
-        $total_expenses = MasterlistDruExpensesYear::select(['total'])->where('amount_status', 1)->sum('total');
+        $total_allocation = DB::table('masterlist_dru_allocations as mda')
+            ->select(['mda.amount'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->sum('amount');
+        $total_expenses = DB::table('masterlist_dru_expenses as mde')
+            ->select(['mde.amount'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mde.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->sum('amount');
         $chart_data = [
             "total_allocation"=>(float)$total_allocation,
             "total_expenses"=>(float)$total_expenses,

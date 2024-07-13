@@ -29,7 +29,7 @@ class DruDistributionPlanForm extends Model
 
     public function project()
     {
-        return $this->belongsTo(DruProject::class, 'project_id');
+        return $this->belongsTo(DruDistFund::class, 'project_id');
     }
 
     public function ptj()
@@ -98,7 +98,7 @@ class DruDistributionPlanForm extends Model
     {
         $project = $this->project;
         $code_2 = $project->code_2 ?? '00000';
-        return $project->status == 'active' ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->is_fixed_subproject : $project->title;
+        return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code : $project->title;
     }
 
     public function getKpiInputDataAttribute()

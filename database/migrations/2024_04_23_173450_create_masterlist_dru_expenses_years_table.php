@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMasterlistDruExpensesYearsTable extends Migration
+class CreateMasterlistDruYearsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMasterlistDruExpensesYearsTable extends Migration
      */
     public function up()
     {
-        Schema::create('masterlist_dru_expenses_years', function (Blueprint $table) {
+        Schema::create('masterlist_dru_years', function (Blueprint $table) {
             $table->id();
             $table->integer('year');
             $table->decimal('total', 18, 2)->default(0);
@@ -31,6 +31,6 @@ class CreateMasterlistDruExpensesYearsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('masterlist_dru_expenses_years');
+        Schema::dropIfExists('masterlist_dru_years');
     }
 }

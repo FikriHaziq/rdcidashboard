@@ -52,7 +52,7 @@
                             </h2>
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                 @if (in_array($plan->status,[1, 5]))
-                                <a href="{{ route('dana-ru.cadangan-agihan.form') }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
+                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                                 <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
                                     <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
@@ -95,10 +95,10 @@
                                         <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
                                         <td class="text-nowrap">{{ $plan_form->member_name }}</td>
                                         <td class="text-nowrap">{{ $plan_form->ptj }}</td>
-                                        <td class="text-nowrap">{{ strtoupper($plan_form->pro_title) }} </td>
+                                        <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
                                         <td class="text-nowrap">
-                                            @if($plan_form->pro_status == 'active')
-                                            Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
+                                            @if($plan_form->ddf_status == 'active')
+                                            Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
                                             @endif
                                         </td>
                                         <td class="text-nowrap">

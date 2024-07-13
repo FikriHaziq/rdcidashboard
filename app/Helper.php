@@ -163,10 +163,12 @@ if (!function_exists('getFaculty')) {
 }
 
 if (!function_exists('getFaculty2')) {
-    function getFaculty2($all = false)
+    function getFaculty2($all = false, $active = false)
     {
-        if($all) return \App\Models\Parameter::whereIn('group_id',[1,2])->whereActive('Y')->orderBy('description_1')->get();
-        return \App\Models\Parameter::whereGroupId(1)->whereActive('Y')->orderBy('description_1')->get();
+        $active_arr = ['Y'];
+        if($active) $active_arr = ['Y', 'N'];
+        if($all) return \App\Models\Parameter::whereIn('group_id',[1,2])->whereIn('active', $active_arr)->orderBy('description_1')->get();
+        return \App\Models\Parameter::whereGroupId(1)->whereIn('active', $active_arr)->orderBy('description_1')->get();
     }
 }
 
@@ -212,8 +214,10 @@ if (!function_exists('getMainFund')) {
 }
 
 if (!function_exists('getMainFundByFormula')) {
-    function getMainFundByFormula($code, $code_2, $mode="STD", $alias = "tabung_induk")
+    function getMainFundByFormula($code, $code_2, $mode="STD", $alias = null)
     {
+        $alias_data = '';
+        if($alias) $alias_data = 'as '.$alias;
         if($mode == "STD"){
             $tabung_induk_code = '';
             if(in_array($code, ["21A2","21A3","21A4","21A5","21A6","22B2","22B3","22B4","22B5","22B7","22B8","22B9","22C2","22C3","23C1","23C3","23C6","23C7","23C9","24C1","24C2","24C3","24C4","3801"])) $tabung_induk_code = $code;
@@ -251,7 +255,7 @@ if (!function_exists('getMainFundByFormula')) {
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3100' THEN '3100.00000'
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' AND SUBSTRING(".$code_2.",3,1) = 'D' THEN '3000.99D99'
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' THEN '3000.00000'
-            ELSE CONCAT(LEFT(".$code.", 2), '00') END as ".$alias;
+            ELSE CONCAT(LEFT(".$code.", 2), '00') END ".$alias_data;
         }
     }
 }
@@ -330,7 +334,7 @@ if (!function_exists('storeLogData')) {
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(pic_kpi_template.title,": RM", FORMAT(pic_kpi.amount, 2), " x ", pic_kpi.count, " = RM", FORMAT(pic_kpi.total, 2))) ORDER BY pic_kpi.id ASC SEPARATOR "<br>") as pic_kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($plan) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -378,7 +382,7 @@ if (!function_exists('storeLogData')) {
                 $join->on('pic_kpi_template.id', '=', 'pic_kpi.kpi_template_id')
                 ->where('pic_kpi_template.active','Y');
             })
-            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan.year', $plan->year)
             ->get();
         foreach ($plan_forms as $key => $plan_form) {
@@ -393,8 +397,8 @@ if (!function_exists('storeLogData')) {
                 'member_nric' => $plan_form->member_nric,
                 'member_email' => $plan_form->member_email,
                 'ptj' => $plan_form->ptj,
-                'project_title' => strtoupper($plan_form->pro_title),
-                'chargeline' => $plan_form->pro_status == 'active' ? 'Q'.getAppendedPtjCode($plan_form->ptj_code, 7).'.'. $plan_form->pro_code .'.'. getProjectSecondCode($plan_form->pro_code_2) : '',
+                'project_title' => strtoupper($plan_form->ddf_title),
+                'chargeline' => $plan_form->ddf_status == 'active' ? 'Q'.getAppendedPtjCode($plan_form->ptj_code, 7).'.'. $plan_form->ddf_code .'.'. getProjectSecondCode($plan_form->ddf_code_2) : '',
                 'main_kpi_details' => $plan_form->main_kpi_details,
                 'kpi_details' => $plan_form->kpi_details,
                 'pic_kpi_details' => $plan_form->pic_kpi_details,
@@ -427,7 +431,7 @@ if (!function_exists('getDistributionFormPlans')) {
                 \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'pro.status as pro_status','pro.code as pro_code','pro.title as pro_title','pro.code_2 as pro_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -470,7 +474,7 @@ if (!function_exists('getDistributionFormPlans')) {
             ->leftjoin('statuses as pic_status', function ($join) {
                 $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
             })
-            ->join('dru_projects as pro','pro.id', '=', 'plan_form.project_id')
+            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan.year', $year);
     }
 }
@@ -509,5 +513,15 @@ if (!function_exists('getColorAmount')) {
             }
         }
         return $result;
+    }
+}
+
+if (!function_exists('rtrimMinLength')) {
+    function rtrimMinLength($string, $character = ' ', $minLength = 3)
+    {
+        $first_substring = substr($string, 0, $minLength);
+        $second_substring = substr($string, 3);
+        $trimmedString = rtrim($second_substring, $character);
+        return $first_substring.$trimmedString;
     }
 }

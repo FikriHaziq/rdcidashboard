@@ -9,10 +9,12 @@ use App\Imports\DruAllocationImport;
 use App\Imports\DruExpensesImport;
 use Maatwebsite\Excel\HeadingRowImport;
 use Illuminate\Http\Request;
+use App\Models\MasterList\MasterlistDruAllocation;
 use App\Models\MasterList\MasterlistDruExpenses;
-use App\Models\MasterList\MasterlistDruExpensesYear;
+use App\Models\MasterList\MasterlistDruYear;
 use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruMainFund;
+use App\Models\DanaRU\DruDistFund;
 use App\Http\Controllers\DatatableController;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +30,24 @@ class MasterlistController extends Controller
     public function allocationIndex()
     {
         $files = DataAttachment::whereModule('allocation')->latest()->get();
-        return view('dana-ru.masterlist.allocation', compact('files'));
+        $migration_years = MasterlistDruYear::from('masterlist_dru_years as mdeu')->select([
+            'mdeu.year','mdeu.allocation_main_fund_status','mdeu.allocation_dist_fund_status',
+        ])
+        ->orderBy('mdeu.year', 'desc')->get();
+        return view('dana-ru.masterlist.allocation', compact('files', 'migration_years'));
+    }
+
+    public function allocationYearIndex($year = null, Request $request)
+    {
+        $yearOptions = MasterlistDruAllocation::select('year')->distinct()->pluck('year')->toArray();
+        $tabung_induk_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+        $allocations_year = MasterlistDruYear::from('masterlist_dru_years as mdeu')->select([
+            'mdeu.year','mdeu.allocation_main_fund_status','mdeu.allocation_dist_fund_status',
+        ])->where('mdeu.year', $year)->first();
+        if ($request->ajax()) {
+            return DatatableController::allocations($year);
+        }
+        return view('dana-ru.masterlist.allocations-year', compact('allocations_year', 'yearOptions', 'year'));
     }
 
     public function allocationImport($id)
@@ -52,6 +71,7 @@ class MasterlistController extends Controller
         }
         $masterlist->status = 'selected';
         $masterlist->save();
+        $this->updateDruYears();
         session()->flash('success', "Masterlist is successfully imported");
         return back();
     }
@@ -64,17 +84,152 @@ class MasterlistController extends Controller
         return back();
     }
 
+    public function processData($fund_type, $type, $year){
+        if($type == 'expenses'){
+            if($fund_type == "main_fund"){
+                $tabung_induk_sql = getMainFundByFormula('mde.project', 'mde.sub_project', 'MYSQL', 'formula_tabung_induk');
+                $main_funds = DB::table('masterlist_dru_expenses AS mde')
+                    ->select(
+                        'mde.id', 'mde.year','mde.jenis_agihan as main_fund_name',
+                        DB::raw($tabung_induk_sql),
+                    )
+                    ->where('mde.year', $year)->groupBy('formula_tabung_induk')->get();
+                $insert_data = [];
+                foreach ($main_funds as $main_fund) {
+                    $expenses_data = [
+                        'id' => $main_fund->id,
+                        'main_fund_id' => null,
+                    ];
+                    $data = [
+                        'apply_to_all' => 1,
+                        'code' => $main_fund->formula_tabung_induk,
+                        'name' => $main_fund->main_fund_name,
+                        'is_draft' => 1,
+                        'updated_at' => now()
+                    ];
+                    $insert_data[] = $data;
+                }
+                $insert_data = collect($insert_data);
+                $chunks = $insert_data->chunk(100);
+
+                foreach ($chunks as $main_key => $chunk) {
+                    foreach ($chunk as $key => $item) {
+                        DruMainFund::updateOrCreate(
+                            ['code' => $item['code']],
+                            $item
+                        ); 
+                    }
+                }
+                $expenses_year = MasterlistDruYear::where('year', $year)->first();
+                $expenses_year->main_fund_status = 1;
+                $expenses_year->save();
+            }
+        }
+        else if($type == 'allocation'){
+            if($fund_type == "main_fund"){
+                $tabung_induk_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+                $main_funds = DB::table('masterlist_dru_allocations AS mda')
+                    ->select(
+                        'mda.id', 'mda.year', 'mda.program_id','mda.jenis_agihan as main_fund_name',
+                        DB::raw($tabung_induk_sql),
+                    )
+                    ->where('mda.year', $year)->get();
+                $insert_data = [];
+                $update_allocation_data = [];
+                $update_allocation_count = 0;
+                foreach ($main_funds as $main_fund) {
+                    $allocation_data = [
+                        'id' => $main_fund->id,
+                        'main_fund_id' => null,
+                    ];
+                    $data = [
+                        'program_id' => $main_fund->program_id,
+                        'apply_to_all' => 1,
+                        'code' => $main_fund->formula_tabung_induk,
+                        'name' => $main_fund->main_fund_name,
+                        'is_draft' => 1,
+                        'updated_at' => now()
+                    ];
+                    $insert_data[] = $data;
+                    $update_allocation_data[] = $allocation_data;
+                }
+                $insert_data = collect($insert_data);
+                $chunks = $insert_data->chunk(100);
+
+                foreach ($chunks as $main_key => $chunk) {
+                    foreach ($chunk as $key => $item) {
+                        $dmf = DruMainFund::updateOrCreate(
+                            ['code' => $item['code']],
+                            $item
+                        ); 
+                        $update_allocation_data[$update_allocation_count]['main_fund_id'] = $dmf->id;
+                        $update_allocation_count++;
+                    }
+                }
+                $update_allocation_data = collect($update_allocation_data);
+                $chunks2 = $update_allocation_data->chunk(100);
+
+                foreach ($chunks2 as $chunk) {
+                    foreach ($chunk as $key => $item) {
+                        MasterlistDruAllocation::updateOrCreate(
+                            ['id' => $item['id']],
+                            ['main_fund_id' => $item['main_fund_id']]
+                        ); 
+                    }
+                }
+                $allocation_year = MasterlistDruYear::where('year', $year)->first();
+                $allocation_year->allocation_main_fund_status = 1;
+                $allocation_year->save();
+            }
+            else if($fund_type == "dist_fund"){
+                $dist_funds = DB::table('masterlist_dru_allocations AS mda')
+                    ->select(
+                        'mda.year', 'mda.ptj_code', 'mda.project', 'mda.sub_project', 'mda.program_id', 'mda.main_fund_id', 'mda.jenis_agihan as dist_fund_name',
+                    )
+                    ->where('mda.year', $year)->get();
+                    $insert_data = [];
+                foreach ($dist_funds as $dist_fund) {
+                    $data = [
+                        'title' => $dist_fund->dist_fund_name,
+                        'faculty_code' => $dist_fund->ptj_code,
+                        'code' => $dist_fund->project,
+                        'code_2' => $dist_fund->sub_project,
+                        'program_id' => $dist_fund->program_id,
+                        'main_fund_id' => $dist_fund->main_fund_id,
+                        'is_draft' => 1,
+                        'status' => "active",
+                        'updated_at' => now()
+                    ];
+                    $insert_data[] = $data;
+                }
+                $insert_data = collect($insert_data);
+                $chunks = $insert_data->chunk(100);
+                foreach ($chunks as $chunk) {
+                    foreach ($chunk as $key => $item) {
+                        DruDistFund::updateOrCreate(
+                            ['year' => $item['year'], 'faculty_code' => $item['faculty_code'], 'code' => $item['code'], 'code_2' => $item['code_2']],
+                            $item
+                        ); 
+                    }
+                }
+                $allocation_year = MasterlistDruYear::where('year', $year)->first();
+                $allocation_year->allocation_dist_fund_status = 1;
+                $allocation_year->save();
+            }
+        }
+
+        session()->flash('success', "Data is successfully processed");
+        return back();
+    }
+
     public function expensesIndex()
     {
         DB::statement("SET SQL_MODE=''");
         $files = DataAttachment::whereModule('expenses')->get();
-        $migration_years = MasterlistDruExpensesYear::from('masterlist_dru_expenses_years as mdeu')->select([
-            'mdeu.year','mdeu.amount_status','mdeu.project_status','mdeu.main_fund_status',
-            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year AND dp.is_draft=1) AS draft_project"),
-            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year limit 1) AS project_count"),
+        $migration_years = MasterlistDruYear::from('masterlist_dru_years as mdeu')->select([
+            'mdeu.year','mdeu.main_fund_status',
         ])
         ->orderBy('mdeu.year', 'desc')->get();
-        // dd($migration_years);
         return view('dana-ru.masterlist.expenses', compact('files', 'migration_years'));
     }
 
@@ -85,7 +240,6 @@ class MasterlistController extends Controller
             $mediaItems = $masterlist->getFirstMedia('dataAttachment');
             $filepath = $mediaItems->getPath();
             Excel::import(new DruExpensesImport($masterlist->value1), $filepath);
-            $this->updateExpensesYear($masterlist->value1);
         }
         else{
             session()->flash('info', "This module will be available soon");
@@ -100,7 +254,6 @@ class MasterlistController extends Controller
     public function expensesDelete($id)
     {
         $masterlist = DataAttachment::find($id);
-        $this->updateExpensesYear($masterlist->value1);
         MasterlistDruExpenses::whereMigration($masterlist->value1)->delete();
         $masterlist->delete();
         session()->flash('success', "Masterlist is successfully deleted");
@@ -109,11 +262,9 @@ class MasterlistController extends Controller
 
     public function expensesYearIndex($year = null, Request $request)
     {
-        $yearOptions = MasterlistDruExpensesYear::select('year')->distinct()->pluck('year')->toArray();
-        $expenses_year = MasterlistDruExpensesYear::from('masterlist_dru_expenses_years as mdeu')->select([
-            'mdeu.year','mdeu.amount_status','mdeu.project_status','mdeu.main_fund_status',
-        DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year AND dp.is_draft=1) draft_project"),
-            DB::raw("(SELECT COUNT(id) FROM dru_projects AS dp WHERE dp.year=mdeu.year limit 1) AS project_count"),
+        $yearOptions = MasterlistDruYear::select('year')->distinct()->pluck('year')->toArray();
+        $expenses_year = MasterlistDruYear::from('masterlist_dru_years as mdeu')->select([
+            'mdeu.year','mdeu.main_fund_status',
         ])
         ->where('mdeu.year', $year)->first();
         if ($request->ajax()) {
@@ -165,7 +316,7 @@ class MasterlistController extends Controller
                     ); 
                 }
             }
-            $expenses_year = MasterlistDruExpensesYear::where('year', $year)->first();
+            $expenses_year = MasterlistDruYear::where('year', $year)->first();
             $expenses_year->project_status = 1;
             $expenses_year->save();
         }
@@ -201,7 +352,7 @@ class MasterlistController extends Controller
                     ); 
                 }
             }
-            $expenses_year = MasterlistDruExpensesYear::where('year', $year)->first();
+            $expenses_year = MasterlistDruYear::where('year', $year)->first();
             $expenses_year->main_fund_status = 1;
             $expenses_year->save();
         }
@@ -209,7 +360,7 @@ class MasterlistController extends Controller
             $expenses = MasterlistDruExpenses::
                 select(DB::raw('SUM(ABS(amount)) as total_amount'))
                 ->where('year', $year)->first();
-            $expenses_year = MasterlistDruExpensesYear::where('year', $year)->first();
+            $expenses_year = MasterlistDruYear::where('year', $year)->first();
             $expenses_year->total = $expenses->total_amount;
             $expenses_year->amount_status = 1;
             $expenses_year->save();
@@ -219,12 +370,19 @@ class MasterlistController extends Controller
         return back();
     }
 
-    public function updateExpensesYear($migration_code){
-        $migration_years = MasterlistDruExpenses::select('year')->whereMigration($migration_code)->distinct()->get();
+    public function updateDruYears(){
+        $migration_years = MasterlistDruAllocation::select('year')->distinct()->get();
         foreach ($migration_years as $key => $migration_years) {
-            MasterlistDruExpensesYear::updateOrCreate(
+            MasterlistDruYear::updateOrCreate(
                 ['year' => $migration_years->year],
-                ['amount_status' => 0, 'project_status' => 0, 'main_fund_status' => 0, 'updated_at' => now()]
+                [
+                    'amount_status' => 0,
+                    'project_status' => 0, 
+                    'main_fund_status' => 0, 
+                    'allocation_main_fund_status' => 0, 
+                    'allocation_dist_fund_status' => 0, 
+                    'updated_at' => now()
+                ]
             );
         }
     }

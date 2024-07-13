@@ -71,14 +71,45 @@
     </div>
 
 </div>
-{{-- <div class="intro-y box mt-5">
-    <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60">
-        <h2 class="font-medium text-base mr-auto" style="font-size: 20px"><b>File History</b></h2>
+<div class="alert alert-primary-soft d-flex py-2 pl-5 align-items-center mt-5" role="">
+    <div class="text-gray-800 fw-medium">Migration Data</div>
+</div>
+<div class="pos intro-y grid columns-12 gap-5">
+    <!-- BEGIN: Item List -->
+    <div class="intro-y g-col-12 g-col-lg-12 mb-5">
+        <div class="grid grid-cols-12 gap-5">
+            @foreach ($migration_years as $migration_year)
+            <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
+                @if ($migration_year->allocation_main_fund_status && $migration_year->allocation_dist_fund_status)
+                <a href="{{ route('dana-ru.masterlist.allocation.year', $migration_year->year) }}" class="btn btn-success-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
+                    <div class="me-auto">
+                        <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
+                    </div>
+                    <div class="me-2 @if($migration_year->allocation_main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->allocation_dist_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Agihan"><i data-feather="briefcase" class="w-6 h-6"></i></div>
+                </a>
+                @elseif (!$migration_year->allocation_main_fund_status || !$migration_year->allocation_dist_fund_status)
+                <a href="{{ route('dana-ru.masterlist.allocation.year', $migration_year->year) }}" class="btn btn-warning-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
+                    <div class="me-auto">
+                        <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
+                    </div>
+                    <div class="me-2 @if($migration_year->allocation_main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->allocation_dist_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Agihan"><i data-feather="briefcase" class="w-6 h-6"></i></div>
+                </a>
+                @else
+                <a href="{{ route('dana-ru.masterlist.allocation.year', $migration_year->year) }}" class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
+                        <div class="me-auto">
+                        <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
+                    </div>
+                    <div class="me-2 @if($migration_year->allocation_main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
+                    <div class="@if($migration_year->allocation_dist_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Agihan"><i data-feather="briefcase" class="w-6 h-6"></i></div>
+                </a>
+                @endif
+            </div>
+            @endforeach
+        </div>
     </div>
-    
-</div> --}}
-<br>
-{{-- <a class="btn btn-primary" href="{{ route('masterlist.'.$section.'.index', $year) }}">Back</a> --}}
+</div>
 @endslot
 @section('custom-js')
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>

@@ -266,6 +266,15 @@
                         </div>
                     </div>
                 </div>
+                @if($expenses > 0)
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                    </div>
+                    <div class="g-col-9 justify-content-end">
+                        <a href="{{ route('dana-ru.senarai-agihan.expenses-record', $plan_form->id) }}" class="btn btn-sm btn-dark w-full" target="_blank"><i class="p-1" data-feather="eye"></i> Rekod Perbelanjaan </a>
+                    </div>
+                </div>
+                @endif
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="justification">JUSTIFIKASI PERBELANJAAN</label>

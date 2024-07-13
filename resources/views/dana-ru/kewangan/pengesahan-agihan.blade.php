@@ -85,10 +85,10 @@
                                     <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
                                     <td class="text-nowrap">{{ $plan_form->member_name }}</td>
                                     <td class="text-nowrap">{{ $plan_form->ptj }}</td>
-                                    <td class="text-nowrap">{{ strtoupper($plan_form->pro_title) }} </td>
+                                    <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
                                     <td class="text-nowrap">
-                                        @if($plan_form->pro_status == 'active')
-                                        Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
+                                        @if($plan_form->ddf_status == 'active')
+                                        Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
                                         @endif
                                     </td>
                                     <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>

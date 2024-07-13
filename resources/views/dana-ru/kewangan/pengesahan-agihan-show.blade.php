@@ -33,10 +33,10 @@
 @endsection
 @slot('content')
 <x-title>
-    @if($plan_form->pro_status == 'active')
-    Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }} - {{ strtoupper($plan_form->pro_title) }}
+    @if($plan_form->ddf_status == 'active')
+    Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }} - {{ strtoupper($plan_form->ddf_title) }}
     @else
-    {{ strtoupper($plan_form->pro_title) }}
+    {{ strtoupper($plan_form->ddf_title) }}
     @endif
 </x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
@@ -74,7 +74,7 @@
                             <tr>
                                 <td class="fw-bold">3.</td>
                                 <td class="fw-bold">Projek/Program</td>
-                                <td class="fw-bold">{{ strtoupper($plan_form->pro_title) }}</td>
+                                <td class="fw-bold">{{ strtoupper($plan_form->ddf_title) }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-bold">4.</td>
@@ -90,13 +90,13 @@
                                         <tbody>
                                             <tr class="text-center">
                                                 <td class="fw-bold">
-                                                    @if($plan_form->pro_status == 'active')
-                                                    Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->pro_code }}.{{ getProjectSecondCode($plan_form->pro_code_2) }}
+                                                    @if($plan_form->ddf_status == 'active')
+                                                    Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
                                                     @else
                                                     TIADA
                                                     @endif
                                                 </td>
-                                                <td class="fw-bold">{{ strtoupper($plan_form->pro_title) }}</td>
+                                                <td class="fw-bold">{{ strtoupper($plan_form->ddf_title) }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

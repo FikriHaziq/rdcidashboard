@@ -1538,15 +1538,48 @@ class AjaxController extends Controller
         ], 200);
     }
 
-    public function getProjectList($program_id, $year)
+    public function getProjectList($program_id, $faculty)
     {
-        $projects = DruProject::from('dru_projects as pro')
-        ->select([
-            DB::raw('UPPER(pro.title) as title'), 'pro.id as id', 'pro.code as code', DB::raw('IFNULL(pro.code_2, "00000") as code_2'), 'pro.is_fixed_subproject as fixed_subproject'
-        ])
-        ->where('pro.year', $year)->where('pro.program_id', $program_id)->where('pro.status','active')->get();
+        // $projects = DruDistFund::from('dru_dist_funds as ddf')
+        //     ->select('*')
+        //     ->where('ddf.')
+        $query = DB::table('dru_dist_funds AS ddf')
+            ->select([
+                'ddf.id as id',
+                DB::raw('UPPER(ddf.title) as title'),
+                'ddf.code as code',
+                'ddf.code_2 as code_2',
+                DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
+                // DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
+                // 'ddf.faculty_code as ddf_faculty_code',
+                // 'p.code as program',
+                // 'dmf.id as dmf_id',
+                // 'dmf.code as dmf_code',
+                // 'f.id as f_id',
+                // 'f.code as f_code',
+                // 'f.code as f_original_code',
+                // 'ddf.is_draft as ddf_is_draft',
+                // 'ddf.status as ddf_status',
+                // 'ddf.created_at as ddf_created_at',
+                // 'ddf.updated_at as ddf_updated_at',
+            ])
+            ->join('dru_main_funds AS dmf', function ($join) use ($program_id){
+                $join->on('dmf.id', '=', 'ddf.main_fund_id')->where('dmf.program_id', $program_id);
+            })
+            ->join('parameters AS f', function ($join) use ($faculty){
+                $join->on('f.original_code', '=', 'ddf.faculty_code')->where('f.id', $faculty);
+            })
+            ->join('parameters AS p', function ($join){
+                $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
+            })->orderBy('ddf.year', 'desc')->groupBy('dmf.code')->get();
+            // dd($query);
+        // $projects = DruProject::from('dru_projects as pro')
+        // ->select([
+        //     DB::raw('UPPER(pro.title) as title'), 'pro.id as id', 'pro.code as code', DB::raw('IFNULL(pro.code_2, "00000") as code_2'), 'pro.is_fixed_subproject as fixed_subproject'
+        // ])
+        // ->where('pro.year', $year)->where('pro.program_id', $program_id)->where('pro.status','active')->get();
         return response()->json([
-            "result" => $projects
+            "result" => $query
         ], 200);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Imports\Sheets;
 
 use App\Models\DataAttachment;
+use App\Models\Parameter;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,21 +15,44 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithChunkReading, WithCalculatedFormulas
 {
+    public $ptj;
+    public $program;
+    public $bpki;
     public function  __construct()
     {
+        $this->ptj = Parameter::select(['id', 'original_code', 'parameter_name as name'])->whereIn('group_id',[1,2])->get()->toArray();
+        $this->program = Parameter::select(['id', 'code'])->whereIn('group_id',[3])->get()->toArray();
+        $this->bpki = Parameter::select(['id', 'code'])->whereIn('group_id',[4])->get()->toArray();
     }
 
     public function collection(Collection $rows)
     {
         foreach ($rows as $key => $row) {
             if($row[1]){
-                $tabung_induk = $row[1];
-                $program = $row[2];
-                $bpki = $row[3];
-                $ptj = $row[4];
-                $ptj_code = $row[5];
-                $project = $row[6];
-                $sub_project = $row[7];
+                $ptj_check = [];
+                $program_check = [];
+                $bpki_check = [];
+                $ptj_check = array_filter($this->ptj, function($parameter) use ($row) {
+                    return strpos($parameter['original_code'], rtrimMinLength(trim($row[5]),'0')) !== false;
+                });
+                $program_check = array_filter($this->program, function($parameter) use ($row) {
+                    return strpos($parameter['code'], rtrimMinLength(trim($row[2]),'0')) !== false;
+                });
+                $bpki_check = array_filter($this->bpki, function($parameter) use ($row) {
+                    return strpos($parameter['code'], rtrimMinLength(trim($row[3]),'0')) !== false;
+                });
+
+                $ptj_check = array_values($ptj_check);
+                $program_check = array_values($program_check);
+                $bpki_check = array_values($bpki_check);
+
+                $program_id = !empty($program_check) ? $program_check[0]['id'] : null;
+                $bpki_id = !empty($bpki_check) ? $bpki_check[0]['id'] : null;
+                $ptj = !empty($ptj_check) ? $ptj_check[0]['name']: $row[4];
+                $ptj_code = !empty($ptj_check) ? $ptj_check[0]['original_code']: rtrimMinLength(trim($row[5]),'0');
+                $project = trim($row[6]);
+                $sub_project = trim($row[7]);
+                $tabung_induk = getMainFundByFormula($project, $sub_project);
                 $jenis_agihan = $row[8];
                 $expenditure_type = $row[9];
 
@@ -36,8 +60,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[10] && $row[10] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -54,8 +78,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[11] && $row[11] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -72,8 +96,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[12] && $row[12] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -90,8 +114,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[13] && $row[13] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -108,8 +132,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[14] && $row[14] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -126,8 +150,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[15] && $row[15] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -144,8 +168,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[16] && $row[16] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -161,8 +185,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[17] && $row[17] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -178,8 +202,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[18] && $row[18] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -195,8 +219,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[19] && $row[19] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -212,8 +236,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[20] && $row[20] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -229,8 +253,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[21] && $row[21] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -246,8 +270,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[22] && $row[22] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -263,8 +287,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[23] && $row[23] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -280,8 +304,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[24] && $row[24] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -297,8 +321,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[25] && $row[25] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -314,8 +338,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[26] && $row[26] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 
@@ -331,8 +355,8 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                 if($row[27] && $row[27] != 0){
                     MasterListDruAllocation::create([
                         'tabung_induk' => $tabung_induk,
-                        'program' => $program,
-                        'bpki' => $bpki, 
+                        'program_id' => $program_id,
+                        'bpki_id' => $bpki_id, 
                         'ptj' => $ptj, 
                         'ptj_code' => $ptj_code, 
                         'project' => $project, 

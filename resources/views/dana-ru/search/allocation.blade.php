@@ -1,17 +1,17 @@
 @component("layouts.app")
 @slot("module") Carian @endslot
-@slot("submodule") Project @endslot
+@slot("submodule") Allocation @endslot
 @section('custom-css')
 <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet">
 @endsection
 @slot("content")
 <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
     <h2 class="fs-lg fw-medium truncate me-5">
-        PROJECT
+        ALLOCATION
     </h2>
 </div>
 <div class="g-col-12 d-flex d-lg-block flex-column-reverse">
-    <form id="search_form" action="{{ route('dana-ru.carian.project') }}" method="get">
+    <form id="search_form" action="{{ route('dana-ru.carian.allocation') }}" method="get">
         <div class="intro-y box mt-5">
             <div class="p-5 border-top border-gray-200 dark-border-dark-5">
                 <div class="intro-y align-items-center">
@@ -85,12 +85,15 @@
                                 <th class="whitespace-nowrap">#</th>
                                 <th class="whitespace-nowrap">YEAR</th>
                                 <th class="whitespace-nowrap">TABUNG INDUK</th>
-                                <th class="whitespace-nowrap">TITLE</th>
                                 <th class="whitespace-nowrap">PROGRAM</th>
+                                <th class="whitespace-nowrap">BPKI</th>
+                                <th class="whitespace-nowrap">PTJ</th>
+                                <th class="whitespace-nowrap">KOD PTJ</th>
                                 <th class="whitespace-nowrap">PROJECT</th>
-                                <th class="whitespace-nowrap">SUBPROJECT</th>
-                                <th class="whitespace-nowrap">CREATED AT</th>
-                                <th class="whitespace-nowrap">UPDATED AT</th>
+                                <th class="whitespace-nowrap">SUB PROJECT</th>
+                                <th class="whitespace-nowrap">JENIS AGIHAN</th>
+                                <th class="whitespace-nowrap">EXPENDITURE TYPE</th>
+                                <th class="whitespace-nowrap">AMOUNT (RM)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,7 +114,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": '/dana-ru/carian/project/?'+queryString,
+            "url": '/dana-ru/carian/allocation/?'+queryString,
             "type": "GET",
             "headers": {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -120,25 +123,28 @@
         columns: [
             {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
             {data: 'DT_RowIndex',name: 'DT_RowIndex'},
-            {data: 'dp_year',name: 'dp_year'},
-            {data: 'tabung_induk',name: 'dmf_code'},
-            {data: 'title',name: 'title'},
+            {data: 'year',name: 'year'},
+            {data: 'dmf_code',name: 'tabung_induk'},
             {data: 'program',name: 'program'},
-            {data: 'dp_code',name: 'dp_code'},
-            {data: 'dp_code_2',name: 'dp_code_2'},
-            {data: 'dp_created_at',name: 'dp_created_at'},
-            {data: 'dp_updated_at',name: 'dp_updated_at'},
+            {data: 'bpki',name: 'bpki'},
+            {data: 'faculty_short',name: 'ptj'},
+            {data: 'faculty_code',name: 'f_original_code'},
+            {data: 'project',name: 'project'},
+            {data: 'sub_project',name: 'sub_project'},
+            {data: 'jenis_agihan',name: 'jenis_agihan'},
+            {data: 'expenditure_type',name: 'expenditure_type'},
+            {data: 'mda_amount',name: 'amount'},
         ],
         columnDefs: [
-            {className: "text-center", targets: [0,1,2,3,4,5,6,7,8,9]}
+            {className: "text-center", targets: [0,1,2,3,4,5,6,7,8,9,10,11,12]}
         ],
-        layout: {
-            topEnd: function () {
-            let toolbar = document.createElement('div');
-            toolbar.innerHTML = '<button id="add_selection" type="button" onclick="addToAgihan()" class="btn btn-primary d-none">Add to Tabung Agihan <i>&nbsp; (<span id="selectedProjects"></span> selected)</i></button>';
-            return toolbar;
-        }
-        }
+        // layout: {
+        //     topEnd: function () {
+        //     let toolbar = document.createElement('div');
+        //     toolbar.innerHTML = '<button id="add_selection" type="button" onclick="addToAgihan()" class="btn btn-primary d-none">Add to Tabung Agihan <i>&nbsp; (<span id="selectedProjects"></span> selected)</i></button>';
+        //     return toolbar;
+        // }
+        // }
     });
     
     $('#select-all').on('click', function(){
