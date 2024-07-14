@@ -207,7 +207,7 @@ class MasterlistController extends Controller
                 foreach ($chunks as $chunk) {
                     foreach ($chunk as $key => $item) {
                         DruDistFund::updateOrCreate(
-                            ['year' => $item['year'], 'faculty_code' => $item['faculty_code'], 'code' => $item['code'], 'code_2' => $item['code_2']],
+                            ['faculty_code' => $item['faculty_code'], 'code' => $item['code'], 'code_2' => $item['code_2']],
                             $item
                         ); 
                     }
