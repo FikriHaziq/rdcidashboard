@@ -294,7 +294,7 @@ class FinancialController extends Controller
             "total_allocation"=>(float)$total_allocation,
             "total_expenses"=>(float)$total_expenses,
             "total_balance"=>(float)$total_allocation-(float)$total_expenses,
-            "total_expenses_percent"=>(float)$total_expenses/(float)$total_allocation*100,
+            "total_expenses_percent"=>(float)$total_allocation > 0?(float)$total_expenses/(float)$total_allocation*100:0,
             "bar1_year"=>$allocation_bar1_year,
             "bar1_year_allocation"=>$allocation_bar1_year_allocation,
             "bar1_year_expenses"=>$allocation_bar1_year_expenses,
