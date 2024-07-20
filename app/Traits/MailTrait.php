@@ -22,7 +22,7 @@ trait MailTrait
         $member = $plan_form->member;
         $receivers = [trim($pic->email), trim($member->email)];
         $subject = $ptj->parameter_name . ' - AGIHAN PERUNTUKAN DANA UNIVERSITI PENYELIDIKAN TAHUN '.$plan->year;
-        $bcc_email = 'pkeyvengeance55@gmail.com';
+        $bcc_email = '';
         $data = [
             'year' => $plan->year,
             'amount' => 'RM '.number_format($plan->amount, 2, '.', ','),
