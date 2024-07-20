@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
+use App\Traits\MailTrait;
 
 class FinancialController extends Controller
 {
+    use MailTrait;
+
     public function pengesahanAgihanIndex($year = null)
     {
         if(!$year){
@@ -115,6 +118,7 @@ class FinancialController extends Controller
     public function pengesahanAgihanSingleApprove($plan_id)
     {
         $plan_form = DruDistributionPlanForm::find($plan_id);
+        $this->sendingMail($plan_form->id);
         $plan_form->approved = 'Y';
         $plan_form->save();
         session()->flash('success', "Borang ini telah berjaya disahkan.");
