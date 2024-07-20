@@ -233,7 +233,7 @@ if (!function_exists('getMainFundByFormula')) {
             else if($code == "23C8" && $code_2 == "01D42") $tabung_induk_code = $code . '.' . $code_2;
             else if((substr($code, 0, 2).'00' == '3100') && $code_2 == '00A37') $tabung_induk_code = '3100.00A37';
             else if(substr($code, 0, 2).'00' == '3100') $tabung_induk_code = '3100.00000';
-            else if((substr($code, 0, 2).'00' == '3000') && substr($code_2, 2, 1) == 'D') $tabung_induk_code = '3000.99D99';
+            else if((substr($code, 0, 2).'00' == '3000') && substr($code_2, 2, 1) == 'D') $tabung_induk_code = '3000.01D29';
             else if(substr($code, 0, 2).'00' == '3000') $tabung_induk_code = '3000.00000';
             else $tabung_induk_code = substr($code, 0, 2).'00';
             return $tabung_induk_code;
@@ -253,7 +253,7 @@ if (!function_exists('getMainFundByFormula')) {
             WHEN ".$code." = '23C8' AND ".$code_2." = '01D42' THEN CONCAT(".$code.", '.', ".$code_2.")
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3100' AND ".$code_2." = '00A37' THEN '3100.00A37'
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3100' THEN '3100.00000'
-            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' AND SUBSTRING(".$code_2.",3,1) = 'D' THEN '3000.99D99'
+            WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' AND SUBSTRING(".$code_2.",3,1) = 'D' THEN '3000.01D29'
             WHEN CONCAT(LEFT(".$code.", 2), '00') = '3000' THEN '3000.00000'
             ELSE CONCAT(LEFT(".$code.", 2), '00') END ".$alias_data;
         }

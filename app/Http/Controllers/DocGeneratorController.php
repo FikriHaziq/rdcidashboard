@@ -10,6 +10,21 @@ use Illuminate\Support\Facades\DB;
 
 class DocGeneratorController extends Controller
 {
+    public function KertasKerja($plan_id)
+    {
+        $templateProcessor = new TemplateProcessor('wordTemplate/kertas_kerja_template.docx');
+        $templateProcessor->setValue("year", 2023);
+        File::ensureDirectoryExists(storage_path('/app/data/doc'));
+        File::cleanDirectory(storage_path('/app/data/doc'));
+        $filename = 'KK_Q_'.date('d_m_Y');
+        try{
+            $templateProcessor->saveAs(storage_path('app/data/doc/'.$filename.'.docx'));
+        }catch (Exception $e){
+            //handle exception2
+        }
+        return response()->download(storage_path('app/data/doc/'.$filename.'.docx'));
+    }
+
     public function LampiranA($plan_id)
     {
         DB::statement("SET SQL_MODE=''");

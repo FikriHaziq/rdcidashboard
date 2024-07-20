@@ -15,7 +15,7 @@
     <div class="mb-n6 intro-y p-5">
         <div class="alert alert-secondary-soft text-gray-800 alert-dismissible fade show d-flex align-items-center" role="alert">
             <div class="bg-theme-6 bg-opacity-20 w-12 h-4 align-items-center px-2 me-2"></div>
-            <span>Tabung agihan masih belum mempunyai fakulti.</span>
+            <span>Tabung agihan masih belum mempunyai fakulti atau tabung induk.</span>
             <div class="bg-warning bg-opacity-20 w-12 h-4 align-items-center px-2 me-2 ms-8"></div>
             <span>Tabung agihan masih berstatus draft.</span>
         </div>
@@ -27,7 +27,6 @@
                     <thead>
                         <tr>
                             <th class="whitespace-nowrap">#</th>
-                            <th class="whitespace-nowrap">YEAR</th>
                             <th class="whitespace-nowrap">TITLE</th>
                             <th class="whitespace-nowrap">PROGRAM</th>
                             <th class="whitespace-nowrap">FAKULTY</th>
@@ -64,7 +63,6 @@
         },
         columns: [
             {data: 'DT_RowIndex',name: 'DT_RowIndex'},
-            {data: 'ddf_year',name: 'ddf_year'},
             {data: 'title',name: 'title'},
             {data: 'program',name: 'program'},
             {data: 'faculty',name: 'f_original_code'},
@@ -83,7 +81,7 @@
             {className: "text-center", targets: [0,1,3,4,5,6,7,8,9]}
         ],
         createdRow: function (row, data, dataIndex) {
-            if (!data.f_code){
+            if (!data.f_code || !data.dmf_code){
                 $(row).addClass('bg-theme-6 bg-opacity-20');
             }
             else if (data.ddf_is_draft == 1) {

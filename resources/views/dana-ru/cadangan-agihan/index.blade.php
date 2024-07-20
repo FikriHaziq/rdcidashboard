@@ -53,10 +53,10 @@
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                 @if (in_array($plan->status,[1, 5]))
                                 <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
-                                <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                                <a href="{{ route('doc-generator.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
                                     <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
-                                </button>
+                                </a>
                                 <form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>
                                 @else
                                 <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
@@ -107,7 +107,7 @@
                                             {!! $plan_form->kpi_details !!}
                                         </td>
                                         <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
-                                        <td class="text-nowrap">
+                                        <td style="min-width: 300px">
                                             {!! $plan_form->notes !!}
                                         </td>
                                         @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
@@ -174,7 +174,7 @@
                             </h2>
                         </div>
                         <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
-                            <table class="table table-bordered mt-6 ">
+                            <table class="table table-bordered mt-6">
                                 <thead class="table-dark border-b-0">
                                     <tr>
                                         <th class="text-nowrap">NO.</th>

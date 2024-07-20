@@ -7,25 +7,13 @@
 @endsection
 @slot("content")
 <x-title hasYear :year="$year" :route="route('dana-ru.masterlist.expenses.year')" :yearOptions="$yearOptions">Perbelanjaan Tahun {{ $year }}</x-title>
-<div class="grid columns-12 gap-6">
-    @if(!$expenses_year->main_fund_status)
-    <div class="g-col-12 mb-n6 intro-y">
-        <div class="alert alert-warning-soft alert-dismissible fade show d-flex align-items-center" role="alert">
-            <i data-feather="archive" class="w-6 h-6 me-2"></i>
-            <span>Terdapat beberapa data untuk tabung induk yang belum diproses.</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <i data-feather="x" class="w-4 h-4"></i> </button>
-        </div>
-    </div>
-    @endif
-</div>
 <div class="intro-y box mt-6">
-    <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
-        <button class="btn btn-warning-soft me-4" onclick="processData('main_fund', 'expenses', {{ $year }})"><i data-feather="upload" class="d-none d-sm-block w-4 h-4 me-2"></i>Tabung Induk</button>
-    </div>
     <div class="mb-n6 intro-y p-5">
         <div class="alert alert-secondary-soft text-gray-800 alert-dismissible fade show d-flex align-items-center" role="alert">
-            <div class="bg-warning bg-opacity-20 w-12 h-4 align-items-center px-2 me-2"></div>
-            <span>Terdapat beberapa data yang masih belum dikemaskini.</span>
+            <div class="bg-theme-6 bg-opacity-20 w-12 h-4 align-items-center px-2 me-2"></div>
+            <span>Tabung induk tidak wujud</span>
+            <div class="bg-warning bg-opacity-20 w-12 h-4 align-items-center px-2 me-2 ms-8"></div>
+            <span>Terdapat data fakulti atau tabung induk yang masih belum dikemaskini.</span>
         </div>
     </div>
     <div class="p-5" id="hoverable-table">
@@ -81,7 +69,8 @@
             {data: 'tabung_induk',name: 'formula_tabung_induk'},
         ],
         createdRow: function (row, data, dataIndex) {
-            if (data.dmf_id && data.dmf_is_draft != 1 && data.dmf_status && data.f_id) {}
+            if(!data.dmf_id) $(row).addClass('bg-theme-6 bg-opacity-20');
+            else if (data.dmf_id && data.dmf_is_draft != 1 && data.dmf_status && data.f_id) {}
             else $(row).addClass('bg-warning bg-opacity-20');          
         }
     });

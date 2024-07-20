@@ -241,6 +241,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
 });
 
 Route::name('doc-generator.')->prefix('doc-generator')->group(function () {
+    Route::name('kertas-kerja')->get('/kertas-kerja/{plan_id}', [DocGeneratorController::class, 'KertasKerja']);
     Route::name('lampiran-a')->get('/lampiran-a/{plan_id}', [DocGeneratorController::class, 'LampiranA']);
 });
 

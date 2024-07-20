@@ -12,10 +12,12 @@ use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use Illuminate\Support\Facades\DB;
+use App\Traits\MailTrait;
 
 class AjaxController extends Controller
 {
     use MasterListMyraTrait;
+    use MailTrait;
     
     public function getGrantMestec(Request $request)
     {
@@ -1549,7 +1551,8 @@ class AjaxController extends Controller
                 DB::raw('UPPER(ddf.title) as title'),
                 'ddf.code as code',
                 'ddf.code_2 as code_2',
-                DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
+                'f.original_code as f_original_code',
+                // DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
                 // DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
                 // 'ddf.faculty_code as ddf_faculty_code',
                 // 'p.code as program',
@@ -1564,7 +1567,7 @@ class AjaxController extends Controller
                 // 'ddf.updated_at as ddf_updated_at',
             ])
             ->join('dru_main_funds AS dmf', function ($join) use ($program_id){
-                $join->on('dmf.id', '=', 'ddf.main_fund_id')->where('dmf.program_id', $program_id);
+                $join->on('dmf.code', '=', 'ddf.tabung_induk')->where('dmf.program_id', $program_id);
             })
             ->join('parameters AS f', function ($join) use ($faculty){
                 $join->on('f.original_code', '=', 'ddf.faculty_code')->where('f.id', $faculty);
@@ -1588,8 +1591,9 @@ class AjaxController extends Controller
         $status_code = 500;
         $data = null;
         $result = null;
-
         $plan_form = DruDistributionPlanForm::find($request->plan_id);
+        
+        $this->sendingMail($plan_form->id);
         if($plan_form){
             $plan_form->approved = 'Y';
             $plan_form->reference_no = $request->ref_no;

@@ -135,13 +135,7 @@ class MasterlistController extends Controller
                     )
                     ->where('mda.year', $year)->get();
                 $insert_data = [];
-                $update_allocation_data = [];
-                $update_allocation_count = 0;
                 foreach ($main_funds as $main_fund) {
-                    $allocation_data = [
-                        'id' => $main_fund->id,
-                        'main_fund_id' => null,
-                    ];
                     $data = [
                         'program_id' => $main_fund->program_id,
                         'apply_to_all' => 1,
@@ -151,7 +145,6 @@ class MasterlistController extends Controller
                         'updated_at' => now()
                     ];
                     $insert_data[] = $data;
-                    $update_allocation_data[] = $allocation_data;
                 }
                 $insert_data = collect($insert_data);
                 $chunks = $insert_data->chunk(100);
@@ -162,19 +155,6 @@ class MasterlistController extends Controller
                             ['code' => $item['code']],
                             $item
                         ); 
-                        $update_allocation_data[$update_allocation_count]['main_fund_id'] = $dmf->id;
-                        $update_allocation_count++;
-                    }
-                }
-                $update_allocation_data = collect($update_allocation_data);
-                $chunks2 = $update_allocation_data->chunk(100);
-
-                foreach ($chunks2 as $chunk) {
-                    foreach ($chunk as $key => $item) {
-                        MasterlistDruAllocation::updateOrCreate(
-                            ['id' => $item['id']],
-                            ['main_fund_id' => $item['main_fund_id']]
-                        ); 
                     }
                 }
                 $allocation_year = MasterlistDruYear::where('year', $year)->first();
@@ -184,8 +164,12 @@ class MasterlistController extends Controller
             else if($fund_type == "dist_fund"){
                 $dist_funds = DB::table('masterlist_dru_allocations AS mda')
                     ->select(
-                        'mda.year', 'mda.ptj_code', 'mda.project', 'mda.sub_project', 'mda.program_id', 'mda.main_fund_id', 'mda.jenis_agihan as dist_fund_name',
+                        'mda.year', 'mda.tabung_induk', 'mda.ptj_code', 'mda.project', 'mda.sub_project', 'mda.program_id', 'mda.main_fund_id', 'mda.jenis_agihan as dist_fund_name',
+                        'dmf.id as dmf_id'
                     )
+                    ->leftJoin('dru_main_funds AS dmf', function ($join){
+                        $join->on('dmf.id', '=', 'mda.tabung_induk');
+                    })
                     ->where('mda.year', $year)->get();
                     $insert_data = [];
                 foreach ($dist_funds as $dist_fund) {
@@ -195,7 +179,7 @@ class MasterlistController extends Controller
                         'code' => $dist_fund->project,
                         'code_2' => $dist_fund->sub_project,
                         'program_id' => $dist_fund->program_id,
-                        'main_fund_id' => $dist_fund->main_fund_id,
+                        'tabung_induk' => $dist_fund->tabung_induk,
                         'is_draft' => 1,
                         'status' => "active",
                         'updated_at' => now()

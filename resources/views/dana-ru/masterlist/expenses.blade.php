@@ -81,21 +81,11 @@
         <div class="grid grid-cols-12 gap-5">
             @foreach ($migration_years as $migration_year)
             <div class="g-col-12 g-col-sm-3 g-col-xxl-3 box p-0 cursor-pointer zoom-in">
-                @if ($migration_year->main_fund_status)
-                <a href="{{ route('dana-ru.masterlist.expenses.year', $migration_year->year) }}" class="btn btn-success-soft h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
-                    <div class="me-auto">
-                        <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
-                    </div>
-                    <div class="@if($migration_year->main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
-                </a>
-                @else
                 <a href="{{ route('dana-ru.masterlist.expenses.year', $migration_year->year) }}" class="btn h-full intro-y d-flex flex-column flex-sm-row align-items-center"> 
                         <div class="me-auto">
                         <div class="fs-lg fw-medium" style="color: black">{{ $migration_year->year }}</div>
                     </div>
-                    <div class="@if($migration_year->main_fund_status) text-theme-9 @else text-theme-6 @endif tooltip" title="Tabung Induk"><i data-feather="archive" class="w-6 h-6"></i></div>
                 </a>
-                @endif
             </div>
             @endforeach
         </div>

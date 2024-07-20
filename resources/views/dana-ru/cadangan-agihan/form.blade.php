@@ -264,9 +264,9 @@
             manageKpiItem('kpi', 'add', null, value);
         });
     }
-    console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
+    // console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
-    getChargeline($('#ptj').val(),'ptj');
+    // getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
         return function() {
             getChargeline(arguments[0], 'pro');
@@ -333,6 +333,7 @@
     }
 
     function getChargeline(value, type) {
+        console.log(value)
         if(type == 'ptj'){
             data = value.split('_');
             if(data.length > 1){
@@ -346,7 +347,7 @@
                 if(data.length == 4){
                     pro = data[1];
                     sub = data[2];
-                    ptj = data[3];
+                    ptj = prependCode(data[3], 7);
                     $('#cl_ptj').val(ptj);
                     $('#cl_pro').val(pro);
                     $('#cl_sub').val(sub);

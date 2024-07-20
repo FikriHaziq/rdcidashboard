@@ -339,7 +339,15 @@ class MaintenanceController extends Controller
     }
 
     public function tabungAgihanActivateAll(){
-        DruDistFund::whereIsDraft(1)
+        DruDistFund::from('dru_dist_funds as ddf')
+        ->select(['ddf.id'])
+        ->join('parameters AS f', function ($join){
+            $join->on('f.original_code', '=', 'ddf.faculty_code');
+        })
+        ->join('dru_main_funds AS dmf', function ($join){
+            $join->on('dmf.code', '=', 'ddf.tabung_induk');
+        })
+        ->where('ddf.is_draft', 1)
         ->chunkById(100, function ($chunks) {
             foreach ($chunks as $chunk) {
                 DruDistFund::where('id', $chunk->id)

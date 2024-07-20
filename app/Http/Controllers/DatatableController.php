@@ -94,7 +94,7 @@ class DatatableController extends Controller
                 // 'mde.tabung_induk',
             ])
             ->leftJoin('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', DB::raw(getMainFundByFormula('mde.project', 'mde.sub_project', 'MYSQL')));
+                $join->on('dmf.code', '=', 'mde.tabung_induk');
             })
             ->leftJoin('parameters AS f', function ($join){
                 $join->on('f.original_code', '=', 'mde.ptj');
@@ -225,10 +225,10 @@ class DatatableController extends Controller
         $query = DB::table('dru_dist_funds AS ddf')
             ->select([
                 'ddf.id as ddf_id',
-                'ddf.year as ddf_year',
                 'ddf.title',
                 'ddf.code as ddf_code',
                 'ddf.code_2 as ddf_code_2',
+                'ddf.tabung_induk',
                 DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
                 'ddf.faculty_code as ddf_faculty_code',
                 'p.code as program',
@@ -243,7 +243,7 @@ class DatatableController extends Controller
                 'ddf.updated_at as ddf_updated_at',
             ])
             ->leftJoin('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.id', '=', 'ddf.main_fund_id');
+                $join->on('dmf.code', '=', 'ddf.tabung_induk');
             })
             ->leftJoin('parameters AS f', function ($join){
                 $join->on('f.original_code', '=', 'ddf.faculty_code');
@@ -266,7 +266,7 @@ class DatatableController extends Controller
             })
             ->addColumn('tabung_induk', function ($row) {
                 if($row->dmf_id) $html = '<a href="'.route('dana-ru.maintenance.tabung-induk.edit', $row->dmf_id).'" class="btn-link text-theme-10">'.$row->dmf_code.'</a>';
-                else $html = '';
+                else $html = '<span class="text-theme-6">'.$row->tabung_induk.'</span>';
                 return $html;
             })
             ->addColumn('status_label', function ($row) {
