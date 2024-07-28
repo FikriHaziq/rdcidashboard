@@ -72,15 +72,15 @@
                 data: chart_data.bar1_year_additional_allocation
             },
             {
+                name: 'Perbelanjaan',
+                group: 'expenses',
+                data: chart_data.bar1_year_expenses
+            },
+            {
                 name: 'Agihan Semula',
                 group: 'distribution',
                 data: chart_data.bar1_year_distribution
             }, 
-            {
-                name: 'Perbelanjaan',
-                group: 'expenses',
-                data: chart_data.bar1_year_expenses
-            }
         ],
           chart: {
           type: 'bar',
