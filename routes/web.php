@@ -213,7 +213,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('pengesahan-agihan.show')->get('/pengesahan-agihan/show/{plan_id}', [FinancialController::class, 'pengesahanAgihanShow']);
         Route::name('pengesahan-agihan.approve')->post('/pengesahan-agihan/approve/{plan_id}', [FinancialController::class, 'pengesahanAgihanSingleApprove']);
         Route::name('pengesahan-agihan.post')->post('/pengesahan-agihan/post', [FinancialController::class, 'pengesahanAgihanPost']);
-        Route::name('agihan-program.index')->get('/agihan-program/index', [FinancialController::class, 'agihanProgramIndex']);
+        Route::name('agihan-program.index')->get('/agihan-program/{category?}', [FinancialController::class, 'agihanProgramIndex']);
         Route::name('perbelanjaan.')->prefix('perbelanjaan')->group(function(){
             Route::name('program')->get('/program/{year?}', [FinancialController::class, 'program']);
             Route::name('program.show')->get('/program/show/{id}/{tab?}', [FinancialController::class, 'programShow']);

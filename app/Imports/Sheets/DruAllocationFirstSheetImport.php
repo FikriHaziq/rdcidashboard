@@ -27,6 +27,11 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
 
     public function collection(Collection $rows)
     {
+        //Type
+        // 1 => Agihan Utama
+        // 2 => Agihan Tambahan
+        // 3 => Agihan Semula
+
         foreach ($rows as $key => $row) {
             if($row[1]){
                 $ptj_check = [];
@@ -176,6 +181,7 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                         'sub_project' => $sub_project, 
                         'jenis_agihan' => $jenis_agihan, 
                         'expenditure_type' => $expenditure_type,
+                        'type' => 2,
                         'year' => 2016,
                         'year_desc' => null,
                         'amount' => $row[16],
@@ -210,6 +216,7 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                         'sub_project' => $sub_project, 
                         'jenis_agihan' => $jenis_agihan, 
                         'expenditure_type' => $expenditure_type,
+                        'type' => 2,
                         'year' => 2017,
                         'year_desc' => null,
                         'amount' => $row[18],
@@ -227,6 +234,7 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                         'sub_project' => $sub_project, 
                         'jenis_agihan' => $jenis_agihan, 
                         'expenditure_type' => $expenditure_type,
+                        'type' => 2,
                         'year' => 2017,
                         'year_desc' => null,
                         'amount' => $row[19],
@@ -278,6 +286,7 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                         'sub_project' => $sub_project, 
                         'jenis_agihan' => $jenis_agihan, 
                         'expenditure_type' => $expenditure_type,
+                        'type' => 3,
                         'year' => 2019,
                         'year_desc' => null,
                         'amount' => $row[22],
@@ -329,6 +338,7 @@ class DruAllocationFirstSheetImport implements ToCollection, WithStartRow, WithC
                         'sub_project' => $sub_project, 
                         'jenis_agihan' => $jenis_agihan, 
                         'expenditure_type' => $expenditure_type,
+                        'type' => 3,
                         'year' => 2021,
                         'year_desc' => null,
                         'amount' => $row[25],

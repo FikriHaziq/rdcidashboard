@@ -14,25 +14,64 @@
         <div class="row">
             <div class="col-6">
                 <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>TITLE</option>
-                        @foreach ($title_options as $title)
-                        <option>{{ strtoupper($title->jenis_agihan) }}</option>
-                        @endforeach
-                    </select>
-                </div>     
-            </div>
-            <div class="col-6">
-                <div class="mb-2"> 
-                    <select class="tom-select w-full">
-                        <option>All</option>
-                        @foreach ($year_options as $year)
-                        <option>{{ $year->year }}</option>
+                    <select class="form-select bg-white w-full" onchange="searchCategory($(this))">
+                        @foreach ($categories as $category_options)
+                        <option value="{{ $category_options->value }}" @if($category == $category_options->value) selected @endif>{{ strtoupper($category_options->name) }}</option>
                         @endforeach
                     </select>
                 </div>     
             </div>
         </div>
+    </div>
+</div>
+<div class="intro-y row mt-5">
+    <div class="g-col-12 d-flex d-lg-block flex-column-reverse">
+        <form id="search_form" action="{{ route('dana-ru.kewangan.agihan-program.index', $category) }}" method="get">
+            <div class="intro-y box mt-5">
+                <div class="p-5 border-top border-gray-200 dark-border-dark-5">
+                    <div class="intro-y align-items-center">
+                        <div class="w-full w-md-auto grid columns-12 gap-4 mb-4">
+                            <div class="g-col-12 g-col-xl-6">
+                                <div class="input-group me-2 me-sm-2">
+                                    <div class="input-group-text bg-theme-1 text-white">TITLE</div> 
+                                    <select id="title" name="title" class="form-select bg-white">
+                                        <option value="">Please choose</option>
+                                        @foreach ($title_options as $title)
+                                        <option value="{{$title->code}}" @if($search_params->title===$title->code) selected @endif>{{$title->jenis_agihan}}</option>\
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="g-col-6 g-col-xl-3">
+                                <div class="input-group me-2 me-sm-2">
+                                    <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
+                                    <select id="start_year" name="start_year" class="form-select bg-white">
+                                        <option value="">Please choose</option>
+                                        @for ($i = date('Y') - 13; $i <= date('Y'); $i++)
+                                        <option value="{{$i}}" @if((int)$search_params->start_year===(int)$i) selected @endif>{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="g-col-6 g-col-xl-3">
+                                <div class="input-group me-2 me-sm-2">
+                                    <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
+                                    <select id="end_year" name="end_year" class="form-select bg-white">
+                                        <option value="">Please choose</option>
+                                        @for ($i = date('Y') - 13; $i <= date('Y'); $i++)
+                                        <option value="{{$i}}" @if((int)$search_params->end_year===(int)$i) selected @endif>{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-top border-gray-200 dark-border-dark-5 d-flex">
+                    <button type="submit" form="search_form" class="btn btn-dark w-full">Search</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <div class="intro-y row mt-5">
@@ -57,170 +96,26 @@
         </div>
     </div>
 </div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-12 d-flex">
-        <div class="card" style="width: 100%">
-            <div class="card-body">
-                <div id="chart1">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="intro-y grid grid-cols-12 gap-3 mt-3">
-    <div class="g-col-6 d-flex align-items-stretch">
-        <div class="card w-full p-5">
-            <div class="intro-y overflow-x-auto overflow-y-auto mt-8 mt-sm-0">
-                <table class="table table-bordered table-hover" id="file-table">
-                    <thead>
-                        <tr style="background-color: #1C3FAA; color: white">
-                            <th class="whitespace-nowrap">BPKI</th>
-                            <th class="whitespace-nowrap">PROGRAM</th>
-                            <th class="whitespace-nowrap">PROGRAM</th>
-                            <th class="whitespace-nowrap">TITLE</th>
-                            <th class="whitespace-nowrap">ALLOCATION (RM)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($allocations as $allocation)
-                        <tr>
-                            <td class="text-center" back>{{ $allocation['bpki'] }}</td>
-                            <td class="text-center">{{ $allocation['program'] }}</td>
-                            <td class="text-center">{{ $allocation['tabung_induk'] }}</td>
-                            <td class="text-center">{{ $allocation['jenis_agihan'] }}</td>
-                            @php
-                                $colorAmount = getColorAmount($allocation['amount']);
-                            @endphp
-                            <td class="text-center" style="background-color: rgb(132, 48, 206, {{ $colorAmount['opacity'] }}); color: {{ $colorAmount['text_color'] }}">{{ number_format($allocation['amount'], 2, '.', ',') }}</td>
-                        </tr>
-                        @endforeach
-                        
-                    </tbody>
-                </table>
-                {{-- <table class="table table-bordered">
-                    <thead class="table-dark border-b-0">
-                        <tr>
-                            <th class="text-nowrap">BPKI</th>
-                            <th class="text-nowrap">PROGRAM UTAMA</th>
-                            <th class="text-nowrap">KOD PROGRAM</th>
-                            <th class="text-nowrap">TITLE</th>
-                            <th class="text-nowrap">ALLOCATION</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        @for ($i = 1; $i < 5; $i++)
-                        <tr>
-                            <td class="text-center">DO</td>
-                            <td class="text-center">TD</td>
-                            <td class="text-center">21A1.00A00</td>
-                            <td class="text-center">SKIM ZAMALAH</td>
-                            <td class="text-center">134.279 M</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">DO</td>
-                            <td class="text-center">TD</td>
-                            <td class="text-center">21A1.00A00</td>
-                            <td class="text-center">SKIM ZAMALAH</td>
-                            <td class="text-center">134.279 M</td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table> --}}
-            </div>
-        </div>
-    </div>
-    <div class="g-col-6 d-flex align-items-stretch">
-        <div class="card" style="width: 100%">
-            <div class="card-body">
-                <div id="pie1"></div>
-            </div>
-        </div>
-    </div>
-</div>
+@if ($category == 1)
+<x-dru.infographic.tncpi-bpki-program :chartdata="$chart_data" />
+@elseif ($category == 2)
+<x-dru.infographic.tncpi-ptj :chartdata="$chart_data" />
+@elseif ($category == 3)
+<x-dru.infographic.tncpi-project :chartdata="$chart_data" />
+@elseif ($category == 4)
+<x-dru.infographic.tncpi-sodo :chartdata="$chart_data" />
+@else
+<x-dru.infographic.tncpi-overall :chartdata="$chart_data" />
+@endif
 @endslot
 @section('custom-js')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+@parent
 <script>
-    var chart_data = {!! json_encode($chart_data) !!};
-    console.log(chart_data);
-    $('#file-table').DataTable({
-        "bLengthChange": false,
-        "bFilter": false,
-        "bInfo": false
-    });
-    var options1 = {
-          series: [{
-          name: 'Allocation',
-          data: chart_data.bar1_year_allocation
-        }, {
-          name: 'Expenses',
-          data: chart_data.bar1_year_expenses
-        }],
-          chart: {
-          type: 'bar',
-          height: 500
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: chart_data.bar1_year,
-        },
-        yaxis: {
-          title: {
-            text: 'RM '
-          }
-        },
-        fill: {
-          opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "RM " + val
-            }
-          }
-        }
-        };
+    function searchCategory(that) {
+        if(that.val())window.location.href = window.location.origin + '/dana-ru/kewangan/agihan-program/'+ that.val();
+        else window.location.href = window.location.origin + '/dana-ru/kewangan/agihan-program';
 
-        var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
-        chart1.render();
-
-    var options = {
-          series: chart_data.bar1_expenses,
-          chart: {
-          type: 'pie',
-          width: '100%'
-        },
-        labels: chart_data.bar1_title,
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-        };
-
-    var chart = new ApexCharts(document.querySelector("#pie1"), options);
-    chart.render();
+    }
 </script>
 @endsection
 @endcomponent

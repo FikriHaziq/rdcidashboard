@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
 use App\Traits\MailTrait;
+use App\Http\Traits\GraphDanaRUTrait;
 
 class FinancialController extends Controller
 {
-    use MailTrait;
+    use MailTrait, GraphDanaRUTrait;
 
     public function pengesahanAgihanIndex($year = null)
     {
@@ -219,13 +220,17 @@ class FinancialController extends Controller
         return view('dana-ru.kewangan.overall', compact('chart_data'));
     }
 
-    public function agihanProgramIndex()
+    public function agihanProgramIndex(Request $request, $category = null)
     {
         DB::statement("SET SQL_MODE=''");
-        $year_options = MasterlistDruAllocation::select('year')->orderBy('year', 'desc')->distinct()->get();
-        $tabung_induk_allocation_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
+        $chart_data = [];
+        $search_params = (object)[
+            "title" => $request->title,
+            "start_year" => $request->start_year,
+            "end_year" => $request->end_year,
+        ];
         $title_options = DB::table('masterlist_dru_allocations as mda')
-        ->select(['b.code as bpki', 'p.code as program', 'dmf.name as jenis_agihan', 'dmf.code as tabung_induk'])
+        ->select(['dmf.code', 'dmf.name as jenis_agihan'])
         ->join('dru_main_funds AS dmf', function ($join){
             $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
         })
@@ -236,77 +241,51 @@ class FinancialController extends Controller
             $join->on('b.id', '=', 'mda.bpki_id');
         })
         ->whereNotNull('p.id')->groupBy('dmf.code')->get();
-        // dd($title_options);
-        $allocations = [];
-        foreach ($title_options as $key => $options) {
-            $amount = MasterlistDruAllocation::select(['amount'])->where('tabung_induk',$options->tabung_induk)->sum('amount');
-            array_push($allocations, [
-                'bpki'=> $options->bpki,
-                'program'=> $options->program,
-                'tabung_induk'=> $options->tabung_induk,
-                'jenis_agihan'=> $options->jenis_agihan,
-                'amount'=> $amount,
-            ]);
-        }
-        usort($allocations, function($a, $b) {return $a['amount'] < $b['amount'];});
-        // dd($allocations);
-        $allocation_bar1_year = DB::table('masterlist_dru_allocations as mda')
-            ->select(['mda.year'])
-            ->join('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->orderBy('mda.year')->distinct()->pluck('year')->toArray();
-            
-        // $allocation_bar1_year = MasterlistDruAllocation::select('year')->orderBy('year')->distinct()->pluck('year')->toArray();
-        // dd($allocation_bar1_year);
-        $allocation_bar1_title = [];
-        $allocation_bar1_year_allocation = [];
-        $allocation_bar1_allocation = [];
-        $allocation_bar1_year_expenses = [];
-        $allocation_bar1_expenses = [];
-        foreach ($allocation_bar1_year as $key => $year) {
-            $allocation = DB::table('masterlist_dru_allocations as mda')
-            ->select(['mda.amount'])
-            ->join('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->where('mda.year',$year)->sum('amount');
-            $expense = DB::table('masterlist_dru_expenses as mde')
-            ->select(['mde.amount'])
-            ->join('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', 'mde.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->where('mde.year',$year)->sum('amount');
-            array_push($allocation_bar1_year_allocation, (float)$allocation);
-            array_push($allocation_bar1_year_expenses, (float)$expense);
-        }
-        foreach ($allocations as $key => $allocation) {
-            if($key < 20){
-                array_push($allocation_bar1_title, $allocation['jenis_agihan']);
-                array_push($allocation_bar1_allocation, (float)$allocation['amount']);
-                array_push($allocation_bar1_expenses, (float)$allocation['amount']);
-            }
-        }
+        $categories = [
+            (object)["value" => null, "name" => "Jumlah Peruntukan Keseluruhan"],
+            (object)["value" => 1, "name" => "Jumlah Peruntukan Mengikut BPKI and Jenis Program"],
+            (object)["value" => 2, "name" => "Jumlah Peruntukan Mengikut PTJ"],
+            (object)["value" => 3, "name" => "Jumlah Peruntukan Mengikut Program"],
+            (object)["value" => 4, "name" => "Jumlah Perbelanjaan Mengikut SODO"],
+        ];
+        $year_options = MasterlistDruAllocation::select('year')->orderBy('year', 'desc')->distinct()->get();
+        
         $total_allocation = DB::table('masterlist_dru_allocations as mda')
             ->select(['mda.amount'])
             ->join('dru_main_funds AS dmf', function ($join){
                 $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->sum('amount');
+            });
         $total_expenses = DB::table('masterlist_dru_expenses as mde')
             ->select(['mde.amount'])
             ->join('dru_main_funds AS dmf', function ($join){
                 $join->on('dmf.code', '=', 'mde.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->sum('amount');
-        $chart_data = [
-            "total_allocation"=>(float)$total_allocation,
-            "total_expenses"=>(float)$total_expenses,
-            "total_balance"=>(float)$total_allocation-(float)$total_expenses,
-            "total_expenses_percent"=>(float)$total_allocation > 0?(float)$total_expenses/(float)$total_allocation*100:0,
-            "bar1_year"=>$allocation_bar1_year,
-            "bar1_year_allocation"=>$allocation_bar1_year_allocation,
-            "bar1_year_expenses"=>$allocation_bar1_year_expenses,
-            "bar1_title"=>$allocation_bar1_title,
-            "bar1_allocation"=>$allocation_bar1_allocation,
-            "bar1_expenses"=>$allocation_bar1_expenses,
-        ];
-        return view('dana-ru.kewangan.agihan-dashboard', compact('year_options', 'title_options','allocations','chart_data'));
+            });
+        if($search_params->title) {
+            $total_allocation = $total_allocation->where('dmf.code', $search_params->title);
+            $total_expenses = $total_expenses->where('dmf.code', $search_params->title);
+        }
+        if($search_params->start_year) {
+            $total_allocation = $total_allocation->where('mda.year', '>=', $search_params->start_year);
+            $total_expenses = $total_expenses->where('mde.year', '>=', $search_params->start_year);
+        }
+        if($search_params->end_year) {
+            $total_allocation = $total_allocation->where('mda.year', '<=', $search_params->end_year);
+            $total_expenses = $total_expenses->where('mde.year', '<=', $search_params->end_year);
+        }
+        $total_allocation = $total_allocation->sum('amount');
+        $total_expenses = $total_expenses->sum('amount');
+        $chart_data["total_allocation"] = (float)$total_allocation;
+        $chart_data["total_expenses"] = (float)$total_expenses;
+        $chart_data["total_balance"] = (float)$total_allocation-(float)$total_expenses;
+        $chart_data["total_expenses_percent"] = (float)$total_allocation > 0?(float)$total_expenses/(float)$total_allocation*100:0;
+        
+        if ($category == 1) $chart_data = array_merge($chart_data, $this->bpkiProgram($total_allocation, $search_params));
+        else if ($category == 2) $chart_data = array_merge($chart_data, $this->ptj($total_allocation, $search_params));
+        else if ($category == 3) $chart_data = array_merge($chart_data, $this->project($search_params));
+        else if ($category == 4) $chart_data = array_merge($chart_data, $this->sodo($search_params));
+        else $chart_data = array_merge($chart_data, $this->tncpiOverall($search_params));
+        // dd($chart_data);
+        return view('dana-ru.kewangan.agihan-dashboard', compact('title_options', 'search_params', 'category', 'categories', 'year_options','chart_data'));
     }
 
     public function program($year = null)
