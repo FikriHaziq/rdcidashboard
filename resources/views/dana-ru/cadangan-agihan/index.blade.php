@@ -12,6 +12,7 @@
 @endsection
 @slot('content')
 <x-title hasYear :year="$year" :route="route('dana-ru.cadangan-agihan.index')">Borang Cadangan Agihan {{ $year }}</x-title>
+<x-dru.plan :year="$year" :plans="$planList" :type="$request->type" />
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
@@ -27,8 +28,8 @@
             @if (!$plan)
             <x-dru.setFund :year="$year" />
             @else
-            <x-dru.infography :year="$year" :plan="$plan" />
-            <div class="g-col-12 mt-6 box">
+            <x-dru.infography :year="$year" :plan="$plan" :type="$request->type" />
+            <div class="g-col-12 box">
                 <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
                     <ul class="nav nav-pills w-full w-lg-1/2  bg-theme-8 bg-opacity-50 dark-bg-dark-2 rounded-2 p-1" id="pills-tab" role="tablist">
                         <li class="nav-item flex-1" role="presentation">
@@ -52,17 +53,21 @@
                             </h2>
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                 @if (in_array($plan->status,[1, 5]))
-                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
-                                <a href="{{ route('doc-generator.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                                @if($request->type)<a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>@endif
+                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
                                     <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
                                 </a>
-                                <form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>
+                                @if($request->type)<form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>@endif
                                 @else
-                                <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                                    Jana Kertas Kerja
+                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
+                                </a>
+                                {{-- <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Muat Turun Kertas Kerja
                                     <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="download" class="w-4 h-4"></i> </span>
-                                </button>
+                                </button> --}}
                                 @endif
                             </div>
                         </div>

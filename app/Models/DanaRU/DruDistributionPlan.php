@@ -28,6 +28,7 @@ class DruDistributionPlan extends Model
 
     public function infographicData()
     {
+        $fund = $this->amount;
         $do = 0;
         $gp = 0;
         $pp = 0;
@@ -39,11 +40,29 @@ class DruDistributionPlan extends Model
             elseif($form->bpki == 52)$pp += $form->amount;
             $total += $form->amount;
         }
-        $do_percent = $this->amount > 0 ? $do/$this->amount*100 : 0;
-        $gp_percent = $this->amount > 0 ? $gp/$this->amount*100 : 0;
-        $pp_percent = $this->amount > 0 ? $pp/$this->amount*100 : 0;
+        if($this->type == 1) {
+            $do = 0;
+            $gp = 0;
+            $pp = 0;
+            $total = 0;
+            $plans = DruDistributionPlan::whereIn('type', [1,2])->get();
+            $fund = $plans->sum('amount');
+            foreach ($plans as $key => $plan) {
+                foreach ($plan->forms as $key => $form) {
+                    if($form->bpki == 50)$do += $form->amount;
+                    elseif($form->bpki == 51)$gp += $form->amount;
+                    elseif($form->bpki == 52)$pp += $form->amount;
+                    $total += $form->amount;
+                }
+            }
+        }
+        // dd($do);
+        $do_percent = $fund > 0 ? $do/$fund*100 : 0;
+        $gp_percent = $fund > 0 ? $gp/$fund*100 : 0;
+        $pp_percent = $fund > 0 ? $pp/$fund*100 : 0;
 
         return $data = [
+            'fund'=>$fund,
             'do'=>$do,
             'gp'=>$gp,
             'pp'=>$pp,
@@ -57,8 +76,8 @@ class DruDistributionPlan extends Model
         ];
     }
 
-    public function baselineCost($percent)
+    public function baselineCost($amount, $percent)
     {
-        return $this->amount * $percent/100;
+        return $amount * $percent/100;
     }
 }

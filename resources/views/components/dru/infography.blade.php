@@ -11,9 +11,9 @@
             <div class="px-8 py-12 d-flex flex-column justify-content-center flex-1">
                 <div class="text-gray-600 dark-text-gray-600 fs-xs">DANA DITERIMA</div>
                 <div class="position-relative fs-3xl mt-2 fw-medium">
-                    RM {{ number_format($plan->amount, 2, '.', ',') }}
+                    RM {{ number_format($infoData['fund'], 2, '.', ',') }}
                     @if (getAccessControl('dru_bca'))
-                    @if (in_array($plan->status, [1,4,5]))
+                    @if (in_array($plan->status, [1,4,5]) && $type)
                     <span class="ms-6"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editFund"> <i data-feather="edit" class="w-4 h-4"></i></button></span>                       
                     @endif
                     @endif
@@ -21,14 +21,16 @@
                 <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA TELAH DIAGIH</div>
                 <div class="position-relative text-theme-9 fs-3xl mt-2 fw-medium">RM {{ number_format($infoData['total'], 2, '.', ',') }} </div>
                 <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA BELUM DIAGIH</div>
-                <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($plan->amount - $infoData['total']), 2, '.', ',') }} </div>
+                <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($infoData['fund'] - $infoData['total']), 2, '.', ',') }} </div>
                 {{-- <div class="report-box-2__indicator bg-theme-9 tooltip cursor-pointer" title="47% Higher than last month"> 47% <i data-feather="chevron-up" class="w-4 h-4 ms-0.5"></i> </div> --}}
+                @if($type)
                 @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '3')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @endif
             </div>
         </div>
     </div>
@@ -73,17 +75,17 @@
                 </h2>
                 <div class="text-gray-600 dark-text-gray-600 fs-xs">DANA OPERASI (20%)</div>
                 <div class="mt-1.5 d-flex align-items-center">
-                    <div class="fs-base">RM {{ number_format($plan->baselineCost(20), 2, '.', ',') }}</div>
+                    <div class="fs-base">RM {{ number_format($plan->baselineCost($infoData['fund'], 20), 2, '.', ',') }}</div>
                     <div class="bg-theme-10 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">20%</div>
                 </div>
                 <div class="text-gray-600 dark-text-gray-600 fs-xs mt-5">GERAN PENYELIDIKAN (60%)</div>
                 <div class="mt-1.5 d-flex align-items-center">
-                    <div class="fs-base">RM {{ number_format($plan->baselineCost(60), 2, '.', ',') }}</div>
+                    <div class="fs-base">RM {{ number_format($plan->baselineCost($infoData['fund'], 60), 2, '.', ',') }}</div>
                     <div class="bg-theme-10 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">60%</div>
                 </div>
                 <div class="text-gray-600 dark-text-gray-600 fs-xs mt-5">PEMBELIAN & PENYELENGGARAAN<br /> ALATAN PENYELIDIKAN (20%)</div>
                 <div class="mt-1.5 d-flex align-items-center">
-                    <div class="fs-base">RM {{ number_format($plan->baselineCost(20), 2, '.', ',') }}</div>
+                    <div class="fs-base">RM {{ number_format($plan->baselineCost($infoData['fund'], 20), 2, '.', ',') }}</div>
                     <div class="bg-theme-10 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">20%</div>
                 </div>
             </div>
@@ -153,12 +155,14 @@
 </div> --}}
 <!-- END: Users By Age -->
 <x-modal modal-id="editFund" title="Dana Diterima" form-id="edit-fund-form">
-    <form id="edit-fund-form" action="{{ route('dana-ru.cadangan-agihan.store-plan', $year) }}" method="post">
+    <form id="edit-fund-form" action="{{ route('dana-ru.cadangan-agihan.store-additional-plan', $year) }}" method="post">
         @csrf
         <label for="amount" class="form-label">Amaun</label>
         <div class="input-group">
             <div id="fund" class="input-group-text">RM</div> 
-            <input type="text" name="fund" class="form-control bg-white input-mask" value="{{ $plan->amount ?? '' }}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+            <input type="hidden" name="type" value="set_amount">
+            <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+            <input type="text" name="fund" class="form-control bg-white input-mask" value="{{ $infoData['fund'] ?? '' }}" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
         </div>
     </form>
 </x-modal>

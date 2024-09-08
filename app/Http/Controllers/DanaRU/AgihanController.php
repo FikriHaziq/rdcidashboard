@@ -26,7 +26,7 @@ class AgihanController extends Controller
             $year = $plan->year ?? date('Y');
         }
         $plan = DruDistributionPlan::where('year', $year)->first();
-        $plan_forms = getDistributionFormPlans($year)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
+        $plan_forms = getDistributionFormPlans($year, $plan->id)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
         // dd($plan_forms[0]->plan_form_pic_submission_status == null);
         return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plan', 'plan_forms'));
     }

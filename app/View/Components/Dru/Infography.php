@@ -8,15 +8,17 @@ class Infography extends Component
 {
     public $year;
     public $plan;
+    public $type;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($year, $plan)
+    public function __construct($year, $plan, $type = null)
     {
         $this->year = $year;
         $this->plan = $plan;
+        $this->type = $type;
     }
 
     /**

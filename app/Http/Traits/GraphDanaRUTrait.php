@@ -76,6 +76,7 @@ trait GraphDanaRUTrait {
             ->orderBy('mda.year')->distinct()->pluck('year')->toArray();
         }
         $allocation_bar1_title = [];
+        $allocation_bar1_year_allocation_cumulative = [];
         $allocation_bar1_year_allocation = [];
         $allocation_bar1_year_additional_allocation = [];
         $allocation_bar1_year_distribution = [];
@@ -83,6 +84,7 @@ trait GraphDanaRUTrait {
         $allocation_bar1_allocation = [];
         $allocation_bar1_year_expenses = [];
         $allocation_bar1_expenses = [];
+        $allocation_cumulative = 0;
         foreach ($allocation_bar1_year as $key => $year) {
             $allocation = DB::table('masterlist_dru_allocations as mda')
             ->select(['mda.amount'])
@@ -115,7 +117,12 @@ trait GraphDanaRUTrait {
             $additional_allocation = $additional_allocation->sum('amount');
             $distribution = $distribution->sum('amount');
             $expense = $expense->sum('amount');
+            if ($key == 0)$allocation_cumulative += $additional_allocation + $allocation;
+            else $allocation_cumulative += $additional_allocation + $allocation - $expense;
 
+            
+
+            array_push($allocation_bar1_year_allocation_cumulative, (float)$allocation_cumulative);
             array_push($allocation_bar1_year_allocation, (float)$allocation);
             array_push($allocation_bar1_year_additional_allocation, (float)$additional_allocation);
             array_push($allocation_bar1_year_distribution, (float)$distribution);
@@ -132,6 +139,7 @@ trait GraphDanaRUTrait {
         return [
             "allocations"=>$allocations,
             "bar1_year"=>$allocation_bar1_year,
+            "bar1_year_allocation_cumulative"=>$allocation_bar1_year_allocation_cumulative,
             "bar1_year_allocation"=>$allocation_bar1_year_allocation,
             "bar1_year_additional_allocation"=>$allocation_bar1_year_additional_allocation,
             "bar1_year_distribution"=>$allocation_bar1_year_distribution,

@@ -30,7 +30,7 @@ class FinancialController extends Controller
             $year = $plan->year ?? date('Y');
         }
         $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
-        $plan_forms = getDistributionFormPlans($year)->get();
+        $plan_forms = getDistributionFormPlans($year, $plan->id)->get();
         $plan_forms_count = DruDistributionPlanForm::whereDistributionPlanId($plan->id ?? 0)->whereApproved('N')->count();
         return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plan', 'plan_forms', 'plan_forms_count'));
     }
@@ -295,7 +295,7 @@ class FinancialController extends Controller
             $year = $plan->year ?? date('Y');
         }
         $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
-        $plan_forms = getDistributionFormPlans($year)->where('plan_form.pic_declaration_date','!=', NULL)->get();
+        $plan_forms = getDistributionFormPlans($year, $plan->id)->where('plan_form.pic_declaration_date','!=', NULL)->get();
         return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'plan_forms'));
     }
 

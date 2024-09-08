@@ -15,9 +15,12 @@ use App\Models\DanaRU\DruKpiTemplate;
 use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\ApprovalApp;
+use App\Models\DocTemplate;
+use App\Models\Parameter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Purifier;
 use Validator;
 
 class CadanganAgihanController extends Controller
@@ -32,13 +35,17 @@ class CadanganAgihanController extends Controller
         if($request->status == 4 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
         if($request->status == 5 && $request->role == 'approver')session()->flash('success', "Borang Cadangan Agihan telah berjaya disemak");
         if($request->action == 'save')session()->flash('success', "Data telah berjaya dikemaskini");
-        $plan = DruDistributionPlan::where('year', $year)->first();
+        $planList = DruDistributionPlan::where('year', $year)->get();
+        $plan = $planList->where('type', 1)->first();
+        if($request->plan_id){
+            $plan = DruDistributionPlan::find($request->plan_id);
+        }
         // dd($plan->log);
-        $plan_forms = getDistributionFormPlans($year)->get();
+        $plan_forms = getDistributionFormPlans($year, $plan->id)->get();
             // dd($plan_forms);
         // $plan_forms = DruDistributionPlanForm::get();
 
-        return view('dana-ru.cadangan-agihan.index', compact('year', 'request', 'plan', 'plan_forms', 'tab'));
+        return view('dana-ru.cadangan-agihan.index', compact('year', 'request', 'planList', 'plan', 'plan_forms', 'tab'));
     }
 
     public function form($year=null, $id = null)
@@ -48,6 +55,84 @@ class CadanganAgihanController extends Controller
         $plan = $plan_form->distribution_plan ?? null;
         // dd($plan_form->projectInputData);
         return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form', 'plan'));
+    }
+
+    public function storeAdditionalPlan(Request $request, $id=null)
+    {   
+        if($request->type == "store"){
+            $main_plan = DruDistributionPlan::where('year', $request->year)->whereType(1)->first();
+            $plan = new DruDistributionPlan();
+            $plan->year = $request->year;
+            $plan->amount = (float)0;
+            $plan->c_id = user()->id;
+            $plan->status = 1;
+            $plan->type = 2;
+            $plan->save();
+            foreach ($main_plan->forms as $key => $form) {
+                $plan_form = new DruDistributionPlanForm;
+                $plan_form->distribution_plan_id = $plan->id;
+                $plan_form->c_id = user()->id;
+                $plan_form->mrun = $form->mrun;
+                $plan_form->bpki = $form->bpki;
+                $plan_form->ptj_id = $form->ptj_id;
+                $plan_form->project_id = $form->project_id;
+                $plan_form->amount = 0;
+                $plan_form->save();
+                $form_pic = $form->pic;
+                $form_member = $form->member;
+                $form_main_kpis = $form->main_kpi;
+                $form_kpis = $form->kpi;
+                if($form_pic){
+                    $leader = new DruMember;
+                    $leader->type = $form_pic->type;
+                    $leader->distribution_plan_form_id = $plan_form->id;
+                    $leader->name = $form_pic->name;
+                    $leader->email = $form_pic->email;
+                    $leader->nric = $form_pic->nric;
+                    $leader->save();
+                }
+                if($form_member){
+                    $member = new DruMember;
+                    $member->type = $form_member->type;
+                    $member->distribution_plan_form_id = $plan_form->id;
+                    $member->name = $form_member->name;
+                    $member->email = $form_member->email;
+                    $member->nric = $form_member->nric;
+                    $member->save();
+                }
+                foreach ($form_main_kpis as $key => $form_main_kpi) {
+                    $main_kpi = new DruKpi;
+                    $main_kpi->type = $form_main_kpi->type;
+                    $main_kpi->distribution_plan_form_id = $plan_form->id;
+                    $main_kpi->kpi_template_id = $form_main_kpi->kpi_template_id;
+                    $main_kpi->count = 0;
+                    $main_kpi->amount = 0;
+                    $main_kpi->total = 0;
+                    $main_kpi->status = $form_main_kpi->status;
+                    $main_kpi->save();
+                }
+                foreach ($form_kpis as $key => $form_kpi) {
+                    $kpi = new DruKpi;
+                    $kpi->type = $form_kpi->type;
+                    $kpi->distribution_plan_form_id = $plan_form->id;
+                    $kpi->kpi_template_id = $form_kpi->kpi_template_id;
+                    $kpi->count = 0;
+                    $kpi->amount = 0;
+                    $kpi->total = 0;
+                    $kpi->status = $form_kpi->status;
+                    $kpi->save();
+                }
+            }
+        }
+        else if($request->type == "set_amount"){
+            $plan = DruDistributionPlan::find($request->plan_id);
+            $plan->amount = (float)str_replace( ",", "", $request->fund);
+            $plan->c_id = user()->id;
+            $plan->save();
+        }
+
+        session()->flash('success', "Cadangan Agihan Tambahan telah berjaya disimpan.");
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'cadangan_agihan', 'plan_id' => $plan->id]);
     }
 
     public function storePlan(Request $request, $year=null)
@@ -325,6 +410,108 @@ class CadanganAgihanController extends Controller
         else{
             session()->flash('error', "File not found");
             return back();
+        }
+    }
+
+    public function kertasKerja($plan_id)
+    {
+        $plan = DruDistributionPlan::find($plan_id);
+        $year = $plan->year;
+        $doc_templates = DocTemplate::whereParentId($plan_id)->orderBy('order')->get();
+        $parameters = Parameter::whereGroupId(5)->whereActive('Y')->get();
+        return view('dana-ru.cadangan-agihan.kertas-kerja', compact('doc_templates', 'plan', 'year', 'parameters'));
+    }
+
+    public function kertasKerjaStore(Request $request, $plan_id)
+    {
+        $plan = DruDistributionPlan::find($plan_id);
+        // dd($request->all());
+        $this->templateStore($plan_id, 'tujuan', $request->tujuan);
+        $this->templateStore($plan_id, 'latar_belakang', $request->latar_belakang);
+        $this->templateStore($plan_id, 'peruntukan_baharu', $request->peruntukan_baharu);
+        $this->templateStore($plan_id, 'agihan_semula', $request->agihan_semula);
+        $this->templateStore($plan_id, 'caj_penyelenggaraan', $request->caj_penyelenggaraan);
+        $this->templateStore($plan_id, 'keputusan', $request->keputusan);
+        $this->templateStore($plan_id, 'pihak_bertanggungjawab', $request->pihak_bertanggungjawab);
+        $this->templateStore($plan_id, 'tujuan_details', $request->tujuan_details);
+        $this->templateStore($plan_id, 'latar_belakang_details', $request->latar_belakang_details);
+        $this->templateStore($plan_id, 'peruntukan_baharu_details', $request->peruntukan_baharu_details);
+        $this->templateStore($plan_id, 'agihan_semula_details', $request->agihan_semula_details);
+        $this->templateStore($plan_id, 'caj_penyelenggaraan_details', $request->caj_penyelenggaraan_details);
+        $this->templateStore($plan_id, 'pihak_bertanggungjawab_details', $request->pihak_bertanggungjawab_details);
+        $this->templateStore($plan_id, 'keputusan_details', $request->keputusan_details);
+
+        if(count($request->prepared_by_name) > 0){
+            $nameCount = DocTemplate::whereParentId($plan_id)->whereType('prepared_by_name')->count();
+            $roleCount = DocTemplate::whereParentId($plan_id)->whereType('prepared_by_role')->count();
+            DocTemplate::whereParentId($plan_id)->whereType('prepared_by_name')->orderBy('order', 'desc')
+            ->take(abs(count($request->prepared_by_name) - $nameCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+            DocTemplate::whereParentId($plan_id)->whereType('prepared_by_role')->orderBy('order', 'desc')
+            ->take(abs(count($request->prepared_by_role) - $roleCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+        }
+        foreach ($request->prepared_by_name as $key => $value) {
+            $this->templateStore($plan_id, 'prepared_by_name', $value, $key+1);
+            $this->templateStore($plan_id, 'prepared_by_role', $request->prepared_by_role[$key], $key+1);
+        }
+        if(count($request->verified_by_name) > 0){
+            $nameCount = DocTemplate::whereParentId($plan_id)->whereType('verified_by_name')->count();
+            $roleCount = DocTemplate::whereParentId($plan_id)->whereType('verified_by_role')->count();
+            DocTemplate::whereParentId($plan_id)->whereType('verified_by_name')->orderBy('order', 'desc')
+            ->take(abs(count($request->verified_by_name) - $nameCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+            DocTemplate::whereParentId($plan_id)->whereType('verified_by_role')->orderBy('order', 'desc')
+            ->take(abs(count($request->verified_by_role) - $roleCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+        }
+        foreach ($request->verified_by_name as $key => $value) {
+            $this->templateStore($plan_id, 'verified_by_name', $value, $key+1);
+            $this->templateStore($plan_id, 'verified_by_role', $request->verified_by_role[$key], $key+1);
+        }
+        if(count($request->confirmed_by_name) > 0){
+            $nameCount = DocTemplate::whereParentId($plan_id)->whereType('confirmed_by_name')->count();
+            $roleCount = DocTemplate::whereParentId($plan_id)->whereType('confirmed_by_role')->count();
+            DocTemplate::whereParentId($plan_id)->whereType('confirmed_by_name')->orderBy('order', 'desc')
+            ->take(abs(count($request->confirmed_by_name) - $nameCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+            DocTemplate::whereParentId($plan_id)->whereType('confirmed_by_role')->orderBy('order', 'desc')
+            ->take(abs(count($request->confirmed_by_role) - $roleCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+        }
+        foreach ($request->confirmed_by_name as $key => $value) {
+            $this->templateStore($plan_id, 'confirmed_by_name', $value, $key+1);
+            $this->templateStore($plan_id, 'confirmed_by_role', $request->confirmed_by_role[$key], $key+1);
+        }
+        session()->flash('success', "Kertas Kerja telah berjaya disimpan.");
+        return back();
+    }
+
+    public function templateStore($plan_id, $type, $value, $order = null)
+    {
+        if($value){
+            DocTemplate::updateOrCreate(
+                ['parent_id' => $plan_id, 'type' => $type, 'order' => $order],
+                [
+                    'value' => $value,
+                    'order' => $order,
+                ]
+            );
+        }
+        else {
+            DocTemplate::whereParentId($plan_id)->whereType($type)->whereOrder($order)->delete();
         }
     }
 }

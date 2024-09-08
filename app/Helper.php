@@ -419,9 +419,9 @@ if (!function_exists('storeLogData')) {
 }
 
 if (!function_exists('getDistributionFormPlans')) {
-    function getDistributionFormPlans($year){
+    function getDistributionFormPlans($year, $plan_id = null){
         \Illuminate\Support\Facades\DB::statement("SET SQL_MODE=''");
-        return \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+        $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
             ->select([
                 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                 'mrun.parameter_name as mrun_code', 'bpki.parameter_name as bpki_code',
@@ -476,6 +476,8 @@ if (!function_exists('getDistributionFormPlans')) {
             })
             ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan.year', $year);
+        if($plan_id)$query = $query->where('plan_form.distribution_plan_id', $plan_id);
+        return $query;
     }
 }
 

@@ -200,12 +200,15 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
         Route::name('form')->get('/form/{year?}/{id?}', [CadanganAgihanController::class, 'form']);
+        Route::name('store-additional-plan')->post('/store-additional-plan/{id?}', [CadanganAgihanController::class, 'storeAdditionalPlan']);
         Route::name('store-plan')->post('/store-plan/{year?}', [CadanganAgihanController::class, 'storePlan']);
         Route::name('store')->post('/store/{year?}', [CadanganAgihanController::class, 'store']);
         Route::name("delete-plan")->get('/delete-plan/{id}', [CadanganAgihanController::class, "deletePlan"]);
         Route::name("verification")->post('/verification/{id}/{type}', [CadanganAgihanController::class, "verification"]);
         Route::name("verification.post")->post("/verification/post", [CadanganAgihanController::class, "verificationPost"]);
         Route::name("file.download")->get('file/download/{id}', [CadanganAgihanController::class, 'downloadFile']);
+        Route::name('kertas-kerja')->get('/kertas-kerja/{plan_id}', [CadanganAgihanController::class, 'kertasKerja']);
+        Route::name('kertas-kerja.store')->post('/kertas-kerja/store/{plan_id}', [CadanganAgihanController::class, 'kertasKerjaStore']);
     });
     Route::name('kewangan.')->prefix('kewangan')->group(function(){
         Route::name('overall')->get('/overall', [FinancialController::class, 'overall']);

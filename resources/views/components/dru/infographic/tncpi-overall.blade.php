@@ -62,6 +62,11 @@
     var options1 = {
         series: [
             {
+                name: 'Jumlah Peruntukan Kumulatif',
+                group: 'allocation_cumulative',
+                data: chart_data.bar1_year_allocation_cumulative
+            },
+            {
                 name: 'Peruntukan',
                 group: 'allocation',
                 data: chart_data.bar1_year_allocation
