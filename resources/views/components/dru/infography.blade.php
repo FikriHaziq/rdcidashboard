@@ -13,7 +13,7 @@
                 <div class="position-relative fs-3xl mt-2 fw-medium">
                     RM {{ number_format($infoData['fund'], 2, '.', ',') }}
                     @if (getAccessControl('dru_bca'))
-                    @if (in_array($plan->status, [1,4,5]) && $type)
+                    @if (in_array($plan->status, [1,4,5]))
                     <span class="ms-6"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#editFund"> <i data-feather="edit" class="w-4 h-4"></i></button></span>                       
                     @endif
                     @endif
@@ -23,14 +23,14 @@
                 <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA BELUM DIAGIH</div>
                 <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($infoData['fund'] - $infoData['total']), 2, '.', ',') }} </div>
                 {{-- <div class="report-box-2__indicator bg-theme-9 tooltip cursor-pointer" title="47% Higher than last month"> 47% <i data-feather="chevron-up" class="w-4 h-4 ms-0.5"></i> </div> --}}
-                @if($type)
+                {{-- @if($type) --}}
                 @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '3')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
                 @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
     </div>
