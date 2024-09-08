@@ -53,12 +53,12 @@
                             </h2>
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                 @if (in_array($plan->status,[1, 5]))
-                                @if($request->type)<a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>@endif
+                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                                 <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
                                     <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
                                 </a>
-                                @if($request->type)<form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>@endif
+                                <form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>
                                 @else
                                 <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                     Jana Kertas Kerja
