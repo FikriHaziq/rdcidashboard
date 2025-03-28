@@ -330,7 +330,7 @@ class FinancialController extends Controller
             else $plan_form_raw = $plan_form_raw->concat($plan_form);
         }
         $plan_forms = $plan_form_raw;
-        $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL) ?? null;
+        if($plan_forms) $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
         // dd($plan_form_raw);
         return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'plan_forms'));
     }
