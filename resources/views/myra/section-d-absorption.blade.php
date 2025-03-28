@@ -3,7 +3,7 @@
 @slot("submodule") Section D: Quantity and Quality of Postgraduates @endslot
 @slot("trimoduleLink") myra.section-d @endslot
 @slot("trimodule") Postgraduate @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
     .active-tab {
@@ -33,7 +33,7 @@
         padding-right: 5px;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
@@ -77,7 +77,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
     console.log(data);
@@ -394,5 +394,5 @@
         },
     });
 </script>
-@endsection
+@endpush
 @endcomponent

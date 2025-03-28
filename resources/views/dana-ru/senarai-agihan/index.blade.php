@@ -6,7 +6,7 @@
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
-            @if (!$plan)
+            @if (!$plans)
             <div class="g-col-12 mt-6 mb-n6 intro-y">
                 <div class="alert alert-secondary-soft alert-dismissible fade show d-flex align-items-center mb-6" role="alert">
                     <i data-feather="alert-circle" class="w-6 h-6 me-2"></i>
@@ -124,9 +124,9 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     
 </script>
-@endsection
+@endpush
 @endcomponent

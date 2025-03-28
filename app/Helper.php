@@ -302,9 +302,10 @@ if (!function_exists('getProjectSecondCode')) {
 }
 
 if (!function_exists('getStatusOptions')) {
-    function getStatusOptions($pending_status)
+    function getStatusOptions($pending_status, $plan_type = null)
     {
-        if(in_array($pending_status, [2, 3]))return \App\Models\Status::whereIn('id', [4,5])->orderBy('sort')->get();
+        if(in_array($pending_status, [2, 3]) && $plan_type == 4)return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
+        else if(in_array($pending_status, [2, 3]))return \App\Models\Status::whereIn('id', [4,5])->orderBy('sort')->get();
         else if(in_array($pending_status, [4]))return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
         else if(in_array($pending_status, [8, 9]))return \App\Models\Status::whereIn('id', [10,11,12])->orderBy('sort')->get();
     }
@@ -320,7 +321,7 @@ if (!function_exists('storeLogData')) {
                 'year' => $plan->year,
                 'amount' => $plan->amount,
                 'status' => $plan->getStatus->description ?? $plan->getStatus->name,
-                'infographic_data' => $plan->infographicData()
+                'infographic_data' => infographicData($plan)
             ],
             'dru_distribution_plan_form' => [],
         ];
@@ -328,7 +329,7 @@ if (!function_exists('storeLogData')) {
         $plan_forms = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
             ->select([
                 'plan_form.id as plan_form_id',
-                'mrun.parameter_name as mrun_code', 'bpki.parameter_name as bpki_code',
+                'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
                 'pic.name as pic_name', 'pic.nric as pic_nric', 'pic.email as pic_email', 'member.name as member_name', 'member.nric as member_nric', 'member.email as member_email',
                 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
@@ -419,64 +420,126 @@ if (!function_exists('storeLogData')) {
 }
 
 if (!function_exists('getDistributionFormPlans')) {
-    function getDistributionFormPlans($year, $plan_id = null){
+    function getDistributionFormPlans($year, $plan_id = null, $type = null, $plan_form_id = null){
         \Illuminate\Support\Facades\DB::statement("SET SQL_MODE=''");
-        $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
-            ->select([
-                'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
-                'mrun.parameter_name as mrun_code', 'bpki.parameter_name as bpki_code',
-                'pic.name as pic_name', 'member.name as member_name',
-                'pic_status.description as pic_submission_status_label',
-                'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
-                \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
-                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
-                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
-            ])
-            ->join('dru_distribution_plans as plan', function ($join) use ($year) {
-                $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
-                    ->where('plan.year',$year);
-            })
-            ->join('parameters as mrun', function ($join) {
-                $join->on('mrun.id', '=', 'plan_form.mrun')
-                    ->where('mrun.active','Y');
-            })
-            ->join('parameters as bpki', function ($join) {
-                $join->on('bpki.id', '=', 'plan_form.bpki')
-                    ->where('bpki.active','Y');
-            })
-            ->join('parameters as ptj', function ($join) {
-                $join->on('ptj.id', '=', 'plan_form.ptj_id')
-                    ->where('ptj.active','Y');
-            })
-            ->join('dru_members as pic', function ($join) {
-                $join->on('pic.distribution_plan_form_id', '=', 'plan_form.id')->where('pic.type','leader');
-            })
-            ->leftjoin('dru_members as member', function ($join) {
-                $join->on('member.distribution_plan_form_id', '=', 'plan_form.id')->where('member.type','member');
-            })
-            ->leftjoin('dru_kpis as main_kpi', function ($join) {
-                $join->on('main_kpi.distribution_plan_form_id', '=', 'plan_form.id')
-                ->where('main_kpi.type','main')->where('main_kpi.status','active');
-            })
-            ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
-                $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
-                ->where('main_kpi_template.active','Y');
-            })
-            ->leftjoin('dru_kpis as kpi', function ($join) {
-                $join->on('kpi.distribution_plan_form_id', '=', 'plan_form.id')
-                ->where('kpi.type','kpi')->where('kpi.status','active');
-            })
-            ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
-                $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
-                ->where('kpi_template.active','Y');
-            })
-            ->leftjoin('statuses as pic_status', function ($join) {
-                $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
-            })
-            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
-            ->groupBy('plan_form.id')->where('plan.year', $year);
-        if($plan_id)$query = $query->where('plan_form.distribution_plan_id', $plan_id);
+        if($type == 4){
+            $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+                ->select([
+                    'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
+                    'ptjf.parameter_name as ptjf','ptjf.original_code as ptjf_code',
+                    'ptjt.parameter_name as ptjt','ptjt.original_code as ptjt_code',
+                    'ddff.status as ddff_status','ddff.code as ddff_code','ddff.title as ddff_title','ddff.code_2 as ddff_code_2',
+                    'ddft.status as ddft_status','ddft.code as ddft_code','ddft.title as ddft_title','ddft.code_2 as ddft_code_2',
+                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                ])
+                ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                    $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                        ->where('plan.year',$year);
+                })
+                ->join('parameters as ptjf', function ($join) {
+                    $join->on('ptjf.id', '=', 'plan_form.ptj_id')
+                        ->where('ptjf.active','Y');
+                })
+                ->join('parameters as ptjt', function ($join) {
+                    $join->on('ptjt.id', '=', 'plan_form.ptj_id_transfer')
+                        ->where('ptjt.active','Y');
+                })
+                ->join('dru_dist_funds as ddff','ddff.id', '=', 'plan_form.project_id')
+                ->join('dru_dist_funds as ddft','ddft.id', '=', 'plan_form.project_id_transfer')
+                ->groupBy('plan_form.id')->where('plan.year', $year);
+            $query = $query->where('plan_form.distribution_plan_id', $plan_id);
+            $query = $query->get();    
+            // dd($query->get());
+        }
+        else{
+            $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+                ->select([
+                    'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
+                    'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
+                    'pic.name as pic_name', 'member.name as member_name', 'pic.email as pic_email', 'member.email as member_email',
+                    'pic_status.description as pic_submission_status_label',
+                    'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
+                    \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
+                    \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
+                    \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(main_kpi.remark) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_remarks'),
+                    \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
+                    \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(kpi.remark) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_remarks'),
+                    'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                    'main_kpi.id as main_kpi_id','main_kpi_template.id as main_kpi_template_id','main_kpi_template.title as main_kpi_template_title','main_kpi_template.active as main_kpi_template_active','main_kpi.count as main_kpi_count','main_kpi.amount as main_kpi_amount','main_kpi.total as main_kpi_total','main_kpi.remark as main_kpi_remark',
+                    'kpi.id as kpi_id','kpi_template.id as kpi_template_id','kpi_template.title as kpi_template_title','kpi_template.active as kpi_template_active','kpi.count as kpi_count','kpi.amount as kpi_amount','kpi.total as kpi_total','kpi.remark as kpi_remark',
+                ])
+                ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                    $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                        ->where('plan.year',$year);
+                })
+                ->join('parameters as mrun', function ($join) {
+                    $join->on('mrun.id', '=', 'plan_form.mrun')
+                        ->where('mrun.active','Y');
+                })
+                ->join('parameters as bpki', function ($join) {
+                    $join->on('bpki.id', '=', 'plan_form.bpki')
+                        ->where('bpki.active','Y');
+                })
+                ->join('parameters as ptj', function ($join) {
+                    $join->on('ptj.id', '=', 'plan_form.ptj_id')
+                        ->where('ptj.active','Y');
+                })
+                ->join('dru_members as pic', function ($join) {
+                    $join->on('pic.distribution_plan_form_id', '=', 'plan_form.id')->where('pic.type','leader');
+                })
+                ->leftjoin('dru_members as member', function ($join) {
+                    $join->on('member.distribution_plan_form_id', '=', 'plan_form.id')->where('member.type','member');
+                })
+                ->leftjoin('dru_kpis as main_kpi', function ($join) {
+                    $join->on('main_kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                    ->where('main_kpi.type','main')->where('main_kpi.status','active');
+                })
+                ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
+                    $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
+                    ->where('main_kpi_template.active','Y');
+                })
+                ->leftjoin('dru_kpis as kpi', function ($join) {
+                    $join->on('kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                    ->where('kpi.type','kpi')->where('kpi.status','active');
+                })
+                ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                    $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
+                    ->where('kpi_template.active','Y');
+                })
+                ->leftjoin('statuses as pic_status', function ($join) {
+                    $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
+                })
+                ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
+                ->groupBy('plan_form.id')->where('plan.year', $year);
+            if($plan_id)$query = $query->where('plan_form.distribution_plan_id', $plan_id);
+            if($plan_form_id)$query = $query->where('plan_form.id', $plan_form_id);
+            // dd($query->get());
+            $query = $query->get();
+            $query = $query->map(function ($item) {
+                $main_kpis = \App\Models\DanaRU\DruKpi::from('dru_kpis as main_kpi')
+                ->select([
+                    'main_kpi.id as id', 'main_kpi.count as bil', 'main_kpi.amount as amount', 'main_kpi.total as total', 'main_kpi.remark as remark', 
+                    'main_kpi_template.id as item_id', 'main_kpi_template.title as item_name', 'main_kpi_template.active as active',
+                ])
+                ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
+                    $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
+                    ->where('main_kpi_template.active','Y');
+                })->where('main_kpi.distribution_plan_form_id', $item->plan_form_id)->where('main_kpi.type', 'main')->get();
+                $kpis = \App\Models\DanaRU\DruKpi::from('dru_kpis as kpi')
+                ->select([
+                    'kpi.id as id', 'kpi.count as bil', 'kpi.amount as amount', 'kpi.total as total', 'kpi.remark as remark', 
+                    'kpi_template.id as item_id', 'kpi_template.title as item_name', 'kpi_template.active as active',
+                ])
+                ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                    $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
+                    ->where('kpi_template.active','Y');
+                })->where('kpi.distribution_plan_form_id', $item->plan_form_id)->where('kpi.type', 'kpi')->get();
+                $item->main_kpi_dataset = $main_kpis;
+                $item->kpi_dataset = $kpis;
+                return $item;
+            });
+        }
+        
         return $query;
     }
 }
@@ -525,5 +588,394 @@ if (!function_exists('rtrimMinLength')) {
         $second_substring = substr($string, 3);
         $trimmedString = rtrim($second_substring, $character);
         return $first_substring.$trimmedString;
+    }
+}
+
+if (!function_exists('infographicData')) {
+    function infographicData($plan)
+    {
+        $fund = 0;
+        $do = 0;
+        $gp = 0;
+        $pp = 0;
+        $do_percent = 0;
+        $gp_percent = 0;
+        $pp_percent = 0;
+        $total = 0;
+        $agihan_semula_lists = [];
+        $pindahan_lists = [];
+
+        if($plan instanceof Illuminate\Database\Eloquent\Collection){
+            foreach ($plan as $key => $p) {
+                $plan_type = $p->type;
+                if(in_array($p->type, [1,2])){
+                    $fund += $p->amount;
+                    foreach ($p->forms as $key => $form) {
+                        if($form->bpki == 50)$do += $form->amount;
+                        elseif($form->bpki == 51)$gp += $form->amount;
+                        elseif($form->bpki == 52)$pp += $form->amount;
+                        $total += $form->amount;
+                    }
+                    $do_percent = $fund > 0 ? $do/$fund*100 : 0;
+                    $gp_percent = $fund > 0 ? $gp/$fund*100 : 0;
+                    $pp_percent = $fund > 0 ? $pp/$fund*100 : 0;
+                }
+                else if($p->type == 3){
+                    $do_as = 0;
+                    $gp_as = 0;
+                    $pp_as = 0;
+                    $total_as = 0;
+                    foreach ($p->forms as $key => $form) {
+                        if($form->bpki == 50)$do_as += $form->amount;
+                        elseif($form->bpki == 51)$gp_as += $form->amount;
+                        elseif($form->bpki == 52)$pp_as += $form->amount;
+                        $total_as += $form->amount;
+                    }
+                    $do_as_percent = $total_as > 0 ? $do_as/$total_as*100 : 0;
+                    $gp_as_percent = $total_as > 0 ? $gp_as/$total_as*100 : 0;
+                    $pp_as_percent = $total_as > 0 ? $pp_as/$total_as*100 : 0;
+                    $agihan_semula_lists[] = [
+                        'label' => $p->created_at,
+                        'do' => $do_as,
+                        'gp' => $gp_as,
+                        'pp' => $pp_as,
+                        'do_percent' => $do_as_percent,
+                        'gp_percent' => $gp_as_percent,
+                        'pp_percent' => $pp_as_percent,
+                        'do_color' => $do_as_percent > 20 ? 6 : 10,
+                        'gp_color' => $gp_as_percent > 60 ? 6 : 10,
+                        'pp_color' => $pp_as_percent > 20 ? 6 : 10,
+                        'do_baseline' =>  baselineCost($total_as, 20),
+                        'gp_baseline' => baselineCost($total_as, 60),
+                        'pp_baseline' => baselineCost($total_as, 20),
+                        'total' => $total_as,
+                    ];
+                }
+                else if($p->type == 4){
+                    $total_p = 0;
+                    foreach ($p->forms as $key => $form) {
+                        $total_p += $form->amount;
+                    }
+                    $pindahan_lists[] = [
+                        'label' => $p->created_at,
+                        'total' => $total_p,
+                    ];
+                }
+            }
+        }
+
+        else if($plan instanceof Illuminate\Database\Eloquent\Model){
+            if(in_array($plan->type, [1,2])){
+                $fund = $plan->amount;
+                foreach ($plan->forms as $key => $form) {
+                    if($form->bpki == 50)$do += $form->amount;
+                    elseif($form->bpki == 51)$gp += $form->amount;
+                    elseif($form->bpki == 52)$pp += $form->amount;
+                    $total += $form->amount;
+                }
+                $do_percent = $fund > 0 ? $do/$fund*100 : 0;
+                $gp_percent = $fund > 0 ? $gp/$fund*100 : 0;
+                $pp_percent = $fund > 0 ? $pp/$fund*100 : 0;
+            }
+            else if($plan->type == 3){
+                $do_as = 0;
+                $gp_as = 0;
+                $pp_as = 0;
+                $total_as = 0;
+                foreach ($plan->forms as $key => $form) {
+                    if($form->bpki == 50)$do_as += $form->amount;
+                    elseif($form->bpki == 51)$gp_as += $form->amount;
+                    elseif($form->bpki == 52)$pp_as += $form->amount;
+                    $total_as += $form->amount;
+                }
+                $do_as_percent = $total_as > 0 ? $do_as/$total_as*100 : 0;
+                $gp_as_percent = $total_as > 0 ? $gp_as/$total_as*100 : 0;
+                $pp_as_percent = $total_as > 0 ? $pp_as/$total_as*100 : 0;
+                $agihan_semula_lists[] = [
+                    'label' => $plan->created_at,
+                    'do' => $do_as,
+                    'gp' => $gp_as,
+                    'pp' => $pp_as,
+                    'do_percent' => $do_as_percent,
+                    'gp_percent' => $gp_as_percent,
+                    'pp_percent' => $pp_as_percent,
+                    'do_color' => $do_as_percent > 20 ? 6 : 10,
+                    'gp_color' => $gp_as_percent > 60 ? 6 : 10,
+                    'pp_color' => $pp_as_percent > 20 ? 6 : 10,
+                    'do_baseline' =>  baselineCost($total_as, 20),
+                    'gp_baseline' => baselineCost($total_as, 60),
+                    'pp_baseline' => baselineCost($total_as, 20),
+                    'total' => $total_as,
+                ];
+            }
+            else if($plan->type == 4){
+                $total_p = 0;
+                foreach ($plan->forms as $key => $form) {
+                    $total_p += $form->amount;
+                }
+                $pindahan_lists[] = [
+                    'label' => $plan->created_at,
+                    'total' => $total_p,
+                ];
+            }
+            // if($plan->type == 1) {
+            //     $do = 0;
+            //     $gp = 0;
+            //     $pp = 0;
+            //     $total = 0;
+            //     $plans = \App\Models\DanaRU\DruDistributionPlan::whereIn('type', [1,2])->get();
+            //     $fund = $plans->sum('amount');
+            //     foreach ($plans as $key => $plan) {
+            //         foreach ($plan->forms as $key => $form) {
+            //             if($form->bpki == 50)$do += $form->amount;
+            //             elseif($form->bpki == 51)$gp += $form->amount;
+            //             elseif($form->bpki == 52)$pp += $form->amount;
+            //             $total += $form->amount;
+            //         }
+            //     }
+            // }
+            // dd($do);
+        }
+
+        return $data = [
+            'fund'=>$fund,
+            'do'=>$do,
+            'gp'=>$gp,
+            'pp'=>$pp,
+            'do_percent' => $do_percent,
+            'gp_percent' => $gp_percent,
+            'pp_percent' => $pp_percent,
+            'do_color' => $do_percent > 20 ? 6 : 10,
+            'gp_color' => $gp_percent > 60 ? 6 : 10,
+            'pp_color' => $pp_percent > 20 ? 6 : 10,
+            'total' => $total,
+            'agihan_semula_lists' => $agihan_semula_lists,
+            'pindahan_lists' => $pindahan_lists
+        ];
+    }
+}
+
+if (!function_exists('baselineCost')) {
+    function baselineCost($amount, $percent)
+    {
+        return $amount * $percent/100;
+    }
+}
+
+if (!function_exists('getPlanType')) {
+    function getPlanType($type)
+    {
+        if($type == 1) return "cadangan_agihan";
+        if($type == 2) return "cadangan_agihan";
+        if($type == 3) return "agihan_semula";
+        if($type == 4) return "pindahan";
+    }
+}
+
+if (!function_exists('getDruPlanList')) {
+    function getDruPlanList($year)
+    {
+        $plans = \App\Models\DanaRU\DruDistributionPlan::where('year', $year)->oldest()->get();
+        return $plans;
+    }
+}
+
+if (!function_exists('refactorPlanFormList')) {
+    function refactorPlanFormList($plan_forms)
+    {
+        if($plan_forms){
+            $results = $plan_forms->groupBy(function ($item) {
+                return $item->mrun_code . '-' . $item->bpki_code . '-' . $item->ptj_code . '-' . $item->ddf_code . '-' . $item->ddf_code_2;
+            });
+            // dd($results);
+            // Sum the amount for each group
+            $filtered = $results->map(function ($group) {
+                $firstItem = $group->first();
+                $firstItem->plan_form_amount = $group->sum('plan_form_amount');
+                
+                    // $main_kpi_dataset[] = $group;
+                // dd($group->count());
+    
+                $concatenatedString = $group->reduce(function ($carry, $item) {
+                    return $carry . $item->main_kpi_details . '<br>';
+                }, '');
+            
+                // Trim the last space
+                $concatenatedString = trim($concatenatedString);
+                $firstItem->main_kpi_details = $concatenatedString;
+    
+                return $firstItem;
+    
+            })->values();
+            // dd($filtered);
+            return $filtered;
+        }
+        return $plan_forms;   
+    }
+}
+
+if (!function_exists('getExpensesReportInfo')) {
+    function getExpensesReportInfo($year, $penggal){
+        $datefilter = $penggal == 1 ? date('Y')."-06-30 23:59:59" : date('Y')."-12-31 23:59:59";
+        $plans = getDruPlanList($year)->where('status', 6);
+        $plan_form_raw = null;
+        foreach ($plans as $key => $plan) {
+            $plan_form = getDistributionFormPlans($year, $plan->id);
+            if(!$plan_form_raw)$plan_form_raw = $plan_form;
+            else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        }
+        $plan_forms = $plan_form_raw;
+
+        $plan_forms = refactorPlanFormList($plan_form_raw);
+
+        $expenses = \App\Models\DanaRU\DruExpensesRecord::from('dru_expenses_records as expenses')
+                ->select([
+                    'expenses.distribution_plan_form_id', 'expenses.kpi_template_id', 'expenses.total', 'expenses.commitment', 'ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','ddf.faculty_code as faculty_code',
+                    // 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
+                    // 'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
+                    // 'pic.name as pic_name', 'member.name as member_name', 'pic.email as pic_email', 'member.email as member_email',
+                    // 'pic_status.description as pic_submission_status_label',
+                    // 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
+                    // \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
+                    // \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
+                    // \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(main_kpi.remark) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_remarks'),
+                    \Illuminate\Support\Facades\DB::raw('CONCAT(kpi_template.title,": RM", FORMAT(expenses.amount, 2), " x ", expenses.count, " = RM", FORMAT(expenses.total, 2)) as kpi_details'),
+                    // \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(kpi.remark) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_remarks'),
+                    // 'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                    // 'main_kpi.id as main_kpi_id','main_kpi_template.id as main_kpi_template_id','main_kpi_template.title as main_kpi_template_title','main_kpi_template.active as main_kpi_template_active','main_kpi.count as main_kpi_count','main_kpi.amount as main_kpi_amount','main_kpi.total as main_kpi_total','main_kpi.remark as main_kpi_remark',
+                    // 'kpi.id as kpi_id','kpi_template.id as kpi_template_id','kpi_template.title as kpi_template_title','kpi_template.active as kpi_template_active','kpi.count as kpi_count','kpi.amount as kpi_amount','kpi.total as kpi_total','kpi.remark as kpi_remark',
+                ])
+                ->join('dru_distribution_plan_forms as plan_form', function ($join) use ($year) {
+                    $join->on('plan_form.id', '=', 'expenses.distribution_plan_form_id');
+                })
+                ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                    $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                        ->where('plan.year',$year);
+                })
+                ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                    $join->on('kpi_template.id', '=', 'expenses.kpi_template_id')
+                    ->where('kpi_template.active','Y');
+                })
+                ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
+                // ->orderBy('expenses.created_at')
+                ->whereRaw('expenses.created_at = (SELECT MAX(e2.created_at) FROM dru_expenses_records e2 WHERE e2.distribution_plan_form_id = expenses.distribution_plan_form_id AND e2.kpi_template_id = expenses.kpi_template_id)')
+                ->where('expenses.created_at', '<', $datefilter)
+                ->where('plan.year', $year);
+            // dd($query->get());
+            $expenses = $expenses->get();
+        // dd($expenses);
+        // dd($plan_forms->where('mrun_code', "TD"));
+
+        $data = [];
+        $td = [
+            "mrun" => "TALENT DEVELOPMENT",
+            "programs" => []
+        ];
+        $rp = [
+            "mrun" => "RESEARCH PROMINENT",
+            "programs" => []
+        ];
+        $wc = [
+            "mrun" => "WEALTH CREATION",
+            "programs" => []
+        ];
+        $bgc = [
+            "mrun" => "BRIDGING THE GRAND CHALLENGES",
+            "programs" => []
+        ];
+        foreach($plan_forms->where('mrun_code', "TD") as $key => $program){
+            $expenses_datas = $expenses->where('ddf_code', $program->ddf_code)->where('ddf_code_2', $program->ddf_code_2)->where('faculty_code', $program->ptj_code);
+            $total_expenses = 0;
+            $commitment = 0;
+            $kpi_pic_details = "";
+            foreach ($expenses_datas as $key => $expenses_data) {
+                $total_expenses += $expenses_data->total;
+                $kpi_pic_details .= $expenses_data->kpi_details . "<br>";
+                $commitment = $expenses_data->commitment;
+            }
+            $td["programs"][] = [
+                "title" => $program->ddf_title,
+                "main_kpi_details" => $program->main_kpi_details,
+                "kpi_details" => $program->kpi_details,
+                "allocation" => $program->plan_form_amount,
+                "total_expenses" => $total_expenses,
+                "commitment" => (float)$commitment,
+                "balance" => $program->plan_form_amount - (float)$commitment - (float)$total_expenses,
+                "kpi_pic_details" => $kpi_pic_details,
+            ];
+        }
+
+        foreach($plan_forms->where('mrun_code', "RP") as $key => $program){
+            $expenses_datas = $expenses->where('ddf_code', $program->ddf_code)->where('ddf_code_2', $program->ddf_code_2)->where('faculty_code', $program->ptj_code);
+            $total_expenses = 0;
+            $commitment = 0;
+            $kpi_pic_details = "";
+            foreach ($expenses_datas as $key => $expenses_data) {
+                $total_expenses += $expenses_data->total;
+                $kpi_pic_details .= $expenses_data->kpi_details . "<br>";
+                $commitment = $expenses_data->commitment;
+            }
+            $rp["programs"][] = [
+                "title" => $program->ddf_title,
+                "main_kpi_details" => $program->main_kpi_details,
+                "kpi_details" => $program->kpi_details,
+                "allocation" => $program->plan_form_amount,
+                "total_expenses" => $total_expenses,
+                "commitment" => (float)$commitment,
+                "balance" => $program->plan_form_amount - (float)$commitment - (float)$total_expenses,
+                "kpi_pic_details" => $kpi_pic_details,
+            ];
+        }
+
+        foreach($plan_forms->where('mrun_code', "WC") as $key => $program){
+            $expenses_datas = $expenses->where('ddf_code', $program->ddf_code)->where('ddf_code_2', $program->ddf_code_2)->where('faculty_code', $program->ptj_code);
+            $total_expenses = 0;
+            $commitment = 0;
+            $kpi_pic_details = "";
+            foreach ($expenses_datas as $key => $expenses_data) {
+                $total_expenses += $expenses_data->total;
+                $kpi_pic_details .= $expenses_data->kpi_details . "<br>";
+                $commitment = $expenses_data->commitment;
+            }
+            $wc["programs"][] = [
+                "title" => $program->ddf_title,
+                "main_kpi_details" => $program->main_kpi_details,
+                "kpi_details" => $program->kpi_details,
+                "allocation" => $program->plan_form_amount,
+                "total_expenses" => $total_expenses,
+                "commitment" => (float)$commitment,
+                "balance" => $program->plan_form_amount - (float)$commitment - (float)$total_expenses,
+                "kpi_pic_details" => $kpi_pic_details,
+            ];
+        }
+
+        foreach($plan_forms->where('mrun_code', "BGC") as $key => $program){
+            $expenses_datas = $expenses->where('ddf_code', $program->ddf_code)->where('ddf_code_2', $program->ddf_code_2)->where('faculty_code', $program->ptj_code);
+            $total_expenses = 0;
+            $commitment = 0;
+            $kpi_pic_details = "";
+            foreach ($expenses_datas as $key => $expenses_data) {
+                $total_expenses += $expenses_data->total;
+                $kpi_pic_details .= $expenses_data->kpi_details . "<br>";
+                $commitment = $expenses_data->commitment;
+            }
+            $bgc["programs"][] = [
+                "title" => $program->ddf_title,
+                "main_kpi_details" => $program->main_kpi_details,
+                "kpi_details" => $program->kpi_details,
+                "allocation" => $program->plan_form_amount,
+                "total_expenses" => $total_expenses,
+                "commitment" => (float)$commitment,
+                "balance" => $program->plan_form_amount - (float)$commitment - (float)$total_expenses,
+                "kpi_pic_details" => $kpi_pic_details,
+            ];
+        }
+
+        if(count($td['programs']) > 0) $data[] = $td;
+        if(count($rp['programs']) > 0) $data[] = $rp;
+        if(count($wc['programs']) > 0) $data[] = $wc;
+        if(count($bgc['programs']) > 0) $data[] = $bgc; 
+        
+        return $data;
     }
 }

@@ -32,9 +32,19 @@ class DruDistributionPlanForm extends Model
         return $this->belongsTo(DruDistFund::class, 'project_id');
     }
 
+    public function project_transfer()
+    {
+        return $this->belongsTo(DruDistFund::class, 'project_id_transfer');
+    }
+
     public function ptj()
     {
         return $this->belongsTo(Parameter::class, 'ptj_id');
+    }
+
+    public function ptj_transfer()
+    {
+        return $this->belongsTo(Parameter::class, 'ptj_id_transfer');
     }
 
     public function pic()
@@ -94,9 +104,21 @@ class DruDistributionPlanForm extends Model
         return $this->ptj ? $code = $this->ptj->id . '_' . $this->ptj->original_code : null;
     }
 
+    public function getPtjTransferInputDataAttribute()
+    {
+        return $this->ptj_transfer ? $code = $this->ptj_transfer->id . '_' . $this->ptj_transfer->original_code : null;
+    }
+
     public function getProjectInputDataAttribute()
     {
         $project = $this->project;
+        $code_2 = $project->code_2 ?? '00000';
+        return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code : $project->title;
+    }
+
+    public function getProjectTransferInputDataAttribute()
+    {
+        $project = $this->project_transfer;
         $code_2 = $project->code_2 ?? '00000';
         return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code : $project->title;
     }
@@ -108,31 +130,57 @@ class DruDistributionPlanForm extends Model
             'kpi'=>[],
             'mykpi'=>[],
         ];
-        foreach ($this->main_kpi as $key => $main_kpi) {
+        $year = $this->distribution_plan->year;
+        // $plans = getDruPlanList($year);
+        // dd($plans);
+        // ->where('status', 6);
+        // $plan_form_raw = null;
+        // foreach ($plans as $key => $plan) {
+        //     $plan_form = getDistributionFormPlans($year, $plan->id);
+        //     if(!$plan_form_raw)$plan_form_raw = $plan_form;
+        //     else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        // }
+        // dd($plan_form_raw[1]);
+        // $plan_forms = refactorPlanFormList($plan_form_raw);
+        // $plan_forms = $plan_forms->where('plan_form_id', $this->id)->first();
+        $plan_forms = getDistributionFormPlans($year, $this->distribution_plan->id, null, $this->id);
+        $plan_forms = refactorPlanFormList($plan_forms)[0];
+        // dd($plan_forms);
+
+        foreach ($plan_forms->main_kpi_dataset ?? [] as $key => $main_kpi) {
             array_push($data['main_dist'], [
-                'id' =>$main_kpi->id,
-                'item' =>$main_kpi->kpi_template_id,
-                'bil' =>$main_kpi->count,
-                'amount' =>$main_kpi->amount,
-                'total' =>$main_kpi->total,
+                'id' =>$main_kpi['id'],
+                'item_id' =>$main_kpi['item_id'],
+                'item_name' =>$main_kpi['item_name'] ?? "[Deleted]",
+                'active' =>$main_kpi['active'],
+                'bil' =>$main_kpi['bil'],
+                'amount' =>$main_kpi['amount'],
+                'total' =>$main_kpi['total'],
+                'remark' =>$main_kpi['remark'],
             ]);
         }
-        foreach ($this->kpi as $key => $kpi) {
+        foreach ($plan_forms->kpi_dataset ?? [] as $key => $kpi) {
             array_push($data['kpi'], [
-                'id' =>$kpi->id,
-                'item' =>$kpi->kpi_template_id,
-                'bil' =>$kpi->count,
-                'amount' =>$kpi->amount,
-                'total' =>$kpi->total,
+                'id' =>$kpi['id'],
+                'item_id' =>$kpi['item_id'],
+                'item_name' =>$kpi['item_name'] ?? "[Deleted]",
+                'active' =>$kpi['active'],
+                'bil' =>$kpi['bil'],
+                'amount' =>$kpi['amount'],
+                'total' =>$kpi['total'],
+                'remark' =>$kpi['remark'],
             ]);
         }
         foreach ($this->pic_kpi as $key => $pic_kpi) {
             array_push($data['mykpi'], [
                 'id' =>$pic_kpi->id,
-                'item' =>$pic_kpi->kpi_template_id,
+                'item_id' =>$pic_kpi->template->id ?? null,
+                'item_name' =>$pic_kpi->template->title ?? "[Deleted]",
+                'active' =>$pic_kpi->template->active ?? null,
                 'bil' =>$pic_kpi->count,
                 'amount' =>$pic_kpi->amount,
                 'total' =>$pic_kpi->total,
+                'remark' =>$pic_kpi->remark,
             ]);
         }
         return $data;

@@ -1,6 +1,6 @@
 @component("layouts.app")
 @slot("title") Active Grant In Year @endslot
-@section('custom-css') 
+@push('custom-css') 
 <style>
     .paper-range {
         background-color: #FFF;
@@ -9,7 +9,7 @@
         border-radius: 5px;
     }
 </style>
-@endsection
+@endpush
 @slot("content")
 <div class="row">
     <div class="col-2">
@@ -102,7 +102,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var pie1 = document.getElementById('pie1');
     var pieChart1 = new Chart(pie1, {
@@ -229,5 +229,5 @@
         }
     });
 </script>
-@endsection
+@endpush
 @endcomponent

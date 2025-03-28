@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot('module') Master List @endslot
 @slot("submodule") Project Management @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
@@ -51,11 +51,11 @@
 @endforeach
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     function getList(that) {
         window.location = window.location.origin + '/masterlist/project-management/index/' + that.val();
     }
 </script>
-@endsection
+@endpush
 @endcomponent

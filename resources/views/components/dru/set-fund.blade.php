@@ -29,9 +29,9 @@
     </div>
 </div>
 
-@section('custom-js')
+@push('custom-js')
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
     $(".input-mask").inputmask(); 
 </script>
-@endsection
+@endpush

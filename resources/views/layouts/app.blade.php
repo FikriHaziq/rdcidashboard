@@ -11,8 +11,10 @@
         <title>{{ $module ?? 'RDCI Dashboard' }} | {{ $submodule ?? '' }}</title>
         <!-- BEGIN: CSS Assets-->
         <link href="{{ asset('theme/css/app.css') }}" rel="stylesheet" />
+        <link href="{{ asset('theme/css/custom.css') }}" rel="stylesheet" />
+        
         @include('layouts.css')
-        @yield('custom-css')
+        @stack('custom-css')
         <!-- END: CSS Assets-->
     </head>
     <body class="main">
@@ -30,5 +32,5 @@
         @include('alert')
     </body>
     @include('layouts.js')
-    @yield('custom-js')
+    @stack('custom-js')
 </html>

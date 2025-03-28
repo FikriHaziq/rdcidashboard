@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Senarai Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <style>
 .ts-control {
@@ -30,7 +30,7 @@
 .ts-dropdown {z-index: 100;}
 </style>
 
-@endsection
+@endpush
 @slot('content')
 <x-title>
     @if($plan_form->ddf_status == 'active')
@@ -196,6 +196,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <p class="mt-5 text-center"><b>***Ini adalah cetakan komputer dan tidak memerlukan tandatangan fizikal.***</b></p>
                 </div>
             </div>
             <div class="d-flex p-5 align-item-center border-top border-gray-200 dark-border-dark-5">
@@ -204,7 +205,7 @@
                     @if(!$plan_form->plan_form_declaration_date)
                     <form id="approve-form" action="{{ route('dana-ru.senarai-agihan.declare', $plan_form->plan_form_id) }}" method="POST">
                         @csrf
-                        <button id="declaration_btn" type="submit" disabled class="btn btn-primary"> Submit</button>
+                        <button id="declaration_btn" type="button" disabled class="btn btn-primary"> Submit</button>
                     </form>
                     @endif
                 </div>
@@ -214,7 +215,7 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
     $('#declaration').change(function()
@@ -222,6 +223,57 @@
         if($(this).is(':checked')) $('#declaration_btn').prop('disabled', false);
         else $('#declaration_btn').prop('disabled', true);
     });
+
+    $('#declaration_btn').click(function(){
+        swal({
+            title: "Sila isi NRIC anda. (Tanpa '-')",
+            input: "text",
+            inputAttributes: {
+                autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            showLoaderOnConfirm: true,
+            preConfirm: async (nric) => {
+                if (!nric) {
+                    swal.showValidationError("Sila masukkan NRIC.");
+                    return false; // Keeps the modal open
+                }
+                try {
+                    const data = new FormData();
+                    data.append("plan_id", {!! $plan_form->plan_form_id !!});
+                    data.append("nric", nric);
+
+                    const response = await fetch("/ajax/validate-nric/", {
+                        method: "POST",
+                        body: data,
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        return swal.showValidationError(`Pengesahan gagal: ${JSON.stringify(errorResponse)}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.result !== 1) {
+                        return swal.showValidationError("Pengesahan gagal: NRIC tidak sah.");
+                    }
+
+                    return result; // Proceed with the resolved value
+                } catch (error) {
+                    swal.showValidationError(`Request failed: ${error.message}`);
+                }
+            },
+            allowOutsideClick: false,
+        }).then((result) => {
+            if(result.value.result == 1) {
+                $('#approve-form').submit();
+            }
+        });
+    });
 </script>
-@endsection
+@endpush
 @endcomponent

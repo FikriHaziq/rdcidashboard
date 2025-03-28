@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <style>
@@ -9,7 +9,7 @@
         background-color: whitesmoke !important;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
@@ -17,13 +17,23 @@
         <div class="grid columns-12 gap-6">
             <div class="g-col-12 mt-6 box">
                 <div class="p-5">
-                    <div class="intro-y d-block d-sm-flex align-items-center h-10">
+                    <div class="intro-y d-block d-sm-flex align-items-center justify-content-between h-10">
                         <div class="d-flex align-items-center mt-3 mt-sm-0">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Program
                             </h2>
                         </div>
                         <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
+                            @if (count($plan_forms) > 0)
+                            <div class="input-group me-2 me-sm-2">
+                                <div class="input-group-text bg-theme-1 fs-xs text-white">LAPORAN PERBELANJAAN</div>
+                                <select id="jana_laporan" class="form-select bg-white w-64">
+                                    <option value="1" selected>PENGGAL 1</option>
+                                    <option value="2">PENGGAL 2</option>
+                                </select>
+                                <button type="button" form="submission-form" class="btn btn-primary" onclick="generateReport({{ $year }})"> JANA </button>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
@@ -110,6 +120,11 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
-@endsection
+@push('custom-js')
+<script>
+    function generateReport(plan_id) {
+        window.location = window.location.origin + '/dana-ru/kewangan/perbelanjaan/laporan-perbelanjaan/' + plan_id + '/' + $('#jana_laporan').val();
+    }
+</script>
+@endpush
 @endcomponent

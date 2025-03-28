@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <style>
 .ts-control {
@@ -30,11 +30,11 @@
 .ts-dropdown {z-index: 100;}
 </style>
 
-@endsection
+@endpush
 @slot('content')
 <x-title>Borang Cadangan Agihan {{ $year }}</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
-    <div class="intro-y col-12 col-xl-8">
+    <div class="intro-y col-12 col-xl-11">
         <form id="form_1" action="{{ route('dana-ru.cadangan-agihan.store', $year) }}" method="post">
         @csrf
             <div class="intro-y box p-5">
@@ -42,9 +42,13 @@
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="mrun">PROGRAM UTAMA</label>
                     </div>
+                    <input type="hidden" name="plan_id" value="{{ $plan->id ?? '' }}">
                     <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
+                    <input type="hidden" name="total_kpi" id="total_kpi" value="">
+                    <input type="hidden" name="plan_type" id="plan_type" value="{{ $plan->type }}">
+                    <input type="hidden" name="fund_balance" id="fund_balance" value="">
                     <div class="g-col-9">
-                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6) disabled @endif onchange="getProjectList()">
+                        <select id="mrun" name="mrun" class="form-select @error('mrun') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6 || $view_mode) disabled @endif onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getMrunList() as $mrun)
                                 <option value="{{ $mrun->id }}" @if((old('mrun') ?? ($plan_form->mrun ?? '')) == $mrun->id) selected @endif>{{ $mrun->code }} - {{ $mrun->description_1 }}</option>
@@ -58,7 +62,7 @@
                         <label for="bpki, #project">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6) disabled @endif>
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6 || $view_mode) disabled @endif>
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
                                 <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
@@ -73,19 +77,19 @@
                     </div>
                     <div class="g-col-9">
                         <div class="input-group mb-2 @error('kp_name') border-theme-6 @enderror">
-                            <div class="input-group-text">NAMA</div> <input id="kp_name" name="kp_name" type="text" value="{{ old('kp_name') ?? ($plan_form->pic->name ?? '') }}" class="form-control @error('kp_name') border-theme-6 @enderror" placeholder="NAMA KETUA PROGRAM" aria-describedby="kp_name">
+                            <div class="input-group-text">NAMA</div> <input id="kp_name" name="kp_name" type="text" value="{{ old('kp_name') ?? ($plan_form->pic->name ?? '') }}" class="form-control @error('kp_name') border-theme-6 @enderror" placeholder="NAMA KETUA PROGRAM" aria-describedby="kp_name" @if($view_mode) disabled @endif>
                         </div>
                         @error('kp_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                         <div class="grid columns-2 gap-3">
                             <div class="g-col-1">
                                 <div class="input-group">
-                                    <div class="input-group-text">EMEL</div> <input id="kp_email" name="kp_email" type="text" value="{{ old('kp_email') ?? ($plan_form->pic->email ?? '')  }}" class="form-control @error('kp_email') border-theme-6 @enderror" placeholder="EMEL KETUA PROGRAM" aria-describedby="kp_email">
+                                    <div class="input-group-text">EMEL</div> <input id="kp_email" name="kp_email" type="text" value="{{ old('kp_email') ?? ($plan_form->pic->email ?? '')  }}" class="form-control @error('kp_email') border-theme-6 @enderror" placeholder="EMEL KETUA PROGRAM" aria-describedby="kp_email" @if($view_mode) disabled @endif>
                                 </div>
                                 @error('kp_email')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
                             <div class="g-col-1">
                                 <div class="input-group">
-                                    <div class="input-group-text">IC</div> <input id="kp_ic" name="kp_ic" type="text" value="{{ old('kp_ic')?? ($plan_form->pic->nric ?? '') }}" class="form-control @error('kp_ic') border-theme-6 @enderror" placeholder="NO. IC KETUA PROGRAM" aria-describedby="kp_ic">
+                                    <div class="input-group-text">IC</div> <input id="kp_ic" name="kp_ic" type="text" value="{{ old('kp_ic')?? ($plan_form->pic->nric ?? '') }}" class="form-control @error('kp_ic') border-theme-6 @enderror" placeholder="NO. IC KETUA PROGRAM" aria-describedby="kp_ic" @if($view_mode) disabled @endif>
                                 </div>
                                 @error('kp_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
@@ -98,19 +102,19 @@
                     </div>
                     <div class="g-col-9">
                         <div class="input-group mb-2">
-                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" value="{{ old('pb_name') ?? ($plan_form->member->name ?? '') }}" class="form-control @error('pb_name') border-theme-6 @enderror" placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
+                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" value="{{ old('pb_name') ?? ($plan_form->member->name ?? '') }}" class="form-control @error('pb_name') border-theme-6 @enderror" placeholder="NAMA PEGAWAI" aria-describedby="pb_name" @if($view_mode) disabled @endif>
                         </div>
                         @error('pb_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                         <div class="grid columns-2 gap-3">
                             <div class="g-col-1">
                                 <div class="input-group">
-                                    <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" value="{{ old('pb_email') ?? ($plan_form->member->email ?? '') }}" class="form-control @error('pb_email') border-theme-6 @enderror" placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                                    <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" value="{{ old('pb_email') ?? ($plan_form->member->email ?? '') }}" class="form-control @error('pb_email') border-theme-6 @enderror" placeholder="EMEL PEGAWAI" aria-describedby="pb_email" @if($view_mode) disabled @endif>
                                 </div>
                                 @error('pb_email')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
                             <div class="g-col-1">
                                 <div class="input-group">
-                                    <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" value="{{ old('pb_ic') ?? ($plan_form->member->nric ?? '') }}" class="form-control @error('pb_ic') border-theme-6 @enderror" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                                    <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" value="{{ old('pb_ic') ?? ($plan_form->member->nric ?? '') }}" class="form-control @error('pb_ic') border-theme-6 @enderror" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic" @if($view_mode) disabled @endif>
                                 </div>
                                 @error('pb_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
@@ -122,7 +126,7 @@
                         <label for="ptj">PTJ PIC</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="ptj" name="ptj" class="form-select @error('ptj') border-theme-6 @enderror" onchange="getProjectList()">
+                        <select id="ptj" name="ptj" class="form-select @error('ptj') border-theme-6 @enderror" @if($view_mode) disabled @endif onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getFaculty2(true) as $faculty)
                                 <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj') ?? ($plan_form->ptjInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>[{{$faculty->original_code}}] {{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
@@ -136,7 +140,7 @@
                         <label for="project">JENIS AGIHAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" placeholder="JENIS AGIHAN" @if(($plan->status ?? 0) == 6) disabled @endif autocomplete="off">
+                        <select id="project" class="@error('project') border-theme-6 @enderror" name="project" @if($view_mode) disabled @endif placeholder="JENIS AGIHAN" @if(($plan->status ?? 0) == 6) disabled @endif autocomplete="off">
                         </select>
                         @error('project')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
@@ -156,6 +160,17 @@
                         </div>
                     </div>
                 </div>
+                @if ($plan->type == 3)
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                    </div>
+                    <div class="g-col-9">
+                        <div class="g-col-12 intro-x">
+                            <x-dru.chargeline-balance />
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="main_dist">ASAS AGIHAN</label>
@@ -169,6 +184,7 @@
                                         <th class="text-nowrap">BIL</th>
                                         <th class="text-nowrap">AMAUN (RM)</th>
                                         <th class="text-nowrap">JUMLAH</th>
+                                        <th class="text-nowrap">CATATAN</th>
                                         <th class="text-nowrap"></th>
                                     </tr>
                                 </thead>
@@ -176,8 +192,12 @@
                                 </tbody>
                                 <tfoot class="bg-white">
                                     <tr class="main_dist-footer-add-button intro-x text-center">
-                                        <td colspan="5">
+                                        <td colspan="6">
+                                            @if($view_mode) 
+                                            No record.
+                                            @else
                                             <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('main_dist', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -197,7 +217,8 @@
                                         <th class="text-nowrap">ITEM</th>
                                         <th class="text-nowrap">BIL</th>
                                         <th class="text-nowrap">AMAUN (RM)</th>
-                                        <th class="text-nowrap">TOTAL</th>
+                                        <th class="text-nowrap">JUMLAH</th>
+                                        <th class="text-nowrap">CATATAN</th>
                                         <th class="text-nowrap"></th>
                                     </tr>
                                 </thead>
@@ -205,13 +226,18 @@
                                 </tbody>
                                 <tfoot class="bg-white">
                                     <tr class="kpi-footer-add-button intro-x text-center">
-                                        <td colspan="5">
+                                        <td colspan="6">
+                                            @if($view_mode) 
+                                            No record.
+                                            @else
                                             <button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem('kpi', 'add')"><i data-feather="plus" class="w-6 h-6 me-1"></i> Tambah</button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
+                        @error('total_kpi')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
@@ -222,6 +248,7 @@
                         <div class="input-group">
                             <div class="input-group-text">RM</div> <input id="total_dist" name="total_dist" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
                         </div>
+                        @error('total_dist')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
@@ -229,30 +256,33 @@
                         <label for="note">CATATAN</label>
                     </div>
                     <div class="g-col-9">
-                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="CATATAN">{{ old('note') ?? ($plan_form->notes ?? '')  }}</textarea>
+                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="CATATAN" @if($view_mode) disabled @endif>{{ old('note') ?? ($plan_form->notes ?? '')  }}</textarea>
                     </div>
                 </div>
+                @if(!$view_mode && in_array($plan->status, [1,4,5,6]))
                 <div class="mt-5 d-flex justify-content-end">
-                    <a href="{{ route('dana-ru.cadangan-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
+                    <a href="{{ route('dana-ru.cadangan-agihan.index', ["year"=>$year,"type"=>getPlanType($plan->type),"plan_id"=>$plan->id]) }}" class="btn btn-light me-3">Batal</a>
                     <button type="submit" form="form_1" class="btn btn-primary">Hantar</button>
                 </div>
+                @endif
             </div>
         </form>
     </div>
 </div>
 
+<x-dru.set-kpi />
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
-    var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
-    var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
     var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null) ?? session()->getOldInput()) !!};
     var plan_status = {!! ($plan->status ?? 0) !!};
+    var plan_type = {!! ($plan->type ?? 0) !!};
     var main_dist = oldInput.main_dist;
+    var view_mode = {!! ($view_mode ?? 0) !!};
     var kpi = oldInput.kpi;
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
@@ -264,9 +294,7 @@
             manageKpiItem('kpi', 'add', null, value);
         });
     }
-    // console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
-    // getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
         return function() {
             getChargeline(arguments[0], 'pro');
@@ -333,7 +361,6 @@
     }
 
     function getChargeline(value, type) {
-        console.log(value)
         if(type == 'ptj'){
             data = value.split('_');
             if(data.length > 1){
@@ -354,6 +381,28 @@
                     $('#cl_ptj').prop('readonly', true);
                     $('#cl_pro').prop('readonly', true);
                     $('#cl_sub').prop('readonly', true);
+                    let formData = new FormData();
+                    formData.append("main_fund_id", data[0]);
+                    formData.append("ptj_code", data[3]);
+                    $.ajax({
+                        url: "/ajax/get-balance-by-chargeline/",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        type: "post",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(res) {
+                            let balance = res.total_allocation - res.total_expenses;
+                            displayChargelineInfo(balance, res.total_allocation, res.total_expenses);
+                            if(plan_type == 3)chargelineBalanceCheck();
+                        },
+                        error: function(err) {
+                            
+                        }
+                    });
                 }
                 else{
                     data = $('#ptj').val().split('_');
@@ -377,8 +426,6 @@
                 $('#cl_pro').prop('readonly', true);
                 $('#cl_sub').prop('readonly', true);
             }
-            
-            
         }
     }
 
@@ -398,66 +445,67 @@
         if(type == 'add'){
             var rowCount = $('#'+table+' >tbody >tr:not(".grand-total")').length;
             index = rowCount;
-            kpiOptions = '<option value="">--Sila Pilih--</option>';
-            edit_main_dist = table == 'main_dist' && plan_status == 6;
+            edit_main_dist = (table == 'main_dist' && plan_status == 6) || view_mode;
             disabled_prop = edit_main_dist ? 'disabled' : '';
             readonly_prop = edit_main_dist ? 'readonly' : '';
             d_none_prop = edit_main_dist ? 'd-none' : '';
-            if(table == 'main_dist'){
-                mainTemplates.forEach(element => {
-                    var _selected = '';
-                    if(rawData){
-                        if(typeof rawData.item !== 'undefined'){
-                            _selected = element.id == rawData.item ? 'selected': '';
-                        }
-                    }
-                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
-                });
-            }
-            else if(table == 'kpi'){
-                kpiTemplates.forEach(element => {
-                    var _selected = '';
-                    if(rawData){
-                        if(typeof rawData.item !== 'undefined'){
-                            _selected = element.id == rawData.item ? 'selected': '';
-                        }
-                    }
-                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
-                });
-            }
             var bil_data = '';
             var amount_data = '';
             var total_data = '';
-            var id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id">';
+            var remark_data = '';
+            var id_input = '<input type="hidden" id="'+table+'_'+index+'_id" name="'+table+'['+index+'][id]" class="'+table+'_id">';
+            var item_input = '<input type="hidden" id="'+table+'_'+index+'_item" name="'+table+'['+index+'][item_id]" class="'+table+'_item">';
+            var item_name_input = '<input type="hidden" id="'+table+'_'+index+'_item_name" name="'+table+'['+index+'][item_name]" class="'+table+'_item_name">';
+            var active_input = '<input type="hidden" id="'+table+'_'+index+'_active" name="'+table+'['+index+'][active]" class="'+table+'_active">';
+            var template_btn = '<button type="button" '+disabled_prop+' id="'+table+'_'+index+'_item_elem" class="'+table+'_item_elem btn btn-outline-primary btn-sm w-full" data-bs-toggle="modal" data-bs-target="#kpiModal" onclick="openKpiModal(\''+ table +'\', '+index+')">--Sila pilih--</button>';
             if(rawData){
-                if(rawData.id) id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id" value="'+rawData.id+'">';
+                if(rawData.id) id_input = '<input type="hidden" id="'+table+'_'+index+'_id" name="'+table+'['+index+'][id]" class="'+table+'_id" value="'+rawData.id+'">';
+                if(rawData.item_id) item_input = '<input type="hidden" id="'+table+'_'+index+'_item" name="'+table+'['+index+'][item_id]" class="'+table+'_item" value="'+rawData.item_id+'">';
+                if(rawData.item_name){
+                    item_name_input = '<input type="hidden" id="'+table+'_'+index+'_item_name" name="'+table+'['+index+'][item_name]" class="'+table+'_item_name" value="'+rawData.item_name+'">';
+                    active_input = '<input type="hidden" id="'+table+'_'+index+'_active" name="'+table+'['+index+'][active]" class="'+table+'_active" value="'+rawData.active+'">';
+                    let btn_clr = 'btn-primary-soft';
+                    if(rawData.item_id){
+                        if(rawData.active != 'Y') btn_clr = 'btn-warning-soft';
+                    }
+                    else btn_clr = 'btn-danger-soft';
+                    template_btn = '<button type="button" '+disabled_prop+' id="'+table+'_'+index+'_item_elem" class="'+table+'_item_elem btn '+ btn_clr +' btn-sm w-full" data-bs-toggle="modal" data-bs-target="#kpiModal" onclick="openKpiModal(\''+ table +'\', '+index+', '+JSON.stringify(rawData).replace(/"/g, "'")+')">'+rawData.item_name+'</button>';
+                }
                 bil_data = typeof rawData.bil !== 'undefined' ? rawData.bil : '';
                 amount_data = typeof rawData.amount !== 'undefined' ? rawData.amount : '';
                 total_data = typeof rawData.total !== 'undefined' ? rawData.total : '';
+                remark_data = rawData.remark ? rawData.remark : '';
             }
-            newRowContent = '<tr class="intro-x">'+ id_input +
-                                '<td class="text-nowrap"><select name="'+table+'['+index+'][item]" '+disabled_prop+' class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
+            newRowContent = '<tr class="intro-x">'+ id_input + item_input + item_name_input + active_input +
+                                '<td class="text-nowrap">'+template_btn+'</td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][bil]" '+readonly_prop+' value="'+bil_data+'" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][amount]" '+readonly_prop+' value="'+amount_data+'" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][total]" value="'+total_data+'" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
+                                '<td class="text-nowrap"><textarea name="'+table+'['+index+'][remark]" '+readonly_prop+' class="form-control '+table+'_remark" cols="50" placeholder="CATATAN">'+remark_data+'</textarea></td>'+
                                 '<td class="text-nowrap">'+
                                 '<div class="d-flex justify-content-center align-items-center">'+
                                 '<a class="d-flex align-items-center text-theme-10 '+d_none_prop+'" style="background-color:white " onclick="manageKpiItem(\''+table+'\', \'add\')">'+add_icon+'</a>'+
                                 '<a class="d-flex align-items-center text-theme-6 '+d_none_prop+'" style="background-color:white" onclick="manageKpiItem(\''+table+'\', \'remove\',$(this))">'+remove_icon+'</a>'+
                                 '</div></td></tr>';
             if(rowCount == 0){
+                let extra_info = '<td colspan="2"></td>';
+                if(table == 'kpi'){
+                    extra_info = '<td><span id="kpi_balance_check"></span></td><td></td>'
+                }
+                else if(table == 'main_dist'){
+                    if(plan_type == 3)extra_info = '<td><span id="main_kpi_balance_check"></span></td><td></td>'
+                }
                 $('#'+table+' >tfoot >tr').remove();
                 newRowContent += '<tr class="grand-total bg-gray-400 border-b-0">'+
                                     '<td class="text-end" colspan="3">JUMLAH KESELURUHAN (RM)</td>'+
                                     '<td class="text-end">'+
-                                        '<input name="'+table+'_grand_total" type="text" value="" disabled class="form-control '+table+'_grand_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'">'+
-                                    '</td><td></td></tr>';
+                                        '<input name="'+table+'_grand_total" id="'+table+'_grand_total" type="text" value="" disabled class="form-control '+table+'_grand_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'">'+
+                                    '</td>'+ extra_info +'</tr>';
                 $("#"+table+" tbody").append(newRowContent);            
             } 
             else{
                 $("#"+table+" tbody tr:last").before(newRowContent);
             }           
-            calculate(table);     
             $(".input-mask").inputmask();        
         }
         else if(type == 'remove'){
@@ -466,20 +514,24 @@
             if(rowCount == 0){
                 $("#"+table+" tbody tr").remove(); 
                 footerContent = '<tr class="'+table+'-footer-add-button text-center">'+
-                                '<td colspan="5">'+
+                                '<td colspan="6">'+
                                     '<button class="btn btn-outline-primary btn-sm me-1 mb-2" onclick="manageKpiItem(\''+table+'\', \'add\')">'+big_add_icon+' Tambah</button>'+
                                 '</td></tr>';
                 $('#'+table+' >tfoot').append(footerContent);
             }
             
             $('#'+table+' >tbody >tr:not(".grand-total")').each(function(index) {
-                $(this).find('.'+table+'_id').attr('name', table+'['+index+'][id]');
-                $(this).find('.'+table+'_item').attr('name', table+'['+index+'][item]');
+                $(this).find('.'+table+'_id').attr('name', table+'['+index+'][id]').attr('id', table+'_'+index+'_id');
+                $(this).find('.'+table+'_item').attr('name', table+'['+index+'][item_id]').attr('id', table+'_'+index+'_item');
+                $(this).find('.'+table+'_item_name').attr('name', table+'['+index+'][item_name]').attr('id', table+'_'+index+'_item_name');
+                $(this).find('.'+table+'_active').attr('name', table+'['+index+'][active]').attr('id', table+'_'+index+'_active');
+                $(this).find('.'+table+'_item_elem').attr('id', table+'_'+index+'_item_elem');
                 $(this).find('.'+table+'_bil').attr('name', table+'['+index+'][bil]');
                 $(this).find('.'+table+'_amount').attr('name', table+'['+index+'][amount]');
                 $(this).find('.'+table+'_total').attr('name', table+'['+index+'][total]');
             });
         }
+        calculate(table);     
     }
 
     function calculate(table) {
@@ -494,11 +546,59 @@
         });
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
         if(table == 'main_dist')$("#total_dist").val(grand_total);
+        kpiBalanceCheck();
+        if(plan_type == 3)chargelineBalanceCheck();
+    }
+
+    function kpiBalanceCheck() {
+        let kpi = $('#kpi_grand_total').val();
+        $('#total_kpi').val(kpi);
+        let total = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
+        if(kpi != undefined){
+            kpi = kpi.replaceAll(',','');
+            let balance = total-kpi;
+            $('#kpi_balance_check').removeClass('text-theme-6 text-theme-9');
+            if(balance < 0) {
+                $('#kpi_balance_check').html('- RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#kpi_balance_check').addClass('text-theme-6');
+            }
+            else if(balance == 0){
+                $('#kpi_balance_check').html('');
+            }
+            else {
+                $('#kpi_balance_check').html('+ RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#kpi_balance_check').addClass('text-theme-9');
+            }
+        }
+    }
+
+    function chargelineBalanceCheck() {
+        let chargeline_balance = $('#fund_balance').val() || 0;
+        console.log(chargeline_balance);
+        let total = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
+        if(total != undefined){
+            total = total.replaceAll(',','');
+            let balance = chargeline_balance-total;
+            let sign = '-';
+            let color = 'text-theme-6';
+            if(balance > 0) {
+                sign = '+';
+                color = 'text-theme-10';
+            }
+            if(balance == 0){
+                $('#main_kpi_balance_check').html('');
+            }
+            else {
+                $('#main_kpi_balance_check').html(sign + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#main_kpi_balance_check').removeClass('text-theme-10 text-theme-6');
+                $('#main_kpi_balance_check').addClass(color);
+            }
+        }
     }
 
     $('form').bind('submit', function () {
         $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);
     });
 </script>
-@endsection
+@endpush
 @endcomponent

@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot('module') Masterlist @endslot
 @slot("submodule") Myra @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
@@ -55,7 +55,7 @@
 </div>
 @endforeach
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
 
     function getList(that) {
@@ -66,5 +66,5 @@
         window.location = window.location.origin + "/report/myra/download/"+code+"/"+year+'/'+all;
     }
 </script>
-@endsection
+@endpush
 @endcomponent

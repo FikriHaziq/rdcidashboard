@@ -326,8 +326,8 @@
         </div>
     </div>
 </form>
-
-@section('custom-js')
+<x-dru.set-kpi />
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
@@ -336,12 +336,11 @@
 <script>
     var edit = {!! json_encode($edit) !!};
     var multiple = edit ? 'multiple' : '';
-    var mainTemplates = {!! json_encode(getKpiTemplate('main')) !!};
-    var kpiTemplates = {!! json_encode(getKpiTemplate('kpi')) !!};
     var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null)) !!};
     var plan_status = {!! $plan->status !!};
     var main_dist = oldInput.main_dist;
     var kpi = oldInput.kpi;
+    console.log(kpi);
     var mykpi = {!! json_encode((session()->getOldInput()['mykpi'] ?? $plan_form->kpiInputData['mykpi'])) !!};
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
@@ -358,7 +357,7 @@
             manageKpiItem('mykpi', 'add', null, value, plan_status);
         });
     }
-    // console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
+    console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
@@ -402,11 +401,13 @@
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
-        var year = {!! $year !!};
+        var faculty = $("#ptj").val();
         var oldProject = '';
-        if (program) {
+        if (program && faculty) {
+            const faculty_arr = faculty.split('_');
+            const faculty_id = faculty_arr[0];
             $.ajax({
-                url: "/ajax/getProjectList/" + program + "/" + year,
+                url: "/ajax/getProjectList/" + program + "/" + faculty_id,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -419,7 +420,7 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.fixed_subproject ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
                                 title: val.title
                             });
                             if(selectedValue){
@@ -508,56 +509,37 @@
         if(type == 'add'){
             var rowCount = $('#'+table+' >tbody >tr:not(".grand-total")').length;
             index = rowCount;
-            kpiOptions = '<option value="">--Sila Pilih--</option>';
             view_only_main_dist = ((table == 'main_dist' || table == 'kpi') && plan_status == 6) || !edit;
             disabled_prop = view_only_main_dist ? 'disabled' : '';
             readonly_prop = view_only_main_dist ? 'readonly' : '';
             d_none_prop = view_only_main_dist ? 'd-none' : '';
-            if(table == 'main_dist'){
-                mainTemplates.forEach(element => {
-                    var _selected = '';
-                    if(rawData){
-                        if(typeof rawData.item !== 'undefined'){
-                            _selected = element.id == rawData.item ? 'selected': '';
-                        }
-                    }
-                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
-                });
-            }
-            else if(table == 'kpi'){
-                kpiTemplates.forEach(element => {
-                    var _selected = '';
-                    if(rawData){
-                        if(typeof rawData.item !== 'undefined'){
-                            _selected = element.id == rawData.item ? 'selected': '';
-                        }
-                    }
-                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
-                });
-            }
-            else if(table == 'mykpi'){
-                kpiTemplates.forEach(element => {
-                    var _selected = '';
-                    if(rawData){
-                        if(typeof rawData.item !== 'undefined'){
-                            _selected = element.id == rawData.item ? 'selected': '';
-                        }
-                    }
-                    kpiOptions += '<option value="'+element.id+'" '+_selected+'>'+element.title+'</option>';
-                });
-            }
             var bil_data = '';
             var amount_data = '';
             var total_data = '';
-            var id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id">';
+            var id_input = '<input type="hidden" id="'+table+'_'+index+'_id" name="'+table+'['+index+'][id]" class="'+table+'_id">';
+            var item_input = '<input type="hidden" id="'+table+'_'+index+'_item" name="'+table+'['+index+'][item_id]" class="'+table+'_item">';
+            var item_name_input = '<input type="hidden" id="'+table+'_'+index+'_item_name" name="'+table+'['+index+'][item_name]" class="'+table+'_item_name">';
+            var active_input = '<input type="hidden" id="'+table+'_'+index+'_active" name="'+table+'['+index+'][active]" class="'+table+'_active">';
+            var template_btn = '<button type="button" '+disabled_prop+' id="'+table+'_'+index+'_item_elem" class="'+table+'_item_elem btn btn-outline-primary btn-sm w-full" data-bs-toggle="modal" data-bs-target="#kpiModal" onclick="openKpiModal(\''+ table +'\', '+index+')">--Sila pilih--</button>';
             if(rawData){
-                if(rawData.id) id_input = '<input type="hidden" name="'+table+'['+index+'][id]" class="'+table+'_id" value="'+rawData.id+'">';
+                if(rawData.id) id_input = '<input type="hidden" id="'+table+'_'+index+'_id" name="'+table+'['+index+'][id]" class="'+table+'_id" value="'+rawData.id+'">';
+                if(rawData.item_id) item_input = '<input type="hidden" id="'+table+'_'+index+'_item" name="'+table+'['+index+'][item_id]" class="'+table+'_item" value="'+rawData.item_id+'">';
+                if(rawData.item_name){
+                    item_name_input = '<input type="hidden" id="'+table+'_'+index+'_item_name" name="'+table+'['+index+'][item_name]" class="'+table+'_item_name" value="'+rawData.item_name+'">';
+                    active_input = '<input type="hidden" id="'+table+'_'+index+'_active" name="'+table+'['+index+'][active]" class="'+table+'_active" value="'+rawData.active+'">';
+                    let btn_clr = 'btn-primary-soft';
+                    if(rawData.item_id){
+                        if(rawData.active != 'Y') btn_clr = 'btn-warning-soft';
+                    }
+                    else btn_clr = 'btn-danger-soft';
+                    template_btn = '<button type="button" '+disabled_prop+' id="'+table+'_'+index+'_item_elem" class="'+table+'_item_elem btn '+ btn_clr +' btn-sm w-full" data-bs-toggle="modal" data-bs-target="#kpiModal" onclick="openKpiModal(\''+ table +'\', '+index+', '+JSON.stringify(rawData).replace(/"/g, "'")+')">'+rawData.item_name+'</button>';
+                }
                 bil_data = typeof rawData.bil !== 'undefined' ? rawData.bil : '';
                 amount_data = typeof rawData.amount !== 'undefined' ? rawData.amount : '';
                 total_data = typeof rawData.total !== 'undefined' ? rawData.total : '';
             }
-            newRowContent = '<tr class="intro-x">'+ id_input +
-                                '<td class="text-nowrap"><select name="'+table+'['+index+'][item]" '+disabled_prop+' class="form-select '+table+'_item" placeholder="ASAS AGIHAN">'+kpiOptions+'</select></td>'+
+            newRowContent = '<tr class="intro-x">'+ id_input + item_input + item_name_input + active_input +
+                                '<td class="text-nowrap">'+template_btn+'</td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][bil]" '+readonly_prop+' value="'+bil_data+'" type="number" min="0" class="form-control '+table+'_bil" onchange="calculate(\''+table+'\')"></td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][amount]" '+readonly_prop+' value="'+amount_data+'" type="text" class="form-control '+table+'_amount input-mask" onchange="calculate(\''+table+'\')" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
                                 '<td class="text-nowrap"><input name="'+table+'['+index+'][total]" value="'+total_data+'" type="text" readonly class="form-control '+table+'_total input-mask" data-inputmask="\'alias\': \'decimal\', \'groupSeparator\': \',\', \'autoGroup\': true, \'digits\': 2, \'digitsOptional\': false, \'placeholder\': \'0\'"></td>'+
@@ -594,8 +576,11 @@
             }
             
             $('#'+table+' >tbody >tr:not(".grand-total")').each(function(index) {
-                $(this).find('.'+table+'_id').attr('name', table+'['+index+'][id]');
-                $(this).find('.'+table+'_item').attr('name', table+'['+index+'][item]');
+                $(this).find('.'+table+'_id').attr('name', table+'['+index+'][id]').attr('id', table+'_'+index+'_id');
+                $(this).find('.'+table+'_item').attr('name', table+'['+index+'][item_id]').attr('id', table+'_'+index+'_item');
+                $(this).find('.'+table+'_item_name').attr('name', table+'['+index+'][item_name]').attr('id', table+'_'+index+'_item_name');
+                $(this).find('.'+table+'_active').attr('name', table+'['+index+'][active]').attr('id', table+'_'+index+'_active');
+                $(this).find('.'+table+'_item_elem').attr('id', table+'_'+index+'_item_elem');
                 $(this).find('.'+table+'_bil').attr('name', table+'['+index+'][bil]');
                 $(this).find('.'+table+'_amount').attr('name', table+'['+index+'][amount]');
                 $(this).find('.'+table+'_total').attr('name', table+'['+index+'][total]');
@@ -673,4 +658,4 @@
         $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);
     });
 </script>
-@endsection
+@endpush

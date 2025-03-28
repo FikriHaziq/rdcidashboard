@@ -3,7 +3,7 @@
 @slot("submodule") Section B: Quantity and Quality of Researchers @endslot
 @slot("trimoduleLink") myra.section-b @endslot
 @slot("trimodule") Awards @endslot
-@section('custom-css')
+@push('custom-css')
 <style>
     .active-tab {
         background-color:white;
@@ -32,7 +32,7 @@
         padding-right: 5px;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
@@ -82,7 +82,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
 
     var data = {!! json_encode($data) !!};
@@ -381,5 +381,5 @@
         ],
     });
 </script>
-@endsection
+@endpush
 @endcomponent

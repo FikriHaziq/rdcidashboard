@@ -23,6 +23,6 @@
             "timeOut": "1000",
         }
         if(type == 'success')toastr.success(message, 'Success');
-        if(type == 'error')toastr.success(message, 'Error');
+        if(type == 'error')toastr.error(message, 'Error');
     }
 </script>

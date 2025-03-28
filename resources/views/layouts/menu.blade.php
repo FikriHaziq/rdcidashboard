@@ -7,6 +7,7 @@
         <x-menu-item active="grant.proposal.*" route="grant.proposal">Proposal in Year</x-menu-item>
         <x-menu-item active="grant.myra.*" route="grant.myra">Research MyRA</x-menu-item>
     </x-menu-item> --}}
+    @if(user()->role == 'super_admin')
     <x-menu-item active="myra.*" route="" icon="clipboard" parent="Insights" type="sub">
         @if(user()->role == 'super_admin')<x-menu-item active="myra.self-assessment.*" route="myra.self-assessment.section-a">UTM eMyRA</x-menu-item>@endif
         <x-menu-item active="myra.index" route="myra.index">Overview</x-menu-item>
@@ -20,7 +21,6 @@
         <x-menu-item active="myra.section-g" route="myra.section-g" customTabVal="STAFFOVERALL">Section G: Networking and Linkages</x-menu-item>
         <x-menu-item active="myra.section-h" route="myra.section-h">Section H: Support Facilities</x-menu-item>
     </x-menu-item>
-    @if(user()->role == 'super_admin')
     <x-menu-item active="" rawUrl=true route="https://devkai.utm.my/Home/Dashboard" icon="globe">KAI</x-menu-item>
     <x-menu-item active="research.*" route="" icon="book" parent="UTM Research" type="sub">
         <x-menu-item active="grant.overview" route="grant.overview">Research Overview</x-menu-item>
@@ -56,7 +56,7 @@
     </x-menu-item>
     @endif
     <x-menu-item active="dana-ru.*" route="" icon="hard-drive" parent="Dana RU" type="sub">
-        @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Dashboard</x-menu-item>@endif
+        <x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Dashboard</x-menu-item>
         @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.carian.*" route="dana-ru.carian.index">Carian</x-menu-item>@endif
         {{-- @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Dashboard</x-menu-item>@endif --}}
         @if(user()->role == 'super_admin' || getAccessControl('dru_bca'))<x-menu-item active="dana-ru.cadangan-agihan.*" route="dana-ru.cadangan-agihan.index">Cadangan Agihan</x-menu-item>@endif
@@ -81,10 +81,12 @@
         </x-menu-item>
         @endif
     </x-menu-item>
+    @if(user()->role == 'super_admin')
     <x-menu-item active="report.*" route="" icon="file-text" parent="Download" type="sub">
         <x-menu-item active="report.myra.index" route="report.myra.index">Masterlist</x-menu-item>
         <x-menu-item active="report.myra.glossary" route="report.myra.glossary">Glossary</x-menu-item>
     </x-menu-item>
+    @endif
     @if(user()->role == 'super_admin')
     <x-menu-item active="masterlist.*" route="" icon="archive" parent="Upload Masterlist" type="sub">
         <x-menu-item active="masterlist.myra.*" route="masterlist.myra.index">Masterlist</x-menu-item>

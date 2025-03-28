@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css" />
 <style>
 .ts-control {
@@ -30,7 +30,7 @@
 .ts-dropdown {z-index: 100;}
 </style>
 
-@endsection
+@endpush
 @slot('content')
 <x-title>Kertas Kerja Dana RU {{ $year }}</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
@@ -41,8 +41,13 @@
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('doc-generator.kertas-kerja', $plan->id) }}" class="btn btn-primary">Jana Kertas Kerja</a>
                 </div>
+                <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-10 align-items-center">
+                    <div class="text-gray-800 fw-medium">NO. RUJUKAN</div>
+                </div>
+                <input type="text" name="no_rujukan" class="form-control w-100" placeholder="KERTAS KERJA UTM/JPU/11111/2023" value="{{ $no_rujukan->value ?? '' }}">
+
                 <div class="alert alert-dark d-flex py-2 pl-5 mt-5 justify-content-center align-items-center">
-                    <div class="fw-medium">RINGKASAN</div>
+                    <div class="fw-medium">TERPERINCI</div>
                 </div>
                 @foreach ($parameters as $parameter)
                 @php
@@ -52,7 +57,8 @@
                     $item = $parameter->reviseContent('parameter_name', $data);
                 @endphp
                 <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-5 align-items-center">
-                    <div class="text-gray-800 fw-medium">{{ strtoupper($item) }}</div>
+                    <input type="text" class="form-control" value="{{ strtoupper($item) }}" style="background: white">
+                    {{-- <div class="text-gray-800 fw-medium">{{ strtoupper($item) }}</div> --}}
                 </div>
                 @if($parameter->description_1 == "optional")
                 <div class="d-flex">
@@ -66,7 +72,7 @@
                 @endif
                 @endforeach
                 <div class="alert alert-dark d-flex py-2 pl-5 mt-10 justify-content-center align-items-center">
-                    <div class="fw-medium">TERPERINCI</div>
+                    <div class="fw-medium">RINGKASAN</div>
                 </div>
                 @foreach ($parameters as $parameter)
                 @php
@@ -228,7 +234,7 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="importmap">
     {
@@ -387,5 +393,5 @@
         });
     });
 </script>
-@endsection
+@endpush
 @endcomponent

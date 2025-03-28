@@ -1,10 +1,10 @@
 @component("layouts.app")
 @slot("module") Maintenance @endslot
 @slot("submodule") Project @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet">
-@endsection
+@endpush
 @slot("content")
 <x-title hasYear :year="$year" route="{{ route('dana-ru.maintenance.project') }}" :yearOptions="$yearOptions">Project {{ $year }}</x-title>
 <div class="intro-y box mt-6">
@@ -49,7 +49,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
 <script>
     let year = {!! $year !!};
@@ -164,5 +164,5 @@
         })
     }
 </script>
-@endsection
+@endpush
 @endcomponent

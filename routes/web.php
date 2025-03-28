@@ -201,6 +201,9 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
         Route::name('form')->get('/form/{year?}/{id?}', [CadanganAgihanController::class, 'form']);
         Route::name('store-additional-plan')->post('/store-additional-plan/{id?}', [CadanganAgihanController::class, 'storeAdditionalPlan']);
+        Route::name('store-redist-plan')->post('/store-redist-plan/{id?}', [CadanganAgihanController::class, 'storeRedistPlan']);
+        Route::name('store-transfer')->post('/store-transfer/{id?}', [CadanganAgihanController::class, 'storeTransfer']);
+        Route::name('store-transfer-form')->post('/store-transfer-form/{year?}', [CadanganAgihanController::class, 'storeTransferForm']);
         Route::name('store-plan')->post('/store-plan/{year?}', [CadanganAgihanController::class, 'storePlan']);
         Route::name('store')->post('/store/{year?}', [CadanganAgihanController::class, 'store']);
         Route::name("delete-plan")->get('/delete-plan/{id}', [CadanganAgihanController::class, "deletePlan"]);
@@ -222,6 +225,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
             Route::name('program.show')->get('/program/show/{id}/{tab?}', [FinancialController::class, 'programShow']);
             Route::name("program.verification.post")->post("/program/verification/post/{id}", [FinancialController::class, "programVerificationPost"]);
             Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
+            Route::name('laporan-perbelanjaan')->get('/laporan-perbelanjaan/{year}/{penggal}', [FinancialController::class, 'laporanPerbelanjaan']);
         });
     });
 
@@ -278,4 +282,8 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("approveDruDistributionPlanForm")->post('approve-distribution-plan', [AjaxController::class, 'approveDruDistributionPlanForm']);
     Route::name("updateUtmFinRefNo")->post('update-utmfin-refno', [AjaxController::class, 'updateUtmFinRefNo']);
     Route::name("addDistFund")->post('add-dist-fund', [AjaxController::class, 'addDistFund']);
+    Route::name("searchKpi")->get('search-kpi/{type}/{name}', [AjaxController::class, 'searchKpi']);
+    Route::name("getBalanceByChargeline")->post('get-balance-by-chargeline', [AjaxController::class, 'getBalanceByChargeline']);
+    Route::name("validateNric")->post('validate-nric', [AjaxController::class, 'validateNric']);
+    Route::name("broadcasyEmail")->post('broadcast-email', [AjaxController::class, 'broadcastEmail']);
 });

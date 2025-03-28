@@ -56,7 +56,7 @@
         </div>
     </div>
 </div>
-@section('custom-js')
+@push('custom-js')
 @parent
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
@@ -261,4 +261,4 @@
     var pie = new ApexCharts(document.querySelector("#pie1"), pie_options);
     pie.render();
 </script>
-@endsection
+@endpush

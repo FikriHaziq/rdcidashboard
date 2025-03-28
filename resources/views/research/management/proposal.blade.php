@@ -82,6 +82,6 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
-@endsection
+@push('custom-js')
+@endpush
 @endcomponent

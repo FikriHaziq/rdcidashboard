@@ -10,7 +10,9 @@ use App\Models\Parameter;
 use App\Models\MyraCalculation;
 use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruDistFund;
+use App\Models\DanaRU\DruKpiTemplate;
 use App\Models\DanaRU\DruDistributionPlanForm;
+use App\Models\DanaRU\DruMember;
 use Illuminate\Support\Facades\DB;
 use App\Traits\MailTrait;
 
@@ -1540,12 +1542,13 @@ class AjaxController extends Controller
         ], 200);
     }
 
-    public function getProjectList($program_id, $faculty)
+    public function getProjectList($program_id = 0, $faculty)
     {
         // $projects = DruDistFund::from('dru_dist_funds as ddf')
         //     ->select('*')
         //     ->where('ddf.')
-        $query = DB::table('dru_dist_funds AS ddf')
+        if($program_id != 0){
+            $query = DB::table('dru_dist_funds AS ddf')
             ->select([
                 'ddf.id as id',
                 DB::raw('UPPER(ddf.title) as title'),
@@ -1575,6 +1578,39 @@ class AjaxController extends Controller
             ->join('parameters AS p', function ($join){
                 $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
             })->orderBy('ddf.year', 'desc')->groupBy('dmf.code')->get();
+        }
+        else {
+            $query = DB::table('dru_dist_funds AS ddf')
+            ->select([
+                'ddf.id as id',
+                DB::raw('UPPER(ddf.title) as title'),
+                'ddf.code as code',
+                'ddf.code_2 as code_2',
+                'f.original_code as f_original_code',
+                // DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
+                // DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
+                // 'ddf.faculty_code as ddf_faculty_code',
+                // 'p.code as program',
+                // 'dmf.id as dmf_id',
+                // 'dmf.code as dmf_code',
+                // 'f.id as f_id',
+                // 'f.code as f_code',
+                // 'f.code as f_original_code',
+                // 'ddf.is_draft as ddf_is_draft',
+                // 'ddf.status as ddf_status',
+                // 'ddf.created_at as ddf_created_at',
+                // 'ddf.updated_at as ddf_updated_at',
+            ])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'ddf.tabung_induk');
+            })
+            ->join('parameters AS f', function ($join) use ($faculty){
+                $join->on('f.original_code', '=', 'ddf.faculty_code')->where('f.id', $faculty);
+            })
+            ->join('parameters AS p', function ($join){
+                $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
+            })->orderBy('ddf.year', 'desc')->groupBy('dmf.code')->get();
+        }
             // dd($query);
         // $projects = DruProject::from('dru_projects as pro')
         // ->select([
@@ -1654,6 +1690,68 @@ class AjaxController extends Controller
                 ); 
             }
         }
+        $status_code = 200;
+        $result = 'Passed';
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
+    }
+
+    public function searchKpi($type, $name)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+        $templates = DruKpiTemplate::select('id', 'title', 'active')->whereType($type == "main_dist" ? "main": "kpi")->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($name) . '%'])->where('active', '!=', 'N')->get();
+        $status_code = 200;
+        $result = 'Passed';
+        return response()->json([
+            "templates" => $templates,
+        ], $status_code);
+    }
+
+    public function getBalanceByChargeline(Request $request)
+    {
+        $status_code = 500;
+        $total_allocation = DB::table('masterlist_dru_allocations as mda')
+        ->select(['mda.amount'])
+        ->join('dru_main_funds AS dmf', function ($join){
+            $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+        })
+        ->where('dmf.id', $request->main_fund_id)->where('mda.ptj_code', $request->ptj_code)->sum('mda.amount');
+        $total_expenses = DB::table('masterlist_dru_expenses as mde')
+        ->select(['mde.amount'])
+        ->join('dru_main_funds AS dmf', function ($join){
+            $join->on('dmf.code', '=', 'mde.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+        })
+        ->where('dmf.id', $request->main_fund_id)->where('mde.ptj', $request->ptj_code)->sum('mde.amount');
+        $status_code = 200;
+        return response()->json([
+            "total_allocation" => $total_allocation,
+            "total_expenses" => $total_expenses,
+        ], $status_code);
+    }
+
+    public function validateNric(Request $request)
+    {
+        $result = 0;
+        $member = DruMember::whereDistributionPlanFormId($request->plan_id)->whereNric($request->nric)->whereEmail(user()->email)->first();
+        if($member){
+            $result = 1;
+        }
+        return response()->json([
+            "result" => $result,
+        ], 200);
+    }
+
+    public function broadcastEmail(Request $request)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+        $plan_form = DruDistributionPlanForm::find($request->plan_id);
+        
+        $this->sendingMail($plan_form->id);
         $status_code = 200;
         $result = 'Passed';
         return response()->json([

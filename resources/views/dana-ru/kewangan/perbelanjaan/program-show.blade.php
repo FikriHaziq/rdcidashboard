@@ -1,11 +1,11 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Borang Agihan Perbelanjaan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <link href="{{ asset('theme/css/borang-agihan.css') }}" rel="stylesheet">
-@endsection
+@endpush
 @slot('content')
 <x-title hasButton buttonLabel="Lampiran A" :buttonRoute="route('dana-ru.senarai-agihan.show', $plan_form->id)">Borang Agihan {{ $year }}</x-title>
 <div class="grid columns-12 gap-6 mt-5 justify-content-center">
@@ -93,6 +93,6 @@
 </div>
 
 @endslot
-@section('custom-js')
-@endsection
+@push('custom-js')
+@endpush
 @endcomponent

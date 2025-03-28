@@ -1,10 +1,10 @@
 @component("layouts.app")
 @slot("module") Masterlist @endslot
 @slot("submodule") {{ $module_name }} @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
-@endsection
+@endpush
 @slot("content")
 
 <!-- BEGIN: Hoverable Table -->
@@ -81,7 +81,7 @@
 <br>
 <a class="btn btn-primary" href="{{ route('masterlist.'.$section.'.index', $year) }}">Back</a>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
 <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
@@ -178,5 +178,5 @@
         $('#fileStatus').show();
     }
 </script>
-@endsection
+@endpush
 @endcomponent

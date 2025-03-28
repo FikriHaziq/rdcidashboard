@@ -1,8 +1,8 @@
 @component("layouts.app")
 @slot("module") Maintenance @endslot
 @slot("submodule") Asas Agihan @endslot
-@section('custom-css')
-@endsection
+@push('custom-css')
+@endpush
 @slot('content')
 <x-title>Asas Agihan</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
@@ -41,6 +41,6 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
-@endsection
+@push('custom-js')
+@endpush
 @endcomponent

@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Search @endslot
-@section('custom-css')
-@endsection
+@push('custom-css')
+@endpush
 @slot("content")
 <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
     <h2 class="fs-lg fw-medium truncate me-5">

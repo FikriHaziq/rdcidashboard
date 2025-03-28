@@ -6,16 +6,7 @@
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
-            <!-- BEGIN: Notification -->
-            {{-- <div class="g-col-12 mt-6 mb-n6 intro-y">
-                <div class="alert alert-warning-soft alert-dismissible fade show d-flex align-items-center mb-6" role="alert">
-                    <i data-feather="alert-circle" class="w-6 h-6 me-2"></i>
-                    <span>Sila hantar sebelum 30 Mac {{ $year }}.</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <i data-feather="x" class="w-4 h-4"></i> </button>
-                </div>
-            </div> --}}
-            <!-- BEGIN: Notification -->
-            @if (!$plan)
+            @if (!$plans)
             <div class="g-col-12 mt-6 mb-n6 intro-y">
                 <div class="alert alert-secondary-soft alert-dismissible fade show d-flex align-items-center mb-6" role="alert">
                     <i data-feather="alert-circle" class="w-6 h-6 me-2"></i>
@@ -33,7 +24,7 @@
                 </div>
             </div>
             @endif
-            <x-dru.infography :year="$year" :plan="$plan" />
+            <x-dru.infography :year="$year" :plan="$plans" page="summary" />
             @php
                 $admin_access = getAccessControl('dru_pa');
                 $staff_access = getAccessControl('dru_pa_s');
@@ -70,6 +61,7 @@
                                 <th class="text-nowrap">CHARGELINE</th>
                                 <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                 <th class="text-nowrap">PIC DECLARATION STATUS</th>
+                                <th class="text-nowrap">BROADCAST EMAIL</th>
                                 <th class="text-nowrap">ACTION</th>
                                 <th class="text-nowrap">LAMPIRAN A</th>
                             </tr>
@@ -99,7 +91,9 @@
                                         <div class="bg-gray-400 rounded-pill justify-content-center text-white d-flex align-items-center p-1">NOT DECLARED</div>
                                         @endif
                                     </td>
-                                    
+                                    <td class="text-nowrap text-center">
+                                        <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date) disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
+                                    </td>
                                     <td class="text-nowrap text-center" style="min-width: 450px">
                                         <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
                                             <div class="g-col-9">
@@ -141,7 +135,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     function setRefNo(id){
         if($('#ref_no_'+id).val() != ''){
@@ -202,6 +196,28 @@
             $('#ref_no_'+id).addClass('border-theme-6');
         }
     }
+
+    function broadcast(id){
+        var data = new FormData();
+        data.append("plan_id", id);
+        $.ajax({
+            url: "/ajax/broadcast-email/",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            type: "post",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                toastr_alert('success', 'Email has been sent.')
+            },
+            error: function(data) {
+                toastr_alert('error', 'Something went wrong.')
+            }
+        });
+    }
 </script>
-@endsection
+@endpush
 @endcomponent

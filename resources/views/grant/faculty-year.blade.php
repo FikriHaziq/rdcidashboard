@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot('module') UTM Research @endslot
 @slot("submodule") Faculty Achievement - Year @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 {{-- <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
@@ -159,7 +159,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var all_result = {!! json_encode($result) !!};
     var result = all_result;
@@ -323,5 +323,5 @@
         mixedChart.update();
     }
 </script>
-@endsection
+@endpush
 @endcomponent

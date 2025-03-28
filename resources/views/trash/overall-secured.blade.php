@@ -1,6 +1,6 @@
 @component("layouts.app")
 @slot("title") Active Grant In Year @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 <div class="row">
     <div class="col-12">
@@ -25,7 +25,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var line1 = document.getElementById('line1');
     var lineChart1 = new Chart(line1, {
@@ -115,5 +115,5 @@
     });
 </script>
 {{-- Active Research Grant with Extension --}}
-@endsection
+@endpush
 @endcomponent

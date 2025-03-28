@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DanaRU;
 use App\Http\Controllers\Controller;
 use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
+use App\Models\DanaRU\DruExpensesRecord;
 use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\MasterList\MasterlistDruAllocation;
@@ -18,6 +19,14 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Traits\MailTrait;
 use App\Http\Traits\GraphDanaRUTrait;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Border;
+use Illuminate\Support\Facades\File;
 
 class FinancialController extends Controller
 {
@@ -29,10 +38,20 @@ class FinancialController extends Controller
             $plan = DruDistributionPlan::orderBy('year', 'desc')->first();
             $year = $plan->year ?? date('Y');
         }
-        $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
-        $plan_forms = getDistributionFormPlans($year, $plan->id)->get();
-        $plan_forms_count = DruDistributionPlanForm::whereDistributionPlanId($plan->id ?? 0)->whereApproved('N')->count();
-        return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plan', 'plan_forms', 'plan_forms_count'));
+        $plans = getDruPlanList($year)->where('status', 6);
+        $plan_form_raw = null;
+        $plan_forms = null;
+        $plan_forms_count = null;
+        foreach ($plans as $key => $plan) {
+            $plan_form = getDistributionFormPlans($year, $plan->id);
+            if(!$plan_form_raw)$plan_form_raw = $plan_form;
+            else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        }
+        $plan_forms = $plan_form_raw;
+        if($plan_forms){
+            $plan_forms_count = $plan_forms->where('plan_form_approved', 'N')->count();
+        }
+        return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plans', 'plan_forms', 'plan_forms_count'));
     }
 
     public function pengesahanAgihanShow($plan_id)
@@ -223,11 +242,16 @@ class FinancialController extends Controller
     public function agihanProgramIndex(Request $request, $category = null)
     {
         DB::statement("SET SQL_MODE=''");
+        $faculty_code = null;
+        if(user()->role != 'super_admin' && user()->faculty_code){
+            $faculty_code = getFacultyByCode(user()->faculty_code);
+        }
         $chart_data = [];
         $search_params = (object)[
             "title" => $request->title,
             "start_year" => $request->start_year,
             "end_year" => $request->end_year,
+            "faculty_code" => $faculty_code->original_code ?? null
         ];
         $title_options = DB::table('masterlist_dru_allocations as mda')
         ->select(['dmf.code', 'dmf.name as jenis_agihan'])
@@ -272,6 +296,10 @@ class FinancialController extends Controller
             $total_allocation = $total_allocation->where('mda.year', '<=', $search_params->end_year);
             $total_expenses = $total_expenses->where('mde.year', '<=', $search_params->end_year);
         }
+        if($search_params->faculty_code) {
+            $total_allocation = $total_allocation->where('mda.ptj_code', $search_params->faculty_code);
+            $total_expenses = $total_expenses->where('mde.ptj', $search_params->faculty_code);
+        }
         $total_allocation = $total_allocation->sum('amount');
         $total_expenses = $total_expenses->sum('amount');
         $chart_data["total_allocation"] = (float)$total_allocation;
@@ -294,8 +322,16 @@ class FinancialController extends Controller
             $plan = DruDistributionPlan::whereStatus(6)->orderBy('year', 'desc')->first();
             $year = $plan->year ?? date('Y');
         }
-        $plan = DruDistributionPlan::where('year', $year)->whereStatus(6)->first();
-        $plan_forms = getDistributionFormPlans($year, $plan->id)->where('plan_form.pic_declaration_date','!=', NULL)->get();
+        $plans = getDruPlanList($year)->where('status', 6);
+        $plan_form_raw = null;
+        foreach ($plans as $key => $plan) {
+            $plan_form = getDistributionFormPlans($year, $plan->id);
+            if(!$plan_form_raw)$plan_form_raw = $plan_form;
+            else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        }
+        $plan_forms = $plan_form_raw;
+        $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
+        // dd($plan_form_raw);
         return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'plan_forms'));
     }
 
@@ -354,6 +390,20 @@ class FinancialController extends Controller
                     Storage::deleteDirectory('data/tmp/'.$file['folder']);
                 }
             }
+            if(in_array($request->status, [10, 12])){
+                foreach ($plan_form->pic_kpi as $key => $kpi) {
+                    DruExpensesRecord::create([
+                        "distribution_plan_form_id" => $kpi->distribution_plan_form_id,
+                        "kpi_template_id" => $kpi->kpi_template_id,
+                        "count" => $kpi->count,
+                        "amount" => $kpi->amount,
+                        "commitment" => $plan_form->commitment,
+                        "pic_justification" => $plan_form->pic_justification,
+                        "total" => $kpi->total,
+                        "cid" => $kpi->cid,
+                    ]);
+                }
+            }
         }
         else{
             session()->flash('error', "Something went wrong");
@@ -367,5 +417,492 @@ class FinancialController extends Controller
     {
         if(!$year)$year = date('Y');
         return view('dana-ru.kewangan.perbelanjaan.subproject', compact('year'));
+    }
+
+    public function laporanPerbelanjaan($year, $penggal)
+    {
+        $expenses_data = getExpensesReportInfo($year, $penggal);
+        $total_allocation = DB::table('masterlist_dru_allocations as mda')
+            ->select(['mda.amount'])
+            ->join('dru_main_funds AS dmf', function ($join){
+                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
+            })->sum('amount');
+        // dd($total_allocation);
+        $bpki = $this->bpkiProgram($total_allocation, (object)["title"=> null,"start_year" => null,"end_year" => null]);
+        // dd($bpki);
+        $penggal_month = $penggal == 1 ? "JAN - JUN" : "JUL - DEC";
+        $report_data = [
+            "program" => [
+                $bpki["bar2_title"][0] => ["amount" => $bpki["bar2_amount"][0]],
+                $bpki["bar2_title"][1] => ["amount" => $bpki["bar2_amount"][1]],
+                $bpki["bar2_title"][2] => ["amount" => $bpki["bar2_amount"][2]],
+                $bpki["bar2_title"][3] => ["amount" => $bpki["bar2_amount"][3]],
+            ],
+            "bpki" => [
+                $bpki["bar1_title"][0] => ["amount" => $bpki["bar1_amount"][0]],
+                $bpki["bar1_title"][1] => ["amount" => $bpki["bar1_amount"][1]],
+                $bpki["bar1_title"][2] => ["amount" => $bpki["bar1_amount"][2]],
+            ],
+        ];
+        // dd($report_data);
+        $presentation = new PhpPresentation();
+        // ✅ Create a slide
+        
+        
+        $slide1 = $presentation->getActiveSlide();
+        $titleBox = $slide1->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(10);
+
+        // ✅ Set position
+        $titleBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $titleBox->getFill()->setFillType(Fill::FILL_SOLID)
+        ->setRotation(90)
+        ->setStartColor(new Color('FF1A3160'))
+        ->setEndColor(new Color('FF1A3160'));
+
+        // ✅ Add text content
+        $title = $titleBox->createTextRun('LAPORAN PERBELANJAAN BERKALA DANA UNIVERSITI PENYELIDIKAN BAGI TAHUN '.$year.' (SUMMARY)');
+        $title->getFont()
+            ->setSize(24)
+            ->setColor(new Color('ffff00'))
+            ->setName('Arial');
+
+        $descBox = $slide1->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(700)
+            ->setOffsetX(130)
+            ->setOffsetY(130);
+
+        // ✅ Set position
+        $descBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        
+        $descBox->createTextRun('LAPORAN PEMANTAUAN BAGI PENGGAL '.$penggal.'/'.$year.' ('.$penggal_month.')')
+            ->getFont()
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('UNIVERSITI : UNIVERSITI TEKNOLOGI MALAYSIA')
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('TARIKH LAPORAN : '.strtoupper(date('d M Y')))
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('PEGAWAI BERTANGGUNJAWAB : '.strtoupper(user()->name))
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+
+            $titleBox = $slide1->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(10);
+
+        // ✅ DANA
+        $danaBox = $slide1->createRichTextShape()
+            ->setHeight(33)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(283);
+        $danaBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        $danaBox->getFill()->setFillType(Fill::FILL_SOLID)
+        ->setRotation(90)
+        ->setStartColor(new Color('FF8A8A8A'))
+        ->setEndColor(new Color('FF8A8A8A'));
+
+        // ✅ Add text content
+        $dana = $danaBox->createTextRun('JUMLAH PERUNTUKAN DANA RU YANG DITERIMA : RM '. number_format($total_allocation, 2, '.', ','));
+        $dana->getFont()
+            ->setSize(14)
+            ->setColor(new Color('ffff00'))
+            ->setName('Arial');
+
+        $table = $slide1->createTableShape(5);
+        $table->setHeight(200);
+        $table->setWidth(940);
+        $table->setOffsetX(10);
+        $table->setOffsetY(325);
+
+        // ✅ Add header row
+        $headerRow = $table->createRow();
+        $headerRow->getFill()->setFillType(Fill::FILL_SOLID)
+            ->setRotation(90)
+            ->setStartColor(new Color('FF8EBCD4'))
+            ->setEndColor(new Color('FF8EBCD4'));
+
+        $headerTitles = ['PROGRAM UTAMA', 'KPI PERBELANJAAN (RM)', 'JUMLAH PERBELANJAAN SEBENAR (RM)', 'JUMLAH KOMITMEN (RM)', 'BAKI PERUNTUKAN (RM)'];
+        foreach ($headerTitles as $key => $headerTitle) {
+            $cell = $headerRow->nextCell();
+            $cell->createTextRun($headerTitle)->getFont()->setBold(true)->setSize(12)->setColor(new Color('FF000000'));
+            $cell->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        }
+
+        // ✅ Add table rows
+        $rows = [
+            ['TALENT DEVELOPMENT', 'RM' . number_format($report_data["program"]["TD"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),], 
+            ['RESEARCH PROMINENCE', 'RM' . number_format($report_data["program"]["RP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['WEALTH CREATION', 'RM' . number_format($report_data["program"]["WC"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['BRIDGING IN THE CHALLENGES', 'RM' . number_format($report_data["program"]["BGC"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['JUMLAH KESELURUHAN', 'RM' . number_format($total_allocation, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+        ];
+
+        foreach ($rows as $key => $rowData) {
+            $row = $table->createRow();
+            $color = $key % 2 == 0 ? 'FFE7E7E9' : 'FFCBCCD1';
+            $row->getFill()->setFillType(Fill::FILL_SOLID)
+                ->setStartColor(new Color($color))
+                ->setEndColor(new Color($color));
+
+            foreach ($rowData as $child_key => $text) {
+                $cell = $row->nextCell();
+                if($key == count($rows)-1)$cell->createTextRun($text)->getFont()->setBold(true)->setSize(14);
+                else $cell->createTextRun($text)->getFont()->setSize(14);
+                $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+                $cell->getActiveParagraph()->getAlignment()->setMarginLeft(10);
+                $cell->getActiveParagraph()->getAlignment()->setMarginRight(10);
+                $cell->getActiveParagraph()->getAlignment()->setHorizontal($child_key == 0 ? Alignment::HORIZONTAL_LEFT : Alignment::HORIZONTAL_RIGHT);
+
+            }
+        }
+
+        foreach ($expenses_data as $key => $pic_data) {
+            $slide_arr = $presentation->createSlide();
+            $titleBox = $slide_arr->createRichTextShape()
+                ->setHeight(100)
+                ->setWidth(940)
+                ->setOffsetX(10)
+                ->setOffsetY(10);
+
+            // ✅ Set position
+            $titleBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+            $titleBox->getFill()->setFillType(Fill::FILL_SOLID)
+            ->setRotation(90)
+            ->setStartColor(new Color('FF1A3160'))
+            ->setEndColor(new Color('FF1A3160'));
+
+            // ✅ Add text content
+            $title = $titleBox->createTextRun('LAPORAN PERBELANJAAN BERKALA DANA UNIVERSITI PENYELIDIKAN BAGI TAHUN '.$year);
+            $title->getFont()
+                ->setSize(24)
+                ->setColor(new Color('ffff00'))
+                ->setName('Arial');
+
+            $descBox = $slide_arr->createRichTextShape()
+                ->setHeight(100)
+                ->setWidth(700)
+                ->setOffsetX(130)
+                ->setOffsetY(130);
+
+            // ✅ Set position
+            $descBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            
+            $descBox->createTextRun('LAPORAN PEMANTAUAN BAGI PENGGAL '.$penggal.'/'.$year.' ('.$penggal_month.')')
+                ->getFont()
+                ->setSize(14)
+                ->setColor(new Color('FF000000'))
+                ->setName('Arial');
+            $descBox->createBreak();
+            $descBox->createTextRun('UNIVERSITI : UNIVERSITI TEKNOLOGI MALAYSIA')
+                ->getFont()->setBold(true)
+                ->setSize(14)
+                ->setColor(new Color('FF000000'))
+                ->setName('Arial');
+            $descBox->createBreak();
+            $descBox->createTextRun('TARIKH LAPORAN : '.strtoupper(date('d M Y')))
+                ->getFont()->setBold(true)
+                ->setSize(14)
+                ->setColor(new Color('FF000000'))
+                ->setName('Arial');
+            $descBox->createBreak();
+            $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+                ->getFont()->setBold(true)
+                ->setSize(14)
+                ->setColor(new Color('FF000000'))
+                ->setName('Arial');
+            $descBox->createBreak();
+            $descBox->createTextRun('PEGAWAI BERTANGGUNJAWAB : '.strtoupper(user()->name))
+                ->getFont()->setBold(true)
+                ->setSize(14)
+                ->setColor(new Color('FF000000'))
+                ->setName('Arial');
+
+                $titleBox = $slide_arr->createRichTextShape()
+                ->setHeight(100)
+                ->setWidth(940)
+                ->setOffsetX(10)
+                ->setOffsetY(10);
+
+            $table = $slide_arr->createTableShape(8);
+            $table->setHeight(200);
+            $table->setWidth(940);
+            $table->setOffsetX(10);
+            $table->setOffsetY(283);
+
+            // ✅ Add header row
+            $headerRow = $table->createRow();
+            $headerRow->getFill()->setFillType(Fill::FILL_SOLID)
+                ->setRotation(90)
+                ->setStartColor(new Color('FF4A452A'))
+                ->setEndColor(new Color('FF4A452A'));
+
+            $headerTitles = ['PROGRAM UTAMA', 'PROGRAM/PROJEK', 'KPI PENGGAL'.$penggal.'/'.$year, 'PENCAPAIAN PENGGAL '.$penggal.'/'.$year, 'KPI PERBELANJAAN (RM JUTA)', 'JUMLAH PERBELANJAAN SEBENAR', 'JUMLAH KOMITMEN', 'BAKI PERUNTUKAN'];
+            foreach ($headerTitles as $key => $headerTitle) {
+                $cell = $headerRow->nextCell();
+                $cell->createTextRun($headerTitle)->getFont()->setBold(true)->setSize(8)->setColor(new Color('FFFFFFFF'));
+                $cell->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+            }
+
+            foreach ($pic_data["programs"] as $keyp => $program) {
+                $row = $table->createRow();
+                $row->getFill()->setFillType(Fill::FILL_SOLID)
+                    ->setStartColor(new Color('FFD8E3BC'))
+                    ->setEndColor(new Color('FFD8E3BC'));
+                if($keyp == 0){
+                    $cell1 = $row->nextCell();
+                    $cell1->createTextRun($pic_data['mrun'])->getFont()->setBold(true)->setSize(9);
+                    $cell1->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+                    $cell1->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                    $cell1->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                    $cell1->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                    $cell1->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                    $cell1->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                }
+                else{
+                    $cell1 = $row->nextCell();
+                    $cell1->setWidth($columnWidths[0]);
+                    $cell1->setVisible(false);
+                }
+                $main_kpi_details = $program['main_kpi_details'] . $program['kpi_details'];
+                $cell2 = $row->nextCell();
+                $cell2->createTextRun($program['title'])->getFont()->setSize(9);
+                $cell2->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell2->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell2->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell2->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell2->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+                $cell3 = $row->nextCell();
+                $cell3->createTextRun(str_replace("<br>", " ", $main_kpi_details))->getFont()->setSize(9);
+                $cell3->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell3->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell3->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell3->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell3->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+                $cell4 = $row->nextCell();
+                $cell4->createTextRun(str_replace("<br>", " ", $program['kpi_pic_details']))->getFont()->setSize(9);
+                $cell4->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell4->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell4->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell4->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell4->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+                $cell5 = $row->nextCell();
+                $cell5->createTextRun('RM ' . number_format($program['allocation'], 2, '.', ','))->getFont()->setSize(9);
+                $cell5->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell5->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell5->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell5->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell5->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                $cell6 = $row->nextCell();
+                $cell6->createTextRun('RM ' . number_format($program['total_expenses'], 2, '.', ','))->getFont()->setSize(9);
+                $cell6->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell6->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell6->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell6->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell6->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                $cell7 = $row->nextCell();
+                $cell7->createTextRun('RM ' . number_format($program['commitment'], 2, '.', ','))->getFont()->setSize(9);
+                $cell7->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell7->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell7->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell7->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell7->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+                $cell8 = $row->nextCell();
+                $cell8->createTextRun('RM ' . number_format($program['balance'], 2, '.', ','))->getFont()->setSize(9);
+                $cell8->getActiveParagraph()->getAlignment()->setMarginLeft(4);
+                $cell8->getActiveParagraph()->getAlignment()->setMarginTop(8);
+                $cell8->getActiveParagraph()->getAlignment()->setMarginBottom(8);
+                $cell8->getActiveParagraph()->getAlignment()->setMarginRight(4);
+                $cell8->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            }
+        }
+
+        $slide2 = $presentation->createSlide();
+        $titleBox = $slide2->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(10);
+
+        // ✅ Set position
+        $titleBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        $titleBox->getFill()->setFillType(Fill::FILL_SOLID)
+        ->setRotation(90)
+        ->setStartColor(new Color('FF1A3160'))
+        ->setEndColor(new Color('FF1A3160'));
+
+        // ✅ Add text content
+        $title = $titleBox->createTextRun('LAPORAN PERBELANJAAN BERKALA DANA UNIVERSITI PENYELIDIKAN BAGI TAHUN '.$year.' (SUMMARY)');
+        $title->getFont()
+            ->setSize(24)
+            ->setColor(new Color('ffff00'))
+            ->setName('Arial');
+
+        $descBox = $slide2->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(700)
+            ->setOffsetX(130)
+            ->setOffsetY(130);
+
+        // ✅ Set position
+        $descBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        
+        $descBox->createTextRun('LAPORAN PEMANTAUAN BAGI PENGGAL '.$penggal.'/'.$year.' ('.$penggal_month.')')
+            ->getFont()
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('UNIVERSITI : UNIVERSITI TEKNOLOGI MALAYSIA')
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('TARIKH LAPORAN : '.strtoupper(date('d M Y')))
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+        $descBox->createBreak();
+        $descBox->createTextRun('PEGAWAI BERTANGGUNJAWAB : '.strtoupper(user()->name))
+            ->getFont()->setBold(true)
+            ->setSize(14)
+            ->setColor(new Color('FF000000'))
+            ->setName('Arial');
+
+            $titleBox = $slide2->createRichTextShape()
+            ->setHeight(100)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(10);
+
+        // ✅ DANA
+        $danaBox = $slide2->createRichTextShape()
+            ->setHeight(33)
+            ->setWidth(940)
+            ->setOffsetX(10)
+            ->setOffsetY(283);
+        $danaBox->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        $danaBox->getFill()->setFillType(Fill::FILL_SOLID)
+        ->setRotation(90)
+        ->setStartColor(new Color('FF45CAE8'))
+        ->setEndColor(new Color('FF45CAE8'));
+
+        // ✅ Add text content
+        $dana = $danaBox->createTextRun('JUMLAH PERUNTUKAN DANA RU YANG DITERIMA : RM '.number_format($total_allocation, 2, '.', ','));
+        $dana->getFont()
+            ->setSize(14)
+            ->setColor(new Color('ffff00'))
+            ->setName('Arial');
+
+        $table = $slide2->createTableShape(5);
+        $table->setHeight(200);
+        $table->setWidth(940);
+        $table->setOffsetX(10);
+        $table->setOffsetY(325);
+
+        // ✅ Add header row
+        $headerRow = $table->createRow();
+        $headerRow->getFill()->setFillType(Fill::FILL_SOLID)
+            ->setRotation(90)
+            ->setStartColor(new Color('FFCEECF5'))
+            ->setEndColor(new Color('FFCEECF5'));
+
+        $headerTitles = ['KOMPONEN', 'KPI PERBELANJAAN (RM)', 'JUMLAH PERBELANJAAN SEBENAR (RM)', 'JUMLAH KOMITMEN (RM)', 'BAKI PERUNTUKAN (RM)'];
+        foreach ($headerTitles as $key => $headerTitle) {
+            $cell = $headerRow->nextCell();
+            $cell->createTextRun($headerTitle)->getFont()->setBold(true)->setSize(12)->setColor(new Color('FF000000'));
+            $cell->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        }
+
+        // ✅ Add table rows
+        $rows = [
+            ['PROJEK PENYELIDIKAN (60%)', 'RM' . number_format($report_data["bpki"]["GP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),], 
+            ['OPERASI (20%)', 'RM' . number_format($report_data["bpki"]["DO"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['PEMBELIAN & PENYELENGGARAAN ALATAN PENYELIDIKAN (20%)', 'RM' . number_format($report_data["bpki"]["PP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['JUMLAH KESELURUHAN', 'RM' . number_format($total_allocation, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+        ];
+
+        foreach ($rows as $key => $rowData) {
+            $row = $table->createRow();
+            $color = $key % 2 == 0 ? 'FFE8F6FB' : 'FFCEECF5';
+            $row->getFill()->setFillType(Fill::FILL_SOLID)
+                ->setStartColor(new Color($color))
+                ->setEndColor(new Color($color));
+
+            foreach ($rowData as $child_key => $text) {
+                $cell = $row->nextCell();
+                if($key == count($rows)-1)$cell->createTextRun($text)->getFont()->setBold(true)->setSize(14);
+                else $cell->createTextRun($text)->getFont()->setSize(14);
+                $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+                $cell->getActiveParagraph()->getAlignment()->setMarginLeft(10);
+                $cell->getActiveParagraph()->getAlignment()->setMarginRight(10);
+                $cell->getActiveParagraph()->getAlignment()->setHorizontal($child_key == 0 ? Alignment::HORIZONTAL_LEFT : Alignment::HORIZONTAL_RIGHT);
+
+            }
+        }
+    
+        // Create a temporary file
+        $tempFile = tempnam(sys_get_temp_dir(), 'PHPPresentation');
+
+        // Save the PowerPoint presentation
+        $writer = IOFactory::createWriter($presentation, 'PowerPoint2007');
+        $writer->save($tempFile);
+
+        // Define filename
+        $filename = 'Presentation_' . date('d_m_Y') . '.pptx';
+
+        // Ensure temp directory exists
+        File::ensureDirectoryExists(storage_path('/app/data/tmp'));
+        File::cleanDirectory(storage_path('/app/data/tmp'));
+
+        // Return the PowerPoint file as a download response
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
     }
 }

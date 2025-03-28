@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Pengesahan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <style>
 .ts-control {
@@ -30,7 +30,7 @@
 .ts-dropdown {z-index: 100;}
 </style>
 
-@endsection
+@endpush
 @slot('content')
 <x-title>
     @if($plan_form->ddf_status == 'active')
@@ -216,9 +216,9 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script>
 </script>
-@endsection
+@endpush
 @endcomponent

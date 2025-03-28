@@ -71,7 +71,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var pie = document.getElementById('pie');
     var pieChart = new Chart(pie, {
@@ -204,5 +204,5 @@
         }
     });
 </script>
-@endsection
+@endpush
 @endcomponent

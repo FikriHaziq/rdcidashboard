@@ -8,10 +8,14 @@
             <div class="modal-body">
                 {{ $slot }}
             </div>
-            @if($footer)
+            @if($footerFlag)
             <div class="modal-footer">
+                @if($customFooter)
+                {{ $footer }}
+                @else
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary" form="{{ $formId }}">Simpan</button>
+                @endif
             </div>
             @endif
         </div>

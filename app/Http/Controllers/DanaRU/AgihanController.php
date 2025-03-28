@@ -25,10 +25,18 @@ class AgihanController extends Controller
             $plan = DruDistributionPlan::orderBy('year', 'desc')->first();
             $year = $plan->year ?? date('Y');
         }
-        $plan = DruDistributionPlan::where('year', $year)->first();
-        $plan_forms = getDistributionFormPlans($year, $plan->id)->where('pic.email', user()->email)->where('plan_form.approved', 'Y')->get();
+        $plans = getDruPlanList($year)->where('status', 6);
+        $plan_form_raw = null;
+        foreach ($plans as $key => $plan) {
+            $plan_form = getDistributionFormPlans($year, $plan->id);
+            if(!$plan_form_raw)$plan_form_raw = $plan_form;
+            else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        }
+        $plan_forms = $plan_form_raw;
+        $plan_forms = $plan_forms->where('pic_email', user()->email)->where('plan_form_approved', 'Y');
+        // dd($plan_forms);
         // dd($plan_forms[0]->plan_form_pic_submission_status == null);
-        return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plan', 'plan_forms'));
+        return view('dana-ru.senarai-agihan.index', compact('year', 'request', 'plans', 'plan_forms'));
     }
 
     public function show($plan_id)
@@ -89,6 +97,7 @@ class AgihanController extends Controller
             ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
         // dd($plan_form);
+        // dd(user());
         return view('dana-ru.senarai-agihan.show', compact('plan_form'));
     }
 
@@ -113,12 +122,13 @@ class AgihanController extends Controller
     public function kpiUpdate($plan_id, Request $request)
     {
         $request->validate([
-            'justification' => 'required',
+            'justification' => 'required_with:balance',
+            'balance' => 'nullable',
             'mykpi' => 'required',
             'file_upload' => 'required',
         ],
         [
-            'justification.required' => 'Sila masukkan justifikasi.',
+            'justification.required_with' => 'Sila masukkan justifikasi.',
             'mykpi.required' => 'Sila masukkan KPI.',
             'file_upload.required' => 'Sila muat naik bukti.',
         ]);
@@ -175,7 +185,7 @@ class AgihanController extends Controller
             if($kpi_data['id'])$kpi = DruKpiPic::find($kpi_data['id']);
             else $kpi = new DruKpiPic;
             $kpi->distribution_plan_form_id = $plan_id;
-            $kpi->kpi_template_id = $kpi_data['item'];
+            $kpi->kpi_template_id = $kpi_data['item_id'];
             $kpi->count = $kpi_data['bil'];
             $kpi->amount = (float)str_replace( ",", "", $kpi_data['amount']);
             $kpi->total = (float)str_replace( ",", "", $kpi_data['total']);

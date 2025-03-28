@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot('module') Masterlist @endslot
 @slot("submodule") Glossary @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">

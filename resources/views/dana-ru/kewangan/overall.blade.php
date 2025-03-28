@@ -1,8 +1,8 @@
 @component("layouts.app")
 @slot("module") Peruntukan Keseluruhan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
-@endsection
+@endpush
 @slot("content")
 <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
     <h2 class="fs-lg fw-medium truncate me-5">
@@ -65,7 +65,7 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
 <script>
@@ -301,5 +301,5 @@
     var pie3 = new ApexCharts(document.querySelector("#pie3"), options6);
     pie3.render();
 </script>
-@endsection
+@endpush
 @endcomponent

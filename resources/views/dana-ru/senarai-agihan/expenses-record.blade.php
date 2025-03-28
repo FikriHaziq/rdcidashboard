@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Rekod Perbelanjaan @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet">
 <style>
 .ts-control {
@@ -30,7 +30,7 @@
 .ts-dropdown {z-index: 100;}
 </style>
 
-@endsection
+@endpush
 @slot('content')
 <x-title>
     @if($plan_form->ddf_status == 'active')
@@ -77,7 +77,7 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
 <script>
@@ -103,5 +103,5 @@
         ],
     });
 </script>
-@endsection
+@endpush
 @endcomponent

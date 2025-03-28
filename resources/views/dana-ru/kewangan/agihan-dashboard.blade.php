@@ -1,8 +1,8 @@
 @component("layouts.app")
 @slot("module") Agihan Program @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet">
-@endsection
+@endpush
 @slot("content")
 <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
     <h2 class="fs-lg fw-medium truncate me-5">
@@ -108,7 +108,7 @@
 <x-dru.infographic.tncpi-overall :chartdata="$chart_data" />
 @endif
 @endslot
-@section('custom-js')
+@push('custom-js')
 @parent
 <script>
     function searchCategory(that) {
@@ -117,5 +117,5 @@
 
     }
 </script>
-@endsection
+@endpush
 @endcomponent

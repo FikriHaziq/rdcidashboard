@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot('module') UTM Research @endslot
 @slot("submodule") Research MyRA @endslot
-@section('custom-css') @endsection
+@push('custom-css') @endpush
 @slot("content")
 {{-- <div class="intro-y col-6 items-center mt-8 bg-white">
     <div class="input-group mt-2">
@@ -116,7 +116,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var mixed = document.getElementById('mixed');
     var mixedChart = new Chart(mixed, {
@@ -316,5 +316,5 @@
         }
     });
 </script>
-@endsection
+@endpush
 @endcomponent

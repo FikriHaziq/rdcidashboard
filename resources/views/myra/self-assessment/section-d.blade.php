@@ -1,14 +1,14 @@
 @component("layouts.app")
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section D @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <style>
     td.highlight {
         background-color: whitesmoke !important;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-5">
     <h2 class="fs-lg fw-medium me-auto">
@@ -174,7 +174,7 @@
                                 <td class="border border-slate-600 font-bold"><input value="{{ $data->foreign_post_doc }}" class="font-bold text-center bg-gray-300 w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm" placeholder="" type="text" name="search"/></td>
                             </tr>
                         
-                            {{-- @foreach (getSection('A') as $item)
+                            {{-- @foreach (getpush('A') as $item)
                                 <tr>
                                     <td class="border-b dark:border-dark-5">{{ $item->criteria_name }}</td>
                                     <td class="border-b dark:border-dark-5">{{ $item->criteria_name }}</td>
@@ -679,7 +679,7 @@
 </div>
     <!-- END: Wizard Layout -->
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
 <script>
@@ -694,5 +694,5 @@
     //     });
     // });
 </script>
-@endsection
+@endpush
 @endcomponent

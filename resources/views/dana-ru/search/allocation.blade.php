@@ -1,9 +1,9 @@
 @component("layouts.app")
 @slot("module") Carian @endslot
 @slot("submodule") Allocation @endslot
-@section('custom-css')
+@push('custom-css')
 <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet">
-@endsection
+@endpush
 @slot("content")
 <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
     <h2 class="fs-lg fw-medium truncate me-5">
@@ -105,7 +105,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
 <script>
     let queryString = "{!! http_build_query($search_params->toArray()) !!}";
@@ -280,5 +280,5 @@
         // }
     }
 </script>
-@endsection
+@endpush
 @endcomponent

@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <style>
@@ -9,7 +9,7 @@
         background-color: whitesmoke !important;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
@@ -118,6 +118,6 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
-@endsection
+@push('custom-js')
+@endpush
 @endcomponent

@@ -1,7 +1,7 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Cadangan Agihan @endslot
-@section('custom-css')
+@push('custom-css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
 <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
 <style>
@@ -9,10 +9,10 @@
         background-color: whitesmoke !important;
     }
 </style>
-@endsection
+@endpush
 @slot('content')
 <x-title hasYear :year="$year" :route="route('dana-ru.cadangan-agihan.index')">Borang Cadangan Agihan {{ $year }}</x-title>
-<x-dru.plan :year="$year" :plans="$planList" :type="$request->type" />
+@if ($plan)<x-dru.plan :year="$year" :plans="$planList" :type="$request->type" />@endif
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
@@ -47,28 +47,22 @@
                 </div>
                 <div class="tab-content" id="pills-tabContent">
                     <div class="p-5 tab-pane fade @if(in_array($tab, [null,'list'])) show active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
+                        @if($plan->type != 4)
                         <div class="intro-y d-block d-sm-flex align-items-center h-10">
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Cadangan Agihan
                             </h2>
                             <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                 @if (in_array($plan->status,[1, 5]))
-                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
-                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                    Jana Kertas Kerja
-                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
-                                </a>
-                                <form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>
-                                @else
-                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                    Jana Kertas Kerja
-                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
-                                </a>
-                                {{-- <button class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                    Muat Turun Kertas Kerja
-                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="download" class="w-4 h-4"></i> </span>
-                                </button> --}}
+                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year, 'plan_id'=>$plan->id]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                                 @endif
+                                @if (count($plan_forms) > 0)
+                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plan->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                                    Jana Kertas Kerja
+                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
+                                </a>
+                                @endif
+                                @if (in_array($plan->status,[1, 5]) && count($plan_forms) > 0)<form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>@endif
                             </div>
                         </div>
                         <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
@@ -86,9 +80,7 @@
                                         <th class="text-nowrap">KPI {{ $year }}</th>
                                         <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                         <th class="text-nowrap">CATATAN</th>
-                                        @if (in_array($plan->status,[1, 4, 5, 6]))
                                         <th class="text-nowrap"></th>
-                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
@@ -113,7 +105,15 @@
                                         </td>
                                         <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
                                         <td style="min-width: 300px">
+                                            @if($plan_form->main_kpi_remarks || $plan_form->kpi_remarks)
+                                            {!! $plan_form->main_kpi_remarks !!}
+                                            {!! $plan_form->kpi_remarks !!}
+                                            <br /><br />
+                                            @endif
+                                            @if($plan_form->notes)
+                                            <b><u>Catatan Umum: </u></b><br />
                                             {!! $plan_form->notes !!}
+                                            @endif
                                         </td>
                                         @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
                                         <td class="table-report__action text-nowrap">
@@ -128,6 +128,12 @@
                                                 <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
                                             </div>
                                         </td>
+                                        @else
+                                        <td class="table-report__action text-nowrap">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id, 'view'=> true]) }}" class="d-flex align-items-center text-theme-2"> <i data-feather="eye" class="w-4 h-4 me-1"></i> View </a>
+                                            </div>
+                                        </td>
                                         @endif
                                     </tr>
                                     @empty
@@ -138,6 +144,89 @@
                                 </tbody>
                             </table>
                         </div>
+                        @else
+                        <div class="intro-y d-block d-sm-flex align-items-center h-10">
+                            <h2 class="fs-lg fw-medium truncate me-5">
+                                Pindahan
+                            </h2>
+                            <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
+                                @if (in_array($plan->status,[1, 5]))
+                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year, 'plan_id'=>$plan->id]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
+                                @endif
+                                @if (in_array($plan->status,[1, 5]) && count($plan_forms) > 0)<form id="submission-form" action="{{ route('dana-ru.cadangan-agihan.verification', ['id'=>$plan->id, 'type'=>'submit']) }}" method="POST">@csrf<button type="submit" form="submission-form" class="btn btn-primary"> Submit </button></form>@endif
+                            </div>
+                        </div>
+                        <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
+                            <table class="table table-bordered mt-6 ">
+                                <thead class="table-dark border-b-0">
+                                    <tr>
+                                        <th class="text-nowrap">No.</th>
+                                        <th class="text-nowrap">PTJ (FROM)</th>
+                                        <th class="text-nowrap">JENIS AGIHAN (FROM)</th>
+                                        <th class="text-nowrap">CHARGELINE (FROM)</th>
+                                        <th class="text-nowrap">PTJ (TO)</th>
+                                        <th class="text-nowrap">JENIS AGIHAN (TO)</th>
+                                        <th class="text-nowrap">CHARGELINE (TO)</th>
+                                        <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
+                                        <th class="text-nowrap">CATATAN</th>
+                                        <th class="text-nowrap"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    @forelse ($plan_forms as $i=>$plan_form)
+                                    <tr class="intro-x">
+                                        <td class="text-nowrap">{{ $i+1 }}</td>
+                                        <td class="text-nowrap">{{ $plan_form->ptjf }}</td>
+                                        <td class="text-nowrap">{{ strtoupper($plan_form->ddff_title) }} </td>
+                                        <td class="text-nowrap">
+                                            @if($plan_form->ddff_status == 'active')
+                                            Q.{{ getAppendedPtjCode($plan_form->ptjf_code, 7) }}.{{ $plan_form->ddff_code }}.{{ getProjectSecondCode($plan_form->ddff_code_2) }}
+                                            @endif
+                                        </td>
+                                        <td class="text-nowrap">{{ $plan_form->ptjt }}</td>
+                                        <td class="text-nowrap">{{ strtoupper($plan_form->ddft_title) }} </td>
+                                        <td class="text-nowrap">
+                                            @if($plan_form->ddft_status == 'active')
+                                            Q.{{ getAppendedPtjCode($plan_form->ptjt_code, 7) }}.{{ $plan_form->ddft_code }}.{{ getProjectSecondCode($plan_form->ddft_code_2) }}
+                                            @endif
+                                        </td>
+                                        <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                        <td style="min-width: 300px">
+                                            @if($plan_form->notes)
+                                            <b><u>Catatan Umum: </u></b><br />
+                                            {!! $plan_form->notes !!}
+                                            @endif
+                                        </td>
+                                        @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
+                                        <td class="table-report__action text-nowrap">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
+                                                <a class="d-flex align-items-center text-theme-6" onclick="deleteData({{$plan_form->plan_form_id}})"> <i data-feather="trash-2" class="w-4 h-4 me-1"></i> Delete </a>
+                                            </div>
+                                        </td>
+                                        @elseif(getAccessControl('dru_bca') && in_array($plan->status, [4]))
+                                        <td class="table-report__action text-nowrap">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <a class="d-flex align-items-center me-3" href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id]) }}"> <i data-feather="check-square" class="w-4 h-4 me-1"></i> Edit </a>
+                                            </div>
+                                        </td>
+                                        @else
+                                        <td class="table-report__action text-nowrap">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year,'id'=>$plan_form->plan_form_id, 'view'=> true]) }}" class="d-flex align-items-center text-theme-2"> <i data-feather="eye" class="w-4 h-4 me-1"></i> View </a>
+                                            </div>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                    @empty
+                                    <tr class="intro-x bg-gray-300">
+                                        <td class="text-center" colspan="11">No record.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        @endif
                     </div>
                     @if (in_array($plan->status,[2, 3, 4]))
                     <div class="p-5 tab-pane fade @if(in_array($tab, ['verification'])) show active @endif" id="verification" role="tabpanel" aria-labelledby="verification-tab">
@@ -155,7 +244,7 @@
                                     <label for="status" class="form-label">Status <span class="text-theme-6">*</span></label>
                                     <select id="status" name="status" class="form-select w-1/2 @error('status') border-theme-6 @enderror"> 
                                         <option value="" selected>--Sila pilih--</option>
-                                        @foreach (getStatusOptions($plan->status) as $status)
+                                        @foreach (getStatusOptions($plan->status, $plan->type) as $status)
                                         <option value="{{ $status->id }}" @if(old('status') == $status->id) selected @endif>{{ $status->name }}</option>
                                         @endforeach
                                     </select>
@@ -223,7 +312,7 @@
 </div>
 
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -252,7 +341,7 @@
             }
         },
     });
-
+    
     function deleteData(id) {
         swal({
             title: 'Are you sure to delete?',
@@ -275,5 +364,5 @@
         })
     }
 </script>   
-@endsection
+@endpush
 @endcomponent

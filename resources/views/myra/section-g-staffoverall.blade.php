@@ -2,7 +2,7 @@
 @slot("module") UTM MyRA @endslot
 @slot("submodule") Section G: Networking and Linkages @endslot
 @slot("submoduleLink") myra.section-g @endslot
-@section('custom-css')
+@push('custom-css')
 <style>
     .active-tab {
         background-color:white;
@@ -31,7 +31,7 @@
         padding-right: 5px;
     }
 </style>
-@endsection
+@endpush
 @slot("content")
 <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
     <h2 class="fs-lg fw-medium me-auto">
@@ -86,7 +86,7 @@
     </div>
 </div>
 @endslot
-@section('custom-js')
+@push('custom-js')
 <script>
     var data = {!! json_encode($data) !!};
 
@@ -339,5 +339,5 @@
         ],
     });
 </script>
-@endsection
+@endpush
 @endcomponent
