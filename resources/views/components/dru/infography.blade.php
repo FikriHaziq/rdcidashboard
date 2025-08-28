@@ -94,6 +94,30 @@
     </div>
 </div>
 @endif
+@if (in_array($type, ['pengumpulan_dana']))
+<div class="g-col-4 mt-2 mb-10">
+    <div class="intro-y d-block d-sm-flex align-items-center h-10">
+        <h2 class="fs-lg fw-medium truncate me-5">
+            PENGUMPULAN DANA
+        </h2>
+    </div>
+    <div class="report-box-2 intro-y mt-5">
+        <div class="box d-sm-flex">
+            <div class="px-8 py-12 d-flex flex-column justify-content-center flex-1">
+                <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA TERKUMPUL</div>
+                <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format($plan->amount, 2, '.', ',') }} </div>
+                @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '3')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                <a href="{{ route('dana-ru.cadangan-agihan.index', ['year'=> $year, 'type' => 'agihan_semula', 'plan_id' => $plan->parent_id]) }}" class="btn btn-sm btn-elevated-rounded-secondary mt-4"><i data-feather="arrow-left" class="d-none d-sm-block w-4 h-4 me-2"></i>Agihan Semula</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @php
     $agihan_semula_list_count = count($infoData['agihan_semula_lists']);
 @endphp
@@ -118,16 +142,46 @@
                         </select>
                     </div>
                 </div>
+                <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA AGIHAN SEMULA</div>
+                <div id="as_total" class="position-relative text-theme-10 fs-3xl mt-2 fw-medium">RM {{ number_format($infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['fund'], 2, '.', ',') }} </div>
+                <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA TELAH DIAGIH</div>
+                <div class="position-relative text-theme-9 fs-3xl mt-2 fw-medium">RM {{ number_format($infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['total'], 2, '.', ',') }} </div>
+                <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA BELUM DIAGIH</div>
+                <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['fund'] - $infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['total']), 2, '.', ',') }} </div>
                 @endif
-                <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA HASIL AGIHAN SEMULA</div>
-                <div id="as_total" class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format($infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['total'], 2, '.', ',') }} </div>
                 @if($page != "summary")
-                @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @if($plan->status == '3')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
-                @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                    @if($childPlan && $childPlan->status == 6)
+                        <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA AGIHAN SEMULA</div>
+                        <a href="{{ route('dana-ru.cadangan-agihan.index', ['year'=> $year, 'type' => 'pengumpulan_dana', 'plan_id' => $childPlan->id]) }}" class="btn {{ $childPlanState['btn'] }} position-relative w-full justify-content-start rounded-pill me-4 mt-4 mb-4 fs-xl fw-medium">
+                            RM {{ number_format($childPlan->amount, 2, '.', ',') }}
+                            <span class="w-10 h-10 position-absolute d-flex justify-content-center align-items-center {{ $childPlanState['icon_bg'] }} text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-1"> <i data-feather="{{ $childPlanState['icon'] }}" class="w-4 h-4"></i> </span>
+                        </a>
+                        <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA TELAH DIAGIH</div>
+                        <div class="position-relative text-theme-9 fs-3xl mt-2 fw-medium">RM {{ number_format($infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['total'], 2, '.', ',') }} </div>
+                        <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA BELUM DIAGIH</div>
+                        <div class="position-relative text-theme-10 fs-3xl mt-2 mb-6 fw-medium">RM {{ number_format(($childPlan->amount - $infoData['agihan_semula_lists'][$agihan_semula_list_count-1]['total']), 2, '.', ',') }} </div>
+                        @if($plan->status == '1')<div class="bg-gray-600 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                        @if($plan->status == '2')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                        @if($plan->status == '3')<div class="bg-theme-1 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                        @if($plan->status == '4')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                        @if($plan->status == '5')<div class="bg-theme-12 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif
+                        @if($plan->status == '6')<div class="bg-theme-9 justify-content-center text-white d-flex align-items-center mb-2 p-2">{{ $plan->getStatus->description ?? $plan->getStatus->name }}</div>@endif                        
+                    @else
+                        @if(!$childPlan)
+                            <form id="pengumpulanDanaForm" action="{{ route('dana-ru.cadangan-agihan.store-fund-collection') }}" method="post">
+                                @csrf
+                                <input type="hidden" name="year" value="{{ $year }}">
+                                <input type="hidden" name="parent_id" value="{{ $plan->id }}">
+                            </form>
+                            <button type="submit" form="pengumpulanDanaForm" class="btn btn-success-soft me-4"><i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Pengumpulan dana </button>
+                        @else
+                            <div class="text-gray-600 dark-text-gray-600 mt-4 fs-xs">DANA AGIHAN SEMULA</div>
+                            <a href="{{ route('dana-ru.cadangan-agihan.index', ['year'=> $year, 'type' => 'pengumpulan_dana', 'plan_id' => $childPlan->id]) }}" class="btn {{ $childPlanState['btn'] }} position-relative w-full justify-content-start rounded-pill me-4 mt-4 fs-xl fw-medium tooltip" title="Status: {{ $childPlan->getStatus->description ?? $childPlan->getStatus->name }}">
+                                RM {{ number_format($childPlan->amount, 2, '.', ',') }}
+                                <span class="w-10 h-10 position-absolute d-flex justify-content-center align-items-center {{ $childPlanState['icon_bg'] }} text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-1"> <i data-feather="{{ $childPlanState['icon'] }}" class="w-4 h-4"></i> </span>
+                            </a>
+                        @endif
+                    @endif
                 @endif
             </div>
             <div class="px-8 py-12 d-flex flex-column justify-content-center flex-1 border-top border-top-sm-0 border-start-sm border-gray-300 dark-border-dark-5 border-dashed">

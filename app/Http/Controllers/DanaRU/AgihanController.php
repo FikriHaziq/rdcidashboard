@@ -128,7 +128,7 @@ class AgihanController extends Controller
             'file_upload' => 'required',
         ],
         [
-            'justification.required_with' => 'Sila masukkan justifikasi.',
+            'justification.required_with' => 'Sila masukkan justifikasi baki agihan belum belanja.',
             'mykpi.required' => 'Sila masukkan KPI.',
             'file_upload.required' => 'Sila muat naik bukti.',
         ]);

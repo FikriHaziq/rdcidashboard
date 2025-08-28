@@ -87,6 +87,7 @@ class CadanganAgihanController extends Controller
         $view_mode = $request->view;
         // dd($plan_form->projectInputData);
         if($plan->type == 4) return view('dana-ru.cadangan-agihan.pindahan-form', compact('year', 'plan_form', 'plan', 'view_mode'));
+        else if($plan->type == 5) return view('dana-ru.cadangan-agihan.pengumpulan-dana-form', compact('year', 'plan_form', 'plan', 'view_mode'));
         return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form', 'plan', 'view_mode'));
     }
 
@@ -168,6 +169,79 @@ class CadanganAgihanController extends Controller
         return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'cadangan_agihan', 'plan_id' => $plan->id]);
     }
 
+    public function storeFundCollection(Request $request)
+    {
+        $plan = new DruDistributionPlan();
+        $plan->year = $request->year;
+        $plan->amount = (float)0;
+        $plan->c_id = user()->id;
+        $plan->status = 1;
+        $plan->type = 5;
+        $plan->parent_id = $request->parent_id;
+        $plan->save();
+
+        session()->flash('success', "Permohonan Pengumpulan Dana telah berjaya disimpan.");
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'pengumpulan_dana', 'plan_id' => $plan->id]);
+    }
+
+    public function storeFundCollectionForm(Request $request, $year=null)
+    {
+        $request->merge([
+            'total_transfer' => str_replace(',', '', $request->total_transfer),
+        ]);
+
+        $request->validate([
+            'ptj' => 'required',
+            'project' => 'required',
+            'total_transfer' => [
+                'required',
+                'numeric',
+                'min:0.01',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value > $request->fund_balance) {
+                        $fail('Jumlah pindahan tidak boleh melebihi baki dana.');
+                    }
+                },
+            ],
+        ],
+        [
+            'ptj.required' => 'Sila pilih PTJ.',
+            'project.required' => 'Sila pilih projek.',
+            'total_transfer.required' => 'Sila masukkan jumlah pindahan.',
+            'total_transfer.numeric' => 'Sila masukkan jumlah pindahan.',
+            'total_transfer.min' => 'Sila masukkan jumlah pindahan.',
+        ]);
+
+        $plan_form = DruDistributionPlanForm::find($request->plan_form_id);
+        if($request->plan_id) $plan = DruDistributionPlan::find($request->plan_id);
+        else $plan = $plan_form->distribution_plan;
+        $ptj = explode('_',$request->ptj);
+        $ptj_id = $ptj[0];
+        $ptj_original_code = $ptj[1];
+        $project = explode('_',$request->project);
+        $project_id = $project[0];
+        $project_t = explode('_',$request->project_t);
+        $project_t_id = $project_t[0];
+
+        if(!$plan_form)$plan_form = new DruDistributionPlanForm;
+        $plan_form->distribution_plan_id = $plan->id;
+        $plan_form->c_id = user()->id;
+        $plan_form->mrun = 0;  
+        $plan_form->bpki = 0;
+        $plan_form->ptj_id = $ptj_id;
+        $plan_form->project_id = $project_id;
+        $plan_form->amount = (float)str_replace( ",", "", $request->total_transfer);
+        $plan_form->notes = $request->note;
+        $plan_form->save();
+
+        $plan->sumAmount();
+
+        $approvalApp = ApprovalApp::whereAppId($plan->id)->whereModuleId(1)->orderBy('index', 'desc')->first();
+        if($approvalApp)storeLogData($plan, $approvalApp->id, 'UPDATE', 'Kemaskini Pengumpulan Dana', ['plan_form_id' => $plan_form->id]);
+        session()->flash('success', "Borang telah berjaya disimpan");
+        return redirect()->route('dana-ru.cadangan-agihan.index', ["year"=>$year,"type"=>getPlanType($plan->type),"plan_id"=>$plan->id]);
+    }
+
     public function storeRedistPlan(Request $request, $id=null)
     {
         if($request->type == "store"){
@@ -239,15 +313,7 @@ class CadanganAgihanController extends Controller
             'pb_ic' => 'required',
             'ptj' => 'required',
             'project' => 'required',
-            'total_dist' => [
-                'required',
-                function ($attribute, $value, $fail) use ($request) {
-                    if ($request->plan_type == 3 && $value !== null) {
-                        $value = (float)str_replace( ",", "", $value);
-                        if($value > $request->fund_balance) $fail('Jumlah keseluruhan agihan telah melebihi baki dana.');
-                    }
-                },
-            ],
+            'total_dist' => 'required',
             'total_kpi' => [
                 'nullable',
                 function ($attribute, $value, $fail) use ($request) {
@@ -418,10 +484,16 @@ class CadanganAgihanController extends Controller
     public function deletePlan($id)
     {
         $plan_form = DruDistributionPlanForm::find($id);
+        $plan = $plan_form->distribution_plan;
         if($plan_form){
             DruMember::whereDistributionPlanFormId($id)->delete();
             DruKpi::whereDistributionPlanFormId($id)->delete();
             $plan_form->delete();
+            if($plan){
+                if($plan->type == 5){
+                    $plan->sumAmount();
+                }
+            }
             session()->flash('success', "Data is successfully deleted");
             return back();
         }
@@ -524,7 +596,7 @@ class CadanganAgihanController extends Controller
             // return back();
         }
         session()->flash('success', "Borang telah berjaya disahkan.");
-        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=>$request->year]);
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=>$request->year, 'type' => getPlanType($plan->type), 'plan_id' => $request->plan_id]);
     }
 
     public function downloadFile($id)
@@ -686,6 +758,28 @@ class CadanganAgihanController extends Controller
                         "expenditure_type" => "MAIN",
                         "year" => $plan->year,
                         "amount" => $plan_form->plan_form_amount,
+                    ]);
+                }
+            }
+            else if($plan->type == 5){
+                $agihanSemulaPlan = DruDistributionPlan::find($plan->parent_id);
+                $agihanSemulaPlan->amount = $plan->amount;
+                $agihanSemulaPlan->save();
+                $plan_forms = getDistributionFormPlans($plan->year, $plan->id, $plan->type);
+                foreach ($plan_forms as $key => $plan_form) {
+                    MasterlistDruAllocation::create([
+                        "type" => $plan->type,
+                        "tabung_induk" => getMainFundByFormula($plan_form->ddf_code, $plan_form->ddf_code_2),
+                        "project" => $plan_form->ddf_code,
+                        "sub_project" => $plan_form->ddf_code_2,
+                        "program_id" => 0,
+                        "bpki_id" => 0,
+                        "ptj" => $plan_form->ptj,
+                        "ptj_code" => $plan_form->ptj_code,
+                        "jenis_agihan" => $plan_form->ddf_title,
+                        "expenditure_type" => "MAIN",
+                        "year" => $plan->year,
+                        "amount" => -($plan_form->plan_form_amount),
                     ]);
                 }
             }

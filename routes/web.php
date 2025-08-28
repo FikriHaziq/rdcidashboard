@@ -201,6 +201,8 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
         Route::name('form')->get('/form/{year?}/{id?}', [CadanganAgihanController::class, 'form']);
         Route::name('store-additional-plan')->post('/store-additional-plan/{id?}', [CadanganAgihanController::class, 'storeAdditionalPlan']);
+        Route::name('store-fund-collection')->post('/store-fund-collection', [CadanganAgihanController::class, 'storeFundCollection']);
+        Route::name('store-fund-collection-form')->post('/store-fund-collection-form/{year?}', [CadanganAgihanController::class, 'storeFundCollectionForm']);
         Route::name('store-redist-plan')->post('/store-redist-plan/{id?}', [CadanganAgihanController::class, 'storeRedistPlan']);
         Route::name('store-transfer')->post('/store-transfer/{id?}', [CadanganAgihanController::class, 'storeTransfer']);
         Route::name('store-transfer-form')->post('/store-transfer-form/{year?}', [CadanganAgihanController::class, 'storeTransferForm']);

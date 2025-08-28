@@ -43,7 +43,7 @@
     @empty
     <p class="w-full text-center text-gray-500 p-5">Tiada Agihan</p>
     @endforelse
-    @if($plans->where('status', '!=', 6)->count() == 0)
+    @if($plans->where('type', 3)->where('status', '!=', 6)->count() == 0)
     <form id="agihanSemulaForm" action="{{ route('dana-ru.cadangan-agihan.store-redist-plan') }}" method="post">
         @csrf
         <input type="hidden" name="type" value="store">

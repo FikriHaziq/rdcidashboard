@@ -160,17 +160,6 @@
                         </div>
                     </div>
                 </div>
-                @if ($plan->type == 3)
-                <div class="grid columns-12 gap-6 mt-2 pb-2">
-                    <div class="g-col-3 d-flex align-items-center justify-content-end">
-                    </div>
-                    <div class="g-col-9">
-                        <div class="g-col-12 intro-x">
-                            <x-dru.chargeline-balance />
-                        </div>
-                    </div>
-                </div>
-                @endif
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="main_dist">ASAS AGIHAN</label>
@@ -397,7 +386,6 @@
                         success: function(res) {
                             let balance = res.total_allocation - res.total_expenses;
                             displayChargelineInfo(balance, res.total_allocation, res.total_expenses);
-                            if(plan_type == 3)chargelineBalanceCheck();
                         },
                         error: function(err) {
                             
@@ -492,9 +480,6 @@
                 if(table == 'kpi'){
                     extra_info = '<td><span id="kpi_balance_check"></span></td><td></td>'
                 }
-                else if(table == 'main_dist'){
-                    if(plan_type == 3)extra_info = '<td><span id="main_kpi_balance_check"></span></td><td></td>'
-                }
                 $('#'+table+' >tfoot >tr').remove();
                 newRowContent += '<tr class="grand-total bg-gray-400 border-b-0">'+
                                     '<td class="text-end" colspan="3">JUMLAH KESELURUHAN (RM)</td>'+
@@ -547,7 +532,6 @@
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
         if(table == 'main_dist')$("#total_dist").val(grand_total);
         kpiBalanceCheck();
-        if(plan_type == 3)chargelineBalanceCheck();
     }
 
     function kpiBalanceCheck() {
@@ -572,29 +556,29 @@
         }
     }
 
-    function chargelineBalanceCheck() {
-        let chargeline_balance = $('#fund_balance').val() || 0;
-        console.log(chargeline_balance);
-        let total = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
-        if(total != undefined){
-            total = total.replaceAll(',','');
-            let balance = chargeline_balance-total;
-            let sign = '-';
-            let color = 'text-theme-6';
-            if(balance > 0) {
-                sign = '+';
-                color = 'text-theme-10';
-            }
-            if(balance == 0){
-                $('#main_kpi_balance_check').html('');
-            }
-            else {
-                $('#main_kpi_balance_check').html(sign + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
-                $('#main_kpi_balance_check').removeClass('text-theme-10 text-theme-6');
-                $('#main_kpi_balance_check').addClass(color);
-            }
-        }
-    }
+    // function chargelineBalanceCheck() {
+    //     let chargeline_balance = $('#fund_balance').val() || 0;
+    //     console.log(chargeline_balance);
+    //     let total = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
+    //     if(total != undefined){
+    //         total = total.replaceAll(',','');
+    //         let balance = chargeline_balance-total;
+    //         let sign = '-';
+    //         let color = 'text-theme-6';
+    //         if(balance > 0) {
+    //             sign = '+';
+    //             color = 'text-theme-10';
+    //         }
+    //         if(balance == 0){
+    //             $('#main_kpi_balance_check').html('');
+    //         }
+    //         else {
+    //             $('#main_kpi_balance_check').html(sign + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+    //             $('#main_kpi_balance_check').removeClass('text-theme-10 text-theme-6');
+    //             $('#main_kpi_balance_check').addClass(color);
+    //         }
+    //     }
+    // }
 
     $('form').bind('submit', function () {
         $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);

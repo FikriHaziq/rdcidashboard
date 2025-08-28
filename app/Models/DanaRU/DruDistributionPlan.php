@@ -14,6 +14,7 @@ class DruDistributionPlan extends Model
     // 2 => Agihan Tambahan
     // 3 => Agihan Semula
     // 4 => Pindahan
+    // 5 => Pengumpulan Dana
 
     use HasFactory;
 
@@ -43,5 +44,11 @@ class DruDistributionPlan extends Model
         if($this->type == 2) return "cadangan_agihan";
         if($this->type == 3) return "agihan_semula";
         if($this->type == 4) return "pindahan";
+    }
+
+    public function sumAmount()
+    {
+        $this->amount = $this->forms->sum('amount');
+        $this->save();
     }
 }

@@ -19,6 +19,7 @@ class CreateDruDistributionPlansTable extends Migration
             $table->decimal('amount', 18, 9);
             $table->integer('c_id');
             $table->string('status')->default('draft');
+            $table->integer('parent_id')->nullable();
             $table->timestamps();
         });
     }

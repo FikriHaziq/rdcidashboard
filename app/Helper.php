@@ -451,6 +451,28 @@ if (!function_exists('getDistributionFormPlans')) {
             $query = $query->get();    
             // dd($query->get());
         }
+        else if($type == 5){
+            $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+                ->select([
+                    'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
+                    'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
+                    'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2',
+                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                ])
+                ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                    $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                        ->where('plan.year',$year);
+                })
+                ->join('parameters as ptj', function ($join) {
+                    $join->on('ptj.id', '=', 'plan_form.ptj_id')
+                        ->where('ptj.active','Y');
+                })
+                ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
+                ->groupBy('plan_form.id')->where('plan.year', $year);
+            $query = $query->where('plan_form.distribution_plan_id', $plan_id);
+            $query = $query->get();    
+            // dd($query->get());
+        }
         else{
             $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
                 ->select([
@@ -621,6 +643,7 @@ if (!function_exists('infographicData')) {
                     $pp_percent = $fund > 0 ? $pp/$fund*100 : 0;
                 }
                 else if($p->type == 3){
+                    $fund_as = $p->amount;
                     $do_as = 0;
                     $gp_as = 0;
                     $pp_as = 0;
@@ -631,10 +654,11 @@ if (!function_exists('infographicData')) {
                         elseif($form->bpki == 52)$pp_as += $form->amount;
                         $total_as += $form->amount;
                     }
-                    $do_as_percent = $total_as > 0 ? $do_as/$total_as*100 : 0;
-                    $gp_as_percent = $total_as > 0 ? $gp_as/$total_as*100 : 0;
-                    $pp_as_percent = $total_as > 0 ? $pp_as/$total_as*100 : 0;
+                    $do_as_percent = $fund_as > 0 ? $do_as/$fund_as*100 : 0;
+                    $gp_as_percent = $fund_as > 0 ? $gp_as/$fund_as*100 : 0;
+                    $pp_as_percent = $fund_as > 0 ? $pp_as/$fund_as*100 : 0;
                     $agihan_semula_lists[] = [
+                        'fund'=>$fund_as,
                         'label' => $p->created_at,
                         'do' => $do_as,
                         'gp' => $gp_as,
@@ -678,6 +702,7 @@ if (!function_exists('infographicData')) {
                 $pp_percent = $fund > 0 ? $pp/$fund*100 : 0;
             }
             else if($plan->type == 3){
+                $fund_as = $plan->amount;
                 $do_as = 0;
                 $gp_as = 0;
                 $pp_as = 0;
@@ -688,10 +713,11 @@ if (!function_exists('infographicData')) {
                     elseif($form->bpki == 52)$pp_as += $form->amount;
                     $total_as += $form->amount;
                 }
-                $do_as_percent = $total_as > 0 ? $do_as/$total_as*100 : 0;
-                $gp_as_percent = $total_as > 0 ? $gp_as/$total_as*100 : 0;
-                $pp_as_percent = $total_as > 0 ? $pp_as/$total_as*100 : 0;
+                $do_as_percent = $fund_as > 0 ? $do_as/$fund_as*100 : 0;
+                $gp_as_percent = $fund_as > 0 ? $gp_as/$fund_as*100 : 0;
+                $pp_as_percent = $fund_as > 0 ? $pp_as/$fund_as*100 : 0;
                 $agihan_semula_lists[] = [
+                    'fund'=>$fund_as,
                     'label' => $plan->created_at,
                     'do' => $do_as,
                     'gp' => $gp_as,
@@ -769,6 +795,7 @@ if (!function_exists('getPlanType')) {
         if($type == 2) return "cadangan_agihan";
         if($type == 3) return "agihan_semula";
         if($type == 4) return "pindahan";
+        if($type == 5) return "pengumpulan_dana";
     }
 }
 
