@@ -62,7 +62,7 @@
                         <label for="bpki, #project">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6 || $view_mode) disabled @endif>
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" @if(($plan->status ?? 0) == 6 || $view_mode) disabled @endif onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
                                 <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
@@ -302,13 +302,14 @@
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
+        var bpki = $("#bpki").val();
         var faculty = $("#ptj").val();
         var oldProject = '';
-        if (program && faculty) {
+        if (program && bpki && faculty) {
             const faculty_arr = faculty.split('_');
             const faculty_id = faculty_arr[0];
             $.ajax({
-                url: "/ajax/getProjectList/" + program + "/" + faculty_id,
+                url: "/ajax/getProjectList/" + program  + "/" + bpki  + "/" + faculty_id,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -321,12 +322,12 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code + '_' + val.bpki_id ,
                                 title: val.title
                             });
                             if(selectedValue){
                                 var selectedValueArr = selectedValue.split('_');
-                                if(selectedValueArr.length != 4)optionsData.push({id: selectedValue ,title: selectedValue});
+                                if(selectedValueArr.length != 5)optionsData.push({id: selectedValue ,title: selectedValue});
                             }
                         });
                     }
@@ -360,7 +361,7 @@
         else if(type == 'pro'){
             if(value.length > 0){
                 data = value.split('_');
-                if(data.length == 4){
+                if(data.length == 5){
                     pro = data[1];
                     sub = data[2];
                     ptj = prependCode(data[3], 7);
@@ -385,7 +386,7 @@
                         },
                         success: function(res) {
                             let balance = res.total_allocation - res.total_expenses;
-                            displayChargelineInfo(balance, res.total_allocation, res.total_expenses);
+                            // displayChargelineInfo(balance, res.total_allocation, res.total_expenses);
                         },
                         error: function(err) {
                             
@@ -415,6 +416,18 @@
                 $('#cl_sub').prop('readonly', true);
             }
         }
+    }
+
+    function displayChargelineInfo(balance, postfix){
+        $('#chargeline_balance'+postfix).html(formatCurrency(balance));
+        $('#fund_balance'+postfix).val(balance);
+        // if(postfix == "_f"){
+        //     $('#chargeline_balance'+postfix).html('( - ' + formatCurrency(balance) + ')');
+        // }
+        // else{
+        //     $('#chargeline_balance'+postfix).html('( + ' + formatCurrency(balance) + ')');
+        // }
+
     }
 
     function prependCode(str,length){

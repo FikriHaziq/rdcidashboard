@@ -29,6 +29,7 @@
                             <th class="whitespace-nowrap">#</th>
                             <th class="whitespace-nowrap">TITLE</th>
                             <th class="whitespace-nowrap">PROGRAM</th>
+                            <th class="whitespace-nowrap">BPKI</th>
                             <th class="whitespace-nowrap">FAKULTY</th>
                             <th class="whitespace-nowrap">PROJECT</th>
                             <th class="whitespace-nowrap">SUBPROJECT</th>
@@ -65,6 +66,7 @@
             {data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'title',name: 'title'},
             {data: 'program',name: 'program'},
+            {data: 'bpki',name: 'bpki'},
             {data: 'faculty',name: 'f_original_code'},
             {data: 'ddf_code',name: 'ddf_code'},
             {data: 'ddf_code_2',name: 'ddf_code_2'},

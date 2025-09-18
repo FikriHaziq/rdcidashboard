@@ -123,6 +123,7 @@ class DatatableController extends Controller
             ->select([
                 'dmf.id as dmf_id',
                 'p.code as program',
+                'b.code as bpki',
                 'dmf.apply_to_all',
                 'dmf.year',
                 'dmf.is_draft',
@@ -134,6 +135,9 @@ class DatatableController extends Controller
             ])
             ->leftJoin('parameters AS p', function ($join){
                 $join->on('p.id', '=', 'dmf.program_id')->where('p.active', 'Y');
+            })
+            ->leftJoin('parameters AS b', function ($join){
+                $join->on('b.id', '=', 'dmf.bpki_id')->where('b.active', 'Y');
             });
         $query = $query->get();
         return DataTables::of($query)
@@ -232,6 +236,7 @@ class DatatableController extends Controller
                 DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
                 'ddf.faculty_code as ddf_faculty_code',
                 'p.code as program',
+                'b.code as bpki',
                 'dmf.id as dmf_id',
                 'dmf.code as dmf_code',
                 'f.id as f_id',
@@ -250,6 +255,9 @@ class DatatableController extends Controller
             })
             ->leftJoin('parameters AS p', function ($join){
                 $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
+            })
+            ->leftJoin('parameters AS b', function ($join){
+                $join->on('b.id', '=', 'ddf.bpki_id')->where('b.active', 'Y');
             });
         $query = $query->get();
             return DataTables::of($query)

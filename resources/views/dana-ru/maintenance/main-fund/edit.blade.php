@@ -26,6 +26,20 @@
                 </div>
                 <div class="grid columns-12 gap-6 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="bpki_id">JENIS PERBELANJAAN</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="bpki_id" name="bpki_id" class="form-select @error('bpki_id') border-theme-6 @enderror">
+                            <option value="">--Sila pilih--</option>
+                            @foreach (getBpkiList() as $bpki)
+                                <option value="{{ $bpki->id }}" @if($main_fund->bpki_id == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
+                            @endforeach
+                        </select>
+                        @error('bpki_id')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="code">KOD</label>
                     </div>
                     <div class="g-col-9">

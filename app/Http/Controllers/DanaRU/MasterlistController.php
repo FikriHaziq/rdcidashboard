@@ -130,7 +130,7 @@ class MasterlistController extends Controller
                 $tabung_induk_sql = getMainFundByFormula('mda.project', 'mda.sub_project', 'MYSQL', 'formula_tabung_induk');
                 $main_funds = DB::table('masterlist_dru_allocations AS mda')
                     ->select(
-                        'mda.id', 'mda.year', 'mda.program_id','mda.jenis_agihan as main_fund_name',
+                        'mda.id', 'mda.year', 'mda.program_id', 'mda.bpki_id', 'mda.jenis_agihan as main_fund_name',
                         DB::raw($tabung_induk_sql),
                     )
                     ->where('mda.year', $year)->get();
@@ -138,6 +138,7 @@ class MasterlistController extends Controller
                 foreach ($main_funds as $main_fund) {
                     $data = [
                         'program_id' => $main_fund->program_id,
+                        'bpki_id' => $main_fund->bpki_id,
                         'apply_to_all' => 1,
                         'code' => $main_fund->formula_tabung_induk,
                         'name' => $main_fund->main_fund_name,
@@ -164,7 +165,7 @@ class MasterlistController extends Controller
             else if($fund_type == "dist_fund"){
                 $dist_funds = DB::table('masterlist_dru_allocations AS mda')
                     ->select(
-                        'mda.year', 'mda.tabung_induk', 'mda.ptj_code', 'mda.project', 'mda.sub_project', 'mda.program_id', 'mda.main_fund_id', 'mda.jenis_agihan as dist_fund_name',
+                        'mda.year', 'mda.tabung_induk', 'mda.ptj_code', 'mda.project', 'mda.sub_project', 'mda.program_id', 'mda.bpki_id', 'mda.main_fund_id', 'mda.jenis_agihan as dist_fund_name',
                         'dmf.id as dmf_id'
                     )
                     ->leftJoin('dru_main_funds AS dmf', function ($join){
@@ -179,6 +180,7 @@ class MasterlistController extends Controller
                         'code' => $dist_fund->project,
                         'code_2' => $dist_fund->sub_project,
                         'program_id' => $dist_fund->program_id,
+                        'bpki_id' => $dist_fund->bpki_id,
                         'tabung_induk' => $dist_fund->tabung_induk,
                         'is_draft' => 1,
                         'status' => "active",

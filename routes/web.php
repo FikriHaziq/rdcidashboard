@@ -229,6 +229,10 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
             Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
             Route::name('laporan-perbelanjaan')->get('/laporan-perbelanjaan/{year}/{penggal}', [FinancialController::class, 'laporanPerbelanjaan']);
         });
+        Route::name('mail-template.index')->get('/mail-template/index/{year}', [FinancialController::class, 'mailTemplate']);
+        Route::name("mail-template.post")->post("/mail-template/post", [FinancialController::class, "mailTemplatePost"]);
+        Route::name("mail-template.download")->get('mail-template/download/{id}', [FinancialController::class, 'downloadFile']);
+
     });
 
     Route::name('senarai-agihan.')->prefix('senarai-agihan')->group(function(){
@@ -280,7 +284,7 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("selectData")->get('select/data/{id}', [AjaxController::class, 'selectData']);
     Route::name("updateMyraData")->post('update-myra-data', [AjaxController::class, 'updateMyraMark']);
     Route::name("getSchool")->get('getSchool/{faculty_id}', [AjaxController::class, 'getSchool']);
-    Route::name("getProjectList")->get('getProjectList/{program_id}/{year}', [AjaxController::class, 'getProjectList']);
+    Route::name("getProjectList")->get('getProjectList/{program_id}/{bpki_id}/{faculty}/{year?}', [AjaxController::class, 'getProjectList']);
     Route::name("approveDruDistributionPlanForm")->post('approve-distribution-plan', [AjaxController::class, 'approveDruDistributionPlanForm']);
     Route::name("updateUtmFinRefNo")->post('update-utmfin-refno', [AjaxController::class, 'updateUtmFinRefNo']);
     Route::name("addDistFund")->post('add-dist-fund', [AjaxController::class, 'addDistFund']);

@@ -304,7 +304,9 @@ if (!function_exists('getProjectSecondCode')) {
 if (!function_exists('getStatusOptions')) {
     function getStatusOptions($pending_status, $plan_type = null)
     {
-        if(in_array($pending_status, [2, 3]) && $plan_type == 4)return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
+        if(in_array($pending_status, [2, 3]) && $plan_type == 3)return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
+        else if(in_array($pending_status, [2, 3]) && $plan_type == 4)return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
+        else if(in_array($pending_status, [2, 3]) && $plan_type == 5)return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
         else if(in_array($pending_status, [2, 3]))return \App\Models\Status::whereIn('id', [4,5])->orderBy('sort')->get();
         else if(in_array($pending_status, [4]))return \App\Models\Status::whereIn('id', [5,6])->orderBy('sort')->get();
         else if(in_array($pending_status, [8, 9]))return \App\Models\Status::whereIn('id', [10,11,12])->orderBy('sort')->get();
@@ -1004,5 +1006,18 @@ if (!function_exists('getExpensesReportInfo')) {
         if(count($bgc['programs']) > 0) $data[] = $bgc; 
         
         return $data;
+    }
+}
+
+if (!function_exists('getAvailableFacultyFromPlan')) {
+    function getAvailableFacultyFromPlan($year){
+        return \App\Models\Parameter::from('parameters as faculty')
+            ->select('faculty.*')
+            ->join('dru_distribution_plan_forms as plan_form','faculty.id', '=', 'plan_form.ptj_id')
+            ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                    ->where('plan.year',$year)->whereIn('type', [1,2,3])->where('status', 6);
+            })
+            ->groupBy('faculty.id')->orderBy('faculty.description_1')->get();
     }
 }

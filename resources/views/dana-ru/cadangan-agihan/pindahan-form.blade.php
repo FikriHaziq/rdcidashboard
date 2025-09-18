@@ -41,6 +41,7 @@
                 <input type="hidden" name="plan_id" value="{{ $plan->id ?? '' }}">
                 <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
                 <input type="hidden" name="plan_type" id="plan_type" value="{{ $plan->type }}">
+                <input type="hidden" name="bpki_id" id="bpki_id" value="{{ $plan_form->bpki ?? '' }}">
                 <input type="hidden" name="fund_balance_f" id="fund_balance_f" value="">
                 <input type="hidden" name="fund_balance_t" id="fund_balance_t" value="">
                 <div class="intro-x w-full">
@@ -57,7 +58,7 @@
                                     <div class="g-col-10">
                                         <select id="ptj_f" name="ptj_f" class="form-select @error('ptj_f') border-theme-6 @enderror" @if($view_mode) disabled @endif onchange="getProjectList('_f')">
                                             <option value="">--Sila pilih--</option>
-                                            @foreach (getFaculty2(true) as $faculty)
+                                            @foreach (getAvailableFacultyFromPlan($year) as $faculty)
                                                 <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj_f') ?? ($plan_form->ptjInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>[{{$faculty->original_code}}] {{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
                                             @endforeach
                                         </select>
@@ -105,9 +106,9 @@
                                         <label for="ptj_t">PTJ</label>
                                     </div>
                                     <div class="g-col-10">
-                                        <select id="ptj_t" name="ptj_t" class="form-select @error('ptj_t') border-theme-6 @enderror" @if($view_mode) disabled @endif onchange="getProjectList('_t')">
-                                            <option value="">--Sila pilih--</option>
-                                            @foreach (getFaculty2(true) as $faculty)
+                                        <select id="ptj_t" name="ptj_t" class="form-select @error('ptj_t') border-theme-6 @enderror" disabled>
+                                            <option value="">--Autofilled--</option>
+                                            @foreach (getAvailableFacultyFromPlan($year) as $faculty)
                                                 <option value="{{ $faculty->id }}_{{ $faculty->original_code }}" @if((old('ptj') ?? ($plan_form->ptjTransferInputData ?? '')) == ($faculty->id.'_'.$faculty->original_code)) selected @endif>[{{$faculty->original_code}}] {{ $faculty->parameter_name }} - {{ $faculty->description_1 }}</option>
                                             @endforeach
                                         </select>
@@ -193,15 +194,17 @@
     var plan_status = {!! ($plan->status ?? 0) !!};
     var plan_type = {!! ($plan->type ?? 0) !!};
     var view_mode = {!! ($view_mode ?? 0) !!};
-    getProjectList('_f', '{!! old("project_f") ?? ($plan_form->projectInputData ?? '') !!}');
-    getProjectList('_t', '{!! old("project_t") ?? ($plan_form->projectTransferInputData ?? '') !!}');
+    var bpki =  {!! ($plan_form->bpki ?? 0) !!};
+    var selected_f_value = '{!! old("project_f") ?? ($plan_form->projectInputData ?? '') !!}';
+    var selected_t_value = '{!! old("project_t") ?? ($plan_form->projectTransferInputData ?? '') !!}';
+    getProjectList('_f', selected_f_value);
+    getProjectList('_t', selected_t_value);
     var eventHandler = function(name, postfix) {
         return function() {
             getChargeline(arguments[0], 'pro', postfix);
         };
     };
     var project_select_f = new TomSelect("#project_f",{
-        create: true,
         onChange: eventHandler('onChange', '_f'),
         sortField: {
             field: "text",
@@ -212,7 +215,6 @@
     });
 
     var project_select_t = new TomSelect("#project_t",{
-        create: true,
         onChange: eventHandler('onChange', '_t'),
         sortField: {
             field: "text",
@@ -225,19 +227,24 @@
     function getProjectList(id_postfix, selectedValue = null) {
         var program = 0;
         var faculty = $("#ptj"+id_postfix).val();
-        console.log(selectedValue)
+        // console.log(selectedValue)
         var oldProject = '';
         if (faculty) {
             const faculty_arr = faculty.split('_');
             const faculty_id = faculty_arr[0];
+            var url = "/ajax/getProjectList/"+ program +"/" + bpki +"/" + faculty_id + "/" + {!! $year !!};
+            if(id_postfix == '_t') {
+                url = "/ajax/getProjectList/"+ program +"/" + bpki +"/" + faculty_id;
+                // console.log(faculty);
+                // console.log(url);
+            }
             $.ajax({
-                url: "/ajax/getProjectList/"+ program +"/" + faculty_id,
+                url: url,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(res) {
-                    console.log(res);
                     if(id_postfix == "_f"){
                         project_select_f.clear();
                         project_select_f.clearOptions();
@@ -252,15 +259,18 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code + '_' + val.bpki_id ,
                                 title: val.title
                             });
                             if(selectedValue){
                                 var selectedValueArr = selectedValue.split('_');
-                                if(selectedValueArr.length != 4)optionsData.push({id: selectedValue ,title: selectedValue});
+                                if(selectedValueArr.length != 5)optionsData.push({id: selectedValue ,title: selectedValue});
                             }
+
                         });
                     }
+                    console.log(selectedValue);
+
                     if(id_postfix == "_f"){
                         project_select_f = new TomSelect("#project"+id_postfix,{
                             create: true,
@@ -308,17 +318,24 @@
         else if(type == 'pro'){
             if(value.length > 0){
                 data = value.split('_');
-                if(data.length == 4){
+                if(data.length == 5){
                     pro = data[1];
                     sub = data[2];
                     ptj = prependCode(data[3], 7);
+                    bpki = data[4];
                     $('#cl_ptj'+postfix).val(ptj);
                     $('#cl_pro'+postfix).val(pro);
                     $('#cl_sub'+postfix).val(sub);
+                    $('#bpki_id').val(bpki);
                     $('#cl_ptj'+postfix).prop('readonly', true);
                     $('#cl_pro'+postfix).prop('readonly', true);
                     $('#cl_sub'+postfix).prop('readonly', true);
                     $('#chargeline_label'+postfix).html("[Q."+ptj+"."+pro+"."+sub+"]");
+                    if(postfix == '_f'){
+                        $('#ptj_t').val($('#ptj_f').val());
+                        if(selected_t_value == '')getProjectList('_t');
+                    }
+
                     let formData = new FormData();
                     formData.append("main_fund_id", data[0]);
                     formData.append("ptj_code", data[3]);
@@ -396,8 +413,6 @@
             sign_t = '';
             color_t = 'text-gray-700';
         }
-        console.log('cbalance t = ' + chargeline_balance_t);
-        console.log('balance t = ' + balance_t);
         $('#chargeline_balance_f').html(sign_f + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance_f)  ));
         $('#chargeline_balance_t').html(sign_t + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance_t)  ));
         $('#chargeline_balance_f').removeClass('text-gray-700 text-theme-6');

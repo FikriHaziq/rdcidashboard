@@ -11,6 +11,7 @@ use App\Models\DanaRU\DruKpiTemplate;
 use App\Models\Parameter;
 use App\Models\MasterList\MasterlistDruYear;
 use App\Http\Controllers\DatatableController;
+use Illuminate\Validation\Rule;
 
 class MaintenanceController extends Controller
 {
@@ -28,12 +29,14 @@ class MaintenanceController extends Controller
     public function tabungIndukStore(Request $request){
         $request->validate([
             'program_id' => 'required',
+            'bpki_id' => 'required',
             'code' => 'required|unique:dru_main_funds,code',
             'name' => 'required',
             'status' => 'required',
         ],
         [
             'program_id.required' => 'Sila pilih program utama.',
+            'bpki_id.required' => 'Sila pilih jenis perbelanjaan.',
             'code.required' => 'Sila masukkan kod.',
             'code.unique' => 'Kod ini telah didaftar.',
             'name.required' => 'Sila masukkan deskripsi.',
@@ -41,6 +44,7 @@ class MaintenanceController extends Controller
         ]);
         $main_fund = new DruMainFund;
         $main_fund->program_id = $request->program_id;
+        $main_fund->bpki_id = $request->bpki_id;
         $main_fund->code = $request->code;
         $main_fund->name = $request->name;
         $main_fund->apply_to_all = 1;
@@ -59,12 +63,14 @@ class MaintenanceController extends Controller
     public function tabungIndukUpdate($id, Request $request){
         $request->validate([
             'program_id' => 'required',
+            'bpki_id' => 'required',
             'code' => 'required|unique:dru_main_funds,code,'.$id,
             'name' => 'required',
             'status' => 'required',
         ],
         [
             'program_id.required' => 'Sila pilih program utama.',
+            'bpki_id.required' => 'Sila pilih jenis perbelanjaan.',
             'code.required' => 'Sila masukkan kod.',
             'code.unique' => 'Kod ini telah didaftar.',
             'name.required' => 'Sila masukkan deskripsi.',
@@ -72,6 +78,7 @@ class MaintenanceController extends Controller
         ]);
         $main_fund = DruMainFund::find($id);
         $main_fund->program_id = $request->program_id;
+        $main_fund->bpki_id = $request->bpki_id;
         $main_fund->code = $request->code;
         $main_fund->name = $request->name;
         $main_fund->apply_to_all = 1;
@@ -276,27 +283,41 @@ class MaintenanceController extends Controller
     }
 
     public function tabungAgihanStore(Request $request){
-        // $request->validate([
-        //     'program_id' => 'required',
-        //     'code' => 'required|unique:dru_main_funds,code',
-        //     'name' => 'required',
-        //     'status' => 'required',
-        // ],
-        // [
-        //     'program_id.required' => 'Sila pilih program utama.',
-        //     'code.required' => 'Sila masukkan kod.',
-        //     'code.unique' => 'Kod ini telah didaftar.',
-        //     'name.required' => 'Sila masukkan deskripsi.',
-        //     'status.required' => 'Sila pilih status.',
-        // ]);
-        // $main_fund = new DruMainFund;
-        // $main_fund->program_id = $request->program_id;
-        // $main_fund->code = $request->code;
-        // $main_fund->name = $request->name;
-        // $main_fund->apply_to_all = 1;
-        // $main_fund->is_draft = $request->submit_btn;
-        // $main_fund->status = $request->status;
-        // $main_fund->save();
+        // dd($request->all());
+        $request->validate([
+            'faculty_code' => 'required',
+            'code' => 'required',
+            'code_2' => [
+                'required',
+                Rule::unique(DruDistFund::class)->where(function ($query) use ($request) {
+                    return $query->where('faculty_code', $request->faculty_code)
+                                ->where('code', $request->code);
+                }),
+            ],
+            'title' => 'required',
+            'status' => 'required',
+        ],
+        [
+            'faculty_code.required' => 'Sila masukkan kod.',
+            'code.required' => 'Sila masukkan kod projek.',
+            'code_2.required' => 'Sila masukkan kod subprojek.',
+            'code_2.unique' => 'Tabung ini telah didaftar.',
+            'title.required' => 'Sila masukkan deskripsi.',
+            'status.required' => 'Sila pilih status.',
+        ]);
+        $tabung_induk = getMainFundByFormula($request->code, $request->code_2);
+        $main_fund = DruMainFund::where('code', $tabung_induk)->first();
+        $dist_fund = new DruDistFund;
+        $dist_fund->title = $request->title;
+        $dist_fund->faculty_code = $request->faculty_code;
+        $dist_fund->code = $request->code;
+        $dist_fund->code_2 = $request->code_2;
+        $dist_fund->program_id = $main_fund->program_id;
+        $dist_fund->bpki_id = $main_fund->bpki_id;
+        $dist_fund->tabung_induk = $tabung_induk;
+        $dist_fund->is_draft = $request->submit_btn;
+        $dist_fund->status = $request->status;
+        $dist_fund->save();
         session()->flash('success', "Tabung agihan telah berjaya disimpan.");
         return redirect()->route('dana-ru.maintenance.tabung-agihan');
     }
@@ -307,27 +328,42 @@ class MaintenanceController extends Controller
     }
 
     public function tabungAgihanUpdate($id, Request $request){
-        // $request->validate([
-        //     'program_id' => 'required',
-        //     'code' => 'required|unique:dru_main_funds,code,'.$id,
-        //     'name' => 'required',
-        //     'status' => 'required',
-        // ],
-        // [
-        //     'program_id.required' => 'Sila pilih program utama.',
-        //     'code.required' => 'Sila masukkan kod.',
-        //     'code.unique' => 'Kod ini telah didaftar.',
-        //     'name.required' => 'Sila masukkan deskripsi.',
-        //     'status.required' => 'Sila pilih status.',
-        // ]);
-        $main_fund = DruDistFund::find($id);
-        $main_fund->title = $request->title;
-        $main_fund->faculty_code = $request->faculty_code;
-        $main_fund->code = $request->code;
-        $main_fund->code_2 = $request->code_2;
-        $main_fund->is_draft = $request->submit_btn;
-        $main_fund->status = $request->status;
-        $main_fund->save();
+        $request->validate([
+            'faculty_code' => 'required',
+            'code' => 'required',
+            'code_2' => [
+                'required',
+                Rule::unique(DruDistFund::class)
+                ->ignore($id)->where(function ($query) use ($request) {
+                    return $query->where('faculty_code', $request->faculty_code)
+                                ->where('code', $request->code);
+                }),
+            ],
+            'title' => 'required',
+            'status' => 'required',
+        ],
+        [
+            'faculty_code.required' => 'Sila masukkan kod.',
+            'code.required' => 'Sila masukkan kod projek.',
+            'code_2.required' => 'Sila masukkan kod subprojek.',
+            'code_2.unique' => 'Tabung ini telah didaftar.',
+            'title.required' => 'Sila masukkan deskripsi.',
+            'status.required' => 'Sila pilih status.',
+        ]);
+
+        $tabung_induk = getMainFundByFormula($request->code, $request->code_2);
+        $main_fund = DruMainFund::where('code', $tabung_induk)->first();
+        $dist_fund = DruDistFund::find($id);
+        $dist_fund->title = $request->title;
+        $dist_fund->faculty_code = $request->faculty_code;
+        $dist_fund->code = $request->code;
+        $dist_fund->code_2 = $request->code_2;
+        $dist_fund->program_id = $main_fund->program_id;
+        $dist_fund->bpki_id = $main_fund->bpki_id;
+        $dist_fund->tabung_induk = $tabung_induk;
+        $dist_fund->is_draft = $request->submit_btn;
+        $dist_fund->status = $request->status;
+        $dist_fund->save();
         session()->flash('success', "Tabung Agihan telah berjaya disimpan.");
         return redirect()->route('dana-ru.maintenance.tabung-agihan');
     }

@@ -51,4 +51,9 @@ class DruDistributionPlan extends Model
         $this->amount = $this->forms->sum('amount');
         $this->save();
     }
+
+    public function fundCollection()
+    {
+        return $this->hasOne(DruDistributionPlan::class, 'parent_id')->where('type', 5);
+    }
 }

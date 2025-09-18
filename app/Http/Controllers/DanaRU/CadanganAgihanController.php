@@ -75,6 +75,7 @@ class CadanganAgihanController extends Controller
         $plan_forms = null;
         if($plan) $plan_forms = getDistributionFormPlans($year, $plan->id, $plan->type);
         // dd($plan_forms);
+        // dd($plan->fundCollection);
         return view('dana-ru.cadangan-agihan.index', compact('year', 'request', 'planList', 'plan', 'plan_forms', 'tab'));
     }
 
@@ -85,6 +86,8 @@ class CadanganAgihanController extends Controller
         if($request->plan_id)$plan = DruDistributionPlan::find($request->plan_id);
         else $plan = $plan_form->distribution_plan ?? null;
         $view_mode = $request->view;
+        // dd(getAvailableFacultyFromPlan($year));
+        // dd($plan_form->projectTransferInputData);
         // dd($plan_form->projectInputData);
         if($plan->type == 4) return view('dana-ru.cadangan-agihan.pindahan-form', compact('year', 'plan_form', 'plan', 'view_mode'));
         else if($plan->type == 5) return view('dana-ru.cadangan-agihan.pengumpulan-dana-form', compact('year', 'plan_form', 'plan', 'view_mode'));
@@ -166,7 +169,7 @@ class CadanganAgihanController extends Controller
         }
 
         session()->flash('success', "Cadangan Agihan Tambahan telah berjaya disimpan.");
-        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'cadangan_agihan', 'plan_id' => $plan->id]);
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=> $request->year, 'type' => 'cadangan_agihan', 'plan_id' => $plan->id]);
     }
 
     public function storeFundCollection(Request $request)
@@ -181,7 +184,7 @@ class CadanganAgihanController extends Controller
         $plan->save();
 
         session()->flash('success', "Permohonan Pengumpulan Dana telah berjaya disimpan.");
-        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'pengumpulan_dana', 'plan_id' => $plan->id]);
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=> $request->year, 'type' => 'pengumpulan_dana', 'plan_id' => $plan->id]);
     }
 
     public function storeFundCollectionForm(Request $request, $year=null)
@@ -223,11 +226,12 @@ class CadanganAgihanController extends Controller
         $project_t = explode('_',$request->project_t);
         $project_t_id = $project_t[0];
 
+
         if(!$plan_form)$plan_form = new DruDistributionPlanForm;
         $plan_form->distribution_plan_id = $plan->id;
         $plan_form->c_id = user()->id;
         $plan_form->mrun = 0;  
-        $plan_form->bpki = 0;
+        $plan_form->bpki = $request->bpki_id;
         $plan_form->ptj_id = $ptj_id;
         $plan_form->project_id = $project_id;
         $plan_form->amount = (float)str_replace( ",", "", $request->total_transfer);
@@ -235,6 +239,12 @@ class CadanganAgihanController extends Controller
         $plan_form->save();
 
         $plan->sumAmount();
+
+        $agihan_semula_plan = DruDistributionPlan::find($plan->parent_id);
+        if($agihan_semula_plan) {
+            $agihan_semula_plan->amount = $plan->amount;
+            $agihan_semula_plan->save();
+        }
 
         $approvalApp = ApprovalApp::whereAppId($plan->id)->whereModuleId(1)->orderBy('index', 'desc')->first();
         if($approvalApp)storeLogData($plan, $approvalApp->id, 'UPDATE', 'Kemaskini Pengumpulan Dana', ['plan_form_id' => $plan_form->id]);
@@ -255,7 +265,7 @@ class CadanganAgihanController extends Controller
         }
 
         session()->flash('success', "Cadangan Agihan Semula telah berjaya disimpan.");
-        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'agihan_semula', 'plan_id' => $plan->id]);
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=> $request->year, 'type' => 'agihan_semula', 'plan_id' => $plan->id]);
     }
 
     public function storeTransfer(Request $request, $id=null)
@@ -271,7 +281,7 @@ class CadanganAgihanController extends Controller
         }
 
         session()->flash('success', "Pindahan telah berjaya disimpan.");
-        return redirect()->route('dana-ru.cadangan-agihan.index', ['type' => 'pindahan', 'plan_id' => $plan->id]);
+        return redirect()->route('dana-ru.cadangan-agihan.index', ['year'=> $request->year, 'type' => 'pindahan', 'plan_id' => $plan->id]);
     }
 
     public function storePlan(Request $request, $year=null)
@@ -435,14 +445,14 @@ class CadanganAgihanController extends Controller
     {
         $request->validate([
             'ptj_f' => 'required',
-            'ptj_t' => 'required',
+            // 'ptj_t' => 'required',
             'project_f' => 'required',
             'project_t' => 'required',
             'total_transfer' => 'required'
         ],
         [
             'ptj_f.required' => 'Sila pilih PTJ.',
-            'ptj_t.required' => 'Sila pilih PTJ.',
+            // 'ptj_t.required' => 'Sila pilih PTJ.',
             'project_f.required' => 'Sila pilih projek.',
             'project_t.required' => 'Sila pilih projek.',
             'total_transfer.required' => 'Sila masukkan jumlah pindahan.',
@@ -456,9 +466,6 @@ class CadanganAgihanController extends Controller
         $ptj_f_original_code = $ptj_f[1];
         $project_f = explode('_',$request->project_f);
         $project_f_id = $project_f[0];
-        $ptj_t = explode('_',$request->ptj_t);
-        $ptj_t_id = $ptj_t[0];
-        $ptj_t_original_code = $ptj_t[1];
         $project_t = explode('_',$request->project_t);
         $project_t_id = $project_t[0];
             
@@ -466,10 +473,10 @@ class CadanganAgihanController extends Controller
         $plan_form->distribution_plan_id = $plan->id;
         $plan_form->c_id = user()->id;
         $plan_form->mrun = 0;  
-        $plan_form->bpki = 0;
+        $plan_form->bpki = $request->bpki_id;
         $plan_form->ptj_id = $ptj_f_id;
         $plan_form->project_id = $project_f_id;
-        $plan_form->ptj_id_transfer = $ptj_t_id;
+        $plan_form->ptj_id_transfer = $ptj_f_id;
         $plan_form->project_id_transfer = $project_t_id;
         $plan_form->amount = (float)str_replace( ",", "", $request->total_transfer);
         $plan_form->notes = $request->note;
@@ -619,30 +626,44 @@ class CadanganAgihanController extends Controller
         $plan = DruDistributionPlan::find($plan_id);
         $year = $plan->year;
         $doc_templates = DocTemplate::whereParentId($plan_id)->orderBy('order')->get();
+        $content_details = DocTemplate::whereParentId($plan_id)->where('type', 'terperinci')->get();
+        $content_summaries = DocTemplate::whereParentId($plan_id)->where('type', 'ringkasan')->get();
         $no_rujukan = $doc_templates->where('type', 'no_rujukan')->first();
+        $tajuk_kertas_kerja = $doc_templates->where('type', 'tajuk_kertas_kerja')->first();
         $parameters = Parameter::whereGroupId(5)->whereActive('Y')->get();
-        return view('dana-ru.cadangan-agihan.kertas-kerja', compact('doc_templates', 'plan', 'year', 'parameters', 'no_rujukan'));
+        return view('dana-ru.cadangan-agihan.kertas-kerja', compact('doc_templates', 'content_details', 'content_summaries', 'plan', 'year', 'parameters', 'no_rujukan', 'tajuk_kertas_kerja'));
     }
 
     public function kertasKerjaStore(Request $request, $plan_id)
     {
-        $plan = DruDistributionPlan::find($plan_id);
         // dd($request->all());
+        $plan = DruDistributionPlan::find($plan_id);
         $this->templateStore($plan_id, 'no_rujukan', $request->no_rujukan);
-        $this->templateStore($plan_id, 'tujuan', $request->tujuan);
-        $this->templateStore($plan_id, 'latar_belakang', $request->latar_belakang);
-        $this->templateStore($plan_id, 'peruntukan_baharu', $request->peruntukan_baharu);
-        $this->templateStore($plan_id, 'agihan_semula', $request->agihan_semula);
-        $this->templateStore($plan_id, 'caj_penyelenggaraan', $request->caj_penyelenggaraan);
-        $this->templateStore($plan_id, 'keputusan', $request->keputusan);
-        $this->templateStore($plan_id, 'pihak_bertanggungjawab', $request->pihak_bertanggungjawab);
-        $this->templateStore($plan_id, 'tujuan_details', $request->tujuan_details);
-        $this->templateStore($plan_id, 'latar_belakang_details', $request->latar_belakang_details);
-        $this->templateStore($plan_id, 'peruntukan_baharu_details', $request->peruntukan_baharu_details);
-        $this->templateStore($plan_id, 'agihan_semula_details', $request->agihan_semula_details);
-        $this->templateStore($plan_id, 'caj_penyelenggaraan_details', $request->caj_penyelenggaraan_details);
-        $this->templateStore($plan_id, 'pihak_bertanggungjawab_details', $request->pihak_bertanggungjawab_details);
-        $this->templateStore($plan_id, 'keputusan_details', $request->keputusan_details);
+        $this->templateStore($plan_id, 'tajuk_kertas_kerja', $request->tajuk_kertas_kerja);
+
+        if(count($request->terperinci_title) > 0){
+            $terperinciCount = DocTemplate::whereParentId($plan_id)->whereType('terperinci')->count();
+            DocTemplate::whereParentId($plan_id)->whereType('terperinci')->orderBy('order', 'desc')
+            ->take(abs(count($request->terperinci_title) - $terperinciCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+        }
+        foreach ($request->terperinci_title as $key => $title) {
+            $this->templateStore($plan_id, 'terperinci', $request->terperinci_desc[$key], $key+1, $title, (int)$request->terperinci_check[$key], $request->terperinci_numbering_check ? 1:0, $request->terperinci_numbering[$key]);
+        }
+
+        if(count($request->ringkasan_title) > 0){
+            $ringkasanCount = DocTemplate::whereParentId($plan_id)->whereType('ringkasan')->count();
+            DocTemplate::whereParentId($plan_id)->whereType('ringkasan')->orderBy('order', 'desc')
+            ->take(abs(count($request->ringkasan_title) - $ringkasanCount))->get()
+            ->each(function ($doc) {
+                $doc->delete();
+            });
+        }
+        foreach ($request->ringkasan_title as $key => $title) {
+            $this->templateStore($plan_id, 'ringkasan', $request->ringkasan_desc[$key], $key+1, $title, (int)$request->ringkasan_check[$key], $request->ringkasan_numbering_check ? 1:0, $request->ringkasan_numbering[$key]);
+        }
 
         if(count($request->prepared_by_name) > 0){
             $nameCount = DocTemplate::whereParentId($plan_id)->whereType('prepared_by_name')->count();
@@ -702,20 +723,19 @@ class CadanganAgihanController extends Controller
         return back();
     }
 
-    public function templateStore($plan_id, $type, $value, $order = null)
+    public function templateStore($plan_id, $type, $value, $order = null, $title = null, $display = 1, $numbering_check = 0, $numbering = null)
     {
-        if($value){
-            DocTemplate::updateOrCreate(
-                ['parent_id' => $plan_id, 'type' => $type, 'order' => $order],
-                [
-                    'value' => $value,
-                    'order' => $order,
-                ]
-            );
-        }
-        else {
-            DocTemplate::whereParentId($plan_id)->whereType($type)->whereOrder($order)->delete();
-        }
+        DocTemplate::updateOrCreate(
+            ['parent_id' => $plan_id, 'type' => $type, 'order' => $order],
+            [
+                'value' => $value,
+                'order' => $order,
+                'title' => $title,
+                'display' => $display,
+                'numbering_check' => $numbering_check,
+                'numbering' => $numbering,
+            ]
+        );
     }
 
     public function storeAllocation($plan)

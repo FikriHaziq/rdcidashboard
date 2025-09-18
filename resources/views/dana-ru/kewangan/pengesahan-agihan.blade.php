@@ -1,6 +1,20 @@
 @component("layouts.app")
 @slot("module") Dana RU @endslot
 @slot("submodule") Pengesahan Agihan @endslot
+@push('custom-css')
+<style>
+    .upload-mail {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+    .download-mail {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        right: 35px !important;
+    }
+</style>
+
+@endpush
 @slot("content")
 <x-title hasYear :year="$year" :route="route('dana-ru.kewangan.pengesahan-agihan.index')">Pengesahan Agihan {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
@@ -36,10 +50,22 @@
                     </h2>
                     <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                         @if($admin_access)
-                        <a href="" class="btn btn-outline-secondary w-64 position-relative justify-content-start rounded-pill me-4">
+                        {{-- <a href="" class="btn btn-outline-secondary w-64 position-relative justify-content-start rounded-pill me-4">
                             Template Borang Lampiran A
                             <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
+                        </a> --}}
+                        @if($mail_template)
+                        <button class="btn btn-outline-secondary w-72 position-relative justify-content-start rounded-pill me-4">
+                            <a href="{{ route('dana-ru.kewangan.mail-template.download', $mail_template->id) }}">{{ $mail_template->filename }}</a>
+                            <a href="{{ route('dana-ru.kewangan.mail-template.index', $year) }}" class="w-8 h-8 upload-mail position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5" data-toggle="tooltip" data-tippy-content="Muat naik surat baharu"> <i data-feather="upload" class="w-4 h-4"></i> </a>
+                            <a href="{{ route('dana-ru.kewangan.mail-template.download', $mail_template->id) }}" class="w-8 h-8 download-mail position-absolute d-flex justify-content-center align-items-center bg-theme-9 text-white rounded-pill end-0 top-0 bottom-0 my-auto me-0.5" data-toggle="tooltip" data-tippy-content="Muat turun surat"> <i data-feather="download" class="w-4 h-4"></i> </a>
+                        </button>
+                        @else
+                        <a href="{{ route('dana-ru.kewangan.mail-template.index', $year) }}" class="btn btn-outline-secondary w-64 position-relative justify-content-start rounded-pill me-4">
+                            Muat Naik Template Surat
+                            <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="upload" class="w-4 h-4"></i> </span>
                         </a>
+                        @endif
                         @endif
                         @if($plan_forms_count > 0)
                         <button type="submit" form="update-plan-form" class="btn btn-primary me-4" name="type" value="update"> Save ALL UTMFIN Ref. No. </button>
@@ -61,7 +87,7 @@
                                 <th class="text-nowrap">CHARGELINE</th>
                                 <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                 <th class="text-nowrap">PIC DECLARATION STATUS</th>
-                                <th class="text-nowrap">BROADCAST EMAIL</th>
+                                <th class="text-nowrap">DECLARATION REMINDER</th>
                                 <th class="text-nowrap">ACTION</th>
                                 <th class="text-nowrap">LAMPIRAN A</th>
                             </tr>
@@ -92,7 +118,7 @@
                                         @endif
                                     </td>
                                     <td class="text-nowrap text-center">
-                                        <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date) disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
+                                        <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" id="reminder_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date || $plan_form->plan_form_approved == 'N') disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
                                     </td>
                                     <td class="text-nowrap text-center" style="min-width: 450px">
                                         <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
@@ -107,7 +133,7 @@
                                                 @if($plan_form->plan_form_approved == 'Y')
                                                 <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
                                                 @else
-                                                @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
+                                                @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary @if(!$mail_template) disabled @endif" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
                                                 <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
                                                 <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
                                                 <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
@@ -185,6 +211,7 @@
                 success: function(res) {
                     $('#processing_'+id).hide();
                     $('#approved_'+id).show();
+                    $('#reminder_'+id).removeClass('disabled');
                 },
                 error: function(data) {
                     $('#processing_'+id).hide();

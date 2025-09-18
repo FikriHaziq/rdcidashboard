@@ -28,6 +28,7 @@
                         <tr>
                             <th class="whitespace-nowrap">#</th>
                             <th class="whitespace-nowrap">PROGRAM</th>
+                            <th class="whitespace-nowrap">BPKI</th>
                             <th class="whitespace-nowrap">CODE</th>
                             <th class="whitespace-nowrap">NAME</th>
                             <th class="whitespace-nowrap">YEAR</th>
@@ -62,6 +63,7 @@
         columns: [
             {data: 'DT_RowIndex',name: 'DT_RowIndex'},
             {data: 'program',name: 'program'},
+            {data: 'bpki',name: 'bpki'},
             {data: 'dmf_code',name: 'dmf_code'},
             {data: 'dmf_name',name: 'dmf_name'},
             {data: 'applied_year',name: 'year'},

@@ -26,7 +26,10 @@ class DocGeneratorController extends Controller
         $plan = DruDistributionPlan::find($plan_id);
         // Create a new PHPWord instance
         $items = DocTemplate::whereParentId($plan_id)->orderBy('order')->get();
+        $content_details = DocTemplate::whereParentId($plan_id)->where('type', 'terperinci')->whereDisplay(1)->orderBy('order')->get();
+        $content_summaries = DocTemplate::whereParentId($plan_id)->where('type', 'ringkasan')->whereDisplay(1)->orderBy('order')->get();
         $no_rujukan = $items->where('type', 'no_rujukan')->first();
+        $tajuk_kertas_kerja = $items->where('type', 'tajuk_kertas_kerja')->first();
         $no_rujukan_eft = $plan->forms[0]->reference_no ?? '';
         $phpWord = new PhpWord();
         $phpWord->setDefaultFontName('Arial');
@@ -72,7 +75,7 @@ class DocGeneratorController extends Controller
         // Add text elements
         $section1->addText('UNIVERSITI TEKNOLOGI MALAYSIA',$quat_11_b, $title_center);
         $section1->addText('KERTAS KERJA UNTUK KELULUSAN MESYUARAT JAWATANKUASA PENGURUSAN UNIVERSITI',$quat_11_b, $title_center);
-        $section1->addText('CADANGAN AGIHAN PERUNTUKAN BAHARU DANA UNIVERSITI PENYELIDIKAN TAHUN '. $plan->year .' DAN AGIHAN SEMULA BAKI DANA RU (BAJET Q)',$quat_11_b, $title_center);
+        $section1->addText($tajuk_kertas_kerja->value ,$quat_11_b, $title_center);
         $section1->addText('RINGKASAN EKSEKUTIF',$quat_11_b_u, $title_center);
         
         $fullWidth = Converter::cmToTwip(21) - Converter::cmToTwip(4);
@@ -101,77 +104,14 @@ class DocGeneratorController extends Controller
         $table->addCell($table_2_width, $headerCellStyle)->addText('PERKARA', $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
         $table->addCell($fullWidth - $table_1_width - $table_2_width, $headerCellStyle)->addText('CATATAN', $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
 
-        $tujuan = $items->where('type', 'tujuan')->first();
-        $table->addRow();
-        $table->addCell($table_1_width, ['valign' => 'center'])->addText("1.", $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-        $table->addCell($table_2_width, ['valign' => 'center'])->addText("Tujuan Kertas Kerja", $quat_11, ['spaceAfter' => 0]);
-        $contentCell = $table->addCell($fullWidth - $table_1_width - $table_2_width);
-        if($tujuan)
-        {
-            $tujuanContent = str_replace('{{year}}', $plan->year, $tujuan->value);
-            $tujuanContent = str_replace('<br>', '<br />', $tujuanContent);
-            Html::addHtml($contentCell, $tujuanContent, false, false);
-        }
-
-        $latarBelakang = $items->where('type', 'latar_belakang')->first();
-        $table->addRow();
-        $table->addCell($table_1_width, ['valign' => 'center'])->addText("2.", $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-        $table->addCell($table_2_width, ['valign' => 'center'])->addText("Latar Belakang", $quat_11, ['spaceAfter' => 0]);
-        $contentCell = $table->addCell($fullWidth - $table_1_width - $table_2_width);
-        if($latarBelakang)
-        {
-            $latarBelakangContent = str_replace('{{year}}', $plan->year, $latarBelakang->value);
-            $latarBelakangContent = str_replace('<br>', '<br />', $latarBelakangContent);
-            Html::addHtml($contentCell, $latarBelakangContent, false, false);
-        }
-
-        $table->addRow();
-        $table->addCell($table_1_width, ['valign' => 'center'])->addText("3.", $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-        $table->addCell($table_2_width, ['valign' => 'center'])->addText("Implikasi Kewangan & Sumber Manusia", $quat_11, ['spaceAfter' => 0]);
-        $contentCell = $table->addCell($fullWidth - $table_1_width - $table_2_width);
-        $peruntukanBaharu = $items->where('type', 'peruntukan_baharu')->first();
-        if($peruntukanBaharu)
-        {
-            $contentCell->addText("Cadangan Agihan Peruntukan Baharu Dana Universiti Penyelidikan Tahun ".$plan->year." RM ".number_format($plan->amount, 2, '.', ','), $quat_11_b_u);
-            $peruntukanBaharuContent = str_replace('{{year}}', $plan->year, $peruntukanBaharu->value);
-            $peruntukanBaharuContent = str_replace('<br>', '<br />', $peruntukanBaharuContent);
-            Html::addHtml($contentCell, $peruntukanBaharuContent, false, false);
-        }
-        $agihanSemula = $items->where('type', 'agihan_semula')->first();
-        if($agihanSemula)
-        {
-            $contentCell->addText("Cadangan Agihan Semula Baki Dana Universiti Penyelidikan (Bajet Q)", $quat_11_b_u);
-            $agihanSemulaContent = str_replace('{{year}}', $plan->year, $agihanSemula->value);
-            $agihanSemulaContent = str_replace('<br>', '<br />', $agihanSemulaContent);
-            Html::addHtml($contentCell, $agihanSemulaContent, false, false);
-        }
-        $cajPenyelenggaraan = $items->where('type', 'caj_penyelenggaraan')->first();
-        if($cajPenyelenggaraan)
-        {
-            $contentCell->addText("Caj Penyelenggaraan Dan Pengurusan R&D", $quat_11_b_u);
-            $cajPenyelenggaraanContent = str_replace('{{year}}', $plan->year, $cajPenyelenggaraan->value);
-            $cajPenyelenggaraanContent = str_replace('<br>', '<br />', $cajPenyelenggaraanContent);
-            Html::addHtml($contentCell, $cajPenyelenggaraanContent, false, false);
-        }
-        $pihakBertanggungjawab = $items->where('type', 'pihak_bertanggungjawab')->first();
-        if($pihakBertanggungjawab)
-        {
-            $contentCell->addText("Pihak Bertanggungjawab", $quat_11_b_u);
-            $pihakBertanggungjawabContent = str_replace('{{year}}', $plan->year, $pihakBertanggungjawab->value);
-            $pihakBertanggungjawabContent = str_replace('<br>', '<br />', $pihakBertanggungjawabContent);
-            Html::addHtml($contentCell, $pihakBertanggungjawabContent, false, false);
-        }
-
-        $keputusan = $items->where('type', 'keputusan')->first();
-        $table->addRow();
-        $table->addCell($table_1_width, ['valign' => 'center'])->addText("4.", $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-        $table->addCell($table_2_width, ['valign' => 'center'])->addText("Pertimbangan & Keputusan Universiti", $quat_11, ['spaceAfter' => 0]);
-        $contentCell = $table->addCell($fullWidth - $table_1_width - $table_2_width);
-        if($keputusan)
-        {
-            $keputusanContent = str_replace('{{year}}', $plan->year, $keputusan->value);
-            $keputusanContent = str_replace('<br>', '<br />', $keputusanContent);
-            Html::addHtml($contentCell, $keputusanContent, false, false);
+        foreach ($content_summaries as $key => $ringkasan) {
+            $table->addRow();
+            $table->addCell($table_1_width, ['valign' => 'center'])->addText($ringkasan->numbering_check ? $ringkasan->numbering : ($key+1).'.', $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+            $table->addCell($table_2_width, ['valign' => 'center'])->addText($ringkasan->title, $quat_11, ['spaceAfter' => 0]);
+            $contentCell = $table->addCell($fullWidth - $table_1_width - $table_2_width);
+            $content = str_replace('{{year}}', $plan->year, $ringkasan->value);
+            $content = str_replace('<br>', '<br />', $content);
+            Html::addHtml($contentCell, $content, false, false);
         }
 
         $section1->addPageBreak();
@@ -202,7 +142,7 @@ class DocGeneratorController extends Controller
 
         $section1->addTextBreak();
         $section1->addText('KERTAS KERJA UNTUK KELULUSAN MESYUARAT JAWATANKUASA PENGURUSAN UNIVERSITI',$quat_11_b, $title_center);
-        $section1->addText('CADANGAN AGIHAN PERUNTUKAN BAHARU DANA UNIVERSITI PENYELIDIKAN TAHUN '. $plan->year .' DAN AGIHAN SEMULA BAKI DANA RU (BAJET Q)',$quat_11_b, $title_center);
+        $section1->addText($tajuk_kertas_kerja->value ,$quat_11_b, $title_center);
         $section1->addTextBreak();
 
         $phpWord->addTableStyle('Signature', $tableStyle);
@@ -406,29 +346,26 @@ class DocGeneratorController extends Controller
         // Add text elements
         $section1->addText('UNIVERSITI TEKNOLOGI MALAYSIA',$quat_11_b, $title_center);
         $section1->addText('KERTAS KERJA UNTUK KELULUSAN MESYUARAT JAWATANKUASA PENGURUSAN UNIVERSITI',$quat_11_b, $title_center);
-        $section1->addText('CADANGAN AGIHAN PERUNTUKAN BAHARU DANA UNIVERSITI PENYELIDIKAN TAHUN '. $plan->year .' DAN AGIHAN SEMULA BAKI DANA RU (BAJET Q)',$quat_11_b, $title_center);
+        $section1->addText($tajuk_kertas_kerja->value ,$quat_11_b, $title_center);
         $section1->addTextBreak();
         $section1->addTextBreak();
 
         $listCount = 1;
-        foreach (Parameter::whereGroupId(5)->get() as $key => $item) {
-            $details = $items->where('type', $item->code.'_details')->first();
-            if($details){
-                $titleContent = str_replace('{{year}}', $plan->year, $item->parameter_name);
-                $titleContent = str_replace('{{amount}}', "RM ".number_format($plan->amount, 2, '.', ','), $titleContent);
-                $section1->addText($listCount.'.0 '.strtoupper($titleContent), $quat_11_b);
-                $indentStyle = [
-                    'indentation' => [
-                        'left' => Converter::cmToTwip(6), 
-                    ],
-                ];
-                $htmlContent = str_replace('{{year}}', $plan->year, $details->value);
-                $htmlContent = str_replace('{{amount}}', "RM ".number_format($plan->amount, 2, '.', ','), $htmlContent);
-                $htmlContent = str_replace('<br>', '<br />', $htmlContent);
-                Html::addHtml($section1, $htmlContent, false, false, $indentStyle);
-                $section1->addTextBreak();
-                $listCount++;
-            }
+        foreach ($content_details as $key => $terperinci) {
+            $titleContent = str_replace('{{year}}', $plan->year, $terperinci->title);
+            $titleContent = str_replace('{{amount}}', "RM ".number_format($plan->amount, 2, '.', ','), $titleContent);
+            $section1->addText(($terperinci->numbering_check ? $terperinci->numbering.' ' : ($key+1).'.0 ').strtoupper($titleContent), $quat_11_b);
+            $indentStyle = [
+                'indentation' => [
+                    'left' => Converter::cmToTwip(6), 
+                ],
+            ];
+            $htmlContent = str_replace('{{year}}', $plan->year, $terperinci->value);
+            $htmlContent = str_replace('{{amount}}', "RM ".number_format($plan->amount, 2, '.', ','), $htmlContent);
+            $htmlContent = str_replace('<br>', '<br />', $htmlContent);
+            Html::addHtml($section1, $htmlContent, false, false, $indentStyle);
+            $section1->addTextBreak();
+            $listCount++;
         }
 
         $section2 = $phpWord->addSection([
@@ -453,7 +390,6 @@ class DocGeneratorController extends Controller
         $headerTable->addCell(6000)->addText(($no_rujukan_eft ?? '' != '') ? 'RUJUKAN EFT: '. $no_rujukan_eft : '', $quat_10_b, ['align' => 'right']);
         $header->addTextBreak();
         // Add text elements
-        $section2->addText('LAMPIRAN 1: CADANGAN AGIHAN PERUNTUKAN DANA UNIVERSITI PENYELIDIKAN TAHUN '.$plan->year.' BERJUMLAH RM '.number_format($plan->amount, 2, '.', ','), $quat_11_b);
         
         $tableLFullwidth = Converter::cmToTwip(29.7) - Converter::cmToTwip(1);
         $tableFirstColLFullwidth = 300;
@@ -490,98 +426,101 @@ class DocGeneratorController extends Controller
             'valign' => 'center'
         ];
 
-        // Add table to the section
-        $tableL1 = $section2->addTable('Lampiran1');
+        if(in_array($plan->type, [1,2])){
+            $section2->addText('LAMPIRAN 1: CADANGAN AGIHAN PERUNTUKAN DANA UNIVERSITI PENYELIDIKAN TAHUN '.$plan->year.' BERJUMLAH RM '.number_format($plan->amount, 2, '.', ','), $quat_11_b);
 
-        // Add header row with colored background
-        $tableL1->addRow();
-        $tableL1->addCell($tableFirstColLFullwidth, $headerLCellStyle)->addText('NO.', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(10/100*$tableLWidth, $headerLCellStyle)->addText('PTJ PIC', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('JENIS AGIHAN', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('CHARGELINE', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('AGIHAN '.$plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(30/100*$tableLWidth, $headerLCellStyle)->addText('KPI', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            // Add table to the section
+            $tableL1 = $section2->addTable('Lampiran1');
 
-        $plan_forms = getDistributionFormPlans($plan->year, $plan->id);
-        $totalAmount = 0;
-        foreach ($plan_forms as $key => $plan_form) {
-            $chargeline = '';
-            if($plan_form->ddf_status == 'active') $chargeline = 'Q.'. getAppendedPtjCode($plan_form->ptj_code, 7) . '.'. $plan_form->ddf_code. '.'. getProjectSecondCode($plan_form->ddf_code_2);                                
+            // Add header row with colored background
             $tableL1->addRow();
-            $tableL1->addCell($tableFirstColLFullwidth, ['valign' => 'center'])->addText($key+1, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL1->addCell(10/100*$tableLWidth, ['valign' => 'center'])->addText($plan_form->ptj, $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText(strtoupper($plan_form->ddf_title), $quat_11, ['spaceAfter' => 0]);
-            $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText($chargeline, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText('RM '.number_format($plan_form->plan_form_amount, 2, '.', ','), $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $kpiCell = $tableL1->addCell(30/100*$tableLWidth, ['valign' => 'center']);
-            $mainKpiContent = '<p style="line-height: 1.5;">'.$plan_form->main_kpi_details.'</p>';
-            $mainKpiContent =  str_replace('<br>', '<br />', $mainKpiContent);
-            Html::addHtml($kpiCell, $mainKpiContent, false, false, ['spaceAfter' => 0]);
-            if($plan_form->kpi_details){
-                $kpiContent = '<p style="line-height: 1.5;">'.$plan_form->kpi_details.'</p>';
-                $kpiContent =  str_replace('<br>', '<br />', $kpiContent);
-                Html::addHtml($kpiCell, $kpiContent, false, false, ['spaceAfter' => 0]);
+            $tableL1->addCell($tableFirstColLFullwidth, $headerLCellStyle)->addText('NO.', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(10/100*$tableLWidth, $headerLCellStyle)->addText('PTJ PIC', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('JENIS AGIHAN', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('CHARGELINE', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(20/100*$tableLWidth, $headerLCellStyle)->addText('AGIHAN '.$plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(30/100*$tableLWidth, $headerLCellStyle)->addText('KPI', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+
+            $plan_forms = getDistributionFormPlans($plan->year, $plan->id);
+            $totalAmount = 0;
+            foreach ($plan_forms as $key => $plan_form) {
+                $chargeline = '';
+                if($plan_form->ddf_status == 'active') $chargeline = 'Q.'. getAppendedPtjCode($plan_form->ptj_code, 7) . '.'. $plan_form->ddf_code. '.'. getProjectSecondCode($plan_form->ddf_code_2);                                
+                $tableL1->addRow();
+                $tableL1->addCell($tableFirstColLFullwidth, ['valign' => 'center'])->addText($key+1, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL1->addCell(10/100*$tableLWidth, ['valign' => 'center'])->addText($plan_form->ptj, $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText(strtoupper($plan_form->ddf_title), $quat_11, ['spaceAfter' => 0]);
+                $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText($chargeline, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL1->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText('RM '.number_format($plan_form->plan_form_amount, 2, '.', ','), $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $kpiCell = $tableL1->addCell(30/100*$tableLWidth, ['valign' => 'center']);
+                $mainKpiContent = '<p style="line-height: 1.5;">'.$plan_form->main_kpi_details.'</p>';
+                $mainKpiContent =  str_replace('<br>', '<br />', $mainKpiContent);
+                Html::addHtml($kpiCell, $mainKpiContent, false, false, ['spaceAfter' => 0]);
+                if($plan_form->kpi_details){
+                    $kpiContent = '<p style="line-height: 1.5;">'.$plan_form->kpi_details.'</p>';
+                    $kpiContent =  str_replace('<br>', '<br />', $kpiContent);
+                    Html::addHtml($kpiCell, $kpiContent, false, false, ['spaceAfter' => 0]);
+                }
+                $totalAmount += $plan_form->plan_form_amount;
             }
-            $totalAmount += $plan_form->plan_form_amount;
+
+            $tableL1->addRow();
+            $tableL1->addCell($tableFirstColLFullwidth, ['bgColor' => '00AF50','valign' => 'center', 'gridSpan' => 4])->addText('JUMLAH AGIHAN DANA RU '. $plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(20/100*$tableLWidth, $footerLCellStyle)->addText('RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL1->addCell(30/100*$tableLWidth, $footerLCellStyle)->addText('', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+
         }
 
-        $tableL1->addRow();
-        $tableL1->addCell($tableFirstColLFullwidth, ['bgColor' => '00AF50','valign' => 'center', 'gridSpan' => 4])->addText('JUMLAH AGIHAN DANA RU '. $plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(20/100*$tableLWidth, $footerLCellStyle)->addText('RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL1->addCell(30/100*$tableLWidth, $footerLCellStyle)->addText('', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+        else if(in_array($plan->type, [3])){
 
+            // $agihan_semula_plan = $plan_forms = getDistributionFormPlans($plan->year, $plan->id);
+            $agihan_semula_lists = getDistributionFormPlans($plan->year, $plan->id);
+            $totalAmount = 0;
 
-        $agihan_semula_plan = DruDistributionPlan::where('year', $plan->year)->whereType(3)->latest()->first();
-        $agihan_semula_lists = $agihan_semula_plan ? getDistributionFormPlans($plan->year, $agihan_semula_plan->id) : [];
-        $totalAmount = 0;
+            foreach ($agihan_semula_lists as $key => $plan_form) {
+                $totalAmount += $plan_form->plan_form_amount;
+            }
 
-        foreach ($agihan_semula_lists as $key => $plan_form) {
-            $totalAmount += $plan_form->plan_form_amount;
-        }
+            $section2->addText('LAMPIRAN 1: CADANGAN AGIHAN SEMULA BAKI DANA RU (BAJET Q) BERJUMLAH RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b);
+            // Add table to the section
+            $tableL2 = $section2->addTable('Lampiran2');
 
-        $section2->addTextBreak();
-        $section2->addTextBreak();
-
-        $section2->addText('LAMPIRAN 2: CADANGAN AGIHAN SEMULA BAKI DANA RU (BAJET Q) BERJUMLAH RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b);
-        // Add table to the section
-        $tableL2 = $section2->addTable('Lampiran2');
-
-        // Add header row with colored background
-        $tableL2->addRow();
-        $tableL2->addCell($tableFirstColLFullwidth, $headerL2CellStyle)->addText('NO.', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(10/100*$tableLWidth, $headerL2CellStyle)->addText('PTJ PIC', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('JENIS AGIHAN', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('CHARGELINE', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('AGIHAN '.$plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(30/100*$tableLWidth, $headerL2CellStyle)->addText('KPI', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-
-        
-
-        foreach ($agihan_semula_lists as $key => $plan_form) {
-            $chargeline = '';
-            if($plan_form->ddf_status == 'active') $chargeline = 'Q.'. getAppendedPtjCode($plan_form->ptj_code, 7) . '.'. $plan_form->ddf_code. '.'. getProjectSecondCode($plan_form->ddf_code_2);                                
+            // Add header row with colored background
             $tableL2->addRow();
-            $tableL2->addCell($tableFirstColLFullwidth, ['valign' => 'center'])->addText($key+1, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL2->addCell(10/100*$tableLWidth, ['valign' => 'center'])->addText($plan_form->ptj, $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText(strtoupper($plan_form->ddf_title), $quat_11, ['spaceAfter' => 0]);
-            $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText($chargeline, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText('RM '.number_format($plan_form->plan_form_amount, 2, '.', ','), $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
-            $kpiCell = $tableL2->addCell(30/100*$tableLWidth, ['valign' => 'center']);
-            $mainKpiContent = '<p style="line-height: 1.5;">'.$plan_form->main_kpi_details.'</p>';
-            $mainKpiContent =  str_replace('<br>', '<br />', $mainKpiContent);
-            Html::addHtml($kpiCell, $mainKpiContent, false, false, ['spaceAfter' => 0]);
-            if($plan_form->kpi_details){
-                $kpiContent = '<p style="line-height: 1.5;">'.$plan_form->kpi_details.'</p>';
-                $kpiContent =  str_replace('<br>', '<br />', $kpiContent);
-                Html::addHtml($kpiCell, $kpiContent, false, false, ['spaceAfter' => 0]);
+            $tableL2->addCell($tableFirstColLFullwidth, $headerL2CellStyle)->addText('NO.', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(10/100*$tableLWidth, $headerL2CellStyle)->addText('PTJ PIC', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('JENIS AGIHAN', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('CHARGELINE', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(20/100*$tableLWidth, $headerL2CellStyle)->addText('AGIHAN '.$plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(30/100*$tableLWidth, $headerL2CellStyle)->addText('KPI', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+
+            
+
+            foreach ($agihan_semula_lists as $key => $plan_form) {
+                $chargeline = '';
+                if($plan_form->ddf_status == 'active') $chargeline = 'Q.'. getAppendedPtjCode($plan_form->ptj_code, 7) . '.'. $plan_form->ddf_code. '.'. getProjectSecondCode($plan_form->ddf_code_2);                                
+                $tableL2->addRow();
+                $tableL2->addCell($tableFirstColLFullwidth, ['valign' => 'center'])->addText($key+1, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL2->addCell(10/100*$tableLWidth, ['valign' => 'center'])->addText($plan_form->ptj, $quat_11_b, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText(strtoupper($plan_form->ddf_title), $quat_11, ['spaceAfter' => 0]);
+                $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText($chargeline, $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $tableL2->addCell(20/100*$tableLWidth, ['valign' => 'center'])->addText('RM '.number_format($plan_form->plan_form_amount, 2, '.', ','), $quat_11, ['spaceAfter' => 0,'alignment' => 'center']);
+                $kpiCell = $tableL2->addCell(30/100*$tableLWidth, ['valign' => 'center']);
+                $mainKpiContent = '<p style="line-height: 1.5;">'.$plan_form->main_kpi_details.'</p>';
+                $mainKpiContent =  str_replace('<br>', '<br />', $mainKpiContent);
+                Html::addHtml($kpiCell, $mainKpiContent, false, false, ['spaceAfter' => 0]);
+                if($plan_form->kpi_details){
+                    $kpiContent = '<p style="line-height: 1.5;">'.$plan_form->kpi_details.'</p>';
+                    $kpiContent =  str_replace('<br>', '<br />', $kpiContent);
+                    Html::addHtml($kpiCell, $kpiContent, false, false, ['spaceAfter' => 0]);
+                }
             }
+
+            $tableL2->addRow();
+            $tableL2->addCell($tableFirstColLFullwidth, ['bgColor' => '16365D','valign' => 'center', 'gridSpan' => 4])->addText('JUMLAH AGIHAN SEMULA DANA RU '. $plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(20/100*$tableLWidth, $footerL2CellStyle)->addText('RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
+            $tableL2->addCell(30/100*$tableLWidth, $footerL2CellStyle)->addText('', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
         }
-
-        $tableL2->addRow();
-        $tableL2->addCell($tableFirstColLFullwidth, ['bgColor' => '16365D','valign' => 'center', 'gridSpan' => 4])->addText('JUMLAH AGIHAN SEMULA DANA RU '. $plan->year, $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(20/100*$tableLWidth, $footerL2CellStyle)->addText('RM '.number_format($totalAmount, 2, '.', ','), $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-        $tableL2->addCell(30/100*$tableLWidth, $footerL2CellStyle)->addText('', $quat_11_b_w, ['spaceAfter' => 0,'alignment' => 'center']);
-
         // Create a temporary file in the system's temp directory
         $tempFile = tempnam(sys_get_temp_dir(), 'PHPWord');
 

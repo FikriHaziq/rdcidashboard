@@ -12,6 +12,7 @@ use App\Models\MasterList\MasterlistDruAllocation;
 use App\Models\MasterList\MasterlistDruExpenses;
 use App\Models\MasterList\MasterlistDruYear;
 use App\Models\DanaRU\DruMainFund;
+use App\Models\DanaRU\DruMailTemplate;
 use App\Models\ApprovalApp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -51,7 +52,13 @@ class FinancialController extends Controller
         if($plan_forms){
             $plan_forms_count = $plan_forms->where('plan_form_approved', 'N')->count();
         }
-        return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plans', 'plan_forms', 'plan_forms_count'));
+        if(!$plan_forms) {
+            session()->flash('info', "Tiada cadangan agihan yang telah lulus pada tahun ini.");
+            return back();
+        }
+        $mail_template = DruMailTemplate::where('year', $year)->first();
+        // dd($mail_template);
+        return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plans', 'plan_forms', 'plan_forms_count', 'mail_template'));
     }
 
     public function pengesahanAgihanShow($plan_id)
@@ -904,5 +911,67 @@ class FinancialController extends Controller
 
         // Return the PowerPoint file as a download response
         return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+    public function mailTemplate($year){
+        return view('dana-ru.kewangan.mail-template', compact('year'));
+    }
+
+    public function mailTemplatePost(Request $request)
+    {
+        // if($request->status==6){
+        //     $plan = DruDistributionPlan::find($request->plan_id);
+        //     dd($plan->forms);
+        // }
+        $request->validate([
+            'file_upload' => 'required',
+        ],
+        [
+            'file_upload.required' => 'Sila muat naik template surat.',
+        ]);
+
+        $mail_template = DruMailTemplate::where('year', $request->year)->first();
+        // dd($mail_template);
+
+        $file = collect(json_decode($request->file_upload));
+
+        if(!$mail_template) $mail_template = new DruMailTemplate; 
+        $mail_template->year = $request->year;
+        $mail_template->c_id = user()->id;
+        $mail_template->filename = $file['filename'];
+        $mail_template->save();
+        DruDataAttachment::whereTable('mail_template')->whereParentId($mail_template->id)->delete();
+        $data = new DruDataAttachment;
+        $data->table = 'mail_template';
+        $data->parent_id = $mail_template->id;
+        if($request->file_upload){
+            $data->filename = $file['filename'];
+            $file = collect(json_decode($request->file_upload));
+            $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
+
+            if($temporaryFile){
+                $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+                $temporaryFile->delete();
+                $data->save();
+                Storage::deleteDirectory('data/tmp/'.$file['folder']);
+            }
+        }
+        session()->flash('success', "Template surat telah berjaya dimuatnaik.");
+        return redirect()->route('dana-ru.kewangan.pengesahan-agihan.index');
+    }
+
+    public function downloadFile($id)
+    {
+        $file = DruDataAttachment::whereParentId($id)->whereTable('mail_template')->first();
+        if($file){
+            $mediaItem = $file->getFirstMedia('druDataAttachment');
+            $filepath = $mediaItem->getPath();
+            $filename = $file->filename;
+            return response()->download($filepath, $filename);
+        }
+        else{
+            session()->flash('error', "File not found");
+            return back();
+        }
     }
 }

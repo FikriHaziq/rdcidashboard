@@ -23,7 +23,7 @@
                         <label for="bpki, #project">SKOP PERBELANJAAN</label>
                     </div>
                     <div class="g-col-9">
-                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" disabled>
+                        <select id="bpki" name="bpki" class="form-select @error('bpki') border-theme-6 @enderror" disabled onchange="getProjectList()">
                             <option value="">--Sila pilih--</option>
                             @foreach (getBpkiList() as $bpki)
                                 <option value="{{ $bpki->id }}" @if((old('bpki') ?? ($plan_form->bpki ?? '')) == $bpki->id) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
@@ -401,13 +401,14 @@
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
+        var bpki = $("#bpki").val();
         var faculty = $("#ptj").val();
         var oldProject = '';
         if (program && faculty) {
             const faculty_arr = faculty.split('_');
             const faculty_id = faculty_arr[0];
             $.ajax({
-                url: "/ajax/getProjectList/" + program + "/" + faculty_id,
+                url: "/ajax/getProjectList/" + program  + "/" + bpki  + "/" + faculty_id,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

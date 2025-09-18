@@ -1542,75 +1542,38 @@ class AjaxController extends Controller
         ], 200);
     }
 
-    public function getProjectList($program_id = 0, $faculty)
+    public function getProjectList($program_id, $bpki_id, $faculty, $year = null)
     {
-        // $projects = DruDistFund::from('dru_dist_funds as ddf')
-        //     ->select('*')
-        //     ->where('ddf.')
-        if($program_id != 0){
-            $query = DB::table('dru_dist_funds AS ddf')
-            ->select([
-                'ddf.id as id',
-                DB::raw('UPPER(ddf.title) as title'),
-                'ddf.code as code',
-                'ddf.code_2 as code_2',
-                'f.original_code as f_original_code',
-                // DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
-                // DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
-                // 'ddf.faculty_code as ddf_faculty_code',
-                // 'p.code as program',
-                // 'dmf.id as dmf_id',
-                // 'dmf.code as dmf_code',
-                // 'f.id as f_id',
-                // 'f.code as f_code',
-                // 'f.code as f_original_code',
-                // 'ddf.is_draft as ddf_is_draft',
-                // 'ddf.status as ddf_status',
-                // 'ddf.created_at as ddf_created_at',
-                // 'ddf.updated_at as ddf_updated_at',
-            ])
-            ->join('dru_main_funds AS dmf', function ($join) use ($program_id){
-                $join->on('dmf.code', '=', 'ddf.tabung_induk')->where('dmf.program_id', $program_id);
-            })
-            ->join('parameters AS f', function ($join) use ($faculty){
-                $join->on('f.original_code', '=', 'ddf.faculty_code')->where('f.id', $faculty);
-            })
-            ->join('parameters AS p', function ($join){
-                $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
-            })->orderBy('ddf.year', 'desc')->groupBy('dmf.code')->get();
+        $selectContent = [
+            'ddf.id as id',
+            DB::raw('UPPER(ddf.title) as title'),
+            'ddf.program_id as program_id',
+            'ddf.bpki_id as bpki_id',
+            'f.original_code as f_original_code',
+            'ddf.code as code',
+            'ddf.code_2 as code_2',
+        ];
+        $query = DB::table('dru_dist_funds AS ddf')
+        ->join('dru_main_funds AS dmf', 'dmf.code', '=', 'ddf.tabung_induk')
+        ->join('parameters AS f', 'f.original_code', '=', 'ddf.faculty_code')
+        ->join('parameters AS p', function ($join){
+            $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
+        });
+        if($program_id) $query = $query->where('ddf.program_id', $program_id);
+        if($bpki_id) $query = $query->where('ddf.bpki_id', $bpki_id);
+        if($faculty) $query = $query->where('f.id', $faculty);
+        if($year){
+            $query = $query
+            ->join('dru_distribution_plan_forms as plan_form','ddf.id', '=', 'plan_form.project_id')
+            ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                    ->where('plan.year',$year)->whereIn('type', [1,2,3])->where('plan.status', 6);
+            });
+            $selectContent[] = 'plan.year as year';
         }
-        else {
-            $query = DB::table('dru_dist_funds AS ddf')
-            ->select([
-                'ddf.id as id',
-                DB::raw('UPPER(ddf.title) as title'),
-                'ddf.code as code',
-                'ddf.code_2 as code_2',
-                'f.original_code as f_original_code',
-                // DB::raw('RPAD(f.original_code, 7, "0") AS f_original_code'),
-                // DB::raw('RPAD(ddf.faculty_code, 7, "0") AS ptj_fullcode'),
-                // 'ddf.faculty_code as ddf_faculty_code',
-                // 'p.code as program',
-                // 'dmf.id as dmf_id',
-                // 'dmf.code as dmf_code',
-                // 'f.id as f_id',
-                // 'f.code as f_code',
-                // 'f.code as f_original_code',
-                // 'ddf.is_draft as ddf_is_draft',
-                // 'ddf.status as ddf_status',
-                // 'ddf.created_at as ddf_created_at',
-                // 'ddf.updated_at as ddf_updated_at',
-            ])
-            ->join('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', 'ddf.tabung_induk');
-            })
-            ->join('parameters AS f', function ($join) use ($faculty){
-                $join->on('f.original_code', '=', 'ddf.faculty_code')->where('f.id', $faculty);
-            })
-            ->join('parameters AS p', function ($join){
-                $join->on('p.id', '=', 'ddf.program_id')->where('p.active', 'Y');
-            })->orderBy('ddf.year', 'desc')->groupBy('dmf.code')->get();
-        }
+        $query = $query->select($selectContent);
+        $query = $query->orderBy('ddf.year', 'desc')->get();
+        
             // dd($query);
         // $projects = DruProject::from('dru_projects as pro')
         // ->select([

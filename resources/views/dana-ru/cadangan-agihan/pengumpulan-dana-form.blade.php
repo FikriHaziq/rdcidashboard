@@ -41,6 +41,7 @@
                 <input type="hidden" name="plan_id" value="{{ $plan->id ?? '' }}">
                 <input type="hidden" name="plan_form_id" value="{{ $plan_form->id ?? '' }}">
                 <input type="hidden" name="plan_type" id="plan_type" value="{{ $plan->type }}">
+                <input type="hidden" name="bpki_id" id="bpki_id" value="{{ $plan_form->bpki ?? '' }}">
                 <input type="hidden" name="fund_balance" id="fund_balance" value="">
                 <div class="intro-x w-full">
                     <div class="alert border border-theme-3 fade show d-flex align-items-center d-block" role="alert">
@@ -139,6 +140,7 @@
     var plan_status = {!! ($plan->status ?? 0) !!};
     var plan_type = {!! ($plan->type ?? 0) !!};
     var view_mode = {!! ($view_mode ?? 0) !!};
+    var bpki =  {!! ($plan_form->bpki ?? 0) !!};
     getProjectList('{!! old("project") ?? ($plan_form->projectInputData ?? '') !!}');
     var eventHandler = function(name) {
         return function() {
@@ -164,7 +166,7 @@
             const faculty_arr = faculty.split('_');
             const faculty_id = faculty_arr[0];
             $.ajax({
-                url: "/ajax/getProjectList/"+ program +"/" + faculty_id,
+                url: "/ajax/getProjectList/"+ program +"/" + bpki +"/" + faculty_id,
                 type: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,12 +179,12 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code + '_' + val.bpki_id ,
                                 title: val.title
                             });
                             if(selectedValue){
                                 var selectedValueArr = selectedValue.split('_');
-                                if(selectedValueArr.length != 4)optionsData.push({id: selectedValue ,title: selectedValue});
+                                if(selectedValueArr.length != 5)optionsData.push({id: selectedValue ,title: selectedValue});
                             }
                         });
                     }
@@ -216,13 +218,15 @@
         else if(type == 'pro'){
             if(value.length > 0){
                 data = value.split('_');
-                if(data.length == 4){
+                if(data.length == 5){
                     pro = data[1];
                     sub = data[2];
                     ptj = prependCode(data[3], 7);
+                    bpki = data[4];
                     $('#cl_ptj').val(ptj);
                     $('#cl_pro').val(pro);
                     $('#cl_sub').val(sub);
+                    $('#bpki_id').val(bpki);
                     $('#cl_ptj').prop('readonly', true);
                     $('#cl_pro').prop('readonly', true);
                     $('#cl_sub').prop('readonly', true);

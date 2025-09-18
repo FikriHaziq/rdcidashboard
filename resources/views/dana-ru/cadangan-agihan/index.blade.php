@@ -29,7 +29,6 @@
             <x-dru.setFund :year="$year" />
             @else
                 <x-dru.infography :year="$year" :plan="$plan" :plans="$planList" :type="$request->type" />
-                @if(!($request->type == "agihan_semula" && $planList->where('parent_id', $plan->id)->where('status', '!=', 6)->count() > 0))
                 <div class="g-col-12 box">
                     <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
                         <ul class="nav nav-pills w-full w-lg-1/2  bg-theme-8 bg-opacity-50 dark-bg-dark-2 rounded-2 p-1" id="pills-tab" role="tablist">
@@ -133,7 +132,7 @@
                             @elseif($plan->type == 5)
                             <div class="intro-y d-block d-sm-flex align-items-center h-10">
                                 <h2 class="fs-lg fw-medium truncate me-5">
-                                    Pengumpulan Data
+                                    Pengumpulan Dana
                                 </h2>
                                 <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
                                     @if (in_array($plan->status,[1, 5]))
@@ -208,7 +207,7 @@
                                     Cadangan Agihan
                                 </h2>
                                 <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                                    @if (in_array($plan->status,[1, 5]))
+                                    @if ((in_array($plan->status,[1, 5]) && $plan->type != 3) || ($plan->type == 3 && $plan->fundCollection && $plan->amount > 0 && in_array($plan->status,[1, 5])))
                                     <a href="{{ route('dana-ru.cadangan-agihan.form', ['year'=>$year, 'plan_id'=>$plan->id]) }}" class="btn btn-primary-soft me-4"> <i data-feather="plus" class="d-none d-sm-block w-4 h-4 me-2"></i> Add New </a>
                                     @endif
                                     @if (count($plan_forms) > 0)
@@ -377,7 +376,6 @@
                         </div>
                     </div>
                 </div>
-                @endif
             @endif
             
             <!-- END: Weekly Top Products -->

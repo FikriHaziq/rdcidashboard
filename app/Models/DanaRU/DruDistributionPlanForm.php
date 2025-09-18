@@ -113,14 +113,18 @@ class DruDistributionPlanForm extends Model
     {
         $project = $this->project;
         $code_2 = $project->code_2 ?? '00000';
-        return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code : $project->title;
+        if(in_array($project->status, ['active', 'not-active'])){
+            if($this->project_id_transfer) return $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code.'_'.$this->bpki;
+            return $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code.'_'.$this->bpki;
+        }
+        else return $project->title;
     }
 
     public function getProjectTransferInputDataAttribute()
     {
         $project = $this->project_transfer;
         $code_2 = $project->code_2 ?? '00000';
-        return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code : $project->title;
+        return in_array($project->status, ['active', 'not-active']) ? $project->id.'_'.$project->code.'_'.$code_2.'_'.$project->faculty_code.'_'.$this->bpki : $project->title;
     }
 
     public function getKpiInputDataAttribute()

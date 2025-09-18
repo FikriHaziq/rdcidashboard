@@ -18,7 +18,7 @@
                         <select id="faculty_code" name="faculty_code" class="form-select @error('faculty_code') border-theme-6 @enderror">
                             <option value="">--Sila pilih--</option>
                             @foreach (getFaculty2(true) as $faculty)
-                                <option value="{{ $faculty->code }}" @if(old('faculty_code') == $faculty->code) selected @endif>[{{ $faculty->code }}] {{ $faculty->description_1 }}</option>
+                                <option value="{{ $faculty->original_code }}" @if(old('faculty_code') == $faculty->original_code) selected @endif>[{{ $faculty->original_code }}] {{ $faculty->description_1 }}</option>
                             @endforeach
                         </select>
                         @error('faculty_code')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
