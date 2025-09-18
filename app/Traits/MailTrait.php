@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\DanaRU\DruDistributionPlanForm;
+use App\Models\DanaRU\DruMailTemplate;
+use App\Models\DanaRU\DruDataAttachment;
 use Illuminate\Support\Facades\File;
 
 trait MailTrait
@@ -17,6 +19,16 @@ trait MailTrait
     {
         $plan_form = DruDistributionPlanForm::find($plan_form_id);
         $plan = $plan_form->distribution_plan;
+        $mail_template = DruMailTemplate::where('year', $plan->year)->first();
+        $file = DruDataAttachment::whereParentId($mail_template->id)->whereTable('mail_template')->first();
+        $filepaths = [];
+        $filepaths[] = $this->getLampiranA($plan_form_id);
+        if($file){
+            $mediaItem = $file->getFirstMedia('druDataAttachment');
+            $filepath = $mediaItem->getPath();
+            $filepaths[] = $filepath;
+        }
+
         $ptj = $plan_form->ptj;
         $pic = $plan_form->pic;
         $member = $plan_form->member;
@@ -26,7 +38,7 @@ trait MailTrait
         $data = [
             'year' => $plan->year,
             'amount' => 'RM '.number_format($plan->amount, 2, '.', ','),
-            'filepath' => $this->getLampiranA($plan_form_id)
+            'filepaths' => $filepaths
         ];
         Mail::to($receivers)->send(new BlankEmail($subject, $data, $bcc_email));
     }

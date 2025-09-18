@@ -231,7 +231,7 @@
                 <button type="button" onclick="addPerson('confirmed_by')" class="btn btn-outline-dark w-full">ADD</button>
                 <div class="mt-5 d-flex justify-content-end">
                     <a href="{{ route('dana-ru.cadangan-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
-                    <button type="submit" form="form_1" class="btn btn-primary">Hantar</button>
+                    <button type="submit" form="form_1" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
         </form>

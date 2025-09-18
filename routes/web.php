@@ -291,5 +291,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("searchKpi")->get('search-kpi/{type}/{name}', [AjaxController::class, 'searchKpi']);
     Route::name("getBalanceByChargeline")->post('get-balance-by-chargeline', [AjaxController::class, 'getBalanceByChargeline']);
     Route::name("validateNric")->post('validate-nric', [AjaxController::class, 'validateNric']);
-    Route::name("broadcasyEmail")->post('broadcast-email', [AjaxController::class, 'broadcastEmail']);
+    Route::name("broadcastEmail")->post('broadcast-email', [AjaxController::class, 'broadcastEmail']);
 });
