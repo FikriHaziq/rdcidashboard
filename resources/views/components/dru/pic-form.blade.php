@@ -421,12 +421,12 @@
                     if (res.result.length > 0) {
                         $.each(res.result, function(i, val) {
                             optionsData.push({
-                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code ,
+                                id: val.id + '_' + val.code + '_' + val.code_2 + '_' + val.f_original_code + '_' + val.bpki_id ,
                                 title: val.title
                             });
                             if(selectedValue){
                                 var selectedValueArr = selectedValue.split('_');
-                                if(selectedValueArr.length != 4)optionsData.push({id: selectedValue ,title: selectedValue});
+                                if(selectedValueArr.length != 5)optionsData.push({id: selectedValue ,title: selectedValue});
                             }
                         });
                     }
@@ -460,7 +460,7 @@
         else if(type == 'pro'){
             if(value.length > 0){
                 data = value.split('_');
-                if(data.length == 4){
+                if(data.length == 5){
                     pro = data[1];
                     sub = data[2];
                     fixed_subproject = data[3];
