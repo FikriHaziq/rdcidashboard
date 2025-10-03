@@ -37,6 +37,7 @@ class Infography extends Component
         $this->type = $type;
         $this->page = $page;
         $this->infoData = infographicData($this->plan);
+        // dd($this->infoData);
     }
 
     /**

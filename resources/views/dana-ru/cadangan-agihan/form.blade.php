@@ -236,6 +236,7 @@
                     <div class="g-col-9">
                         <div class="input-group">
                             <div class="input-group-text">RM</div> <input id="total_dist" name="total_dist" type="text" class="form-control input-mask" readonly data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'">
+                            <div class="input-group-text" id="grand_total_balance_check"></div>
                         </div>
                         @error('total_dist')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                     </div>
@@ -490,7 +491,10 @@
                                 '</div></td></tr>';
             if(rowCount == 0){
                 let extra_info = '<td colspan="2"></td>';
-                if(table == 'kpi'){
+                if(table == 'main_dist'){
+                    extra_info = '<td><span id="main_kpi_balance_check"></span></td><td></td>'
+                }
+                else if(table == 'kpi'){
                     extra_info = '<td><span id="kpi_balance_check"></span></td><td></td>'
                 }
                 $('#'+table+' >tfoot >tr').remove();
@@ -544,6 +548,7 @@
         });
         $("#"+table+" tbody ."+table+"_grand_total").val(grand_total);
         if(table == 'main_dist')$("#total_dist").val(grand_total);
+        mainKpiBalanceCheck();
         kpiBalanceCheck();
     }
 
@@ -567,6 +572,44 @@
                 $('#kpi_balance_check').addClass('text-theme-9');
             }
         }
+    }
+
+    function mainKpiBalanceCheck() {
+        let main_kpi = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
+        let total = {!! $plan->amount - $plan->getTotalAmount($plan_form->id ?? 0) !!};
+        if(main_kpi != undefined){
+            let balance = total-main_kpi;
+            $('#main_kpi_balance_check, #grand_total_balance_check').removeClass('text-theme-6 text-theme-9');
+            if(balance < 0) {
+                $('#main_kpi_balance_check, #grand_total_balance_check').html('- RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#main_kpi_balance_check, #grand_total_balance_check').addClass('text-theme-6');
+            }
+            else if(balance == 0){
+                $('#main_kpi_balance_check').html('');
+                $('#grand_total_balance_check').html('+ RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#grand_total_balance_check').addClass('text-theme-1');
+            }
+            else {
+                $('#main_kpi_balance_check, #grand_total_balance_check').html('+ RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+                $('#main_kpi_balance_check, #grand_total_balance_check').addClass('text-theme-9');
+            }
+        }
+        // if(kpi != undefined){
+        //     kpi = kpi.replaceAll(',','');
+        //     let balance = total-kpi;
+        //     $('#kpi_balance_check').removeClass('text-theme-6 text-theme-9');
+        //     if(balance < 0) {
+        //         $('#kpi_balance_check').html('- RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+        //         $('#kpi_balance_check').addClass('text-theme-6');
+        //     }
+        //     else if(balance == 0){
+        //         $('#kpi_balance_check').html('');
+        //     }
+        //     else {
+        //         $('#kpi_balance_check').html('+ RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
+        //         $('#kpi_balance_check').addClass('text-theme-9');
+        //     }
+        // }
     }
 
     // function chargelineBalanceCheck() {

@@ -212,7 +212,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name("verification")->post('/verification/{id}/{type}', [CadanganAgihanController::class, "verification"]);
         Route::name("verification.post")->post("/verification/post", [CadanganAgihanController::class, "verificationPost"]);
         Route::name("file.download")->get('file/download/{id}', [CadanganAgihanController::class, 'downloadFile']);
-        Route::name('kertas-kerja')->get('/kertas-kerja/{plan_id}', [CadanganAgihanController::class, 'kertasKerja']);
+        Route::name('kertas-kerja')->get('/kertas-kerja/index/{plan_id}/{template_id?}', [CadanganAgihanController::class, 'kertasKerja']);
         Route::name('kertas-kerja.store')->post('/kertas-kerja/store/{plan_id}', [CadanganAgihanController::class, 'kertasKerjaStore']);
     });
     Route::name('kewangan.')->prefix('kewangan')->group(function(){
@@ -227,7 +227,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
             Route::name('program.show')->get('/program/show/{id}/{tab?}', [FinancialController::class, 'programShow']);
             Route::name("program.verification.post")->post("/program/verification/post/{id}", [FinancialController::class, "programVerificationPost"]);
             Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
-            Route::name('laporan-perbelanjaan')->get('/laporan-perbelanjaan/{year}/{penggal}', [FinancialController::class, 'laporanPerbelanjaan']);
+            Route::name('laporan-perbelanjaan')->get('/laporan-perbelanjaan/{plan_id}/{penggal}', [FinancialController::class, 'laporanPerbelanjaan']);
         });
         Route::name('mail-template.index')->get('/mail-template/index/{year}', [FinancialController::class, 'mailTemplate']);
         Route::name("mail-template.post")->post("/mail-template/post", [FinancialController::class, "mailTemplatePost"]);

@@ -32,6 +32,12 @@
 .ck.ck-editor {
     width: 100%
 }
+
+.move-icon {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    left: 10px;
+}
 </style>
 
 @endpush
@@ -39,11 +45,20 @@
 <x-title>Kertas Kerja Dana RU {{ $year }}</x-title>
 <div class="row gap-y-6 mt-5 justify-content-center">
     <div class="intro-y col-12 col-xl-8">
-        <form id="form_1" action="{{ route('dana-ru.cadangan-agihan.kertas-kerja.store', $plan->id) }}" method="post">
+        <form id="form_1" action="{{ route('dana-ru.cadangan-agihan.kertas-kerja.store', $plan_id) }}" method="post">
         @csrf
             <div class="intro-y box p-5">
-                <div class="d-flex justify-content-end">
-                    <a href="{{ route('doc-generator.kertas-kerja', $plan->id) }}" class="btn btn-primary">Jana Kertas Kerja</a>
+                <div class="d-flex justify-content-between">
+                    <div class="input-group me-2 me-sm-2 w-1/2">
+                        <div class="input-group-text bg-theme-1 text-white">Template</div> 
+                        <select class="form-select bg-white" onchange="window.location.href = window.location.origin + '/dana-ru/cadangan-agihan/kertas-kerja/index/' + {{ $plan_id }} + '/' + this.value">
+                            <option value="">Default</option>
+                            @foreach ($template_lists as $list)
+                                <option value="{{ $list->id }}" @if ($template_id == $list->id) selected @endif>({{ $list->year }}) {{ $list->typeLabel }} [{{ $list->created_at }}]</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <a href="{{ route('doc-generator.kertas-kerja', $plan_id) }}" class="btn btn-primary">Jana Kertas Kerja</a>
                 </div>
                 <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-10 align-items-center">
                     <div class="text-gray-800 fw-medium">NO. RUJUKAN</div>
@@ -76,6 +91,7 @@
                                                 <label class="text-gray-700 cursor-pointer select-none" for="terperinci_numbering_check">Custom numbering</label>
                                             </div>
                                         </label>
+                                        <div id="terperinci_sortable" class="accordion"></div>
                                     </div>
                                     <button type="button" onclick="addContent()" class="btn btn-dark w-full mb-5">ADD</button>
                                 </div>
@@ -88,12 +104,45 @@
                                                 <label class="text-gray-700 cursor-pointer select-none" for="ringkasan_numbering_check">Custom numbering</label>
                                             </div>
                                         </label>
+                                        <div id="ringkasan_sortable" class="accordion"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @if(count($cadangan_agihan_lists) > 0)
+                <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-10 align-items-center">
+                    <div class="text-gray-800 fw-medium">SENARAI CADANGAN AGIHAN</div>
+                </div>
+                <div class="alert alert-warning-soft d-flex py-2 pl-5 mt-5 align-items-center">
+                    <div class="input-group me-2 me-sm-2 w-full">
+                        <div class="input-group-text bg-theme-1 text-white">Cadangan Agihan</div> 
+                        <select class="form-select bg-white" name="cadangan_agihan">
+                            <option value="">Tiada</option>
+                            @foreach ($cadangan_agihan_lists as $list)
+                                <option value="{{ $list->id }}" @if (($cadangan_agihan->value ?? null) == $list->id) selected @endif>{{ 'RM '.number_format($list->amount, 2, '.', ',') }} [{{ $list->created_at }}]</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif
+                @if(count($cadangan_agihan_semula_lists) > 0)
+                <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-10 align-items-center">
+                    <div class="text-gray-800 fw-medium">SENARAI CADANGAN AGIHAN SEMULA</div>
+                </div>
+                <div class="alert alert-warning-soft d-flex py-2 pl-5 mt-5 align-items-center">
+                    <div class="input-group me-2 me-sm-2 w-full">
+                        <div class="input-group-text bg-theme-1 text-white">Agihan Semula</div> 
+                        <select class="form-select bg-white" name="agihan_semula">
+                            <option value="">Tiada</option>
+                            @foreach ($cadangan_agihan_semula_lists as $list)
+                                <option value="{{ $list->id }}" @if (($agihan_semula->value ?? null) == $list->id) selected @endif>{{ 'RM '.number_format($list->amount, 2, '.', ',') }} [{{ $list->created_at }}]</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif
                 <div class="alert alert-primary-soft d-flex py-2 pl-5 mt-5 align-items-center">
                     <div class="text-gray-800 fw-medium">DISEDIAKAN OLEH</div>
                 </div>
@@ -239,55 +288,83 @@
 </div>
 <div class="d-none">
     <div id="clone_terperinci">
-        <div class="d-flex flex-column mb-5 terperinci_entry">
-            <div class="alert alert-primary-soft grid columns-12 gap-6 py-2 pl-5 mb-5 align-items-center w-full">
-                <div class="g-col-1 terperinci-numbering-col d-none">
-                    <input type="text" id="terperinci_numbering" name="terperinci_numbering[]" class="form-control" value="" style="background: white">
-                </div>
-                <div class="g-col-11 terperinci-title-col">
-                    <input type="text" id="terperinci_title" name="terperinci_title[]" class="form-control" value="" style="background: white">
-                </div>
-                <div class="g-col-1 d-flex align-items-center justify-content-end">
-                    <button type="button" onclick="removeContent(this, 'terperinci')" class="btn btn-danger del-button">DEL</button>
+        <div class="accordion-item terperinci_entry p-5 mb-5 bg-white rounded-2">
+            <div class="accordion-header">
+                <div class="grid columns-12">
+                    <div class="g-col-11">
+                        <div class="alert alert-primary-soft grid columns-12 gap-6 py-2 ps-10 mb-0 align-items-center w-full">
+                            <div class="position-absolute move-icon"><i data-feather="move" class="w-5 h-5 text-gray-800"></i></div>
+                            <div class="g-col-1 terperinci-numbering-col d-none">
+                                <input type="text" id="terperinci_numbering" name="terperinci_numbering[]" class="form-control" value="" style="background: white">
+                            </div>
+                            <div class="g-col-11 terperinci-title-col">
+                                <input type="text" id="terperinci_title" name="terperinci_title[]" class="form-control" value="" style="background: white">
+                            </div>
+                            <div class="g-col-1 d-flex align-items-center justify-content-end">
+                                <button type="button" onclick="removeContent(this, 'terperinci')" class="btn btn-danger del-button">DEL</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="g-col-1">
+                        <button class="accordion-button h-full w-full" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"></button>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex">
-                <input id="terperinci_default" type="hidden" value="">
-                <input type="hidden" id="terperinci_check" name="terperinci_check[]" value='1'>
-                <input type="checkbox" class="form-check-input border mb-2">
-                <label class="text-gray-700 cursor-pointer select-none" for="terperinci_check">Tanda Jika Perlu.</label>
+            <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="d-flex">
+                        <input id="terperinci_default" type="hidden" value="">
+                        <input type="hidden" id="terperinci_check" name="terperinci_check[]" value='1'>
+                        <input type="checkbox" class="form-check-input border mb-2">
+                        <label class="text-gray-700 cursor-pointer select-none" for="terperinci_check">Tanda Jika Perlu.</label>
+                    </div>
+                    <textarea class="terperinci-desc" id="terperinci_desc" name="terperinci_desc[]"></textarea>
+                </div>
             </div>
-            <textarea class="terperinci-desc" id="terperinci_desc" name="terperinci_desc[]"></textarea>
         </div>
     </div>
     <div id="clone_ringkasan">
-        <div class="d-flex flex-column mb-5 ringkasan_entry">
-            <div class="alert alert-primary-soft grid columns-12 gap-6 py-2 pl-5 mb-5 align-items-center w-full">
-                <div class="g-col-1 ringkasan-numbering-col d-none">
-                    <input type="text" id="ringkasan_numbering" name="ringkasan_numbering[]" class="form-control" value="" style="background: white">
-                </div>
-                <div class="g-col-12 ringkasan-title-col">
-                    <input type="text" id="ringkasan_title" name="ringkasan_title[]" class="form-control" value="" style="background: white">
-                </div>
-            </div>
-            <div class="d-flex">
-                <div class="d-flex me-auto">
-                    <input id="ringkasan_default" type="hidden" value="">
-                    <input type="hidden" id="ringkasan_check" name="ringkasan_check[]" value='1'>
-                    <input type="checkbox" class="form-check-input border mb-2" checked>
-                    <label class="text-gray-700 cursor-pointer select-none" for="ringkasan_check">Tanda Jika Perlu.</label>
-                </div>
-                <div class="d-flex">
-                    <button type="button" class="btn btn-sm btn-rounded-dark mb-2 copy-content">Salin dari konten terperinci</button>
+        <div class="accordion-item ringkasan_entry p-5 mb-5 bg-white rounded-2">
+            <div class="accordion-header">
+                <div class="grid columns-12">
+                    <div class="g-col-11">
+                        <div class="alert alert-primary-soft grid columns-12 gap-6 py-2 pl-5 mb-0 align-items-center w-full">
+                            <div class="g-col-1 ringkasan-numbering-col d-none">
+                                <input type="text" id="ringkasan_numbering" name="ringkasan_numbering[]" class="form-control" value="" style="background: white">
+                            </div>
+                            <div class="g-col-12 ringkasan-title-col">
+                                <input type="text" id="ringkasan_title" name="ringkasan_title[]" class="form-control" value="" style="background: white">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="g-col-1">
+                        <button class="accordion-button h-full w-full" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"></button>
+                    </div>
                 </div>
             </div>
-            <textarea class="ringkasan-desc" id="ringkasan_desc" name="ringkasan_desc[]"></textarea>
+            <div class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="d-flex">
+                        <div class="d-flex me-auto">
+                            <input id="ringkasan_default" type="hidden" value="">
+                            <input type="hidden" id="ringkasan_check" name="ringkasan_check[]" value='1'>
+                            <input type="checkbox" class="form-check-input border mb-2" checked>
+                            <label class="text-gray-700 cursor-pointer select-none" for="ringkasan_check">Tanda Jika Perlu.</label>
+                        </div>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-sm btn-rounded-dark mb-2 copy-content">Salin dari konten terperinci</button>
+                        </div>
+                    </div>
+                    <textarea class="ringkasan-desc" id="ringkasan_desc" name="ringkasan_desc[]"></textarea>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 @endslot
 @push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="{{ asset('theme/js/Sortable.js') }}"></script>
 <script type="importmap">
     {
         "imports": {
@@ -339,6 +416,25 @@
     let preparedByCount = preparedByRawCount > 0 ?  preparedByRawCount : 1;
     let verifiedByCount = verifiedByRawCount > 0 ?  verifiedByRawCount : 1;
     let confirmedByCount = confirmedByRawCount > 0 ?  confirmedByRawCount : 1;
+
+    // List with handle
+    Sortable.create(terperinci_sortable, {
+        handle: '.move-icon',
+        animation: 150,
+        onSort: function (/**Event*/evt) {
+            let terperinciOrder = $("#terperinci_sortable .terperinci_entry").map(function () {
+                // extract the number from the class (e.g., terperinci_5 → 5)
+                return this.className.match(/terperinci_(\d+)/)[1];
+            }).get();
+
+            let $ringkasan = $("#ringkasan_sortable");
+
+            terperinciOrder.forEach(num => {
+                let $entry = $ringkasan.find(".ringkasan_" + num);
+                $ringkasan.append($entry); // move into correct order
+            });
+        },
+    });
     
     window.checkCheckbox = function(checkbox, id) {
         if (checkbox.is(':checked')) {
@@ -383,7 +479,7 @@
     }
 
     window.toggleNumbering = function(type) {
-        let container = $(`#${type}_container`);
+        let container = $(`#${type}_sortable`);
         let numbering_check = $(`#${type}_numbering_check`).is(':checked');
         let title_col_num = type == 'terperinci' ? 0 : 1
         if(numbering_check){
@@ -421,30 +517,49 @@
         }
 
         // Update the IDs and placeholders of the new person fields
+        newContent.addClass(`terperinci_${contentCount}`);
         newContent.find("#terperinci_numbering").attr("id", `terperinci_${contentCount}_numbering`).val(numbering);
-        newContent.find("#terperinci_title").attr("id", `terperinci_${contentCount}_title`).val(reviseContent(title ?? '', plan_data));
+        newContent.find("#terperinci_title").attr({
+            id: `terperinci_${contentCount}_title`,
+            onchange: `$('#ringkasan_${contentCount}_title').val(this.value)`
+        }).val(reviseContent(title ?? '', plan_data));
         newContent.find("#terperinci_default").attr("id", `terperinci_${contentCount}_default`).val(reviseContent(content ?? '', plan_data));
         newContent.find('input[type="checkbox"]').attr({
+            id: `terperinci_${contentCount}_checkbox`,
             onchange: `checkCheckbox($(this), 'terperinci_${contentCount}')`
         }).prop("checked", display_check);
         newContent.find("#terperinci_check").attr("id", `terperinci_${contentCount}_check`).val(display_check ? 1 : 0);
-        newContent.find("label[for='terperinci_check']").attr("for", `terperinci_${contentCount}_check`);
+        newContent.find("label[for='terperinci_check']").attr("for", `terperinci_${contentCount}_checkbox`);
         newContent.find("#terperinci_desc").attr("id", `terperinci_${contentCount}_desc`).html(reviseContent(content ?? '', plan_data));
+        //collapse element
+        newContent.find(".accordion-button").attr({
+            "data-bs-target": `#terperinci_${contentCount}_collapse`,
+            "aria-controls": `terperinci_${contentCount}_collapse`
+        });
+        newContent.find(".accordion-collapse").attr("id", `terperinci_${contentCount}_collapse`);
 
+        r_newContent.addClass(`ringkasan_${contentCount}`);
         r_newContent.find("#ringkasan_numbering").attr("id", `ringkasan_${contentCount}_numbering`).val(r_numbering);
         r_newContent.find("#ringkasan_title").attr("id", `ringkasan_${contentCount}_title`).val(reviseContent(r_title ?? '', plan_data));
         r_newContent.find("#ringkasan_default").attr("id", `ringkasan_${contentCount}_default`).val(reviseContent(r_content ?? '', plan_data));
         r_newContent.find('input[type="checkbox"]').attr({
+            id: `#ringkasan_${contentCount}_checkbox`,
             onchange: `checkCheckbox($(this), 'ringkasan_${contentCount}')`
         }).prop("checked", r_display_check);
         r_newContent.find("#ringkasan_check").attr("id", `ringkasan_${contentCount}_check`).val(r_display_check ? 1 : 0);
         r_newContent.find('.copy-content').attr("onclick", `copyContent(${contentCount})`);
-        r_newContent.find("label[for='ringkasan_check']").attr("for", `ringkasan_${contentCount}_check`);
+        r_newContent.find("label[for='ringkasan_check']").attr("for", `ringkasan_${contentCount}_checkbox`);
         r_newContent.find("#ringkasan_desc").attr("id", `ringkasan_${contentCount}_desc`).html(reviseContent(r_content ?? '', plan_data));
+        //collapse element
+        r_newContent.find(".accordion-button").attr({
+            "data-bs-target": `#ringkasan_${contentCount}_collapse`,
+            "aria-controls": `ringkasan_${contentCount}_collapse`
+        });
+        r_newContent.find(".accordion-collapse").attr("id", `ringkasan_${contentCount}_collapse`);
 
         // Append the new person entry to the container
-        $(`#terperinci_container`).append(newContent);
-        $(`#ringkasan_container`).append(r_newContent);
+        $(`#terperinci_sortable`).append(newContent);
+        $(`#ringkasan_sortable`).append(r_newContent);
         
         ClassicEditor
             .create( document.querySelector( `#terperinci_${contentCount}_desc`), {
@@ -457,6 +572,12 @@
                     if ($(`#terperinci_${contentCount}_check`).length) {
                         editor.disableReadOnlyMode('manual'); // Start in read-only mode
                     }
+                    editor.model.document.on( 'change:data', () => {
+                        const data = editor.getData(); // Get the current editor content
+                        var ringkasan_editor = editors[`#ringkasan_${contentCount}_desc`];
+                        ringkasan_editor.setData(data);
+                        // Perform your desired actions here, e.g., update a state, save to a database.
+                    } );
                 })
             .catch( /* ... */ );
         ClassicEditor

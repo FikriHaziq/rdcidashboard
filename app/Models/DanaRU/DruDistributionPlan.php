@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ApprovalApp;
 use App\Models\Status;
+use App\Models\VerificationLabel;
 
 class DruDistributionPlan extends Model
 {
@@ -33,6 +34,12 @@ class DruDistributionPlan extends Model
         return $this->belongsTo(Status::class, 'status');
     }
 
+    public function getVerificationLabelAttribute()
+    {
+        $verificationLabel = VerificationLabel::wherePlanType($this->type)->whereStatusId($this->status)->first();
+        return $verificationLabel ? $verificationLabel->label : $this->getStatus->next_level_desc;
+    }
+
     public function baselineCost($amount, $percent)
     {
         return $amount * $percent/100;
@@ -46,10 +53,22 @@ class DruDistributionPlan extends Model
         if($this->type == 4) return "pindahan";
     }
 
+    public function getTypeLabelAttribute()
+    {
+        if($this->type == 1) return "Cadangan Agihan";
+        if($this->type == 2) return "Cadangan Agihan";
+        if($this->type == 3) return "Agihan Semula";
+    }
+
     public function sumAmount()
     {
         $this->amount = $this->forms->sum('amount');
         $this->save();
+    }
+
+    public function getTotalAmount($excludeId)
+    {
+        return $this->forms()->where('id', '!=', $excludeId)->sum('amount');
     }
 
     public function fundCollection()

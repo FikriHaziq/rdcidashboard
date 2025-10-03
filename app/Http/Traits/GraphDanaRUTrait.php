@@ -166,10 +166,10 @@ trait GraphDanaRUTrait {
         $cumulative = 0;
         foreach ($bpki_titles_options as $key => $title) {
             $bpki_amount = MasterlistDruAllocation::select(['amount'])->where('bpki_id',$title->id);
-            if($search_params->title) $bpki_amount = $bpki_amount->where('tabung_induk', $search_params->title);
-            if($search_params->start_year) $bpki_amount = $bpki_amount->where('year', '>=', $search_params->start_year);
-            if($search_params->end_year) $bpki_amount = $bpki_amount->where('year', '<=', $search_params->end_year);
-            if($search_params->faculty_code) $bpki_amount = $bpki_amount->where('ptj_code', $search_params->faculty_code);
+            if($search_params->title ?? false) $bpki_amount = $bpki_amount->where('tabung_induk', $search_params->title);
+            if($search_params->start_year ?? false) $bpki_amount = $bpki_amount->where('year', '>=', $search_params->start_year);
+            if($search_params->end_year ?? false) $bpki_amount = $bpki_amount->where('year', '<=', $search_params->end_year);
+            if($search_params->faculty_code ?? false) $bpki_amount = $bpki_amount->where('ptj_code', $search_params->faculty_code);
             $bpki_amount = $bpki_amount->sum('amount');
             array_push($bpki_titles, $title->parameter_name);
             array_push($bpki_amounts, (float)$bpki_amount);
@@ -183,10 +183,10 @@ trait GraphDanaRUTrait {
         $cumulative = 0;
         foreach ($program_titles_options as $key => $title) {
             $program_amount = MasterlistDruAllocation::select(['amount'])->where('program_id',$title->id);
-            if($search_params->title) $program_amount = $program_amount->where('tabung_induk', $search_params->title);
-            if($search_params->start_year) $program_amount = $program_amount->where('year', '>=', $search_params->start_year);
-            if($search_params->end_year) $program_amount = $program_amount->where('year', '<=', $search_params->end_year);
-            if($search_params->faculty_code) $program_amount = $program_amount->where('ptj_code', $search_params->faculty_code);
+            if($search_params->title ?? false) $program_amount = $program_amount->where('tabung_induk', $search_params->title);
+            if($search_params->start_year ?? false) $program_amount = $program_amount->where('year', '>=', $search_params->start_year);
+            if($search_params->end_year ?? false) $program_amount = $program_amount->where('year', '<=', $search_params->end_year);
+            if($search_params->faculty_code ?? false) $program_amount = $program_amount->where('ptj_code', $search_params->faculty_code);
             $program_amount = $program_amount->sum('amount');
             array_push($program_titles, $title->parameter_name);
             array_push($program_amounts, (float)$program_amount);
@@ -209,16 +209,16 @@ trait GraphDanaRUTrait {
             $join->on('b.id', '=', 'mda.bpki_id');
         })
         ->whereNotNull('p.id')->groupBy('dmf.code');
-        if($search_params->title) $title_options = $title_options->where('dmf.code', $search_params->title);
-        if($search_params->start_year) $title_options = $title_options->where('mda.year', '>=', $search_params->start_year);
-        if($search_params->end_year) $title_options = $title_options->where('mda.year', '<=', $search_params->end_year);
-        if($search_params->faculty_code) $title_options = $title_options->where('mda.ptj_code', $search_params->faculty_code);
+        if($search_params->title ?? false) $title_options = $title_options->where('dmf.code', $search_params->title);
+        if($search_params->start_year ?? false) $title_options = $title_options->where('mda.year', '>=', $search_params->start_year);
+        if($search_params->end_year ?? false) $title_options = $title_options->where('mda.year', '<=', $search_params->end_year);
+        if($search_params->faculty_code ?? false) $title_options = $title_options->where('mda.ptj_code', $search_params->faculty_code);
         $title_options = $title_options->get();
         foreach ($title_options as $key => $options) {
             $amount = MasterlistDruAllocation::select(['amount'])->where('tabung_induk',$options->tabung_induk);
-            if($search_params->start_year) $amount = $amount->where('year', '>=', $search_params->start_year);
-            if($search_params->end_year) $amount = $amount->where('year', '<=', $search_params->end_year);
-            if($search_params->faculty_code) $amount = $amount->where('ptj_code', $search_params->faculty_code);
+            if($search_params->start_year ?? false) $amount = $amount->where('year', '>=', $search_params->start_year);
+            if($search_params->end_year ?? false) $amount = $amount->where('year', '<=', $search_params->end_year);
+            if($search_params->faculty_code ?? false) $amount = $amount->where('ptj_code', $search_params->faculty_code);
             $amount = $amount->sum('amount');
             array_push($allocations, [
                 'bpki'=> $options->bpki,

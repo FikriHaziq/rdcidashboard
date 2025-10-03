@@ -65,7 +65,7 @@ class CadanganAgihanController extends Controller
                         "plan_id" => $plan->id,
                         "plan_date" => $plan->created_at,
                         "plan_forms" => $plan_form
-                    ];;
+                    ];
                 }
             }
             // dd($agihan_semula_lists[0]);
@@ -88,7 +88,6 @@ class CadanganAgihanController extends Controller
         $view_mode = $request->view;
         // dd(getAvailableFacultyFromPlan($year));
         // dd($plan_form->projectTransferInputData);
-        // dd($plan_form->projectInputData);
         if($plan->type == 4) return view('dana-ru.cadangan-agihan.pindahan-form', compact('year', 'plan_form', 'plan', 'view_mode'));
         else if($plan->type == 5) return view('dana-ru.cadangan-agihan.pengumpulan-dana-form', compact('year', 'plan_form', 'plan', 'view_mode'));
         return view('dana-ru.cadangan-agihan.form', compact('year', 'plan_form', 'plan', 'view_mode'));
@@ -355,7 +354,7 @@ class CadanganAgihanController extends Controller
         $ptj_id = $ptj[0];
         $ptj_original_code = $ptj[1];
         $project = explode('_',$request->project);
-        if(count($project) == 4){
+        if(count($project) == 5){
             $project_id = $project[0];
         }
         else{
@@ -523,6 +522,11 @@ class CadanganAgihanController extends Controller
         // dd($order);
         $plan = DruDistributionPlan::find($id);
         if($plan){
+            $kertas_kerja = DocTemplate::whereParentId($plan->id)->exists();
+            if(in_array($plan->type, [1,2,3]) && !$kertas_kerja) {
+                session()->flash('info', "Sila jana kertas kerja terlebih dahulu.");
+                return back();
+            }
             $approvalApp = new ApprovalApp;
             $approvalApp->index = $order;
             $approvalApp->module_id = 1;
@@ -596,7 +600,13 @@ class CadanganAgihanController extends Controller
                     Storage::deleteDirectory('data/tmp/'.$file['folder']);
                 }
             }
-            if($request->status==6)$this->storeAllocation($plan);
+            if($request->status==6 && $plan->type != 5){
+                if($plan->type == 3){
+                    $pengumpulan_dana = DruDistributionPlan::whereParentId($plan->id)->first();
+                    if($pengumpulan_dana) $this->storeAllocation($pengumpulan_dana);
+                    $this->storeAllocation($plan);
+                }
+            }
         }
         else{
             session()->flash('error', "Something went wrong");
@@ -621,25 +631,36 @@ class CadanganAgihanController extends Controller
         }
     }
 
-    public function kertasKerja($plan_id)
+    public function kertasKerja($plan_id, $template_id = null)
     {
         $plan = DruDistributionPlan::find($plan_id);
         $year = $plan->year;
-        $doc_templates = DocTemplate::whereParentId($plan_id)->orderBy('order')->get();
-        $content_details = DocTemplate::whereParentId($plan_id)->where('type', 'terperinci')->get();
-        $content_summaries = DocTemplate::whereParentId($plan_id)->where('type', 'ringkasan')->get();
+        $cadangan_agihan_lists = null;
+        $cadangan_agihan_semula_lists = null;
+        $cadangan_agihan = DocTemplate::whereParentId($plan_id)->where('type', 'cadangan_agihan')->whereNotNull('value')->first();
+        $agihan_semula = DocTemplate::whereParentId($plan_id)->where('type', 'agihan_semula')->whereNotNull('value')->first();
+        $cadangan_agihan_semula_lists = DruDistributionPlan::where('year', $year)->whereType(3)->where('status', '!=', 1)->where('id', '!=', $plan_id)->get();
+        $cadangan_agihan_lists = DruDistributionPlan::where('year', $year)->whereIn('type', [1,2])->where('status', '!=', 1)->where('id', '!=', $plan_id)->get();
+        // dd($cadangan_agihan_semula_lists);
+        if($template_id) $plan = DruDistributionPlan::find($template_id);
+        $doc_templates = DocTemplate::whereParentId($plan->id)->orderBy('order')->get();
+        $content_details = DocTemplate::whereParentId($plan->id)->where('type', 'terperinci')->get();
+        $content_summaries = DocTemplate::whereParentId($plan->id)->where('type', 'ringkasan')->get();
         $no_rujukan = $doc_templates->where('type', 'no_rujukan')->first();
         $tajuk_kertas_kerja = $doc_templates->where('type', 'tajuk_kertas_kerja')->first();
+
         $parameters = Parameter::whereGroupId(5)->whereActive('Y')->get();
-        return view('dana-ru.cadangan-agihan.kertas-kerja', compact('doc_templates', 'content_details', 'content_summaries', 'plan', 'year', 'parameters', 'no_rujukan', 'tajuk_kertas_kerja'));
+        $template_lists = DruDistributionPlan::whereIn('type', [1,2,3])->where('id', '!=', $plan_id)->where('status', '!=', 1)->orderBy('year', 'desc')->orderBy('type')->latest('created_at')->get();
+        return view('dana-ru.cadangan-agihan.kertas-kerja', compact('cadangan_agihan_lists', 'cadangan_agihan_semula_lists','cadangan_agihan', 'agihan_semula', 'doc_templates', 'content_details', 'content_summaries', 'plan_id', 'plan', 'year', 'parameters', 'no_rujukan', 'tajuk_kertas_kerja', 'template_id', 'template_lists'));
     }
 
     public function kertasKerjaStore(Request $request, $plan_id)
     {
-        // dd($request->all());
         $plan = DruDistributionPlan::find($plan_id);
         $this->templateStore($plan_id, 'no_rujukan', $request->no_rujukan);
         $this->templateStore($plan_id, 'tajuk_kertas_kerja', $request->tajuk_kertas_kerja);
+        $this->templateStore($plan_id, 'cadangan_agihan', $request->cadangan_agihan);
+        $this->templateStore($plan_id, 'agihan_semula', $request->agihan_semula);
 
         if(count($request->terperinci_title) > 0){
             $terperinciCount = DocTemplate::whereParentId($plan_id)->whereType('terperinci')->count();
@@ -720,7 +741,7 @@ class CadanganAgihanController extends Controller
             $this->templateStore($plan_id, 'confirmed_by_role', $request->confirmed_by_role[$key], $key+1);
         }
         session()->flash('success', "Kertas Kerja telah berjaya disimpan.");
-        return back();
+        return redirect()->route('dana-ru.cadangan-agihan.kertas-kerja', ['plan_id' => $plan_id]);
     }
 
     public function templateStore($plan_id, $type, $value, $order = null, $title = null, $display = 1, $numbering_check = 0, $numbering = null)

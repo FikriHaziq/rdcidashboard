@@ -31,7 +31,7 @@
                             <button class="nav-link w-full py-1.5 px-2" id="agihan-semula-tab" data-bs-toggle="pill" data-bs-target="#agihan-semula" type="button" role="tab" aria-controls="agihan-semula" aria-selected="true">Senarai Cadangan Agihan Semula</button>
                         </li>
                         @endif
-                        @if(count($agihan_semula_lists) > 0)
+                        @if(count($pindahan_lists) > 0)
                         <li class="nav-item flex-1" role="presentation">
                             <button class="nav-link w-full py-1.5 px-2" id="pindahan-tab" data-bs-toggle="pill" data-bs-target="#pindahanList" type="button" role="tab" aria-controls="pindahan" aria-selected="true">Senarai Pindahan</button>
                         </li>
@@ -44,14 +44,6 @@
                             <h2 class="fs-lg fw-medium truncate me-5">
                                 Cadangan Agihan
                             </h2>
-                            <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                                @if (count($plan_forms) > 0)
-                                <a href="{{ route('dana-ru.cadangan-agihan.kertas-kerja', $plans[0]->id) }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
-                                    Jana Kertas Kerja
-                                    <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="edit" class="w-4 h-4"></i> </span>
-                                </a>
-                                @endif
-                            </div>
                         </div>
                         <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
                             <table class="table table-bordered mt-6 ">

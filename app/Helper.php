@@ -459,7 +459,7 @@ if (!function_exists('getDistributionFormPlans')) {
                     'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                     'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                     'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2',
-                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment', 'plan_form.created_at as plan_form_created_at', 'plan_form.updated_at as plan_form_updated_at'
                 ])
                 ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                     $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -730,9 +730,9 @@ if (!function_exists('infographicData')) {
                     'do_color' => $do_as_percent > 20 ? 6 : 10,
                     'gp_color' => $gp_as_percent > 60 ? 6 : 10,
                     'pp_color' => $pp_as_percent > 20 ? 6 : 10,
-                    'do_baseline' =>  baselineCost($total_as, 20),
-                    'gp_baseline' => baselineCost($total_as, 60),
-                    'pp_baseline' => baselineCost($total_as, 20),
+                    'do_baseline' =>  baselineCost($fund_as, 20),
+                    'gp_baseline' => baselineCost($fund_as, 60),
+                    'pp_baseline' => baselineCost($fund_as, 20),
                     'total' => $total_as,
                 ];
             }
@@ -844,22 +844,26 @@ if (!function_exists('refactorPlanFormList')) {
 }
 
 if (!function_exists('getExpensesReportInfo')) {
-    function getExpensesReportInfo($year, $penggal){
+    function getExpensesReportInfo($plan, $penggal){
         $datefilter = $penggal == 1 ? date('Y')."-06-30 23:59:59" : date('Y')."-12-31 23:59:59";
-        $plans = getDruPlanList($year)->where('status', 6);
-        $plan_form_raw = null;
-        foreach ($plans as $key => $plan) {
-            $plan_form = getDistributionFormPlans($year, $plan->id);
-            if(!$plan_form_raw)$plan_form_raw = $plan_form;
-            else $plan_form_raw = $plan_form_raw->concat($plan_form);
-        }
-        $plan_forms = $plan_form_raw;
+        // $plan_form_raw = null;
+        // foreach ($plans as $key => $plan) {
+        //     $plan_form = getDistributionFormPlans($year, $plan->id);
+        //     if(!$plan_form_raw)$plan_form_raw = $plan_form;
+        //     else $plan_form_raw = $plan_form_raw->concat($plan_form);
+        // }
+        $year = $plan->year;
+        $plan_forms = getDistributionFormPlans($year, $plan->id, $plan->type);
+        if(count($plan_forms) > 0) $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
 
-        $plan_forms = refactorPlanFormList($plan_form_raw);
+
+        $plan_forms = refactorPlanFormList($plan_forms);
+        // dd($plan_forms);
 
         $expenses = \App\Models\DanaRU\DruExpensesRecord::from('dru_expenses_records as expenses')
                 ->select([
                     'expenses.distribution_plan_form_id', 'expenses.kpi_template_id', 'expenses.total', 'expenses.commitment', 'ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','ddf.faculty_code as faculty_code',
+                    'plan_form.mrun as mrun_id', 'plan_form.bpki as bpki_id',
                     // 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                     // 'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
                     // 'pic.name as pic_name', 'member.name as member_name', 'pic.email as pic_email', 'member.email as member_email',
@@ -924,6 +928,8 @@ if (!function_exists('getExpensesReportInfo')) {
             }
             $td["programs"][] = [
                 "title" => $program->ddf_title,
+                "mrun" => $program->mrun_id,
+                "bpki" => $program->bpki_id,
                 "main_kpi_details" => $program->main_kpi_details,
                 "kpi_details" => $program->kpi_details,
                 "allocation" => $program->plan_form_amount,
@@ -946,6 +952,8 @@ if (!function_exists('getExpensesReportInfo')) {
             }
             $rp["programs"][] = [
                 "title" => $program->ddf_title,
+                "mrun" => $program->mrun_id,
+                "bpki" => $program->bpki_id,
                 "main_kpi_details" => $program->main_kpi_details,
                 "kpi_details" => $program->kpi_details,
                 "allocation" => $program->plan_form_amount,
@@ -968,6 +976,8 @@ if (!function_exists('getExpensesReportInfo')) {
             }
             $wc["programs"][] = [
                 "title" => $program->ddf_title,
+                "mrun" => $program->mrun_id,
+                "bpki" => $program->bpki_id,
                 "main_kpi_details" => $program->main_kpi_details,
                 "kpi_details" => $program->kpi_details,
                 "allocation" => $program->plan_form_amount,
@@ -990,6 +1000,8 @@ if (!function_exists('getExpensesReportInfo')) {
             }
             $bgc["programs"][] = [
                 "title" => $program->ddf_title,
+                "mrun" => $program->mrun_id,
+                "bpki" => $program->bpki_id,
                 "main_kpi_details" => $program->main_kpi_details,
                 "kpi_details" => $program->kpi_details,
                 "allocation" => $program->plan_form_amount,

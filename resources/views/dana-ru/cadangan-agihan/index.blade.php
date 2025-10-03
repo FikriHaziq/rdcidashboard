@@ -37,7 +37,7 @@
                             </li>
                             @if ((getAccessControl('dru_pca_1') && in_array($plan->status,[2, 3])) || (getAccessControl('dru_pca_2') && in_array($plan->status,[4])))
                             <li class="nav-item flex-1" role="presentation">
-                                <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['verification'])) active @endif" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">{{ $plan->getStatus->next_level_desc }}</button>
+                                <button class="nav-link w-full py-1.5 px-2 @if(in_array($tab, ['verification'])) active @endif" id="verification-tab" data-bs-toggle="pill" data-bs-target="#verification" type="button" role="tab" aria-controls="verification" aria-selected="false">{{ $plan->verificationLabel }}</button>
                             </li>
                             @endif
                             <li class="nav-item flex-1" role="presentation">
@@ -151,6 +151,8 @@
                                             <th class="text-nowrap">CHARGELINE</th>
                                             <th class="text-nowrap">JUMLAH DANA YANG DIAMBIL</th>
                                             <th class="text-nowrap">CATATAN</th>
+                                            <th class="text-nowrap">TARIKH DIKEMASKINI</th>
+                                            <th class="text-nowrap">TARIKH DICIPTA</th>
                                             <th class="text-nowrap"></th>
                                         </tr>
                                     </thead>
@@ -172,6 +174,8 @@
                                                 {!! $plan_form->notes !!}
                                                 @endif
                                             </td>
+                                            <td class="text-center">{{ date($plan_form->plan_form_updated_at) }}</td>
+                                            <td class="text-center">{{ date($plan_form->plan_form_created_at) }}</td>
                                             @if (getAccessControl('dru_bca') && in_array($plan->status,[1, 5]))
                                             <td class="table-report__action text-nowrap">
                                                 <div class="d-flex justify-content-center align-items-center">

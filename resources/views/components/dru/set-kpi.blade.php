@@ -5,7 +5,7 @@
     </div>
     <div class="mt-2 p-5 border border-gray-300 rounded-2">
         <p class="search-label text-gray-500">Tiada data</p>
-        <div class="search-content d-flex"></div>
+        <div class="search-content d-flex flex-wrap"></div>
     </div>
     <x-slot name="footer">
         <div class="input-group w-full">

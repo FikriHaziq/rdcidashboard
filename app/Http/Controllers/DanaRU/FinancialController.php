@@ -329,17 +329,33 @@ class FinancialController extends Controller
             $plan = DruDistributionPlan::whereStatus(6)->orderBy('year', 'desc')->first();
             $year = $plan->year ?? date('Y');
         }
-        $plans = getDruPlanList($year)->where('status', 6);
+        $plans = getDruPlanList($year)->where('status', 6)->whereIn('type', [1,2,3]);
         $plan_form_raw = null;
+        $agihan_lists = [];
+        $agihan_semula_lists = [];
         foreach ($plans as $key => $plan) {
-            $plan_form = getDistributionFormPlans($year, $plan->id);
-            if(!$plan_form_raw)$plan_form_raw = $plan_form;
-            else $plan_form_raw = $plan_form_raw->concat($plan_form);
+            $plan_form = getDistributionFormPlans($year, $plan->id, $plan->type);
+            if(count($plan_form) > 0) $plan_form = $plan_form->where('plan_form_declaration_date','!=', NULL);
+            if(count($plan_form) > 0){
+                if(in_array($plan->type, [1,2])){
+                    $agihan_lists[] = (object)[
+                        "plan_id" => $plan->id,
+                        "plan_date" => $plan->created_at,
+                        "plan_forms" => $plan_form
+                    ];
+                }
+                else if($plan->type == 3){
+                    $agihan_semula_lists[] = (object)[
+                        "plan_id" => $plan->id,
+                        "plan_date" => $plan->created_at,
+                        "plan_forms" => $plan_form
+                    ];
+                }
+            }
         }
-        $plan_forms = $plan_form_raw;
-        if($plan_forms) $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
-        // dd($plan_form_raw);
-        return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'plan_forms'));
+        // if($plan_forms) $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
+        // dd($agihan_lists[0]->plan_forms);
+        return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'agihan_lists', 'agihan_semula_lists'));
     }
 
     public function programShow($id, $tab = null)
@@ -426,32 +442,143 @@ class FinancialController extends Controller
         return view('dana-ru.kewangan.perbelanjaan.subproject', compact('year'));
     }
 
-    public function laporanPerbelanjaan($year, $penggal)
+    public function laporanPerbelanjaan($plan_id, $penggal)
     {
-        $expenses_data = getExpensesReportInfo($year, $penggal);
-        $total_allocation = DB::table('masterlist_dru_allocations as mda')
-            ->select(['mda.amount'])
-            ->join('dru_main_funds AS dmf', function ($join){
-                $join->on('dmf.code', '=', 'mda.tabung_induk')->where('dmf.is_draft',0)->where('dmf.status','active');
-            })->sum('amount');
-        // dd($total_allocation);
-        $bpki = $this->bpkiProgram($total_allocation, (object)["title"=> null,"start_year" => null,"end_year" => null]);
+        $plan = DruDistributionPlan::find($plan_id);
+        $year = $plan->year;
+        $expenses_data = getExpensesReportInfo($plan, $penggal);
+        $total_allocation = $plan->amount;
+        // $bpki = $this->bpkiProgram($total_allocation, (object)["title"=> null,"start_year" => null,"end_year" => null]);
+        $td = 0; // 46
+        $rp = 0; // 47
+        $wc = 0; // 48
+        $bgc = 0; // 49
+        $do = 0; // 50
+        $gp = 0; // 51
+        $pp = 0; // 52
+
+        $td_expenses = 0; // 46
+        $rp_expenses = 0; // 47
+        $wc_expenses = 0; // 48
+        $bgc_expenses = 0; // 49
+        $do_expenses = 0; // 50
+        $gp_expenses = 0; // 51
+        $pp_expenses = 0; // 52
+
+        $td_commitment = 0; // 46
+        $rp_commitment = 0; // 47
+        $wc_commitment = 0; // 48
+        $bgc_commitment = 0; // 49
+        $do_commitment = 0; // 50
+        $gp_commitment = 0; // 51
+        $pp_commitment = 0; // 52
+
+        $td_array = array_values(array_filter($expenses_data, function ($item) {return $item['mrun'] === "TALENT DEVELOPMENT";}));
+        $rp_array = array_values(array_filter($expenses_data, function ($item) {return $item['mrun'] === "RESEARCH PROMINENCE";}));
+        $wc_array = array_values(array_filter($expenses_data, function ($item) {return $item['mrun'] === "WEALTH CREATION";}));
+        $bgc_array = array_values(array_filter($expenses_data, function ($item) {return $item['mrun'] === "BRIDGING IN THE CHALLENGES";}));
+        foreach (($td_array[0]['programs'] ?? []) as $key => $program) {
+            $td += $program['allocation'];
+            $td_expenses += $program['total_expenses'];
+            $td_commitment += $program['commitment'];
+            if($program['bpki'] == 50) {
+                $do += $program['allocation'];
+                $do_expenses += $program['total_expenses'];
+                $do_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 51) {
+                $gp += $program['allocation'];
+                $gp_expenses += $program['total_expenses'];
+                $gp_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 52) {
+                $pp += $program['allocation'];
+                $pp_expenses += $program['total_expenses'];
+                $pp_commitment += $program['commitment'];
+            }
+        }
+        foreach (($rp_array[0]['programs'] ?? []) as $key => $program) {
+            $rp += $program['allocation'];
+            $rp_expenses += $program['total_expenses'];
+            $rp_commitment += $program['commitment'];
+            if($program['bpki'] == 50) {
+                $do += $program['allocation'];
+                $do_expenses += $program['total_expenses'];
+                $do_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 51) {
+                $gp += $program['allocation'];
+                $gp_expenses += $program['total_expenses'];
+                $gp_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 52) {
+                $pp += $program['allocation'];
+                $pp_expenses += $program['total_expenses'];
+                $pp_commitment += $program['commitment'];
+            }
+        }
+        foreach (($wc_array[0]['programs'] ?? []) as $key => $program) {
+            $wc += $program['allocation'];
+            $wc_expenses += $program['total_expenses'];
+            $wc_commitment += $program['commitment'];
+            if($program['bpki'] == 50) {
+                $do += $program['allocation'];
+                $do_expenses += $program['total_expenses'];
+                $do_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 51) {
+                $gp += $program['allocation'];
+                $gp_expenses += $program['total_expenses'];
+                $gp_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 52) {
+                $pp += $program['allocation'];
+                $pp_expenses += $program['total_expenses'];
+                $pp_commitment += $program['commitment'];
+            }
+        }
+        foreach (($bgc_array[0]['programs'] ?? []) as $key => $program) {
+            $bgc += $program['allocation'];
+            $bgc_expenses += $program['total_expenses'];
+            $bgc_commitment += $program['commitment'];
+            if($program['bpki'] == 50) {
+                $do += $program['allocation'];
+                $do_expenses += $program['total_expenses'];
+                $do_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 51) {
+                $gp += $program['allocation'];
+                $gp_expenses += $program['total_expenses'];
+                $gp_commitment += $program['commitment'];
+            }
+            else if($program['bpki'] == 52) {
+                $pp += $program['allocation'];
+                $pp_expenses += $program['total_expenses'];
+                $pp_commitment += $program['commitment'];
+            }
+        }
+        
         // dd($bpki);
         $penggal_month = $penggal == 1 ? "JAN - JUN" : "JUL - DEC";
         $report_data = [
             "program" => [
-                $bpki["bar2_title"][0] => ["amount" => $bpki["bar2_amount"][0]],
-                $bpki["bar2_title"][1] => ["amount" => $bpki["bar2_amount"][1]],
-                $bpki["bar2_title"][2] => ["amount" => $bpki["bar2_amount"][2]],
-                $bpki["bar2_title"][3] => ["amount" => $bpki["bar2_amount"][3]],
+                "TD" => ["amount"=>$td, "expenses"=>$td_expenses, "commitment"=>$td_commitment, "balance"=> $td-$td_expenses-$td_commitment],
+                "RP" => ["amount"=>$rp, "expenses"=>$rp_expenses, "commitment"=>$rp_commitment, "balance"=> $rp-$rp_expenses-$rp_commitment],
+                "WC" => ["amount"=>$wc, "expenses"=>$wc_expenses, "commitment"=>$wc_commitment, "balance"=> $wc-$wc_expenses-$wc_commitment],
+                "BGC" => ["amount"=>$bgc, "expenses"=>$bgc_expenses, "commitment"=>$bgc_commitment, "balance"=> $bgc-$bgc_expenses-$bgc_commitment],
             ],
             "bpki" => [
-                $bpki["bar1_title"][0] => ["amount" => $bpki["bar1_amount"][0]],
-                $bpki["bar1_title"][1] => ["amount" => $bpki["bar1_amount"][1]],
-                $bpki["bar1_title"][2] => ["amount" => $bpki["bar1_amount"][2]],
+                'DO' => ["amount"=>$do, "expenses"=>$do_expenses, "commitment"=>$do_commitment, "balance"=> $do-$do_expenses-$do_commitment],
+                'GP' => ["amount"=>$gp, "expenses"=>$gp_expenses, "commitment"=>$gp_commitment, "balance"=> $gp-$gp_expenses-$gp_commitment],
+                'PP' => ["amount"=>$pp, "expenses"=>$pp_expenses, "commitment"=>$pp_commitment, "balance"=> $pp-$pp_expenses-$pp_commitment],
             ],
+            "total" => [
+                'amount' => $do+$gp+$pp,
+                'expenses' => $do_expenses+$gp_expenses+$pp_expenses,
+                'commitment' => $do_commitment+$gp_commitment+$pp_commitment,
+                'balance' => ($do-$do_expenses-$do_commitment)+($gp-$gp_expenses-$gp_commitment)+($pp-$pp_expenses-$pp_commitment),
+            ]
         ];
-        // dd($report_data);
         $presentation = new PhpPresentation();
         // ✅ Create a slide
         
@@ -505,7 +632,7 @@ class FinancialController extends Controller
             ->setColor(new Color('FF000000'))
             ->setName('Arial');
         $descBox->createBreak();
-        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' '.$year)
             ->getFont()->setBold(true)
             ->setSize(14)
             ->setColor(new Color('FF000000'))
@@ -566,11 +693,11 @@ class FinancialController extends Controller
 
         // ✅ Add table rows
         $rows = [
-            ['TALENT DEVELOPMENT', 'RM' . number_format($report_data["program"]["TD"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),], 
-            ['RESEARCH PROMINENCE', 'RM' . number_format($report_data["program"]["RP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
-            ['WEALTH CREATION', 'RM' . number_format($report_data["program"]["WC"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
-            ['BRIDGING IN THE CHALLENGES', 'RM' . number_format($report_data["program"]["BGC"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
-            ['JUMLAH KESELURUHAN', 'RM' . number_format($total_allocation, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['TALENT DEVELOPMENT', 'RM' . number_format($report_data["program"]["TD"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["program"]["TD"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["program"]["TD"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["program"]["TD"]["balance"], 2, '.', ','),], 
+            ['RESEARCH PROMINENCE', 'RM' . number_format($report_data["program"]["RP"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["program"]["RP"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["program"]["RP"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["program"]["RP"]["balance"], 2, '.', ','),],
+            ['WEALTH CREATION', 'RM' . number_format($report_data["program"]["WC"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["program"]["WC"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["program"]["WC"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["program"]["WC"]["balance"], 2, '.', ','),],
+            ['BRIDGING IN THE CHALLENGES', 'RM' . number_format($report_data["program"]["BGC"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["program"]["BGC"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["program"]["BGC"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["program"]["BGC"]["balance"], 2, '.', ','),],
+            ['JUMLAH KESELURUHAN', 'RM' . number_format($report_data["total"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["total"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["total"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["total"]["balance"], 2, '.', ','),],
         ];
 
         foreach ($rows as $key => $rowData) {
@@ -642,7 +769,7 @@ class FinancialController extends Controller
                 ->setColor(new Color('FF000000'))
                 ->setName('Arial');
             $descBox->createBreak();
-            $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+            $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' '.$year)
                 ->getFont()->setBold(true)
                 ->setSize(14)
                 ->setColor(new Color('FF000000'))
@@ -809,7 +936,7 @@ class FinancialController extends Controller
             ->setColor(new Color('FF000000'))
             ->setName('Arial');
         $descBox->createBreak();
-        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' 2022')
+        $descBox->createTextRun('TEMPOH LAPORAN : '.$penggal_month.' '.$year)
             ->getFont()->setBold(true)
             ->setSize(14)
             ->setColor(new Color('FF000000'))
@@ -870,10 +997,10 @@ class FinancialController extends Controller
 
         // ✅ Add table rows
         $rows = [
-            ['PROJEK PENYELIDIKAN (60%)', 'RM' . number_format($report_data["bpki"]["GP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),], 
-            ['OPERASI (20%)', 'RM' . number_format($report_data["bpki"]["DO"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
-            ['PEMBELIAN & PENYELENGGARAAN ALATAN PENYELIDIKAN (20%)', 'RM' . number_format($report_data["bpki"]["PP"]["amount"], 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
-            ['JUMLAH KESELURUHAN', 'RM' . number_format($total_allocation, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','), 'RM' . number_format(0, 2, '.', ','),],
+            ['PROJEK PENYELIDIKAN (60%)', 'RM' . number_format($report_data["bpki"]["GP"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["GP"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["GP"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["GP"]["balance"], 2, '.', ','),], 
+            ['OPERASI (20%)', 'RM' . number_format($report_data["bpki"]["DO"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["DO"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["DO"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["DO"]["balance"], 2, '.', ','),],
+            ['PEMBELIAN & PENYELENGGARAAN ALATAN PENYELIDIKAN (20%)', 'RM' . number_format($report_data["bpki"]["PP"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["PP"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["PP"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["bpki"]["PP"]["balance"], 2, '.', ','),],
+            ['JUMLAH KESELURUHAN', 'RM' . number_format($report_data["total"]["amount"], 2, '.', ','), 'RM' . number_format($report_data["total"]["expenses"], 2, '.', ','), 'RM' . number_format($report_data["total"]["commitment"], 2, '.', ','), 'RM' . number_format($report_data["total"]["balance"], 2, '.', ','),],
         ];
 
         foreach ($rows as $key => $rowData) {
