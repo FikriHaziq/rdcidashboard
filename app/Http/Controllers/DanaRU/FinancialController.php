@@ -807,7 +807,7 @@ class FinancialController extends Controller
                 $cell->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                 $cell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
             }
-
+            // dd($pic_data["programs"]);
             foreach ($pic_data["programs"] as $keyp => $program) {
                 $row = $table->createRow();
                 $row->getFill()->setFillType(Fill::FILL_SOLID)
@@ -824,9 +824,9 @@ class FinancialController extends Controller
                     $cell1->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                 }
                 else{
-                    $cell1 = $row->nextCell();
-                    $cell1->setWidth($columnWidths[0]);
-                    $cell1->setVisible(false);
+                    // $cell1 = $row->nextCell();
+                    // $cell1->setWidth($columnWidths[0]);
+                    // $cell1->setVisible(false);
                 }
                 $main_kpi_details = $program['main_kpi_details'] . $program['kpi_details'];
                 $cell2 = $row->nextCell();
