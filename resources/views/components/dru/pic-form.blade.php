@@ -277,7 +277,7 @@
                 @endif
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
-                        <label for="justification">JUSTIFIKASI PERBELANJAAN</label>
+                        <label for="justification">JUSTIFIKASI PERBELANJAAN BELUM CAPAI 100%</label>
                     </div>
                     <div class="g-col-9">
                         <textarea class="form-control @error('justification') border-theme-6 @enderror" @if(!$edit) readonly @endif name="justification" id="justification" cols="30" rows="10" placeholder="Justifikasi perbelanjaan">{{ old('justification') ?? ($plan_form->pic_justification ?? '')  }}</textarea>
