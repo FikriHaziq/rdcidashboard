@@ -813,7 +813,7 @@ class FinancialController extends Controller
                 $row->getFill()->setFillType(Fill::FILL_SOLID)
                     ->setStartColor(new Color('FFD8E3BC'))
                     ->setEndColor(new Color('FFD8E3BC'));
-                if($keyp == 0){
+                // if($keyp == 0){
                     $cell1 = $row->nextCell();
                     $cell1->createTextRun($pic_data['mrun'])->getFont()->setBold(true)->setSize(9);
                     $cell1->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
@@ -822,12 +822,12 @@ class FinancialController extends Controller
                     $cell1->getActiveParagraph()->getAlignment()->setMarginBottom(8);
                     $cell1->getActiveParagraph()->getAlignment()->setMarginRight(4);
                     $cell1->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-                }
-                else{
-                    // $cell1 = $row->nextCell();
-                    // $cell1->setWidth($columnWidths[0]);
-                    // $cell1->setVisible(false);
-                }
+                // }
+                // else{
+                //     // $cell1 = $row->nextCell();
+                //     // $cell1->setWidth($columnWidths[0]);
+                //     // $cell1->setVisible(false);
+                // }
                 $main_kpi_details = $program['main_kpi_details'] . $program['kpi_details'];
                 $cell2 = $row->nextCell();
                 $cell2->createTextRun($program['title'])->getFont()->setSize(9);
