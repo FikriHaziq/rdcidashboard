@@ -45,7 +45,7 @@
             <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
                 <h2 class="fs-lg fw-medium truncate me-5">Lampiran A</h2>
                 <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                    <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i> Download Word</a>
+                    <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i> Download PDF</a>
                 </div>
             </div>
             <div class="p-5">
@@ -148,7 +148,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="fw-bold">Pegawai Bertanggungjawab</td>
-                                                <td class="fw-bold">{{ strtoupper($plan_form->member_name) }}</td>
+                                                <td class="fw-bold">{!! strtoupper($plan_form->member_name) !!}</td>
                                             </tr>
                                         </tbody>
                                     </table>

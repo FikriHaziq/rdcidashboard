@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\User;
 
 class DatatableController extends Controller
 {
@@ -313,9 +314,11 @@ class DatatableController extends Controller
                 return $html;
             })
             ->addColumn('action', function ($row) {
+                $copy_to_kpi_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-corner-right-up w-4 h-4"><polyline points="10 9 15 4 20 9"></polyline><path d="M4 20h7a4 4 0 0 0 4-4V4"></path></svg>';
                 $edit_icon ='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit w-4 h-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
                 $delete_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash w-4 h-4"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
-                $html = '<a href="'.route('dana-ru.maintenance.asas-agihan.edit', $row->id).'" class="btn btn-sm btn-primary ms-2">'.$edit_icon.'</a>';
+                $html = '<button onclick="copyToKPI(`'.$row->title.'`)" class="btn btn-sm btn-warning-soft ms-2" data-toggle="tooltip" data-tippy-content="Simpan Sebagai KPI">'.$copy_to_kpi_icon.'</button>';
+                $html .= '<a href="'.route('dana-ru.maintenance.asas-agihan.edit', $row->id).'" class="btn btn-sm btn-primary ms-2">'.$edit_icon.'</a>';
                 $html .= '<button onclick="deleteData('.$row->id.')" class="btn btn-sm btn-danger ms-2">'.$delete_icon.'</button>';
                 return $html;
             })
@@ -519,6 +522,46 @@ class DatatableController extends Controller
         $query = $query->get();
         return DataTables::of($query)
             ->addIndexColumn()
+            ->make(true);
+    }
+
+    public static function userList()
+    {
+        $query = User::latest()->get();
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('applied_year', function ($row) {
+                if($row->apply_to_all) $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">ALL</div>';
+                else if($row->year) $html = '<div class="bg-theme-10 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">'.$row->year.'</div>';
+                else $html = '';
+                return $html;
+            })
+            ->addColumn('role_label', function ($row) {
+                $html = '';
+                $role = json_decode($row->role_radis ?? '[]');
+                if(count($role) > 0) {
+                    if($role[0] == 'STAF') $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">'.$role[0].'</div>';
+                    else $html = '<div class="bg-theme-10 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">'.$role[0].'</div>';
+                }
+                return $html;
+            })
+            ->addColumn('system_role_label', function ($row) {
+                if(in_array($row->role, ['super_admin', 'admin'])) $html = '<div class="bg-theme-1 bg-opacity-60 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">'.$row->role.'</div>';
+                else $html = '<div class="bg-warning bg-opacity-60 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">'.$row->role.'</div>';
+                return $html;
+            })
+            ->addColumn('status_label', function ($row) {
+                if($row->status == 'verified') $html = '<div class="bg-theme-9 bg-opacity-60 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Verified</div>';
+                else $html = '<div class="bg-gray-600 rounded-pill justify-content-center fs-xs text-white d-flex align-items-center px-2 ms-1">Pending</div>';
+                return $html;
+            })
+            ->addColumn('action', function ($row) {
+                $edit_icon ='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit w-4 h-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
+                $delete_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash w-4 h-4"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+                $html = '<a href="'.route('dana-ru.maintenance.user.edit', $row->id).'" class="btn btn-sm btn-primary ms-2">'.$edit_icon.'</a>';
+                return $html;
+            })
+            ->rawColumns(['role_label', 'system_role_label', 'status_label', 'action'])
             ->make(true);
     }
 }

@@ -1721,4 +1721,21 @@ class AjaxController extends Controller
             "result" => $result,
         ], $status_code);
     }
+
+    public function copyToKpi(Request $request)
+    {
+        DruKpiTemplate::updateOrCreate(
+            ['title' => $request->title, 'type' => 'kpi'],
+            [
+                'display_level' => 'all',
+                'active' => 'Y',
+            ]
+        );
+        
+        $status_code = 200;
+        $result = 'Passed';
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
+    }
 }

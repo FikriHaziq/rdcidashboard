@@ -310,16 +310,15 @@ class CadanganAgihanController extends Controller
 
     public function store(Request $request, $year=null)
     {
-        // dd($request->all());
         $request->validate([
             'mrun' => 'required',
             'bpki' => 'required',
             'kp_name' => 'required',
             'kp_email' => 'required|email',
             'kp_ic' => 'required',
-            'pb_name' => 'required',
-            'pb_email' => 'required|email',
-            'pb_ic' => 'required',
+            'pb_name.*' => 'required',
+            'pb_email.*' => 'required|email',
+            'pb_ic.*' => 'required',
             'ptj' => 'required',
             'project' => 'required',
             'total_dist' => 'required',
@@ -331,6 +330,8 @@ class CadanganAgihanController extends Controller
                     }
                 },
             ],
+            'output' => 'required',
+            'outcome' => 'required',
         ],
         [
             'mrun.required' => 'Sila pilih program utama.',
@@ -339,13 +340,15 @@ class CadanganAgihanController extends Controller
             'kp_email.required' => 'Sila masukkan emel.',
             'kp_email.email' => 'Sila masukkan format emel.',
             'kp_ic.required' => 'Sila masukkan ic.',
-            'pb_name.required' => 'Sila masukkan nama.',
-            'pb_email.required' => 'Sila masukkan emel.',
-            'pb_email.email' => 'Sila masukkan format emel.',
-            'pb_ic.required' => 'Sila masukkan ic.',
+            'pb_name.*.required' => 'Sila masukkan nama.',
+            'pb_email.*.required' => 'Sila masukkan emel.',
+            'pb_email.*.email' => 'Sila masukkan format emel yang betul.',
+            'pb_ic.*.required' => 'Sila masukkan IC.',
             'ptj.required' => 'Sila pilih PTJ.',
             'project.required' => 'Sila pilih projek.',
             'total_dist.required' => 'Sila tambah asas agihan di atas.',
+            'output.required' => 'Sila isi maklumat ini.',
+            'outcome.required' => 'Sila isi maklumat ini.',
         ]);
         $plan_form = DruDistributionPlanForm::find($request->plan_form_id);
         if($request->plan_id) $plan = DruDistributionPlan::find($request->plan_id);
@@ -378,6 +381,8 @@ class CadanganAgihanController extends Controller
         $plan_form->ptj_id = $ptj_id;
         $plan_form->project_id = $project_id;
         $plan_form->amount = (float)str_replace( ",", "", $request->total_dist);
+        $plan_form->output = $request->output;
+        $plan_form->outcome = $request->outcome;
         $plan_form->notes = $request->note;
         $plan_form->save();
 
@@ -390,14 +395,21 @@ class CadanganAgihanController extends Controller
         $pic->nric = $request->kp_ic;
         $pic->save();
 
-        $member = DruMember::whereDistributionPlanFormId($request->plan_form_id)->whereType('member')->first();
-        if(!$member)$member = new DruMember;
-        $member->type = 'member';
-        $member->distribution_plan_form_id = $plan_form->id;
-        $member->name = $request->pb_name;
-        $member->email = $request->pb_email;
-        $member->nric = $request->pb_ic;
-        $member->save();
+        $pb_ids = array_filter($request->pb_id ?? []);
+        if(count($pb_ids) > 0) DruMember::whereDistributionPlanFormId($request->plan_form_id)->whereType('member')->whereNotIn('id', $pb_ids)->delete();
+
+        foreach ($request->pb_id ?? [] as $key => $member) {
+            DruMember::updateOrCreate(
+                ['id' => $member ?? null],
+                [
+                    'name' => $request->pb_name[$key] ?? null,
+                    'email' => $request->pb_email[$key] ?? null,
+                    'nric' => $request->pb_ic[$key] ?? null,
+                    'type' => 'member',
+                    'distribution_plan_form_id' => $request->plan_form_id,
+                ]
+            );
+        }
 
         $main_kpi = $plan_form->main_kpi;
         $kpi = $plan_form->kpi;

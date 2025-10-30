@@ -69,7 +69,7 @@
                                         <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
                                         <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
                                         <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
-                                        <td class="text-nowrap">{{ $plan_form->member_name }}</td>
+                                        <td class="text-nowrap">{!! $plan_form->member_name !!}</td>
                                         <td class="text-nowrap">{{ $plan_form->ptj }}</td>
                                         <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
                                         <td class="text-nowrap">
@@ -148,7 +148,7 @@
                                         <td class="text-nowrap">{{ $agihan_semula->mrun_code }}</td>
                                         <td class="text-nowrap">{{ $agihan_semula->bpki_code }}</td>
                                         <td class="text-nowrap">{{ $agihan_semula->pic_name }}</td>
-                                        <td class="text-nowrap">{{ $agihan_semula->member_name }}</td>
+                                        <td class="text-nowrap">{!! $agihan_semula->member_name !!}</td>
                                         <td class="text-nowrap">{{ $agihan_semula->ptj }}</td>
                                         <td class="text-nowrap">{{ strtoupper($agihan_semula->ddf_title) }} </td>
                                         <td class="text-nowrap">

@@ -57,6 +57,11 @@ class DruDistributionPlanForm extends Model
         return $this->hasOne(DruMember::class, 'distribution_plan_form_id')->wheretype('member');
     }
 
+    public function members()
+    {
+        return $this->hasMany(DruMember::class, 'distribution_plan_form_id')->wheretype('member');
+    }
+
     public function main_kpi()
     {
         return $this->hasMany(DruKpi::class, 'distribution_plan_form_id')->wheretype('main')->orderBy('id');

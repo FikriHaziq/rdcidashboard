@@ -35,6 +35,7 @@
 @endslot
 @push('custom-js')
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
 <script>
     $('#datatable').DataTable({
         processing: true,
@@ -56,8 +57,34 @@
         ],
         columnDefs: [
             {className: "text-center", targets: [0,2,5]}
-        ]
+        ],
+        drawCallback: function(settings) {
+            // Re-initialize tooltip after table redraw
+            tippy('[data-toggle="tooltip"]');
+        }
     });
+
+    function copyToKPI(title) {
+        var data = new FormData();
+        data.append("title", title);
+        $.ajax({
+            url: "/ajax/copy-to-kpi/",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data,
+            type: "post",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                toastr_alert('success', 'KPI telah berjaya disimpan.')
+            },
+            error: function(data) {
+                toastr_alert('error', 'Something went wrong.')
+            }
+        });
+    }
 
     function deleteData(id) {
         swal({

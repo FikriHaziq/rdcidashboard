@@ -190,6 +190,24 @@
                     </div>
                 </div>
                 <hr class="mt-3">
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="output">OUTPUT/IMPACT PROGRAM/PROJECT</label>
+                    </div>
+                    <div class="g-col-9">
+                        <textarea class="form-control @error('output') border-theme-6 @enderror" @if(!$edit) readonly @endif name="output" id="output" cols="30" rows="10" placeholder="OUTPUT/IMPACT PROGRAM/PROJECT">{{ old('output') ?? ($plan_form->output ?? '')  }}</textarea>
+                        @error('output')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="outcome">OUTCOME PROGRAM/PROJECT</label>
+                    </div>
+                    <div class="g-col-9">
+                        <textarea class="form-control @error('outcome') border-theme-6 @enderror" @if(!$edit) readonly @endif name="outcome" id="outcome" cols="30" rows="10" placeholder="OUTCOME PROGRAM/PROJECT">{{ old('outcome') ?? ($plan_form->outcome ?? '')  }}</textarea>
+                        @error('outcome')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
                 <div class="grid columns-12 gap-6 mt-3 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="mykpi">KPI YANG TELAH DICAPAI</label>

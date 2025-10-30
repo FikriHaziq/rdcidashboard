@@ -332,12 +332,15 @@ if (!function_exists('storeLogData')) {
             ->select([
                 'plan_form.id as plan_form_id',
                 'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
-                'pic.name as pic_name', 'pic.nric as pic_nric', 'pic.email as pic_email', 'member.name as member_name', 'member.nric as member_nric', 'member.email as member_email',
+                'pic.name as pic_name', 'pic.nric as pic_nric', 'pic.email as pic_email', 'member.nric as member_nric',
                 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
+                \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
+                \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.email) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.email) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.email)) as member_email'),
+                \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.nric) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.nric) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.nric)) as member_nric'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(pic_kpi_template.title,": RM", FORMAT(pic_kpi.amount, 2), " x ", pic_kpi.count, " = RM", FORMAT(pic_kpi.total, 2))) ORDER BY pic_kpi.id ASC SEPARATOR "<br>") as pic_kpi_details'),
-                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($plan) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -406,6 +409,8 @@ if (!function_exists('storeLogData')) {
                 'kpi_details' => $plan_form->kpi_details,
                 'pic_kpi_details' => $plan_form->pic_kpi_details,
                 'amount' => number_format($plan_form->plan_form_amount, 2, '.', ','),
+                'output' => $plan_form->output,
+                'outcome' => $plan_form->outcome,
                 'notes' => $plan_form->notes,
             ];
             array_push($log_data['dru_distribution_plan_form'], $form_data);
@@ -432,7 +437,7 @@ if (!function_exists('getDistributionFormPlans')) {
                     'ptjt.parameter_name as ptjt','ptjt.original_code as ptjt_code',
                     'ddff.status as ddff_status','ddff.code as ddff_code','ddff.title as ddff_title','ddff.code_2 as ddff_code_2',
                     'ddft.status as ddft_status','ddft.code as ddft_code','ddft.title as ddft_title','ddft.code_2 as ddft_code_2',
-                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                    'plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
                 ])
                 ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                     $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -459,7 +464,7 @@ if (!function_exists('getDistributionFormPlans')) {
                     'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                     'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                     'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2',
-                    'plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment', 'plan_form.created_at as plan_form_created_at', 'plan_form.updated_at as plan_form_updated_at'
+                    'plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment', 'plan_form.created_at as plan_form_created_at', 'plan_form.updated_at as plan_form_updated_at'
                 ])
                 ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                     $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -480,15 +485,17 @@ if (!function_exists('getDistributionFormPlans')) {
                 ->select([
                     'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                     'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
-                    'pic.name as pic_name', 'member.name as member_name', 'pic.email as pic_email', 'member.email as member_email',
+                    'pic.name as pic_name', 'pic.email as pic_email',
                     'pic_status.description as pic_submission_status_label',
                     'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                     \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
+                    \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
+                    \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.email) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.email) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.email)) as member_email'),
                     \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                     \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(main_kpi.remark) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_remarks'),
                     \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
                     \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(kpi.remark) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_remarks'),
-                    'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                    'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
                     'main_kpi.id as main_kpi_id','main_kpi_template.id as main_kpi_template_id','main_kpi_template.title as main_kpi_template_title','main_kpi_template.active as main_kpi_template_active','main_kpi.count as main_kpi_count','main_kpi.amount as main_kpi_amount','main_kpi.total as main_kpi_total','main_kpi.remark as main_kpi_remark',
                     'kpi.id as kpi_id','kpi_template.id as kpi_template_id','kpi_template.title as kpi_template_title','kpi_template.active as kpi_template_active','kpi.count as kpi_count','kpi.amount as kpi_amount','kpi.total as kpi_total','kpi.remark as kpi_remark',
                 ])

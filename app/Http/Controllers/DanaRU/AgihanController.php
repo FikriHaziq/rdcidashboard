@@ -46,12 +46,13 @@ class AgihanController extends Controller
             ->select([
                 'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.updated_at as plan_form_updated_at', 'plan_form.pic_declaration_date as plan_form_declaration_date',
                 'mrun.description_1 as mrun_desc', 'bpki.parameter_name as bpki_code',
-                'pic.name as pic_name', 'member.name as member_name',
+                'pic.name as pic_name', 
                 'ptj.description_1 as ptj','ptj.original_code as ptj_code',
+                DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
                 DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
@@ -123,11 +124,15 @@ class AgihanController extends Controller
     {
         $request->validate([
             'justification' => 'required_with:balance',
+            'output' => 'required',
+            'outcome' => 'required',
             'balance' => 'nullable',
             'mykpi' => 'required',
             'file_upload' => 'required',
         ],
         [
+            'output.required' => 'Sila isi maklumat ini.',
+            'outcome.required' => 'Sila isi maklumat ini.',
             'justification.required_with' => 'Sila masukkan justifikasi baki agihan belum belanja.',
             'mykpi.required' => 'Sila masukkan KPI.',
             'file_upload.required' => 'Sila muat naik bukti.',
@@ -158,6 +163,8 @@ class AgihanController extends Controller
                     DruDataAttachment::find($deleted_file)->delete();
                 }
             }
+            $plan_form->output = $request->output;
+            $plan_form->outcome = $request->outcome;
             $plan_form->pic_justification = $request->justification;
             $plan_form->pic_submission_status = $status;
             $plan_form->commitment = (float)str_replace( ",", "", $request->commitment);

@@ -196,6 +196,13 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('faculty.edit')->get('/faculty/edit/{id}', [MaintenanceController::class, 'facultyEdit']);
         Route::name('faculty.update')->post('/faculty/update/{id}', [MaintenanceController::class, 'facultyUpdate']);
         Route::name('faculty.delete')->get('/faculty/delete/{id}', [MaintenanceController::class, 'facultyDelete']);
+
+        Route::name('user')->get('/user', [MaintenanceController::class, 'userIndex']);
+        // Route::name('user.create')->get('/user/create', [MaintenanceController::class, 'userCreate']);
+        // Route::name('user.store')->post('/user/store', [MaintenanceController::class, 'userStore']);
+        Route::name('user.edit')->get('/user/edit/{id}', [MaintenanceController::class, 'userEdit']);
+        Route::name('user.update')->post('/user/update/{id}', [MaintenanceController::class, 'userUpdate']);
+        // Route::name('user.delete')->get('/user/delete/{id}', [MaintenanceController::class, 'userDelete']);
     });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
@@ -292,4 +299,5 @@ Route::name('ajax.')->prefix('ajax')->group(function () {
     Route::name("getBalanceByChargeline")->post('get-balance-by-chargeline', [AjaxController::class, 'getBalanceByChargeline']);
     Route::name("validateNric")->post('validate-nric', [AjaxController::class, 'validateNric']);
     Route::name("broadcastEmail")->post('broadcast-email', [AjaxController::class, 'broadcastEmail']);
+    Route::name("copyToKpi")->post('copy-to-kpi', [AjaxController::class, 'copyToKpi']);
 });

@@ -23,6 +23,8 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->integer('project_id');
             $table->decimal('amount', 18, 2);
             $table->decimal('commitment', 18, 2)->nullable();
+            $table->text('output')->nullable();
+            $table->text('outcome')->nullable();
             $table->text('notes')->nullable();
             $table->text('pic_justification')->nullable();
             $table->string('approved')->default('N');

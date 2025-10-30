@@ -8,6 +8,7 @@ use App\Models\DanaRU\DruMainFund;
 use App\Models\DanaRU\DruDistFund;
 use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruKpiTemplate;
+use App\Models\User;
 use App\Models\Parameter;
 use App\Models\MasterList\MasterlistDruYear;
 use App\Http\Controllers\DatatableController;
@@ -582,5 +583,39 @@ class MaintenanceController extends Controller
         $kpi = Parameter::find($id)->delete();
         session()->flash('success', "Fakulti telah berjaya dipadam.");
         return redirect()->route('dana-ru.maintenance.kpi');
+    }
+
+    public function userIndex(Request $request){
+        if ($request->ajax()) {
+            return DatatableController::userList();
+        }
+        return view('dana-ru.maintenance.user.index');
+    }
+
+    public function UserEdit($id){
+        $user = User::find($id);
+        $role_radis_label = null;
+        if($user){
+            $data = json_decode($user->role_radis ?? '[]');
+            if(count($data) > 0) $role_radis_label = $data[0];
+        }
+        return view('dana-ru.maintenance.user.edit', compact('user', 'role_radis_label'));
+    }
+
+    public function UserUpdate($id, Request $request){
+        $request->validate([
+            'role' => 'required',
+            'status' => 'required',
+        ],
+        [
+            'role.required' => 'Sila pilih role.',
+            'status.required' => 'Sila pilih status.',
+        ]);
+        $user = User::find($id);
+        $user->role = $request->role;
+        $user->status = $request->status;
+        $user->save();
+        session()->flash('success', "User telah berjaya dikemaskini.");
+        return redirect()->route('dana-ru.maintenance.user');
     }
 }

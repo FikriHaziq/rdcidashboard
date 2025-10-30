@@ -101,23 +101,10 @@
                         <label for="horizontal-form-1">PEGAWAI BERTANGGUNGJAWAB</label>
                     </div>
                     <div class="g-col-9">
-                        <div class="input-group mb-2">
-                            <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" value="{{ old('pb_name') ?? ($plan_form->member->name ?? '') }}" class="form-control @error('pb_name') border-theme-6 @enderror" placeholder="NAMA PEGAWAI" aria-describedby="pb_name" @if($view_mode) disabled @endif>
-                        </div>
-                        @error('pb_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
-                        <div class="grid columns-2 gap-3">
-                            <div class="g-col-1">
-                                <div class="input-group">
-                                    <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email" type="text" value="{{ old('pb_email') ?? ($plan_form->member->email ?? '') }}" class="form-control @error('pb_email') border-theme-6 @enderror" placeholder="EMEL PEGAWAI" aria-describedby="pb_email" @if($view_mode) disabled @endif>
-                                </div>
-                                @error('pb_email')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                        <div class="d-flex flex-column justify-content-center flex-1 border-2 border-dotted rounded-2 bg-theme-14 mx-5 p-5">
+                            <div id="member_container" class="intro-y d-flex flex-column">
                             </div>
-                            <div class="g-col-1">
-                                <div class="input-group">
-                                    <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic" type="text" value="{{ old('pb_ic') ?? ($plan_form->member->nric ?? '') }}" class="form-control @error('pb_ic') border-theme-6 @enderror" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic" @if($view_mode) disabled @endif>
-                                </div>
-                                @error('pb_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
-                            </div>
+                            <button type="button" onclick="addContent()" class="btn btn-dark w-full">ADD</button>
                         </div>
                     </div>
                 </div>
@@ -243,6 +230,24 @@
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="output">OUTPUT/IMPACT PROGRAM/PROJECT</label>
+                    </div>
+                    <div class="g-col-9">
+                        <textarea class="form-control @error('output') border-theme-6 @enderror" name="output" id="output" cols="30" rows="10" placeholder="OUTPUT/IMPACT PROGRAM/PROJECT" @if($view_mode) disabled @endif>{{ old('output') ?? ($plan_form->output ?? '')  }}</textarea>
+                        @error('output')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="outcome">OUTCOME PROGRAM/PROJECT</label>
+                    </div>
+                    <div class="g-col-9">
+                        <textarea class="form-control @error('outcome') border-theme-6 @enderror" name="outcome" id="outcome" cols="30" rows="10" placeholder="OUTCOME PROGRAM/PROJECT" @if($view_mode) disabled @endif>{{ old('outcome') ?? ($plan_form->outcome ?? '')  }}</textarea>
+                        @error('outcome')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="note">CATATAN</label>
                     </div>
                     <div class="g-col-9">
@@ -261,6 +266,39 @@
 </div>
 
 <x-dru.set-kpi />
+
+<div class="d-none">
+    <div id="clone_members">
+        <div class="member_entry bg-white rounded-2 grid columns-12 gap-5 p-5 mb-5 w-full">
+            <div class="g-col-11">
+                <input type="hidden" id="pb_id" name="pb_id[]" value="">
+                <div class="input-group mb-2">
+                    <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name[]" type="text" value="" class="form-control" placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
+                </div>
+                <div class="grid columns-2 gap-3">
+                    <div class="g-col-1">
+                        <div class="input-group">
+                            <div class="input-group-text">EMEL</div> <input id="pb_email" name="pb_email[]" type="text" value="" class="form-control" placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                        </div>
+                    </div>
+                    <div class="g-col-1">
+                        <div class="input-group">
+                            <div class="input-group-text">IC</div> <input id="pb_ic" name="pb_ic[]" type="text" value="" class="form-control" placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="g-col-1 my-auto">
+                <div id="del_mem_btn" class="del_mem_btn">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="delete_member">
+        <button type="button" onclick="removeContent(this)" class="btn btn-outline-danger"><i data-feather="trash" class="w-5 h-5 text-danger"></i></button>
+    </div>
+</div>
 @endslot
 @push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -269,11 +307,15 @@
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
     var oldInput = {!! json_encode(($plan_form->kpiInputData ?? null) ?? session()->getOldInput()) !!};
+    // var oldMembersData = {!! json_encode(($plan_form->members ?? null) ?? session()->getOldInput()) !!};
     var plan_status = {!! ($plan->status ?? 0) !!};
     var plan_type = {!! ($plan->type ?? 0) !!};
     var main_dist = oldInput.main_dist;
     var view_mode = {!! ($view_mode ?? 0) !!};
     var kpi = oldInput.kpi;
+    var error_messages = {!! json_encode($errors->messages()) !!};
+    var members = manageMembersData();
+    var members_count = 0;
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
             manageKpiItem('main_dist', 'add', null, value, plan_status);
@@ -284,6 +326,15 @@
             manageKpiItem('kpi', 'add', null, value);
         });
     }
+
+    if(members.length > 0){
+        members.forEach(function(value, index) {
+            console.log(value['pb_id']);
+            addContent(value['pb_name'], value['pb_email'], value['pb_ic'], value['pb_id']);
+        })
+    }
+    else addContent();
+
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     var eventHandler = function(name) {
         return function() {
@@ -300,6 +351,80 @@
         valueField: 'id',
 	    labelField: 'title',
     });
+
+    function manageMembersData() {
+        var members = [];
+        var memberOldInput = {!! json_encode(session()->getOldInput()) !!};
+        var memberData = {!! json_encode($plan_form->members ?? []) !!};
+        var names = memberOldInput.pb_name;
+        var ics = memberOldInput.pb_ic;
+        var emails = memberOldInput.pb_email;
+        if (typeof names !== 'undefined') {
+            names.forEach(function(value, index) {
+                members.push({
+                    pb_name : names[index],
+                    pb_ic : ics[index],
+                    pb_email : emails[index],
+                    pb_id : typeof memberData[index] !== 'undefined' ? memberData[index]['id']: '',
+                })
+            })
+        }
+        else {
+            if(memberData.length > 0){
+                memberData.forEach(function(value, index) {
+                    members.push({
+                        pb_name : value['name'],
+                        pb_ic : value['nric'],
+                        pb_email : value['email'],
+                        pb_id : value['id'],
+                    })
+                })
+            }
+        }
+        
+        return members;
+    }
+
+    function addContent(name = null, email = null, ic = null, id = null) {
+        let contentCount = 1;
+        let originalContent = $(`#clone_members`).children();
+        let newContent = originalContent.clone();
+        
+        members_count++;
+        contentCount = members_count;
+        newContent.find("#pb_name").attr("id", `pb_name_${contentCount}`).val(name);
+        newContent.find("#pb_email").attr("id", `pb_email_${contentCount}`).val(email);
+        newContent.find("#pb_ic").attr("id", `pb_ic_${contentCount}`).val(ic);
+        newContent.find("#pb_id").attr("id", `pb_id_${contentCount}`).val(id);
+        newContent.find("#del_mem_btn").attr("id", `del_mem_btn_${contentCount}`);
+        $(`#member_container`).append(newContent);
+        if(contentCount > 1){
+            let removeBtnContent = $(`#delete_member`).children();
+            $(`#del_mem_btn_${contentCount}`).append(removeBtnContent.clone());
+        }
+        validateError(`pb_name_${contentCount}`, error_messages['pb_name.'+(contentCount-1)]);
+        validateError(`pb_ic_${contentCount}`, error_messages['pb_ic.'+(contentCount-1)]);
+        validateError(`pb_email_${contentCount}`, error_messages['pb_email.'+(contentCount-1)]);
+    }
+
+    function validateError(id, message){
+        if(typeof message !== 'undefined'){
+            let elem = $('#'+id);
+            elem.addClass('border-theme-6');
+            elem.closest(`.input-group`).after('<div class="text-theme-6 mt-2">'+message[0]+'</div>');
+        }
+    }
+
+    function removeContent(button){
+        let container = $(button).closest(`.member_entry`);
+        container.remove();
+        let contentCount = 1;
+        members_count--;
+        contentCount = members_count;
+
+        if(contentCount <= 1) $(`.del_mem_btn`).children().remove();
+
+    }
 
     function getProjectList(selectedValue = null) {
         var program = $("#mrun").val();
@@ -594,47 +719,7 @@
                 $('#main_kpi_balance_check, #grand_total_balance_check').addClass('text-theme-9');
             }
         }
-        // if(kpi != undefined){
-        //     kpi = kpi.replaceAll(',','');
-        //     let balance = total-kpi;
-        //     $('#kpi_balance_check').removeClass('text-theme-6 text-theme-9');
-        //     if(balance < 0) {
-        //         $('#kpi_balance_check').html('- RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
-        //         $('#kpi_balance_check').addClass('text-theme-6');
-        //     }
-        //     else if(balance == 0){
-        //         $('#kpi_balance_check').html('');
-        //     }
-        //     else {
-        //         $('#kpi_balance_check').html('+ RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
-        //         $('#kpi_balance_check').addClass('text-theme-9');
-        //     }
-        // }
     }
-
-    // function chargelineBalanceCheck() {
-    //     let chargeline_balance = $('#fund_balance').val() || 0;
-    //     console.log(chargeline_balance);
-    //     let total = ($('#main_dist_grand_total').val() || '').replaceAll(',','');
-    //     if(total != undefined){
-    //         total = total.replaceAll(',','');
-    //         let balance = chargeline_balance-total;
-    //         let sign = '-';
-    //         let color = 'text-theme-6';
-    //         if(balance > 0) {
-    //             sign = '+';
-    //             color = 'text-theme-10';
-    //         }
-    //         if(balance == 0){
-    //             $('#main_kpi_balance_check').html('');
-    //         }
-    //         else {
-    //             $('#main_kpi_balance_check').html(sign + ' RM ' + new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(balance)  ));
-    //             $('#main_kpi_balance_check').removeClass('text-theme-10 text-theme-6');
-    //             $('#main_kpi_balance_check').addClass(color);
-    //         }
-    //     }
-    // }
 
     $('form').bind('submit', function () {
         $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);

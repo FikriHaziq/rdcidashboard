@@ -43,8 +43,8 @@
                 $admin_access = getAccessControl('dru_pa');
                 $staff_access = getAccessControl('dru_pa_s');
             @endphp
-            <div class="g-col-12 mt-6 box p-5">
-                <div class="intro-y d-block d-sm-flex align-items-center h-10">
+            <div class="g-col-12 mt-6 box py-5">
+                <div class="intro-y d-block d-sm-flex align-items-center h-10 px-5">
                     <h2 class="fs-lg fw-medium truncate me-5">
                         Senarai Agihan
                     </h2>
@@ -56,7 +56,7 @@
                         </a> --}}
                         @if($mail_template)
                         <button class="btn btn-outline-secondary w-72 position-relative justify-content-start rounded-pill me-4">
-                            <a href="{{ route('dana-ru.kewangan.mail-template.download', $mail_template->id) }}">{{ $mail_template->filename }}</a>
+                            <a href="">{{ $mail_template->filename }}</a>
                             <a href="{{ route('dana-ru.kewangan.mail-template.index', $year) }}" class="w-8 h-8 upload-mail position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5" data-toggle="tooltip" data-tippy-content="Muat naik surat baharu"> <i data-feather="upload" class="w-4 h-4"></i> </a>
                             <a href="{{ route('dana-ru.kewangan.mail-template.download', $mail_template->id) }}" class="w-8 h-8 download-mail position-absolute d-flex justify-content-center align-items-center bg-theme-9 text-white rounded-pill end-0 top-0 bottom-0 my-auto me-0.5" data-toggle="tooltip" data-tippy-content="Muat turun surat"> <i data-feather="download" class="w-4 h-4"></i> </a>
                         </button>
@@ -73,88 +73,183 @@
                         @endif
                     </div>
                 </div>
-                <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
-                    <table class="table table-bordered mt-6 ">
-                        <thead class="table-dark border-b-0">
-                            <tr>
-                                <th class="text-nowrap">No.</th>
-                                <th class="text-nowrap">MRUN</th>
-                                <th class="text-nowrap">BPKI</th>
-                                <th class="text-nowrap">KETUA PROGRAM</th>
-                                <th class="text-nowrap">PEGAWAI BERTANGGUNGJAWAB</th>
-                                <th class="text-nowrap">PTJ PIC</th>
-                                <th class="text-nowrap">JENIS AGIHAN</th>
-                                <th class="text-nowrap">CHARGELINE</th>
-                                <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
-                                <th class="text-nowrap">PIC DECLARATION STATUS</th>
-                                <th class="text-nowrap">DECLARATION REMINDER</th>
-                                <th class="text-nowrap">ACTION</th>
-                                <th class="text-nowrap">LAMPIRAN A</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white">
-                            <form id="update-plan-form" action="{{ route('dana-ru.kewangan.pengesahan-agihan.post') }}" method="POST">
-                                @csrf
-                                @forelse ($plan_forms as $i=>$plan_form)
-                                <tr class="intro-x">
-                                    <td class="text-nowrap">{{ $i+1 }}</td>
-                                    <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
-                                    <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
-                                    <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
-                                    <td class="text-nowrap">{{ $plan_form->member_name }}</td>
-                                    <td class="text-nowrap">{{ $plan_form->ptj }}</td>
-                                    <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
-                                    <td class="text-nowrap">
-                                        @if($plan_form->ddf_status == 'active')
-                                        Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
-                                        @endif
-                                    </td>
-                                    <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
-                                    <td class="text-nowrap">
-                                        @if($plan_form->plan_form_declaration_date)
-                                        <div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">DECLARED</div>
-                                        @else
-                                        <div class="bg-gray-400 rounded-pill justify-content-center text-white d-flex align-items-center p-1">NOT DECLARED</div>
-                                        @endif
-                                    </td>
-                                    <td class="text-nowrap text-center">
-                                        <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" id="reminder_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date || $plan_form->plan_form_approved == 'N') disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
-                                    </td>
-                                    <td class="text-nowrap text-center" style="min-width: 450px">
-                                        <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
-                                            <div class="g-col-9">
-                                                <div class="input-group">
-                                                    <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
-                                                    <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') readonly @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
-                                                    @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Save</button>@endif
-                                                </div>
-                                            </div>
-                                            <div class="g-col-3">
-                                                @if($plan_form->plan_form_approved == 'Y')
-                                                <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
-                                                @else
-                                                @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary @if(!$mail_template) disabled @endif" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
-                                                <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
-                                                <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
-                                                <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-center">
-                                        <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
-                                        <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr class="intro-x bg-gray-300">
-                                    <td class="text-center" colspan="11">No record.</td>
-                                </tr>
-                                @endforelse
-                            </form>
-                        </tbody>
-                    </table>
+                <div class="d-flex p-5 align-item-center border-top border-bottom border-gray-200 dark-border-dark-5 mt-5">
+                    <ul class="nav nav-pills w-full w-lg-1/2  bg-theme-8 bg-opacity-50 dark-bg-dark-2 rounded-2 p-1" id="pills-tab" role="tablist">
+                        <li class="nav-item flex-1" role="presentation">
+                            <button class="nav-link w-full py-1.5 px-2 active" id="agihan-tab" data-bs-toggle="pill" data-bs-target="#agihan" type="button" role="tab" aria-controls="agihan" aria-selected="true">Senarai Agihan</button>
+                        </li>
+                        <li class="nav-item flex-1" role="presentation">
+                            <button class="nav-link w-full py-1.5 px-2" id="agihan-semula-tab" data-bs-toggle="pill" data-bs-target="#agihan-semula" type="button" role="tab" aria-controls="agihan-semula" aria-selected="true">Senarai Agihan Semula</button>
+                        </li>
+                    </ul>
                 </div>
+                <form id="update-plan-form" action="{{ route('dana-ru.kewangan.pengesahan-agihan.post') }}" method="POST">
+                    @csrf
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="p-5 tab-pane fade show active" id="agihan" role="tabpanel" aria-labelledby="agihan-tab">
+                            <div class="intro-y overflow-x-auto mt-8 mt-sm-0 me-5 ms-5">
+                                <table class="table table-bordered mt-6 ">
+                                    <thead class="table-dark border-b-0">
+                                        <tr>
+                                            <th class="text-nowrap">No.</th>
+                                            <th class="text-nowrap">MRUN</th>
+                                            <th class="text-nowrap">BPKI</th>
+                                            <th class="text-nowrap">KETUA PROGRAM</th>
+                                            <th class="text-nowrap">PEGAWAI BERTANGGUNGJAWAB</th>
+                                            <th class="text-nowrap">PTJ PIC</th>
+                                            <th class="text-nowrap">JENIS AGIHAN</th>
+                                            <th class="text-nowrap">CHARGELINE</th>
+                                            <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
+                                            <th class="text-nowrap">PIC DECLARATION STATUS</th>
+                                            <th class="text-nowrap">DECLARATION REMINDER</th>
+                                            <th class="text-nowrap">ACTION</th>
+                                            <th class="text-nowrap">LAMPIRAN A</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white">
+                                        @forelse ($agihan_lists as $i=>$plan_form)
+                                        <tr class="intro-x">
+                                            <td class="text-nowrap">{{ $i+1 }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
+                                            <td class="text-nowrap">{!! $plan_form->member_name !!}</td>
+                                            <td class="text-nowrap">{{ $plan_form->ptj }}</td>
+                                            <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
+                                            <td class="text-nowrap">
+                                                @if($plan_form->ddf_status == 'active')
+                                                Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
+                                                @endif
+                                            </td>
+                                            <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                            <td class="text-nowrap">
+                                                @if($plan_form->plan_form_declaration_date)
+                                                <div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">DECLARED</div>
+                                                @else
+                                                <div class="bg-gray-400 rounded-pill justify-content-center text-white d-flex align-items-center p-1">NOT DECLARED</div>
+                                                @endif
+                                            </td>
+                                            <td class="text-nowrap text-center">
+                                                <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" id="reminder_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date || $plan_form->plan_form_approved == 'N') disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
+                                            </td>
+                                            <td class="text-nowrap text-center" style="min-width: 450px">
+                                                <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
+                                                    <div class="g-col-9">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
+                                                            <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') readonly @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
+                                                            @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Save</button>@endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="g-col-3">
+                                                        @if($plan_form->plan_form_approved == 'Y')
+                                                        <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
+                                                        @else
+                                                        @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary @if(!$mail_template) disabled @endif" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
+                                                        <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
+                                                        <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
+                                                        <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-nowrap text-center">
+                                                <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                                <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr class="intro-x bg-gray-300">
+                                            <td class="text-center" colspan="11">No record.</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="p-5 tab-pane fade show" id="agihan-semula" role="tabpanel" aria-labelledby="agihan-semula-tab">
+                            <div class="intro-y overflow-x-auto mt-8 mt-sm-0 me-5 ms-5">
+                                <table class="table table-bordered mt-6 ">
+                                    <thead class="table-dark border-b-0">
+                                        <tr>
+                                            <th class="text-nowrap">No.</th>
+                                            <th class="text-nowrap">MRUN</th>
+                                            <th class="text-nowrap">BPKI</th>
+                                            <th class="text-nowrap">KETUA PROGRAM</th>
+                                            <th class="text-nowrap">PEGAWAI BERTANGGUNGJAWAB</th>
+                                            <th class="text-nowrap">PTJ PIC</th>
+                                            <th class="text-nowrap">JENIS AGIHAN</th>
+                                            <th class="text-nowrap">CHARGELINE</th>
+                                            <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
+                                            <th class="text-nowrap">PIC DECLARATION STATUS</th>
+                                            <th class="text-nowrap">DECLARATION REMINDER</th>
+                                            <th class="text-nowrap">ACTION</th>
+                                            <th class="text-nowrap">LAMPIRAN A</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white">
+                                        @forelse ($agihan_semula_lists as $i=>$plan_form)
+                                        <tr class="intro-x">
+                                            <td class="text-nowrap">{{ $i+1 }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->bpki_code }}</td>
+                                            <td class="text-nowrap">{{ $plan_form->pic_name }}</td>
+                                            <td class="text-nowrap">{!! $plan_form->member_name !!}</td>
+                                            <td class="text-nowrap">{{ $plan_form->ptj }}</td>
+                                            <td class="text-nowrap">{{ strtoupper($plan_form->ddf_title) }} </td>
+                                            <td class="text-nowrap">
+                                                @if($plan_form->ddf_status == 'active')
+                                                Q.{{ getAppendedPtjCode($plan_form->ptj_code, 7) }}.{{ $plan_form->ddf_code }}.{{ getProjectSecondCode($plan_form->ddf_code_2) }}
+                                                @endif
+                                            </td>
+                                            <td class="text-nowrap">RM {{ number_format($plan_form->plan_form_amount, 2, '.', ',') }}</td>
+                                            <td class="text-nowrap">
+                                                @if($plan_form->plan_form_declaration_date)
+                                                <div class="bg-theme-10 rounded-pill justify-content-center text-white d-flex align-items-center p-1">DECLARED</div>
+                                                @else
+                                                <div class="bg-gray-400 rounded-pill justify-content-center text-white d-flex align-items-center p-1">NOT DECLARED</div>
+                                                @endif
+                                            </td>
+                                            <td class="text-nowrap text-center">
+                                                <button type="button" onclick="broadcast({{ $plan_form->plan_form_id }})" id="reminder_{{ $plan_form->plan_form_id }}" class="btn btn-sm btn-primary @if($plan_form->plan_form_declaration_date || $plan_form->plan_form_approved == 'N') disabled @endif" data-toggle="tooltip" data-tippy-content="Hantar Emel" onclick=""><i class="p-1" data-feather="mail"></i></button>
+                                            </td>
+                                            <td class="text-nowrap text-center" style="min-width: 450px">
+                                                <div class="grid columns-12 gap-2 align-items-center justify-content-center w-full">
+                                                    <div class="g-col-9">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="plan_form_id[]" value="{{ $plan_form->plan_form_id }}">
+                                                            <input name="ref_no[]" @if($plan_form->plan_form_approved == 'Y') readonly @endif id="ref_no_{{ $plan_form->plan_form_id }}" type="text" value="{{ $plan_form->plan_form_ref_no }}" class="form-control" placeholder="NO. RUJUKAN PINDAHAN UTMFIN">
+                                                            @if($plan_form->plan_form_approved != 'Y')<button type="button" class="input-group-text btn btn-primary" onclick="setRefNo({{ $plan_form->plan_form_id }})">Save</button>@endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="g-col-3">
+                                                        @if($plan_form->plan_form_approved == 'Y')
+                                                        <a href="javascript:void(0)" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</a>
+                                                        @else
+                                                        @if($admin_access)<button type="button" id="approve_{{ $plan_form->plan_form_id }}" class="btn btn-primary @if(!$mail_template) disabled @endif" onclick="approve({{ $plan_form->plan_form_id }})">Approve</button>@endif
+                                                        <button type="button" id="processing_{{ $plan_form->plan_form_id }}" class="btn btn-primary" style="display: none">Approving <i data-loading-icon="oval" data-color="white" class="w-4 h-4 ms-2"></i></button>
+                                                        <button type="button" id="approved_{{ $plan_form->plan_form_id }}" class="btn btn-success" style="display: none"><i data-feather="thumbs-up" class="w-4 h-4 me-2"></i> Approved</button>
+                                                        <button type="button" id="error_{{ $plan_form->plan_form_id }}" class="btn btn-danger" style="display: none" onclick="approve({{ $plan_form->plan_form_id }})"><i data-feather="alert-circle" class="w-4 h-4 me-2"></i> Try Again</button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-nowrap text-center">
+                                                <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                                <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr class="intro-x bg-gray-300">
+                                            <td class="text-center" colspan="11">No record.</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             @endif
         </div>

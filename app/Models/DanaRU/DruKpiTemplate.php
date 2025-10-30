@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class DruKpiTemplate extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }

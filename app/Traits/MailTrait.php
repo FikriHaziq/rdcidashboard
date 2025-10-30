@@ -10,6 +10,10 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruMailTemplate;
 use App\Models\DanaRU\DruDataAttachment;
+use Barryvdh\DomPDF\Facade\Pdf;
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 trait MailTrait
@@ -31,8 +35,11 @@ trait MailTrait
 
         $ptj = $plan_form->ptj;
         $pic = $plan_form->pic;
-        $member = $plan_form->member;
-        $receivers = [trim($pic->email), trim($member->email)];
+        $members = $plan_form->members;
+        $receivers = [trim($pic->email)];
+        foreach ($members as $key => $member) {
+            $receivers[] = trim($member->email);
+        }
         $subject = $ptj->parameter_name . ' - AGIHAN PERUNTUKAN DANA UNIVERSITI PENYELIDIKAN TAHUN '.$plan->year;
         $bcc_email = '';
         $data = [
@@ -50,11 +57,12 @@ trait MailTrait
         ->select([
             'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.updated_at as plan_form_updated_at', 'plan_form.pic_declaration_date as plan_form_declaration_date',
             'mrun.description_1 as mrun_desc', 'bpki.parameter_name as bpki_code',
-            'pic.name as pic_name', 'member.name as member_name',
+            'pic.name as pic_name',
             'ptj.description_1 as ptj','ptj.original_code as ptj_code', 'ptj.parameter_name as ptj_short',
+            DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
             DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
             DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
-            'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.notes','plan_form.amount as plan_form_amount',
+            'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount',
         ])
         ->join('dru_distribution_plans as plan', function ($join) {
             $join->on('plan.id', '=', 'plan_form.distribution_plan_id');
@@ -104,24 +112,25 @@ trait MailTrait
             $filename = $form->ptj_short. '_'. $form->ddf_title . '_' . $form->plan_year;
         }
 
-        $templateProcessor = new TemplateProcessor('wordTemplate/lampiran_a_template.docx');
-        $templateProcessor->setValue("ptj_pic", $form->ptj);
-        $templateProcessor->setValue("mrun", $form->mrun_desc);
-        $templateProcessor->setValue("project", $form->ddf_title);
-        $templateProcessor->setValue("chargeline", $chargeline);
-        $templateProcessor->setValue("ref_no", $form->plan_form_ref_no);
-        $templateProcessor->setValue("amount", number_format($form->plan_form_amount, 2, '.', ','));
-        $templateProcessor->setValue("main_dist", $main_dist);
-        $templateProcessor->setValue("pic_name", $form->pic_name);
-        $templateProcessor->setValue("member_name", $form->member_name);
-        $templateProcessor->setValue("year", $form->plan_year);
-        $templateProcessor->setValue("updated_at", $form->plan_form_declaration_date ? date('j/n/Y', strtotime($form->plan_form_declaration_date)): '');
+        $pdf1 = Pdf::loadView('components.pdf.lampiran-a', compact('form', 'chargeline', 'main_dist'))
+                  ->setPaper('a4', 'portrait')->output(); // A4 size
+        $pdf2 = Pdf::loadView('components.pdf.lampiran-a-portrait', compact('form', 'chargeline', 'main_dist'))
+                ->setPaper('a4', 'landscape')->output();
+
+        $merger = new Merger;
+        $merger->addRaw($pdf1);
+        $merger->addRaw($pdf2);
+
+        $finalPdf = $merger->merge();
+
+        // 🧩 Save to storage/app/data/pdf/
+        Storage::put('data/pdf/' . $filename, $finalPdf);
 
         File::ensureDirectoryExists(storage_path('/app/data/doc/email'));
         File::cleanDirectory(storage_path('/app/data/doc/email'));
-        $filepath = storage_path('app/data/doc/email/'.$filename.'.docx');
+        $filepath = storage_path('app/data/doc/email/'.$filename.'.pdf');
         try{
-            $templateProcessor->saveAs(storage_path('app/data/doc/email/'.$filename.'.docx'));
+            Storage::put('data/doc/email/'.$filename.'.pdf', $finalPdf);
         }catch (Exception $e){
             //handle exception2
         }
