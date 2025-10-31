@@ -102,7 +102,7 @@
                                             <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                             <th class="text-nowrap">PIC DECLARATION STATUS</th>
                                             <th class="text-nowrap">DECLARATION REMINDER</th>
-                                            <th class="text-nowrap">ACTION</th>
+                                            <th class="text-nowrap">NO. RUJ. PINDAHAN UTMFIN</th>
                                             <th class="text-nowrap">LAMPIRAN A</th>
                                         </tr>
                                     </thead>
@@ -183,7 +183,7 @@
                                             <th class="text-nowrap">PERUNTUKAN AGIHAN 2023</th>
                                             <th class="text-nowrap">PIC DECLARATION STATUS</th>
                                             <th class="text-nowrap">DECLARATION REMINDER</th>
-                                            <th class="text-nowrap">ACTION</th>
+                                            <th class="text-nowrap">NO. RUJ. PINDAHAN UTMFIN</th>
                                             <th class="text-nowrap">LAMPIRAN A</th>
                                         </tr>
                                     </thead>
