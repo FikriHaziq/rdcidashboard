@@ -62,7 +62,32 @@
                         <label for="horizontal-form-1">PEGAWAI BERTANGGUNGJAWAB</label>
                     </div>
                     <div class="g-col-9">
-                        <div class="input-group mb-2">
+                        <div class="d-flex flex-column justify-content-center flex-1 border-2 border-dotted rounded-2 bg-theme-14 mx-5 p-5">
+                            <div class="intro-y d-flex flex-column">
+                                @foreach ($plan_form->members as $member)
+                                    <div class="bg-white rounded-2 grid columns-12 gap-5 p-5 mb-5 w-full">
+                                        <div class="g-col-12">
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-text">NAMA</div> <input name="pb_name[]" type="text" value="{{ $member->name }}" class="form-control" readonly placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
+                                            </div>
+                                            <div class="grid columns-2 gap-3">
+                                                <div class="g-col-1">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">EMEL</div> <input name="pb_email[]" type="text" value="{{ $member->email }}" class="form-control" readonly placeholder="EMEL PEGAWAI" aria-describedby="pb_email">
+                                                    </div>
+                                                </div>
+                                                <div class="g-col-1">
+                                                    <div class="input-group">
+                                                        <div class="input-group-text">IC</div> <input name="pb_ic[]" type="text" value="{{ $member->nric }}" class="form-control" readonly placeholder="NO. IC PEGAWAI" aria-describedby="pb_ic">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- <div class="input-group mb-2">
                             <div class="input-group-text">NAMA</div> <input id="pb_name" name="pb_name" type="text" value="{{ old('pb_name') ?? ($plan_form->member->name ?? '') }}" class="form-control @error('pb_name') border-theme-6 @enderror" readonly placeholder="NAMA PEGAWAI" aria-describedby="pb_name">
                         </div>
                         @error('pb_name')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
@@ -79,7 +104,7 @@
                                 </div>
                                 @error('pb_ic')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="grid columns-12 gap-6 mt-2 pb-2">
