@@ -1,0 +1,53 @@
+.dashboard-card-secondary {
+    background-color: #f4f0fa !important;
+    color: #6f42c1 !important;
+}
+
+.dashboard-card-secondary .title {
+    background-color: #6f42c1 !important;
+    color: white !important;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.dashboard-card-success {
+    background-color: #edfdf5 !important;
+    color: #119c58 !important;
+}
+
+.dashboard-card-success .title {
+    background-color: #119c58 !important;
+    color: white !important;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.dashboard-card-info {
+    background-color: #ecf2fe !important;
+    color: #0f4db8 !important;
+}
+
+.dashboard-card-info .title {
+    background-color: #0f4db8 !important;
+    color: white !important;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.dashboard-card-warning {
+    background-color: #fff6eb !important;
+    color: #ff9811 !important;
+}
+
+.dashboard-card-warning .title {
+    background-color: #ff9811 !important;
+    color: white !important;
+    border-radius: 6px 6px 0px 0px;
+}
+
+.chart-title {
+    background-color: #002060 !important;
+    color: white !important;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.fs-xs-8 {
+    font-size: 8px !important;
+}

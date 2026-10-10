@@ -11,6 +11,13 @@
 <div class="intro-y row mt-5">
     <div class="col-3">
         <div class="grid grid-cols-12 gap-3">
+            <a href="{{ route('dana-ru.carian.cadangan-agihan') }}" class="g-col-12 box p-5 cursor-pointer zoom-in" style="background-color: #1C3FAA;">
+                <div class="fw-medium fs-base text-white">Cadangan Agihan</div>
+            </a>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="grid grid-cols-12 gap-3">
             <a href="{{ route('dana-ru.carian.allocation') }}" class="g-col-12 box p-5 cursor-pointer zoom-in" style="background-color: #1C3FAA;">
                 <div class="fw-medium fs-base text-white">Allocation</div>
             </a>

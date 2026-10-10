@@ -564,4 +564,119 @@ class DatatableController extends Controller
             ->rawColumns(['role_label', 'system_role_label', 'status_label', 'action'])
             ->make(true);
     }
+
+    public static function cadanganAgihanSearchList($request)
+    {
+        $query = \App\Models\DanaRU\DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
+            ->select([
+                'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
+                'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
+                'pic.name as pic_name', 'pic.email as pic_email',
+                'pic_status.description as pic_submission_status_label',
+                'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
+                \Illuminate\Support\Facades\DB::raw('(SELECT SUM(total) FROM dru_kpi_pics as pic_kpi WHERE pic_kpi.distribution_plan_form_id = plan_form.id) AS total_expenses'),
+                \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
+                \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.email) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.email) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.email)) as member_email'),
+                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
+                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(main_kpi.remark) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_remarks'),
+                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
+                \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(kpi.remark) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_remarks'),
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
+                'main_kpi.id as main_kpi_id','main_kpi_template.id as main_kpi_template_id','main_kpi_template.title as main_kpi_template_title','main_kpi_template.active as main_kpi_template_active','main_kpi.count as main_kpi_count','main_kpi.amount as main_kpi_amount','main_kpi.total as main_kpi_total','main_kpi.remark as main_kpi_remark',
+                'kpi.id as kpi_id','kpi_template.id as kpi_template_id','kpi_template.title as kpi_template_title','kpi_template.active as kpi_template_active','kpi.count as kpi_count','kpi.amount as kpi_amount','kpi.total as kpi_total','kpi.remark as kpi_remark',
+            ])
+            ->join('dru_distribution_plans as plan', function ($join) use ($year) {
+                $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
+                    ->where('plan.year',$year);
+            })
+            ->join('parameters as mrun', function ($join) {
+                $join->on('mrun.id', '=', 'plan_form.mrun')
+                    ->where('mrun.active','Y');
+            })
+            ->join('parameters as bpki', function ($join) {
+                $join->on('bpki.id', '=', 'plan_form.bpki')
+                    ->where('bpki.active','Y');
+            })
+            ->join('parameters as ptj', function ($join) {
+                $join->on('ptj.id', '=', 'plan_form.ptj_id')
+                    ->where('ptj.active','Y');
+            })
+            ->join('dru_members as pic', function ($join) {
+                $join->on('pic.distribution_plan_form_id', '=', 'plan_form.id')->where('pic.type','leader');
+            })
+            ->leftjoin('dru_members as member', function ($join) {
+                $join->on('member.distribution_plan_form_id', '=', 'plan_form.id')->where('member.type','member');
+            })
+            ->leftjoin('dru_kpis as main_kpi', function ($join) {
+                $join->on('main_kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('main_kpi.type','main')->where('main_kpi.status','active');
+            })
+            ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
+                $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
+                ->where('main_kpi_template.active','Y');
+            })
+            ->leftjoin('dru_kpis as kpi', function ($join) {
+                $join->on('kpi.distribution_plan_form_id', '=', 'plan_form.id')
+                ->where('kpi.type','kpi')->where('kpi.status','active');
+            })
+            ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
+                ->where('kpi_template.active','Y');
+            })
+            ->leftjoin('statuses as pic_status', function ($join) {
+                $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
+            })
+            ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
+            ->groupBy('plan_form.id')->where('plan.year', $year);
+        if($plan_id)$query = $query->where('plan_form.distribution_plan_id', $plan_id);
+        if($plan_form_id)$query = $query->where('plan_form.id', $plan_form_id);
+        // dd($query->get());
+        $query = $query->get();
+        $query = $query->map(function ($item) {
+            $main_kpis = \App\Models\DanaRU\DruKpi::from('dru_kpis as main_kpi')
+            ->select([
+                'main_kpi.id as id', 'main_kpi.count as bil', 'main_kpi.amount as amount', 'main_kpi.total as total', 'main_kpi.remark as remark', 
+                'main_kpi_template.id as item_id', 'main_kpi_template.title as item_name', 'main_kpi_template.active as active',
+            ])
+            ->leftjoin('dru_kpi_templates as main_kpi_template', function ($join) {
+                $join->on('main_kpi_template.id', '=', 'main_kpi.kpi_template_id')
+                ->where('main_kpi_template.active','Y');
+            })->where('main_kpi.distribution_plan_form_id', $item->plan_form_id)->where('main_kpi.type', 'main')->get();
+            $kpis = \App\Models\DanaRU\DruKpi::from('dru_kpis as kpi')
+            ->select([
+                'kpi.id as id', 'kpi.count as bil', 'kpi.amount as amount', 'kpi.total as total', 'kpi.remark as remark', 
+                'kpi_template.id as item_id', 'kpi_template.title as item_name', 'kpi_template.active as active',
+            ])
+            ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
+                $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
+                ->where('kpi_template.active','Y');
+            })->where('kpi.distribution_plan_form_id', $item->plan_form_id)->where('kpi.type', 'kpi')->get();
+            $item->main_kpi_dataset = $main_kpis;
+            $item->kpi_dataset = $kpis;
+            return $item;
+        });
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tabung_induk', function ($row) {
+                $text_color = 'text-theme-6';
+                if($row->dmf_id && $row->dmf_is_draft != 1 && $row->dmf_status == "active") $text_color = '';
+                return '<span class="'.$text_color.'">'.$row->formula_tabung_induk.'</span>';
+            })
+            ->addColumn('faculty_short', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj.'</a>';
+                return $html;
+            })
+            ->addColumn('faculty_code', function ($row) {
+                if($row->f_id) $html = '<a href="'.route('dana-ru.maintenance.faculty.edit', $row->f_id).'" class="btn-link text-theme-10">'.$row->ptj_fullcode.'</a>';
+                else $html = '<a href="'.route('dana-ru.maintenance.faculty.create', ['original_code' => $row->ptj_code, 'short' => $row->ptj]).'" class="btn-link text-theme-6">'.$row->ptj_fullcode.'</a>';
+                return $html;
+            })
+            ->addColumn('checkbox', function($row){
+                return '<input type="checkbox" name="projects[]" value="'.$row->id.'">';
+            })
+            ->rawColumns(['checkbox','tabung_induk', 'faculty_short','faculty_code'])
+            ->make(true);
+    
+    }
 }

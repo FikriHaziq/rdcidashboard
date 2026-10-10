@@ -11,17 +11,19 @@ class PicForm extends Component
     public $plan;
     public $plan_form;
     public $expenses;
+    public $histories;
     public $edit;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($year, $plan, $planform, $edit = true)
+    public function __construct($year, $plan, $planform, $histories = [], $edit = true)
     {
         $this->year = $year;
         $this->plan = $plan;
         $this->plan_form = $planform;
+        $this->histories = $histories;
         $this->edit = $edit;
         $dru_dist_fund = $this->plan_form->project;
         $this->expenses = MasterlistDruExpenses::where('year', $year)

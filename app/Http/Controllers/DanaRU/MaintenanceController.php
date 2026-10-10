@@ -10,9 +10,11 @@ use App\Models\DanaRU\DruProject;
 use App\Models\DanaRU\DruKpiTemplate;
 use App\Models\User;
 use App\Models\Parameter;
+use App\Models\Status;
 use App\Models\MasterList\MasterlistDruYear;
 use App\Http\Controllers\DatatableController;
 use Illuminate\Validation\Rule;
+use Validator;
 
 class MaintenanceController extends Controller
 {
@@ -617,5 +619,109 @@ class MaintenanceController extends Controller
         $user->save();
         session()->flash('success', "User telah berjaya dikemaskini.");
         return redirect()->route('dana-ru.maintenance.user');
+    }
+
+    public function verificationLabelIndex(){
+        $cadangan_agihan = (object)[
+            "level1" => Status::whereModuleId(1)->whereSort(2)->first()->next_level_desc ?? null,
+            "level2" => Status::whereModuleId(1)->whereSort(5)->first()->next_level_desc ?? null
+        ];
+        $laporan_perbelanjaan = (object)[
+            "level1" => Status::whereModuleId(2)->whereSort(2)->first()->next_level_desc ?? null
+        ];
+        // dd($cadangan_agihan, $laporan_perbelanjaan);
+        return view('dana-ru.maintenance.verification-label.index', compact('cadangan_agihan', 'laporan_perbelanjaan'));
+    }
+
+    public function verificationLabelUpdate(Request $request){
+        $validator = Validator::make($request->all(), [
+            'level1' => 'required',
+            'level2' => 'required_if:type,cadangan_agihan',
+            'type' => 'required',
+        ],
+        [
+            'level1.required' => 'Sila masukkan label level 1.',
+            'level2.required_if' => 'Sila masukkan label level 2.',
+            'type.required' => 'Sila pilih jenis.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, $request->type)
+                ->withInput();
+        }
+        if($request->type == 'cadangan_agihan'){
+            $submit_status = Status::whereModuleId(1)->whereIn('sort', [2,3])->get();
+            if($submit_status){
+                foreach($submit_status as $status){
+                    $status->next_level_desc = $request->level1;
+                    $status->save();
+                }
+            }
+            $verified_status = Status::whereModuleId(1)->whereSort(5)->first();
+            if($verified_status){
+                $verified_status->next_level_desc = $request->level2;
+                $verified_status->save();
+            }
+        } else {
+            $submit_status = Status::whereModuleId(2)->whereIn('sort', [2,3])->get();
+            if($submit_status){
+                foreach($submit_status as $status){
+                    $status->next_level_desc = $request->level1;
+                    $status->save();
+                }
+            }
+        }
+        session()->flash('success', "Label pengesahan telah berjaya dikemaskini.");
+        return redirect()->route('dana-ru.maintenance.verification-label');
+    }
+
+    public function statusIndex(){
+        $cadangan_agihan = Status::whereModuleId(1)->where('sort', '!=', 1)->orderBy('sort')->get();
+        $laporan_perbelanjaan = Status::whereModuleId(2)->where('sort', '!=', 1)->orderBy('sort')->get();
+
+        return view('dana-ru.maintenance.status.index', compact('cadangan_agihan', 'laporan_perbelanjaan'));
+    }
+
+    public function statusUpdate(Request $request){
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'name.*' => 'required',
+            'label.*' => 'required',
+            'type' => 'required',
+        ],
+        [
+            'name.*.required' => 'Sila masukkan nama status.',
+            'label.*.required' => 'Sila masukkan label status.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, $request->type)
+                ->withInput();
+        }
+        if($request->type == 'cadangan_agihan'){
+            foreach ($request->sort as $key => $item) {
+                $status = Status::whereModuleId(1)->whereSort($item)->first();
+                if($status){
+                    $status->name = $request->name[$key];
+                    $status->description = $request->label[$key];
+                    $status->save();
+                }
+            }
+        } else {
+            foreach ($request->sort as $key => $item) {
+                $status = Status::whereModuleId(2)->whereSort($item)->first();
+                if($status){
+                    $status->name = $request->name[$key];
+                    $status->description = $request->label[$key];
+                    $status->save();
+                }
+            }
+        }
+        session()->flash('success', "Status telah berjaya dikemaskini.");
+        return redirect()->route('dana-ru.maintenance.status');
     }
 }

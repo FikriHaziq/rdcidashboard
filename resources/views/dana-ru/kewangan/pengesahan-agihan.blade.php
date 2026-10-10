@@ -155,7 +155,11 @@
                                             </td>
                                             <td class="text-nowrap text-center">
                                                 <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                                @if($plan_form->dda_id)
+                                                <a href="{{ route('dana-ru.cadangan-agihan.file.download', $plan_form->dda_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                                @else
                                                 <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @empty
@@ -188,7 +192,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white">
-                                        @forelse ($agihan_semula_lists as $i=>$plan_form)
+                                        @forelse ($agihan_semula_lists ?? [] as $i=>$plan_form)
                                         <tr class="intro-x">
                                             <td class="text-nowrap">{{ $i+1 }}</td>
                                             <td class="text-nowrap">{{ $plan_form->mrun_code }}</td>
@@ -236,7 +240,11 @@
                                             </td>
                                             <td class="text-nowrap text-center">
                                                 <a href="{{ route('dana-ru.kewangan.pengesahan-agihan.show', $plan_form->plan_form_id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-tippy-content="Lihat borang" onclick=""><i class="p-1" data-feather="eye"></i></a>
+                                                @if($plan_form->dda_id)
+                                                <a href="{{ route('dana-ru.cadangan-agihan.file.download', $plan_form->dda_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                                @else
                                                 <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" data-tippy-content="Muat Turun Lampiran A" onclick=""><i class="p-1" data-feather="download"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @empty

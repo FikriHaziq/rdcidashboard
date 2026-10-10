@@ -214,8 +214,21 @@
                         </div>
                     </div>
                 </div>
-                <hr class="mt-3">
-                <div class="grid columns-12 gap-6 mt-2 pb-2">
+                <div class="grid columns-12 gap-6 pb-2 mt-2">
+                    <div class="g-col-3 d-flex align-items-center justify-content-end">
+                        <label for="mrun">PENGGAL</label>
+                    </div>
+                    <div class="g-col-9">
+                        <select id="term" name="term" class="form-select @error('term') border-theme-6 @enderror" @if(!$edit) disabled @endif>
+                            <option value="">--Sila pilih--</option>
+                            @foreach ($plan->terms as $term)
+                                <option value="{{ $term->term }}" @if(((old('term') ?? ($plan_form->pic_submission_term ?? '')) == $term->term) && $term->active == 'Y') selected @endif @if ($term->active == 'N') disabled @endif>{{ $term->label }}</option>
+                            @endforeach
+                        </select>
+                        @error('term')<div class="text-theme-6 mt-2">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="grid columns-12 gap-6 pb-2">
                     <div class="g-col-3 d-flex align-items-center justify-content-end">
                         <label for="output">OUTPUT/IMPACT PROGRAM/PROJECT</label>
                     </div>
@@ -358,6 +371,60 @@
                         @endif
                     </div>
                 </div>
+                <hr class="mt-3">
+                @if (count($histories) > 0)
+                <div class="mt-4 pb-2">
+                    <div class="d-flex flex-column justify-content-center flex-1 border-2 border-dotted rounded-2 bg-theme-14 mx-5 p-5">
+                        <h4 class="fs-lg fw-bold mb-4">HISTORY</h4>
+                        <div class="intro-y overflow-x-auto">
+                            <table class="table table-bordered">
+                                <thead class="table-light border-b-0">
+                                    <tr class="text-center">
+                                        <th class="text-nowrap">PENGGAL</th>
+                                        <th class="text-nowrap">KPI</th>
+                                        <th class="text-nowrap">AMAUN (RM)</th>
+                                        <th class="text-nowrap">JUMLAH (RM)</th>
+                                        <th class="text-nowrap">KOMITMEN (RM)</th>
+                                        <th class="text-nowrap">BAKI (RM)</th>
+                                        <th class="text-nowrap">JUSTIFIKASI</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                </tbody>
+                                <tfoot class="bg-white">
+                                    @foreach ($histories as $j=>$history)
+                                        @foreach ($history->kpi_name as $i=>$kpi_name)
+                                        <tr class="intro-x text-center">
+                                        @if ($i == 0)
+                                        <td rowspan="{{ count($history->kpi_name) }}">{{ $history->term }}</td>
+                                        @endif
+                                        <td>{{ $kpi_name }}</td>
+                                        <td>{{ number_format($history->kpi_amount[$i], 2) }}</td>
+                                        @if ($i == 0)
+                                        <td rowspan="{{ count($history->kpi_name) }}">{{ number_format($history->kpi_total_amount, 2) }}</td>
+                                        <td rowspan="{{ count($history->kpi_name) }}">{{ number_format($history->commitment, 2) }}</td>
+                                        <td rowspan="{{ count($history->kpi_name) }}">{{ number_format($history->balance, 2) }}</td>
+                                        <td rowspan="{{ count($history->kpi_name) }}">
+                                            <div class="history-justification-wrapper">
+                                                <div class="history-justification-text">
+                                                    {{ $history->justification }}
+                                                </div>
+                                                <button type="button" class="btn btn-link p-0 history-justification-view-more" data-bs-toggle="modal" data-bs-target="#justification_{{ $j }}_{{ $i }}">View More</button>
+                                            </div>
+                                        </td>
+                                        <x-modal modal-id="justification_{{ $j }}_{{ $i }}" title="Justifikasi ({{ $history->term }})" :footerFlag="false">
+                                            {{ $history->justification }}
+                                        </x-modal>
+                                        @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 @if($edit)
                 <div class="mt-5 d-flex justify-content-end">
                     <a href="{{ route('dana-ru.senarai-agihan.index', $year) }}" class="btn btn-light me-3">Batal</a>
@@ -373,7 +440,9 @@
 @push('custom-js')
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
-<script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+{{-- <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script> --}}
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"></script>
+
 <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
 <script>
@@ -383,7 +452,6 @@
     var plan_status = {!! $plan->status !!};
     var main_dist = oldInput.main_dist;
     var kpi = oldInput.kpi;
-    console.log(kpi);
     var mykpi = {!! json_encode((session()->getOldInput()['mykpi'] ?? $plan_form->kpiInputData['mykpi'])) !!};
     if (typeof main_dist !== 'undefined') {
         main_dist.forEach(function(value, index) {
@@ -400,7 +468,6 @@
             manageKpiItem('mykpi', 'add', null, value, plan_status);
         });
     }
-    console.log('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getProjectList('{!! old('project') ?? ($plan_form->projectInputData ?? '') !!}');
     getChargeline($('#ptj').val(),'ptj');
     var eventHandler = function(name) {
@@ -700,6 +767,19 @@
 
     $('form').bind('submit', function () {
         $('#mrun, #bpki, #project, #main_dist select').prop('disabled', false);
+    });
+
+    $('.history-justification-wrapper').each(function () {
+        const $wrapper = $(this);
+        const $text = $wrapper.find('.history-justification-text');
+        const $viewMore = $wrapper.find('.history-justification-view-more');
+
+        // Check if text is more than 2 lines
+        if ($text[0].scrollHeight > $text[0].clientHeight) {
+            $viewMore.show();
+        } else {
+            $viewMore.hide();
+        }
     });
 </script>
 @endpush

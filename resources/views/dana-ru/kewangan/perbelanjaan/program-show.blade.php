@@ -13,7 +13,7 @@
         <x-dru.tab :tab="$tab" :verificationtab="in_array($plan_form->pic_submission_status, [8,9])" :verificationlabel="$plan_form->pic_status->next_level_desc ?? null"/>
         <div class="tab-content" id="pills-tabContent">
             <div class="p-5 tab-pane fade @if(in_array($tab, [null,'list'])) show active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
-                <x-dru.pic-form :year="$year" :plan="$plan" :planform="$plan_form" :edit="$edit" />
+                <x-dru.pic-form :year="$year" :plan="$plan" :planform="$plan_form" :histories="$expenses_record_histories" :edit="$edit" />
             </div>
             @if (in_array($plan_form->pic_submission_status, [8,9]))
             <div class="p-5 tab-pane fade @if(in_array($tab, ['verification'])) show active @endif" id="verification" role="tabpanel" aria-labelledby="verification-tab">

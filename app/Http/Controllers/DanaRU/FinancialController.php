@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DanaRU\DruDistributionPlan;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruExpensesRecord;
+use App\Models\DanaRU\DruExpensesReportTerm;
 use App\Models\DanaRU\DruDataAttachment;
 use App\Models\TemporaryFile;
 use App\Models\MasterList\MasterlistDruAllocation;
@@ -67,7 +68,7 @@ class FinancialController extends Controller
             return back();
         }
         $mail_template = DruMailTemplate::where('year', $year)->first();
-        // dd($mail_template);
+        // dd($agihan_lists);
         return view('dana-ru.kewangan.pengesahan-agihan', compact('year', 'plans', 'agihan_lists',  'agihan_semula_lists', 'plan_forms_count', 'mail_template'));
     }
 
@@ -83,6 +84,7 @@ class FinancialController extends Controller
                 DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
+                'dda.id as dda_id',
                 'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount',
             ])
             ->join('dru_distribution_plans as plan', function ($join) {
@@ -121,6 +123,11 @@ class FinancialController extends Controller
             ->leftjoin('dru_kpi_templates as kpi_template', function ($join) {
                 $join->on('kpi_template.id', '=', 'kpi.kpi_template_id')
                 ->where('kpi_template.active','Y');
+            })
+            ->leftjoin('dru_data_attachments as dda', function ($join) {
+                $join->on('plan_form.id', '=', 'dda.parent_id')
+                ->where('dda.table', 'plan_form')->where('dda.is_active', 'Y')
+                ->where('dda.category', 'lampiran_a');
             })
             ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
@@ -353,20 +360,22 @@ class FinancialController extends Controller
                     $agihan_lists[] = (object)[
                         "plan_id" => $plan->id,
                         "plan_date" => $plan->created_at,
-                        "plan_forms" => $plan_form
+                        "plan_forms" => $plan_form,
+                        "terms" => $plan->terms
                     ];
                 }
                 else if($plan->type == 3){
                     $agihan_semula_lists[] = (object)[
                         "plan_id" => $plan->id,
                         "plan_date" => $plan->created_at,
-                        "plan_forms" => $plan_form
+                        "plan_forms" => $plan_form,
+                        "terms" => $plan->terms
                     ];
                 }
             }
         }
         // if($plan_forms) $plan_forms = $plan_forms->where('plan_form_declaration_date','!=', NULL);
-        // dd($agihan_lists[0]->plan_forms);
+        // dd($agihan_lists[0]);
         return view('dana-ru.kewangan.perbelanjaan.program', compact('year', 'agihan_lists', 'agihan_semula_lists'));
     }
 
@@ -376,7 +385,9 @@ class FinancialController extends Controller
         $plan = $plan_form->distribution_plan;
         $year = $plan->year;
         $edit = false;
-        return view('dana-ru.kewangan.perbelanjaan.program-show', compact('year', 'plan_form', 'plan', 'tab', 'edit'));
+        $expenses_record_histories = $plan_form->expenses_record_history;
+        // dd($expenses_record_histories);
+        return view('dana-ru.kewangan.perbelanjaan.program-show', compact('year', 'plan_form', 'expenses_record_histories', 'plan', 'tab', 'edit'));
     }
 
     public function programVerificationPost(Request $request, $id)
@@ -435,7 +446,8 @@ class FinancialController extends Controller
                         "commitment" => $plan_form->commitment,
                         "pic_justification" => $plan_form->pic_justification,
                         "total" => $kpi->total,
-                        "cid" => $kpi->cid,
+                        "term" => $plan_form->pic_submission_term,
+                        "c_id" => $kpi->c_id,
                     ]);
                 }
             }
@@ -445,7 +457,7 @@ class FinancialController extends Controller
             // return back();
         }
         session()->flash('success', "Borang telah berjaya disahkan.");
-        return redirect()->route('dana-ru.kewangan.perbelanjaan.program', ['year'=>$request->year]);
+        return redirect()->route('dana-ru.kewangan.perbelanjaan.program.index', ['year'=>$request->year]);
     }
 
     public function subProject($year = null)
@@ -454,11 +466,111 @@ class FinancialController extends Controller
         return view('dana-ru.kewangan.perbelanjaan.subproject', compact('year'));
     }
 
+    public function term($plan_id)
+    {
+        $plan = DruDistributionPlan::find($plan_id);
+        $terms = DruExpensesReportTerm::where('distribution_plan_id', $plan_id)->orderBy('term')->get();
+        return view('dana-ru.kewangan.perbelanjaan.penggal.index', compact('plan', 'terms'));
+    }
+
+    public function termCreate($plan_id)
+    {
+        $plan = DruDistributionPlan::find($plan_id);
+        $usedTerms = DruExpensesReportTerm::where('distribution_plan_id', $plan->id)
+            ->pluck('term')
+            ->toArray();
+        return view('dana-ru.kewangan.perbelanjaan.penggal.create', compact('plan', 'usedTerms'));
+    }
+
+    public function termStore(Request $request)
+    {
+        $request->validate([
+            'label' => 'required',
+            'term' => 'required',
+            'active' => 'required',
+        ],
+        [
+            'label.required' => 'Sila masukkan label.',
+            'term.required' => 'Sila pilih penggal.',
+            'active.required' => 'Sila pilih status.',
+        ]);
+        $term = new DruExpensesReportTerm;
+        $term->distribution_plan_id = $request->plan_id;
+        $term->label = $request->label;
+        $term->term = $request->term;
+        $term->active = $request->active;
+        $term->save();
+
+        session()->flash('success', "Penggal telah berjaya disimpan.");
+        return redirect()->route('dana-ru.kewangan.perbelanjaan.program.term.index', $request->plan_id);
+    }
+
+    public function termEdit($id)
+    {
+        $term = DruExpensesReportTerm::find($id);
+        $plan = DruDistributionPlan::find($term->distribution_plan_id);
+        $usedTerms = DruExpensesReportTerm::where('distribution_plan_id', $plan->id)->whereNotIn('id', [$id])
+            ->pluck('term')
+            ->toArray();
+        return view('dana-ru.kewangan.perbelanjaan.penggal.edit', compact('plan', 'term', 'usedTerms'));
+    }
+
+    public function termUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'label' => 'required',
+            'term' => 'required',
+            'active' => 'required',
+        ],
+        [
+            'label.required' => 'Sila masukkan label.',
+            'term.required' => 'Sila pilih penggal.',
+            'active.required' => 'Sila pilih status.',
+        ]);
+        $term = DruExpensesReportTerm::find($id);
+        $term->label = $request->label;
+        $term->term = $request->term;
+        $term->active = $request->active;
+        $term->save();
+
+        session()->flash('success', "Penggal telah berjaya disimpan.");
+        return redirect()->route('dana-ru.kewangan.perbelanjaan.program.term.index', $term->distribution_plan_id);
+    }
+
+    public function termDelete($id)
+    {
+        $term = DruExpensesReportTerm::find($id);
+        $plan_id = $term->distribution_plan_id;
+        $term->delete();
+
+        session()->flash('success', "Penggal telah berjaya dipadam.");
+        return redirect()->route('dana-ru.kewangan.perbelanjaan.program.term.index', $plan_id);
+    }
+
+    public function termStatusUpdate(Request $request)
+    {
+        $status_code = 500;
+        $data = null;
+        $result = null;
+        $term = DruExpensesReportTerm::find($request->id);
+        
+        if($term){
+            $term->active = $request->active;
+            $term->save();
+            $status_code = 200;
+            $result = ['term' => $term->term, 'active' => $term->active];
+        }
+        return response()->json([
+            "result" => $result,
+        ], $status_code);
+    }
+
     public function laporanPerbelanjaan($plan_id, $penggal)
     {
         $plan = DruDistributionPlan::find($plan_id);
         $year = $plan->year;
         $expenses_data = getExpensesReportInfo($plan, $penggal);
+        // dd($expenses_data);
         $total_allocation = $plan->amount;
         // $bpki = $this->bpkiProgram($total_allocation, (object)["title"=> null,"start_year" => null,"end_year" => null]);
         $td = 0; // 46

@@ -118,7 +118,6 @@
         <p>Lampiran A</p>
     </header>
     <footer>
-        ***Ini adalah cetakan komputer dan tidak memerlukan tandatangan fizikal.***
     </footer>
     <main>
         <h3 class="title">AGIHAN TABUNG DANA RU TAHUN {{ $form->plan_year }}</h3>
@@ -142,11 +141,6 @@
                 <th>PTJ PIC</th>
                 <th>:</th>
                 <th>{{ $form->ptj }}</th>
-            </tr>
-            <tr>
-                <th>Tarikh</th>
-                <th>:</th>
-                <th>{{ $form->plan_form_declaration_date ? date('j/n/Y', strtotime($form->plan_form_declaration_date)): '' }}</th>
             </tr>
         </table>
     </main>

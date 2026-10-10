@@ -5,3 +5,24 @@
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
 }
+
+.history-justification-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-justification-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.history-justification-view-more {
+    align-self: flex-end;
+    margin-top: auto;
+    color: #0d6efd !important;
+    box-shadow: none !important;
+}

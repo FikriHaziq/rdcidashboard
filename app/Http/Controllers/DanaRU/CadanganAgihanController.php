@@ -386,7 +386,7 @@ class CadanganAgihanController extends Controller
         $plan_form->notes = $request->note;
         $plan_form->save();
 
-        $pic = DruMember::whereDistributionPlanFormId($request->plan_form_id)->whereType('leader')->first();
+        $pic = DruMember::whereDistributionPlanFormId($plan_form->id)->whereType('leader')->first();
         if(!$pic)$pic = new DruMember;
         $pic->type = 'leader';
         $pic->distribution_plan_form_id = $plan_form->id;
@@ -396,7 +396,7 @@ class CadanganAgihanController extends Controller
         $pic->save();
 
         $pb_ids = array_filter($request->pb_id ?? []);
-        if(count($pb_ids) > 0) DruMember::whereDistributionPlanFormId($request->plan_form_id)->whereType('member')->whereNotIn('id', $pb_ids)->delete();
+        if(count($pb_ids) > 0) DruMember::whereDistributionPlanFormId($plan_form->id)->whereType('member')->whereNotIn('id', $pb_ids)->delete();
 
         foreach ($request->pb_id ?? [] as $key => $member) {
             DruMember::updateOrCreate(
@@ -406,7 +406,7 @@ class CadanganAgihanController extends Controller
                     'email' => $request->pb_email[$key] ?? null,
                     'nric' => $request->pb_ic[$key] ?? null,
                     'type' => 'member',
-                    'distribution_plan_form_id' => $request->plan_form_id,
+                    'distribution_plan_form_id' => $plan_form->id,
                 ]
             );
         }

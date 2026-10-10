@@ -314,7 +314,7 @@ if (!function_exists('getStatusOptions')) {
 }
 
 if (!function_exists('storeLogData')) {
-    function storeLogData($plan, $approval_app_id, $type, $category = null, $targeted_data = null)
+    function storeLogData($plan, $approval_app_id, $type, $category = null, $targeted_data = null, $module = 1)
     {
         $status = $plan->getStatus;
         $log_data = [
@@ -332,7 +332,7 @@ if (!function_exists('storeLogData')) {
             ->select([
                 'plan_form.id as plan_form_id',
                 'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
-                'pic.name as pic_name', 'pic.nric as pic_nric', 'pic.email as pic_email', 'member.nric as member_nric',
+                'pic.name as pic_name', 'pic.nric as pic_nric', 'pic.email as pic_email',
                 'ptj.parameter_name as ptj','ptj.original_code as ptj_code',
                 \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.name) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.name) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.name)) as member_name'),
                 \Illuminate\Support\Facades\DB::raw('IF(COUNT(DISTINCT member.email) > 1,GROUP_CONCAT(DISTINCT CONCAT("- ", member.email) SEPARATOR "<br>"),GROUP_CONCAT(DISTINCT member.email)) as member_email'),
@@ -340,7 +340,7 @@ if (!function_exists('storeLogData')) {
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(main_kpi_template.title,": RM", FORMAT(main_kpi.amount, 2), " x ", main_kpi.count, " = RM", FORMAT(main_kpi.total, 2))) ORDER BY main_kpi.id ASC SEPARATOR "<br>") as main_kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(kpi_template.title,": RM", FORMAT(kpi.amount, 2), " x ", kpi.count, " = RM", FORMAT(kpi.total, 2))) ORDER BY kpi.id ASC SEPARATOR "<br>") as kpi_details'),
                 \Illuminate\Support\Facades\DB::raw('GROUP_CONCAT(DISTINCT(CONCAT(pic_kpi_template.title,": RM", FORMAT(pic_kpi.amount, 2), " x ", pic_kpi.count, " = RM", FORMAT(pic_kpi.total, 2))) ORDER BY pic_kpi.id ASC SEPARATOR "<br>") as pic_kpi_details'),
-                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount',
+                'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount', 'plan_form.commitment as plan_form_commitment', 'plan_form.pic_submission_term as pic_submission_term'
             ])
             ->join('dru_distribution_plans as plan', function ($join) use ($plan) {
                 $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -389,8 +389,9 @@ if (!function_exists('storeLogData')) {
                 ->where('pic_kpi_template.active','Y');
             })
             ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
-            ->groupBy('plan_form.id')->where('plan.year', $plan->year)
-            ->get();
+            ->groupBy('plan_form.id')->where('plan.year', $plan->year);
+            if($module == 2) $plan_forms = $plan_forms->where('plan_form.id', $targeted_data['plan_form_id']);
+            $plan_forms = $plan_forms->get();
         foreach ($plan_forms as $key => $plan_form) {
             $form_data = [
                 'id' => $plan_form->plan_form_id,
@@ -412,6 +413,8 @@ if (!function_exists('storeLogData')) {
                 'output' => $plan_form->output,
                 'outcome' => $plan_form->outcome,
                 'notes' => $plan_form->notes,
+                'commitment' => $plan_form->plan_form_commitment,
+                'pic_submission_term' => $plan_form->pic_submission_term,
             ];
             array_push($log_data['dru_distribution_plan_form'], $form_data);
         }
@@ -498,6 +501,7 @@ if (!function_exists('getDistributionFormPlans')) {
                     'ddf.status as ddf_status','ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','plan_form.output','plan_form.outcome','plan_form.notes','plan_form.amount as plan_form_amount','plan_form.commitment as plan_form_commitment',
                     'main_kpi.id as main_kpi_id','main_kpi_template.id as main_kpi_template_id','main_kpi_template.title as main_kpi_template_title','main_kpi_template.active as main_kpi_template_active','main_kpi.count as main_kpi_count','main_kpi.amount as main_kpi_amount','main_kpi.total as main_kpi_total','main_kpi.remark as main_kpi_remark',
                     'kpi.id as kpi_id','kpi_template.id as kpi_template_id','kpi_template.title as kpi_template_title','kpi_template.active as kpi_template_active','kpi.count as kpi_count','kpi.amount as kpi_amount','kpi.total as kpi_total','kpi.remark as kpi_remark',
+                    'dda.id as dda_id',
                 ])
                 ->join('dru_distribution_plans as plan', function ($join) use ($year) {
                     $join->on('plan.id', '=', 'plan_form.distribution_plan_id')
@@ -539,6 +543,11 @@ if (!function_exists('getDistributionFormPlans')) {
                 })
                 ->leftjoin('statuses as pic_status', function ($join) {
                     $join->on('pic_status.id', '=', 'plan_form.pic_submission_status');
+                })
+                ->leftjoin('dru_data_attachments as dda', function ($join) {
+                    $join->on('plan_form.id', '=', 'dda.parent_id')
+                    ->where('dda.table', 'plan_form')->where('dda.is_active', 'Y')
+                    ->where('dda.category', 'lampiran_a');
                 })
                 ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
                 ->groupBy('plan_form.id')->where('plan.year', $year);
@@ -852,7 +861,6 @@ if (!function_exists('refactorPlanFormList')) {
 
 if (!function_exists('getExpensesReportInfo')) {
     function getExpensesReportInfo($plan, $penggal){
-        $datefilter = $penggal == 1 ? date('Y')."-06-30 23:59:59" : date('Y')."-12-31 23:59:59";
         // $plan_form_raw = null;
         // foreach ($plans as $key => $plan) {
         //     $plan_form = getDistributionFormPlans($year, $plan->id);
@@ -870,7 +878,7 @@ if (!function_exists('getExpensesReportInfo')) {
         $expenses = \App\Models\DanaRU\DruExpensesRecord::from('dru_expenses_records as expenses')
                 ->select([
                     'expenses.distribution_plan_form_id', 'expenses.kpi_template_id', 'expenses.total', 'expenses.commitment', 'ddf.code as ddf_code','ddf.title as ddf_title','ddf.code_2 as ddf_code_2','ddf.faculty_code as faculty_code',
-                    'plan_form.mrun as mrun_id', 'plan_form.bpki as bpki_id',
+                    'plan_form.mrun as mrun_id', 'plan_form.bpki as bpki_id', 'expenses.term as term',
                     // 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.pic_declaration_date as plan_form_declaration_date','plan_form.pic_submission_status as plan_form_pic_submission_status',
                     // 'mrun.id as mrun_id', 'mrun.parameter_name as mrun_code', 'bpki.id as bpki_id', 'bpki.parameter_name as bpki_code',
                     // 'pic.name as pic_name', 'member.name as member_name', 'pic.email as pic_email', 'member.email as member_email',
@@ -898,8 +906,8 @@ if (!function_exists('getExpensesReportInfo')) {
                 })
                 ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
                 // ->orderBy('expenses.created_at')
-                ->whereRaw('expenses.created_at = (SELECT MAX(e2.created_at) FROM dru_expenses_records e2 WHERE e2.distribution_plan_form_id = expenses.distribution_plan_form_id AND e2.kpi_template_id = expenses.kpi_template_id)')
-                ->where('expenses.created_at', '<', $datefilter)
+                // ->whereRaw('expenses.created_at = (SELECT MAX(e2.created_at) FROM dru_expenses_records e2 WHERE e2.distribution_plan_form_id = expenses.distribution_plan_form_id AND e2.kpi_template_id = expenses.kpi_template_id)')
+                ->where('expenses.term', $penggal)
                 ->where('plan.year', $year);
             // dd($query->get());
             $expenses = $expenses->get();
@@ -1038,5 +1046,32 @@ if (!function_exists('getAvailableFacultyFromPlan')) {
                     ->where('plan.year',$year)->whereIn('type', [1,2,3])->where('status', 6);
             })
             ->groupBy('faculty.id')->orderBy('faculty.description_1')->get();
+    }
+}
+
+if (!function_exists('getStatusBySort')) {
+    function getStatusBySort($type, $sort){
+        if($type == "cadangan_agihan"){
+             switch ($sort) {
+                case 1: return "Draft";
+                case 2: return "Submit";
+                case 3: return "Resubmit";
+                case 4: return "Amendment";
+                case 5: return "Verify";
+                case 6: return "Approve";
+                default: return "";
+            }
+        }
+        else if($type == "laporan_perbelanjaan"){
+             switch ($sort) {
+                case 1: return "Draft";
+                case 2: return "Submit";
+                case 3: return "Resubmit";
+                case 4: return "Amendment";
+                case 5: return "Approve with Update";
+                case 6: return "Final Approve";
+                default: return "";
+            }
+        }
     }
 }

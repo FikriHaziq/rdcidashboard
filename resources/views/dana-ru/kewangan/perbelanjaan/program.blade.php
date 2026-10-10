@@ -11,7 +11,7 @@
 </style>
 @endpush
 @slot('content')
-<x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
+<x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program.index')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
@@ -39,15 +39,12 @@
                                         <option value="{{ $list->plan_id }}" @if($key == 0) selected @endif>{{ $list->plan_date }}</option>
                                     @endforeach
                                 </select>
+                                <btn class="btn btn-primary-soft" onclick="penggal($('#agihan_id').val())"><i data-feather="edit" class="d-none d-sm-block w-4 h-4 me-2"></i> SENARAI PENGGAL</btn>
                             </div>
-                            <div class="input-group w-2/5">
-                                <div class="input-group-text bg-theme-1 fs-xs text-white">LAPORAN PERBELANJAAN</div>
-                                <select id="jana_laporan" class="form-select bg-white w-64">
-                                    <option value="1" selected>PENGGAL 1</option>
-                                    <option value="2">PENGGAL 2</option>
-                                </select>
-                                <button type="button" form="submission-form" class="btn btn-primary" onclick="generateReport($('#agihan_id').val())"> JANA </button>
-                            </div>
+                            @forelse ($agihan_lists as $i=>$list)
+                            <x-dru.term-selection-report-generation :planId="$list->plan_id" :terms="$list->terms" elemId="agihan_id" report_type="a" />
+                            @empty
+                            @endforelse
                             @endif
                         </div>
                         <div class="intro-y overflow-x-auto mt-8 mt-sm-0">
@@ -148,6 +145,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @forelse ($agihan_semula_lists as $i=>$list)
+                            <x-dru.term-selection-report-generation :planId="$list->plan_id" :terms="$list->terms" elemId="agihan_semula_id" report_type="as" />
+                            @empty
+                            @endforelse
                             <div class="input-group w-2/5">
                                 <div class="input-group-text bg-theme-1 fs-xs text-white">LAPORAN PERBELANJAAN</div>
                                 <select id="jana_laporan" class="form-select bg-white w-64">
@@ -262,12 +263,13 @@
     $('#agihan_semula_list').trigger('change');
     $('#agihan_list').trigger('change');
 
-    function generateReport(plan_id) {
-        window.location = window.location.origin + '/dana-ru/kewangan/perbelanjaan/laporan-perbelanjaan/' + plan_id + '/' + $('#jana_laporan').val();
+    function penggal(plan_id) {
+        window.location = window.location.origin + '/dana-ru/kewangan/perbelanjaan/program/term/' + plan_id + '/';
     }
 
     function changeAgihan(plan_id) {
         $(".list-body").addClass('d-none');
+        $("#term_"+plan_id).removeClass('d-none');
         $("#list_"+plan_id).removeClass('d-none');
         $("#agihan_id").val(plan_id);
     }

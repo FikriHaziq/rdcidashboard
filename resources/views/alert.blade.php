@@ -14,10 +14,10 @@
         swal("Notice", "{{ session()->get('info') }}", 'info')
     @endif
 
-    function toastr_alert(type, message) {
+    function toastr_alert(type, message, position = 'top-center') {
         toastr.options = {
             "closeButton": false,
-            "positionClass": "toast-top-center",
+            "positionClass": "toast-"+ position,
             "preventDuplicates": false,
             "onclick": null,
             "timeOut": "1000",

@@ -42,6 +42,7 @@ class AgihanController extends Controller
     public function show($plan_id)
     {
         DB::statement("SET SQL_MODE=''");
+        $plan_form_model = DruDistributionPlanForm::find($plan_id);
         $plan_form = DruDistributionPlanForm::from('dru_distribution_plan_forms as plan_form')
             ->select([
                 'plan.year as plan_year', 'plan_form.id as plan_form_id', 'plan_form.reference_no as plan_form_ref_no', 'plan_form.approved as plan_form_approved', 'plan_form.updated_at as plan_form_updated_at', 'plan_form.pic_declaration_date as plan_form_declaration_date',
@@ -97,9 +98,8 @@ class AgihanController extends Controller
             })
             ->join('dru_dist_funds as ddf','ddf.id', '=', 'plan_form.project_id')
             ->groupBy('plan_form.id')->where('plan_form.id', $plan_id)->first();
-        // dd($plan_form);
         // dd(user());
-        return view('dana-ru.senarai-agihan.show', compact('plan_form'));
+        return view('dana-ru.senarai-agihan.show', compact('plan_form', 'plan_form_model'));
     }
 
     public function form($year=null, $id = null, $tab = null)
@@ -108,13 +108,44 @@ class AgihanController extends Controller
         $plan_form = DruDistributionPlanForm::find($id);
         $plan = $plan_form->distribution_plan;
         $edit = in_array($plan_form->pic_submission_status, [null, 7, 10, 11]);
-        return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'plan', 'tab', 'edit'));
+        $expenses_record_histories = $plan_form->expenses_record_history;
+        return view('dana-ru.senarai-agihan.form', compact('year', 'plan_form', 'expenses_record_histories', 'plan', 'tab', 'edit'));
     }
 
-    public function declare($plan_id)
+    public function declare(Request $request, $plan_id)
     {
+        // dd($request->all());
+        
+        $validator = Validator::make($request->all(), [
+            'file_upload' => 'required',
+        ], [
+            'file_upload.required' => 'Sila muat naik lampiran A yang telah ditandatangan.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->withFragment('signed_lampiran_a'); // no leading #
+        }
+
         $plan_form = DruDistributionPlanForm::find($plan_id);
         $plan_form->pic_declaration_date = now();
+
+        $data = new DruDataAttachment;
+        $data->table = 'plan_form';
+        $data->parent_id = $plan_form->id;
+        $data->category = "lampiran_a";
+        $file = collect(json_decode($request->file_upload));
+        $data->filename = $file['filename'];
+        $temporaryFile = TemporaryFile::where('folder', $file['folder'])->first();
+        if($temporaryFile){
+            $data->addMedia(storage_path('app/data/tmp/'.$file['folder'].'/'.$temporaryFile->filename))->toMediaCollection('druDataAttachment');
+            $temporaryFile->delete();
+            $data->save();
+            Storage::deleteDirectory('data/tmp/'.$file['folder']);
+        }
+
         $plan_form->save();
         session()->flash('success', "Lampiran A telah berjaya disahkan.");
         return back();
@@ -124,6 +155,7 @@ class AgihanController extends Controller
     {
         $request->validate([
             'justification' => 'required_with:balance',
+            'term' => 'required',
             'output' => 'required',
             'outcome' => 'required',
             'balance' => 'nullable',
@@ -132,7 +164,9 @@ class AgihanController extends Controller
         ],
         [
             'output.required' => 'Sila isi maklumat ini.',
+            'output.required' => 'Sila isi maklumat ini.',
             'outcome.required' => 'Sila isi maklumat ini.',
+            'term.required' => 'Sila pilih penggal.',
             'justification.required_with' => 'Sila masukkan justifikasi baki agihan belum belanja.',
             'mykpi.required' => 'Sila masukkan KPI.',
             'file_upload.required' => 'Sila muat naik bukti.',
@@ -167,12 +201,14 @@ class AgihanController extends Controller
             $plan_form->outcome = $request->outcome;
             $plan_form->pic_justification = $request->justification;
             $plan_form->pic_submission_status = $status;
+            $plan_form->pic_submission_term = $request->term;
             $plan_form->commitment = (float)str_replace( ",", "", $request->commitment);
             $plan_form->save();
             
             foreach ($request->file_upload as $key => $file) {
                 $data = new DruDataAttachment;
                 $data->table = 'plan_form';
+                $data->category = "expenses_evidence";
                 $data->parent_id = $plan_form->id;
                 $fileRaw = collect(json_decode($file));
                 if(count($fileRaw)){
@@ -202,7 +238,13 @@ class AgihanController extends Controller
             array_push($kpi_arr, $kpi_data['id']);
         }
         DruKpiPic::whereDistributionPlanFormId($plan_id)->whereNotIn('id', $kpi_arr)->delete();
-        // storeLogData($plan, $approvalApp->id, 'SUBMIT');
+        if($status != 7){
+            $targeted_data = [
+                'plan_form_id' => $plan_form->id,
+                'kpi_pics' => $plan_form->pic_kpi
+            ];
+            storeLogData($plan_form->distribution_plan, $approvalApp->id, 'SUBMIT', 'Kemaskini KPI PIC', $targeted_data, 2);
+        }
 
         session()->flash('success', "KPI telah berjaya disimpan.");
         return back();

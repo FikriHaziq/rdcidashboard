@@ -34,6 +34,11 @@ class DruDistributionPlan extends Model
         return $this->belongsTo(Status::class, 'status');
     }
 
+    public function terms()
+    {
+        return $this->hasMany(DruExpensesReportTerm::class, 'distribution_plan_id')->orderBy('term', 'asc');
+    }
+
     public function getVerificationLabelAttribute()
     {
         $verificationLabel = VerificationLabel::wherePlanType($this->type)->whereStatusId($this->status)->first();

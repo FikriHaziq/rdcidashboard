@@ -56,6 +56,10 @@
     </x-menu-item>
     @endif
     <x-menu-item active="dana-ru.*" route="" icon="hard-drive" parent="Dana RU" type="sub">
+        <x-menu-item active="dana-ru.dashboard.*" route="" parent="RU Fund Dashboard" type="sub">
+            <x-menu-item active="dana-ru.dashboard.bpki" route="dana-ru.dashboard.bpki">BPKI</x-menu-item>
+            <x-menu-item active="dana-ru.dashboard.mrun" route="dana-ru.dashboard.mrun">MRUN</x-menu-item>
+        </x-menu-item>
         <x-menu-item active="dana-ru.kewangan.agihan-program.index" route="dana-ru.kewangan.agihan-program.index">Dashboard</x-menu-item>
         @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.carian.*" route="dana-ru.carian.index">Carian</x-menu-item>@endif
         {{-- @if(user()->role == 'super_admin')<x-menu-item active="dana-ru.kewangan.overall" route="dana-ru.kewangan.overall">Dashboard</x-menu-item>@endif --}}
@@ -63,7 +67,7 @@
         @if(user()->role == 'super_admin' || getAccessControl('dru_pa') || getAccessControl('dru_pa_s'))<x-menu-item active="dana-ru.kewangan.pengesahan-agihan.index" route="dana-ru.kewangan.pengesahan-agihan.index">Pengesahan Agihan</x-menu-item>@endif
         @if(user()->role == 'super_admin')
         <x-menu-item active="dana-ru.kewangan.perbelanjaan.*" route="" parent="Perincian Perbelanjaan" type="sub">
-            <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.program">Program</x-menu-item>
+            <x-menu-item active="dana-ru.kewangan.*" route="dana-ru.kewangan.perbelanjaan.program.index">Program</x-menu-item>
         </x-menu-item>
         @endif
         <x-menu-item active="dana-ru.senarai-agihan.index" route="dana-ru.senarai-agihan.index">Senarai Agihan</x-menu-item>
@@ -79,6 +83,8 @@
             <x-menu-item active="dana-ru.maintenance.tabung-agihan.*" route="dana-ru.maintenance.tabung-agihan">Tabung Agihan</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.asas-agihan.*" route="dana-ru.maintenance.asas-agihan">Asas Agihan</x-menu-item>
             <x-menu-item active="dana-ru.maintenance.kpi.*" route="dana-ru.maintenance.kpi">KPI</x-menu-item>
+            <x-menu-item active="dana-ru.maintenance.verification-label.*" route="dana-ru.maintenance.verification-label">Label Pengesahan</x-menu-item>
+            <x-menu-item active="dana-ru.maintenance.status.*" route="dana-ru.maintenance.status">Status</x-menu-item>
         </x-menu-item>
         @endif
     </x-menu-item>

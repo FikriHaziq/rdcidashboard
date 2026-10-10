@@ -84,7 +84,12 @@ class DruDistributionPlanForm extends Model
 
     public function pic_evidences()
     {
-        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereIsActive('Y');  
+        return $this->hasMany(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereCategory('expenses_evidence')->whereIsActive('Y');  
+    }
+
+    public function signed_doc_declaration()
+    {
+        return $this->hasOne(DruDataAttachment::class, 'parent_id')->whereTable('plan_form')->whereCategory('lampiran_a')->whereIsActive('Y');  
     }
 
     public function getPicEvidencesIdArrayAttribute()
@@ -193,5 +198,40 @@ class DruDistributionPlanForm extends Model
             ]);
         }
         return $data;
+    }
+
+    public function getExpensesRecordHistoryAttribute()
+    {
+        $histories = [];
+        $records = DruExpensesRecord::where('distribution_plan_form_id', $this->id)->orderBy('term')->get();
+        $planTerms = DruExpensesReportTerm::where('distribution_plan_id', $this->distribution_plan_id)->get();
+        $term = $records->pluck('term')->unique()->toArray();
+        foreach ($term as $key => $value) {
+            $records_by_term = $records->where('term', $value);
+
+            $kpi_name = [];
+            $kpi_amount = [];
+            $kpi_total_amount = 0;
+            $commitment = 0;
+            $justification = "";
+            foreach ($records_by_term as $key => $record) {
+                $kpi_data = DruKpiTemplate::find($record->kpi_template_id);
+                $kpi_name[] = $kpi_data ? $kpi_data->title . ": RM" . number_format($record->amount, 2) . " X " . $record->count : "[Deleted]";
+                $kpi_amount[] = $record->total;
+                $kpi_total_amount += $record->total;
+                $commitment = $record->commitment;
+                $justification = $record->pic_justification;
+            }
+            array_push($histories, (object)[
+                'term'=> $planTerms->where('term', $value)->first()->label ?? "Penggal " . $value,
+                'kpi_name'=> $kpi_name,
+                'kpi_amount'=> $kpi_amount,
+                'kpi_total_amount'=> $kpi_total_amount,
+                'commitment'=> $commitment,
+                'balance'=> $this->amount - $kpi_total_amount - $commitment,
+                'justification'=> $justification,
+            ]);
+        }
+        return $histories;
     }
 }

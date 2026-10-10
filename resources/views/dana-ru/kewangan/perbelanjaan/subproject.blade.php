@@ -11,7 +11,7 @@
 </style>
 @endpush
 @slot('content')
-<x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
+<x-title hasYear :year="$year" :route="route('dana-ru.kewangan.perbelanjaan.program.index')">Perincian Perbelanjaan Mengikut Program Tahun {{ $year }}</x-title>
 <div class="grid columns-12 gap-6">
     <div class="g-col-12">
         <div class="grid columns-12 gap-6">
@@ -28,7 +28,7 @@
                             </button> --}}
                         </div>
                         <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                            <a href="{{ route('dana-ru.kewangan.perbelanjaan.program') }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
+                            <a href="{{ route('dana-ru.kewangan.perbelanjaan.program.index') }}" class="btn btn-outline-secondary w-56 position-relative justify-content-start rounded-pill me-4">
                                 Pergi ke Program
                                 <span class="w-8 h-8 position-absolute d-flex justify-content-center align-items-center bg-theme-1 text-white rounded-pill end-0 top-0 bottom-0 my-auto ms-auto me-0.5"> <i data-feather="arrow-left" class="w-4 h-4"></i> </span>
                             </a>

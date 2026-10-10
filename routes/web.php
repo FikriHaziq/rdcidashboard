@@ -15,6 +15,7 @@ use App\Http\Controllers\DanaRU\FinancialController;
 use App\Http\Controllers\DanaRU\AgihanController;
 use App\Http\Controllers\DanaRU\SearchController;
 use App\Http\Controllers\DanaRU\MaintenanceController;
+use App\Http\Controllers\DanaRU\DashboardController as DruDashboardController;
 use App\Http\Controllers\DanaRU\MasterlistController as DruMasterlistController;
 use App\Http\Controllers\DocGeneratorController;
 
@@ -203,6 +204,15 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('user.edit')->get('/user/edit/{id}', [MaintenanceController::class, 'userEdit']);
         Route::name('user.update')->post('/user/update/{id}', [MaintenanceController::class, 'userUpdate']);
         // Route::name('user.delete')->get('/user/delete/{id}', [MaintenanceController::class, 'userDelete']);
+
+        Route::name('verification-label')->get('/verification-label', [MaintenanceController::class, 'verificationLabelIndex']);
+        Route::name('verification-label.update')->post('/verification-label/update', [MaintenanceController::class, 'verificationLabelUpdate']);
+        Route::name('status')->get('/status', [MaintenanceController::class, 'statusIndex']);
+        Route::name('status.update')->post('/status/update', [MaintenanceController::class, 'statusUpdate']);
+    });
+    Route::name('dashboard.')->prefix('dashboard')->group(function(){
+        Route::name('bpki')->get('/bpki', [DruDashboardController::class, 'bpki']);
+        Route::name('mrun')->get('/mrun', [DruDashboardController::class, 'mrun']);
     });
     Route::name('cadangan-agihan.')->prefix('cadangan-agihan')->group(function(){
         Route::name('index')->get('/index/{year?}/{tab?}', [CadanganAgihanController::class, 'index']);
@@ -230,9 +240,22 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('pengesahan-agihan.post')->post('/pengesahan-agihan/post', [FinancialController::class, 'pengesahanAgihanPost']);
         Route::name('agihan-program.index')->get('/agihan-program/{category?}', [FinancialController::class, 'agihanProgramIndex']);
         Route::name('perbelanjaan.')->prefix('perbelanjaan')->group(function(){
-            Route::name('program')->get('/program/{year?}', [FinancialController::class, 'program']);
-            Route::name('program.show')->get('/program/show/{id}/{tab?}', [FinancialController::class, 'programShow']);
-            Route::name("program.verification.post")->post("/program/verification/post/{id}", [FinancialController::class, "programVerificationPost"]);
+            Route::name('program.')->prefix('program')->group(function(){
+                Route::name('index')->get('/{year?}', [FinancialController::class, 'program']);
+                Route::name('show')->get('/show/{id}/{tab?}', [FinancialController::class, 'programShow']);
+                Route::name("verification.post")->post("/verification/post/{id}", [FinancialController::class, "programVerificationPost"]);
+                Route::name('term.')->prefix('term')->group(function(){
+                    Route::name('index')->get('/{plan_id}', [FinancialController::class, 'term']);
+                    Route::name('create')->get('/create/{plan_id}', [FinancialController::class, 'termCreate']);
+                    Route::name('store')->post('/store', [FinancialController::class, 'termStore']);
+                    Route::name('edit')->get('/edit/{id}', [FinancialController::class, 'termEdit']);
+                    Route::name('update')->post('/update/{id}', [FinancialController::class, 'termUpdate']);
+                    Route::name('delete')->get('/delete/{id}', [FinancialController::class, 'termDelete']);
+                    Route::name("statusUpdate")->post('status-update', [FinancialController::class, 'termStatusUpdate']);
+                });
+
+                
+            });
             Route::name('sub-projek')->get('/sub-projek/{year?}', [FinancialController::class, 'subProject']);
             Route::name('laporan-perbelanjaan')->get('/laporan-perbelanjaan/{plan_id}/{penggal}', [FinancialController::class, 'laporanPerbelanjaan']);
         });
@@ -253,6 +276,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
 
     Route::name('carian.')->prefix('carian')->group(function(){
         Route::name('index')->get('/', [SearchController::class, 'index']);
+        Route::name('cadangan-agihan')->get('/cadangan-agihan', [SearchController::class, 'cadanganAgihanList']);
         Route::name('allocation')->get('/allocation', [SearchController::class, 'allocationList']);
         Route::name('expenses')->get('/expenses', [SearchController::class, 'expensesList']);
     });

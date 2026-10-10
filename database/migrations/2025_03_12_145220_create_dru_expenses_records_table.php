@@ -23,6 +23,7 @@ class CreateDruExpensesRecordsTable extends Migration
             $table->text('pic_justification')->nullable();
             $table->decimal('total', 18, 9);
             $table->string('status')->default('active');
+            $table->integer('term');
             $table->integer('c_id');
             $table->timestamps();
         });

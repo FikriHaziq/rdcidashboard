@@ -14,7 +14,7 @@
         <x-dru.tab :tab="$tab" />
         <div class="tab-content" id="pills-tabContent">
             <div class="p-5 tab-pane fade @if(in_array($tab, [null,'list'])) show active @endif" id="list" role="tabpanel" aria-labelledby="list-tab">
-                <x-dru.pic-form :year="$year" :plan="$plan" :planform="$plan_form" :edit="$edit" />
+                <x-dru.pic-form :year="$year" :plan="$plan" :planform="$plan_form" :histories="$expenses_record_histories" :edit="$edit" />
             </div>
             <div class="p-5 tab-pane fade @if(in_array($tab, ['timeline'])) show active @endif" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
                 <div class="intro-y d-block d-sm-flex align-items-center h-10">

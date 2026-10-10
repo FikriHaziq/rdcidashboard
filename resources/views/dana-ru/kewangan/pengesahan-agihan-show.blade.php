@@ -45,7 +45,13 @@
             <div class="d-flex p-5 align-item-center border-bottom border-gray-200 dark-border-dark-5">
                 <h2 class="fs-lg fw-medium truncate me-5">Lampiran A</h2>
                 <div class="d-flex align-items-center ms-sm-auto mt-3 mt-sm-0">
-                    @if($plan_form->plan_form_ref_no)<a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i> Download PDF</a>@endif
+                    @if($plan_form->plan_form_ref_no)
+                    @if($plan_form->dda_id)
+                    <a href="{{ route('dana-ru.cadangan-agihan.file.download', $plan_form->dda_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i> Download PDF</a>
+                    @else
+                    <a href="{{ route('doc-generator.lampiran-a', $plan_form->plan_form_id) }}" class="btn btn-sm btn-dark" onclick=""><i class="p-1" data-feather="download"></i> Download PDF</a>
+                    @endif
+                    @endif
                 </div>
             </div>
             <div class="p-5">

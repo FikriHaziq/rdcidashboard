@@ -119,7 +119,6 @@
         <p>Lampiran A</p>
     </header>
     <footer>
-        ***Ini adalah cetakan komputer dan tidak memerlukan tandatangan fizikal.***
     </footer>
 
     <!-- 🧾 Main content -->
@@ -227,10 +226,12 @@
                             <th>{{ $form->pic_name }}</th>
                         </tr>
                         <tr>
-                            <td>Tarikh</td>
+                            <td>Tandatangan</td>
                             <td>:</td>
-                            <th>{{ $form->plan_form_declaration_date ? date('j/n/Y', strtotime($form->plan_form_declaration_date)): '' }}</th>
+                            <th></th>
                         </tr>
+                        <br />
+                        <br />
                     </table>
                 </th>
             </tr>

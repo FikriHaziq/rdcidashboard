@@ -21,6 +21,30 @@ class SearchController extends Controller
         return view('dana-ru.search.index');
     }
 
+    public function cadanganAgihanList(Request $request)
+    {
+        $search_params = collect([
+            "title" => "",
+            "start_year" => "",
+            "end_year" => "",
+            "faculty" => "",
+            "code" => "",
+            "code2" => "",
+        ]);
+        if($request){
+            $search_params->title = $request->title;
+            $search_params->start_year = $request->start_year;
+            $search_params->end_year = $request->end_year;
+            $search_params->faculty = $request->faculty;
+            $search_params->code = $request->code;
+            $search_params->code2 = $request->code2;
+        }
+        if ($request->ajax()) {
+            return DatatableController::cadanganAgihanSearchList($search_params);
+        }
+        return view('dana-ru.search.allocation', compact('search_params'));
+    }
+
     public function allocationList(Request $request)
     {
         $search_params = collect([

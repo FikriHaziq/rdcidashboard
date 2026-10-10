@@ -17,6 +17,7 @@ class CreateDruDataAttachmentsTable extends Migration
             $table->id();
             $table->integer('parent_id');
             $table->string('table')->default('approval_app');
+            $table->string('category')->nullable();
             $table->string('filename');
             $table->string('is_active')->default('Y');
             $table->timestamps();

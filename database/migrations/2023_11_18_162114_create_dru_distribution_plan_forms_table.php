@@ -31,6 +31,8 @@ class CreateDruDistributionPlanFormsTable extends Migration
             $table->string('broadcast')->default('N');
             $table->string('reference_no')->nullable();
             $table->datetime('pic_declaration_date')->nullable();
+            $table->integer('pic_submission_status')->nullable();
+            $table->integer('pic_submission_term')->nullable();
             $table->timestamps();
         });
     }
