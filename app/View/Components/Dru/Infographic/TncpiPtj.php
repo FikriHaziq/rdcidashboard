@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\dru\infographic;
+namespace App\View\Components\Dru\Infographic;
 
 use Illuminate\View\Component;
 

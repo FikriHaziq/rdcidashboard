@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\dru;
+namespace App\View\Components\Dru;
 
 use Illuminate\View\Component;
 
