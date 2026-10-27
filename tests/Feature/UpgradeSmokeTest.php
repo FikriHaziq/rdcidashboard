@@ -43,55 +43,80 @@ class UpgradeSmokeTest extends TestCase
     }
 
     /*
+     * MyRA data in development goes up to 2022, so pages are opened with 2016-2022 (dashboards)
+     * and every year from 2022 back to 2016 (self-assessment), not the current-year defaults.
+     *
      * Not covered (already broken before the upgrade, not in the menu):
-     *   myra.emyra (view missing), grant.faculty-year/active/all, dana-ru.kewangan.overall (unknown column)
-     * Not covered locally (needs data that only production has):
-     *   myra.self-assessment.summary (table myra_calculations), report.myra.download (uploaded files in storage/app)
+     *   myra.emyra (view missing), grant.faculty-year/active/all, dana-ru.kewangan.overall (unknown column),
+ *   myra.section-c PUBLICATION-FACULTY / FUNDING-FACULTY (unfinished: wrong arguments, views missing, not linked)
+     * Not covered locally:
+     *   report.myra.download (needs uploaded files in storage/app)
+     *   myra.glossary (PDF opened with a relative path, only works when served from public/)
      */
-    public function test_myra_pages()
+    private const MYRA_YEARS = [2022, 2021, 2020, 2019, 2018, 2017, 2016];
+
+    public function test_myra_dashboard_pages()
     {
-        $pages = [
-            'myra.index' => route('myra.index'),
-            'myra.info.staff' => route('myra.info.staff'),
-            'myra.info.student' => route('myra.info.student'),
-            'myra.section-e' => route('myra.section-e'),
-            'myra.section-h' => route('myra.section-h'),
-            'report.myra.index' => route('report.myra.index'),
-            'report.myra.glossary' => route('report.myra.glossary'),
-        ];
+        $range = ['search' => 1, 'start_year' => min(self::MYRA_YEARS), 'end_year' => max(self::MYRA_YEARS)];
+        $pages = [];
+        foreach (['myra.index', 'myra.info.staff', 'myra.info.student', 'myra.section-e', 'myra.section-h'] as $route) {
+            $pages[$route] = route($route);
+            $pages[$route.' 2016-2022'] = route($route, $range);
+        }
         $tabs = [
             'b' => ['INVESTIGATOR', 'AWARD', 'COHORT'],
-            'c' => ['PUBLICATION-ALL'],
-            'd' => ['ABSORPTION', 'POSTGRADUATE'],
+            'c' => ['PUBLICATION-ALL', 'FUNDING-ALL'],
+            'd' => ['ABSORPTION', 'ENROLLMENT', 'POSTGRADUATE'],
             'f' => ['UNIVERSITY'],
-            'g' => ['STAFFOVERALL'],
+            'g' => ['STAFFOVERALL', 'PROJECTOVERALL'],
         ];
         foreach ($tabs as $section => $section_tabs) {
             foreach ($section_tabs as $tab) {
                 $pages['myra.section-'.$section.' '.$tab] = route('myra.section-'.$section, $tab);
+                $pages['myra.section-'.$section.' '.$tab.' 2016-2022'] = route('myra.section-'.$section, ['tabs' => $tab] + $range);
             }
         }
-        foreach (['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as $section) {
-            $pages['myra.self-assessment.section-'.$section] = route('myra.self-assessment.section-'.$section);
+        $this->checkPages($pages);
+    }
+
+    public function test_myra_self_assessment_pages()
+    {
+        $pages = [];
+        foreach (self::MYRA_YEARS as $year) {
+            foreach (['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'summary'] as $section) {
+                $route = $section === 'summary' ? 'myra.self-assessment.summary' : 'myra.self-assessment.section-'.$section;
+                $pages[$route.' '.$year] = route($route, $year);
+            }
+        }
+        $this->checkPages($pages);
+    }
+
+    public function test_myra_report_and_masterlist_pages()
+    {
+        $pages = [];
+        foreach (self::MYRA_YEARS as $year) {
+            $pages['report.myra.index '.$year] = route('report.myra.index', $year);
+            $pages['report.myra.glossary '.$year] = route('report.myra.glossary', $year);
+            $pages['masterlist.myra.index '.$year] = route('masterlist.myra.index', $year);
+        }
+        // Every MyRA masterlist module uploaded for the latest data year
+        $modules = DB::table('data_attachments')->whereNotIn('module', ['allocation', 'expenses'])->where('year', max(self::MYRA_YEARS))->distinct()->orderBy('module')->pluck('module');
+        foreach ($modules as $module) {
+            $pages['masterlist.myra.list '.$module.' '.max(self::MYRA_YEARS)] = route('masterlist.myra.list', [$module, max(self::MYRA_YEARS)]);
         }
         $this->checkPages($pages);
     }
 
     public function test_research_and_masterlist_pages()
     {
-        $attachment = DB::table('data_attachments')->whereNotIn('module', ['allocation', 'expenses'])->orderByDesc('year')->first();
         $pages = [
             'grant.overview' => route('grant.overview'),
             'grant.proposal' => route('grant.proposal'),
             'grant.myra' => route('grant.myra'),
-            'masterlist.myra.index' => route('masterlist.myra.index'),
             'masterlist.project-management.index' => route('masterlist.project-management.index'),
         ];
         foreach (['proposal', 'grant', 'activity', 'raro-appointment', 'grasra-appointment', 'wages-claim', 'rmarm-distribution', 'action-list'] as $page) {
             $pages['research.management.'.$page] = route('research.management.'.$page);
-        }
-        if ($attachment) {
-            $pages['masterlist.myra.list'] = route('masterlist.myra.list', [$attachment->module, $attachment->year]);
         }
         $this->checkPages($pages);
     }
@@ -260,6 +285,7 @@ class UpgradeSmokeTest extends TestCase
                 '/\?(v|id)=\d+/',
                 '/##parent-placeholder-[0-9a-f]+##/',
                 '/name="migration" value="\d+"/',
+                '#https?://[^\s"\'<>)]+#',
             ], '', $content);
         }
         preg_match_all('/-?\d[\d,]*(?:\.\d+)?/', $content, $matches);
