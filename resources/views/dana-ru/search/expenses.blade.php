@@ -3,102 +3,146 @@
 @slot("submodule") Expenses @endslot
 @push('custom-css')
 <link href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.min.css" rel="stylesheet">
+<link href="{{ asset('theme/css/dashboard.css') }}?v=5" rel="stylesheet" />
 @endpush
 @slot("content")
-<div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
+<div class="intro-y d-flex align-items-center h-10 mt-5">
+    <a href="{{ route('dana-ru.carian.index') }}" class="btn btn-filter-back me-3" title="Back to Carian"><i data-feather="arrow-left" class="w-4 h-4"></i></a>
     <h2 class="fs-lg fw-medium truncate me-5">
         EXPENSES
     </h2>
 </div>
-<div class="g-col-12 d-flex d-lg-block flex-column-reverse">
-    <form id="search_form" action="{{ route('dana-ru.carian.expenses') }}" method="get">
-        <div class="intro-y box mt-5">
-            <div class="p-5 border-top border-gray-200 dark-border-dark-5">
-                <div class="intro-y align-items-center">
-                    <div class="w-full w-md-auto grid columns-12 gap-4 mb-4">
-                        <div class="g-col-12 g-col-xl-6">
-                            <div class="input-group me-2 me-sm-2">
-                                <div class="input-group-text bg-theme-1 text-white">TITLE</div> <input id="title" name="title" type="text" value="{{ $search_params->title }}" class="form-control" placeholder="Title" aria-describedby="title">
-                            </div>
-                        </div>
-                        <div class="g-col-6 g-col-xl-3">
-                            <div class="input-group me-2 me-sm-2">
-                                <div class="input-group-text bg-theme-1 text-white">START YEAR</div>
-                                <select id="start_year" name="start_year" class="form-select bg-white">
-                                    <option value="">Please choose</option>
-                                    @for ($i = date('Y') - 12; $i <= date('Y'); $i++)
-                                    <option value="{{$i}}" @if((int)$search_params->start_year===(int)$i) selected @endif>{{$i}}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-                        <div class="g-col-6 g-col-xl-3">
-                            <div class="input-group me-2 me-sm-2">
-                                <div class="input-group-text bg-theme-1 text-white">END YEAR</div>
-                                <select id="end_year" name="end_year" class="form-select bg-white">
-                                    <option value="">Please choose</option>
-                                    @for ($i = date('Y') - 8; $i <= date('Y'); $i++)
-                                    <option value="{{$i}}" @if((int)$search_params->end_year===(int)$i) selected @endif>{{$i}}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full w-md-auto grid columns-12 gap-4">
-                        <div class="g-col-12 g-col-xl-6">
-                            <div class="input-group me-2 me-sm-2">
-                                <div class="input-group-text bg-theme-1 text-white">PROGRAM</div>
-                                <select id="program" name="program" class="form-select bg-white">
-                                    <option value="">All</option>
-                                    @foreach (getMrunList() ?? [] as $program)
-                                    <option value="{{ $program->code }}" @if($search_params->faculty==$program->code) selected @endif>{{ $program->parameter_name }} - {{ $program->description_1 }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="g-col-12 g-col-xl-6">
-                            <div class="input-group me-2 me-sm-2">
-                                <div class="input-group-text bg-theme-1 text-white">Code</div> 
-                                <input id="code" name="code" type="text" class="form-control" aria-describedby="code" value="{{ $search_params->code }}" placeholder="cth: 21A1">
-                                <div class="input-group-text">.</div> 
-                                <input id="code2" name="code2" type="text" class="form-control" aria-describedby="code2" value="{{ $search_params->code2 }}" placeholder="cth: 00A00">
-                            </div>
-                        </div>
+
+<form id="search_form" action="{{ route('dana-ru.carian.expenses') }}" method="get">
+    <div class="intro-y box dashboard-filter mt-5">
+        <div class="filter-header d-flex align-items-center px-5 py-3">
+            <i data-feather="filter" class="w-4 h-4 me-2"></i>
+            <span class="fw-medium">FILTER</span>
+            <span class="range-badge ms-auto">{{ $active_filters ? $active_filters.' active filter'.($active_filters > 1 ? 's' : '') : 'All records' }}</span>
+        </div>
+        <div class="p-5">
+            <div class="grid grid-cols-12 gap-4">
+                <div class="g-col-12 g-col-xl-6">
+                    <div class="input-group">
+                        <div class="input-group-text">TITLE</div>
+                        <input id="title" name="title" type="text" value="{{ $search_params->title }}" class="form-control" placeholder="Jenis agihan, e.g. Pengukuhan">
                     </div>
                 </div>
-            </div>
-            <div class="p-4 border-top border-gray-200 dark-border-dark-5 d-flex">
-                <button type="submit" form="search_form" class="btn btn-dark w-full">Search</button>
+                <div class="g-col-6 g-col-xl-2">
+                    <div class="input-group">
+                        <div class="input-group-text">START YEAR</div>
+                        <select id="start_year" name="start_year" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach ($options->years as $year)
+                            <option value="{{ $year }}" @if((int)$search_params->start_year === (int)$year) selected @endif>{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-6 g-col-xl-2">
+                    <div class="input-group">
+                        <div class="input-group-text">END YEAR</div>
+                        <select id="end_year" name="end_year" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach ($options->years as $year)
+                            <option value="{{ $year }}" @if((int)$search_params->end_year === (int)$year) selected @endif>{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12 g-col-xl-2">
+                    <div class="input-group">
+                        <div class="input-group-text">MONTH</div>
+                        <select id="month" name="month" class="form-select bg-white">
+                            <option value="">All</option>
+                            @for ($m = 1; $m <= 12; $m++)
+                            <option value="{{ $m }}" @if((int)$search_params->month === $m) selected @endif>{{ date('M', mktime(0, 0, 0, $m, 1)) }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12 g-col-md-6 g-col-xl-3">
+                    <div class="input-group">
+                        <div class="input-group-text">PROGRAM</div>
+                        <select id="program" name="program" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach (getMrunList() ?? [] as $program)
+                            <option value="{{ $program->code }}" @if($search_params->program == $program->code) selected @endif>{{ $program->code }} - {{ $program->description_1 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12 g-col-md-6 g-col-xl-3">
+                    <div class="input-group">
+                        <div class="input-group-text">BPKI</div>
+                        <select id="bpki" name="bpki" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach (getBpkiList() ?? [] as $bpki)
+                            <option value="{{ $bpki->code }}" @if($search_params->bpki == $bpki->code) selected @endif>{{ $bpki->code }} - {{ $bpki->description_1 }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12 g-col-md-6 g-col-xl-3">
+                    <div class="input-group">
+                        <div class="input-group-text">PTJ</div>
+                        <select id="ptj" name="ptj" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach ($options->ptj as $ptj)
+                            <option value="{{ $ptj->ptj }}" @if($search_params->ptj == $ptj->ptj) selected @endif>{{ $ptj->ptj }}{{ $ptj->name ? ' - '.$ptj->name : '' }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12 g-col-md-6 g-col-xl-3">
+                    <div class="input-group">
+                        <div class="input-group-text">SODO</div>
+                        <select id="sodo" name="sodo" class="form-select bg-white">
+                            <option value="">All</option>
+                            @foreach ($options->sodo as $sodo)
+                            <option value="{{ $sodo }}" @if($search_params->sodo == $sodo) selected @endif>{{ $sodo }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="g-col-12">
+                    <div class="input-group">
+                        <div class="input-group-text">CODE</div>
+                        <input id="code" name="code" type="text" class="form-control" value="{{ $search_params->code }}" placeholder="Project, e.g. 21A1">
+                        <div class="input-group-text input-group-dot">.</div>
+                        <input id="code2" name="code2" type="text" class="form-control" value="{{ $search_params->code2 }}" placeholder="Sub project, e.g. 00A00">
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
-</div>
-<div class="g-col-12 d-flex d-lg-block flex-column-reverse">
-    <div class="intro-y box mt-5">
-        <div class="p-5" id="hoverable-table">
-            <div class="preview">
-                <div class="overflow-x-auto table-responsive">
-                    <table class="table table-bordered table-hover compact" id="datatable">
-                        <thead>
-                            <tr>
-                                <th class="whitespace-nowrap text-center"><input type="checkbox" id="select-all"></th>
-                                <th class="whitespace-nowrap">#</th>
-                                <th class="whitespace-nowrap">PUSAT KOS</th>
-                                <th class="whitespace-nowrap">JENIS AGIHAN</th>
-                                <th class="whitespace-nowrap">PTJ</th>
-                                <th class="whitespace-nowrap">PROJECT</th>
-                                <th class="whitespace-nowrap">SUB PROJECT</th>
-                                <th class="whitespace-nowrap">SODO</th>
-                                <th class="whitespace-nowrap">MONTH</th>
-                                <th class="whitespace-nowrap">AMOUNT (RM)</th>
-                                <th class="whitespace-nowrap">TABUNG INDUK</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="filter-footer p-4 border-top border-gray-200 dark-border-dark-5 d-flex align-items-center">
+            <a href="{{ route('dana-ru.carian.expenses') }}" class="btn btn-filter-reset me-3"><i data-feather="rotate-ccw" class="w-4 h-4 me-1"></i> Reset</a>
+            <button type="submit" form="search_form" class="btn btn-filter flex-1"><i data-feather="search" class="w-4 h-4 me-1"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+@include('dana-ru.search.summary', ['total_label' => 'TOTAL EXPENSES', 'records_sub' => 'transactions', 'ptj_sub' => 'with expenses', 'split_title' => 'EXPENSES SPLIT BY BPKI', 'programmes_label' => 'TABUNG INDUK', 'programmes_sub' => 'funds with expenses'])
+
+<div class="intro-y box mt-5">
+    <div class="p-5">
+        <div class="overflow-x-auto table-responsive">
+            <table class="table table-hover compact allocation-table w-full" id="datatable">
+                <thead>
+                    <tr>
+                        <th class="whitespace-nowrap">#</th>
+                        <th class="whitespace-nowrap">PERIOD</th>
+                        <th class="whitespace-nowrap">PUSAT KOS</th>
+                        <th class="whitespace-nowrap">TABUNG INDUK</th>
+                        <th>JENIS AGIHAN</th>
+                        <th class="whitespace-nowrap">PTJ</th>
+                        <th class="whitespace-nowrap">SODO</th>
+                        <th class="whitespace-nowrap text-end">AMOUNT (RM)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -106,175 +150,42 @@
 @push('custom-js')
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
 <script>
-    let queryString = "{!! http_build_query($search_params->toArray()) !!}";
-    var selectedProjects = [];
+    var searchParams = @json($search_params);
     var table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
+        order: [[1, 'desc']],
+        pageLength: 25,
         ajax: {
-            "url": '/dana-ru/carian/expenses/?'+queryString,
-            "type": "GET",
-            "headers": {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            url: @json(route('dana-ru.carian.expenses')),
+            type: 'GET',
+            data: function(d) {
+                return $.extend(d, searchParams);
+            },
+            dataSrc: function(json) {
+                renderSummary(json.summary);
+                return json.data;
             },
         },
         columns: [
-            {data: 'checkbox', name: 'checkbox', orderable: false, searchable: false},
-            {data: 'DT_RowIndex',name: 'DT_RowIndex'},
-            {data: 'pusat_kos',name: 'pusat_kos'},
-            {data: 'jenis_agihan',name: 'jenis_agihan'},
-            {data: 'faculty_code',name: 'f_original_code'},
-            {data: 'project',name: 'project'},
-            {data: 'sub_project',name: 'sub_project'},
-            {data: 'sodo',name: 'sodo'},
-            {data: 'month',name: 'month'},
-            {data: 'mde_amount',name: 'amount'},
-            {data: 'formula_tabung_induk',name: 'formula_tabung_induk'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'period', name: 'period', searchable: false},
+            {data: 'pusat_kos', name: 'pusat_kos'},
+            {data: 'tabung_induk_label', name: 'mde.tabung_induk'},
+            {data: 'jenis_agihan', name: 'mde.jenis_agihan'},
+            {data: 'faculty_short', name: 'mde.ptj'},
+            {data: 'sodo_long', name: 'mde.sodo_long'},
+            {data: 'mde_amount', name: 'mde.amount', searchable: false},
         ],
         columnDefs: [
-            {className: "text-center", targets: [0,1,2,3,4,5,6,7,8,9,10]}
+            {className: 'text-center', targets: [0, 1, 2, 3, 5, 6]},
+            {className: 'text-end fw-medium whitespace-nowrap', targets: [7]},
         ],
-        // layout: {
-        //     topEnd: function () {
-        //     let toolbar = document.createElement('div');
-        //     toolbar.innerHTML = '<button id="add_selection" type="button" onclick="addToAgihan()" class="btn btn-primary d-none">Add to Tabung Agihan <i>&nbsp; (<span id="selectedProjects"></span> selected)</i></button>';
-        //     return toolbar;
-        // }
-        // }
+        language: {
+            search: '',
+            searchPlaceholder: 'Quick search in results...',
+        },
     });
-    
-    $('#select-all').on('click', function(){
-        var rows = table.rows({ 'search': 'applied' }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-
-        if(this.checked){
-            // Add checked projects to the selectedProjects array
-            table.rows().data().each(function (data) {
-                if($.inArray(data.dp_id, selectedProjects) === -1) {
-                    selectedProjects.push(data.dp_id);
-                }
-            });
-        } else {
-            // Remove all projects from the selectedProjects array
-            table.rows().data().each(function (data) {
-                var index = $.inArray(data.dp_id, selectedProjects);
-                if (index !== -1) {
-                    selectedProjects.splice(index, 1);
-                }
-            });
-        }
-        handleButtonAddSelection();
-    });
-
-    $('#datatable tbody').on('change', 'input[type="checkbox"]', function(){
-        var data = table.row($(this).closest('tr')).data();
-        var id = data.dp_id;
-
-        if(this.checked){
-            if($.inArray(id, selectedProjects) === -1) {
-                selectedProjects.push(id);
-            }
-        } else {
-            var index = $.inArray(id, selectedProjects);
-            if(index !== -1) {
-                selectedProjects.splice(index, 1);
-            }
-
-            // If unchecking this box and "Select all" box is checked, we need to uncheck the "Select all" box
-            if($('#select-all').prop('checked')){
-                $('#select-all').prop('checked', false);
-            }
-        }
-        handleButtonAddSelection();
-    });
-
-    // When table is redrawn (pagination, filter, etc.)
-    table.on('draw', function() {
-        // Check if "Select all" checkbox should be checked
-        var allChecked = true;
-        var rows = table.rows({ 'search': 'applied' }).nodes();
-        $('input[type="checkbox"]', rows).each(function() {
-            if(!this.checked) {
-                allChecked = false;
-            }
-        });
-
-        if(allChecked){
-            $('#select-all').prop('checked', true);
-        } else {
-            $('#select-all').prop('checked', false);
-        }
-
-        // Iterate over all checkboxes to set their state
-        table.rows().data().each(function (data) {
-            if($.inArray(data.dp_id, selectedProjects) !== -1) {
-                $('input[type="checkbox"]', rows).filter(function(){
-                    return $(this).val() == data.dp_id;
-                }).prop('checked', true);
-            }
-        });
-    });
-
-    function handleButtonAddSelection(){
-        if(selectedProjects.length > 0) $('#add_selection').removeClass('d-none');
-        else $('#add_selection').addClass('d-none');
-        $('#selectedProjects').html(selectedProjects.length);
-    }
-
-    function addToAgihan() {
-        swal({
-            title: 'Please wait...',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
-        });
-        swal.showLoading();
-        var formData = new FormData();
-        for (var i = 0; i < selectedProjects.length; i++) {
-            formData.append('project_id[]', selectedProjects[i]);
-        }
-        $.ajax({
-            url: "/ajax/add-dist-fund/",
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: formData,
-            type: "post",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(res) {
-                swal.close();
-                toastr_alert('success', 'Project has been successfully stored.');
-            },
-            error: function(data) {
-                swal.close();
-                toastr_alert('error', 'Something went wrong.');
-            }
-        });
-        // if (faculty) {
-        //     $.ajax({
-        //         url: "/ajax/getSchool/" + faculty,
-        //         type: "GET",
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: function(res) {
-        //             $("#school_select").children().remove();
-        //             $("#school_select").append("<option value=''>All</option>")
-        //             if (res.result.length > 0) {
-        //                 console.log(res);
-        //                 $.each(res.result, function(i, val) {
-        //                     if(oldSchool == val.code) $("#school_select").append("<option value='" + val.code + "' selected>" + val.parameter_name + ' - ' + val.description_1 + "</option>");
-        //                     else $("#school_select").append("<option value='" + val.code + "'>" + val.parameter_name + ' - ' + val.description_1 + "</option>");
-        //                 });
-        //             }
-        //         },
-        //     });
-        // } else {
-        //     // alert("no value");
-        // }
-    }
 </script>
 @endpush
 @endcomponent

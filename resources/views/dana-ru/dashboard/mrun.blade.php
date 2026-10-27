@@ -3,7 +3,7 @@
         RU Fund Allocation
     @endslot
     @push('custom-css')
-        <link href="{{ asset('theme/css/dashboard.css') }}" rel="stylesheet" />
+        <link href="{{ asset('theme/css/dashboard.css') }}?v=5" rel="stylesheet" />
     @endpush
     @slot('content')
         <div class="intro-y d-block d-sm-flex align-items-center h-10 mt-5">
@@ -11,143 +11,59 @@
                 RU STRATEGIC FOCUS AREAS
             </h2>
         </div>
+        @include('dana-ru.dashboard.year-filter', ['route' => 'dana-ru.dashboard.mrun'])
         <div class="intro-y row mt-5">
             <div class="col-12">
                 <div class="grid grid-cols-12 gap-5">
-                    <div class="g-col-3">
-                        <x-dru.dashboard-card theme="secondary" title="TD (TALENT DEVELOPMENT)" total-allocation="RM 1M"
-                            total-programmes="32" avg-allocation-share="55.62%" avg-allocation-programme="RM 1.81M"
-                            total-programmes-share="35.16%" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.dashboard-card theme="info" title="RP (RESEARCH PROMINENCE)" total-allocation="RM 1M"
-                            total-programmes="32" avg-allocation-share="55.62%" avg-allocation-programme="RM 1.81M"
-                            total-programmes-share="35.16%" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.dashboard-card theme="warning" title="BGC (BRIDGING THE GRAND CHALLENGE)"
-                            total-allocation="RM 1M" total-programmes="32" avg-allocation-share="55.62%"
-                            avg-allocation-programme="RM 1.81M" total-programmes-share="35.16%" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.dashboard-card theme="success" title="WC (WEALTH CREATION)" total-allocation="RM 1M"
-                            total-programmes="32" avg-allocation-share="55.62%" avg-allocation-programme="RM 1.81M"
-                            total-programmes-share="35.16%" />
-                    </div>
+                    @foreach ($components as $component)
+                        @php($card = $dashboard['cards'][$component->code])
+                        <div class="g-col-12 g-col-md-6 g-col-xl-3">
+                            <x-dru.dashboard-card :theme="$styles[$component->code]['theme'] ?? 'info'"
+                                :title="$component->code . ' (' . $component->description_1 . ')'"
+                                :total-allocation="'RM ' . number_format($card['total_allocation'] / 1000000, 2) . 'M'"
+                                :total-programmes="$card['total_programmes']"
+                                :avg-allocation-share="number_format($card['allocation_share'], 2) . '%'"
+                                :avg-allocation-programme="'RM ' . number_format($card['avg_allocation_programme'] / 1000000, 2) . 'M'"
+                                :total-programmes-share="number_format($card['programmes_share'], 2) . '%'" />
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
         <div class="intro-x mt-5">
             <div class="grid grid-cols-12 gap-3">
-                <div class="g-col-3 card">
+                <div class="g-col-12 g-col-lg-6 card">
                     <h5 class="chart-title text-center p-2">TOTAL ALLOCATION BY YEAR</h5>
                     <x-dru.chart type="mixed" chart-id="total_allocation_by_year" :colors="[
                         'bar' => '#25d1e3',
                         'line' => '#1597a5',
-                    ]" :infos="[
-                        'bar' => [17, 15, 37, 22],
-                        'line' => [25180874.47, 24955737.94, 36950800.0, 12341495.25],
-                    ]" />
+                    ]" :infos="$dashboard['total_by_year']" :labels="$dashboard['years']" />
                 </div>
-                <div class="g-col-3 card">
+                <div class="g-col-12 g-col-lg-6 card">
                     <h5 class="chart-title text-center p-2">ALLOCATION COMPOSITION BY YEAR (%)</h5>
-                    <x-dru.chart type="stacked" chart-id="allocation_composition_by_year" :colors="['#ff9811', '#0f4db8', '#6f42c1', '#119c58']" :infos="[
-                        [
-                            'name' => 'BGC',
-                            'data' => [6, 5, 14, 7],
-                        ],
-                        [
-                            'name' => 'RP',
-                            'data' => [8, 7, 18, 14],
-                        ],
-                        [
-                            'name' => 'TD',
-                            'data' => [3, 3, 5, 1],
-                        ],
-                        [
-                            'name' => 'WC',
-                            'data' => [3, 3, 5, 1],
-                        ],
-                    ]" />
-                </div>
-                <div class="g-col-6 card">
-                    <h5 class="chart-title text-center p-2">TOP 10 FUNDING PROGRAMMES BY ALLOCATION</h5>
-                    <x-dru.chart type="basic_bar" chart-id="top_10_fund" :colors="['#1597a5']" :infos="[
-                        'categories' => [
-                            'GERAN UNIVERSITI PENYELIDIKAN (GUP)',
-                            'PELANTIKAN PASCA DOCTORAL',
-                            'INSENTIF PENERBITAN PENYELIDIKAN - JURNAL BERINDEKS',
-                            'GERAN HITECH (F4+)',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                            'PENYELENGGARAAN MAKMAL PENYELIDIKAN',
-                        ],
-                        'values' => [
-                            [
-                                'name' => 'Allocation (RM)',
-                                'data' => [
-                                    35250000,
-                                    11430000,
-                                    5150000,
-                                    5000000,
-                                    4840000,
-                                    4000000,
-                                    3660000,
-                                    3320000,
-                                    3000000,
-                                    2400000,
-                                ],
-                            ],
-                        ],
-                    ]" />
+                    <x-dru.chart type="stacked" chart-id="allocation_composition_by_year" :colors="$chart_colors"
+                        :infos="$dashboard['composition']" :labels="$dashboard['years']" />
                 </div>
             </div>
             <div class="card w-full mt-5">
                 <h5 class="chart-title text-center p-2">PROGRAMMES & ALLOCATION TREND</h5>
                 <div class="grid grid-cols-12 gap-3">
-                    <div class="g-col-3">
-                        <x-dru.chart title="TD (TALENT DEVELOPMENT)" type="mixed" chart-id="td_allocation" :colors="[
-                            'bar' => '#9674d2',
-                            'line' => '#6f42c1',
-                        ]"
-                            :infos="[
-                                'bar' => [17, 15, 37, 22],
-                                'line' => [25180874.47, 24955737.94, 36950800.0, 12341495.25],
-                            ]" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.chart title="RP (RESEARCH PROMINENCE)" type="mixed" chart-id="rp_allocation" :colors="[
-                            'bar' => '#3d7def',
-                            'line' => '#0f4db8',
-                        ]"
-                            :infos="[
-                                'bar' => [17, 15, 37, 22],
-                                'line' => [25180874.47, 24955737.94, 36950800.0, 12341495.25],
-                            ]" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.chart title="BGC (BRIDGING THE GRAND CHALLENGE)" type="mixed" chart-id="bgc_allocation" :colors="[
-                            'bar' => '#ffab3b',
-                            'line' => '#ff9811',
-                        ]"
-                            :infos="[
-                                'bar' => [17, 15, 37, 22],
-                                'line' => [25180874.47, 24955737.94, 36950800.0, 12341495.25],
-                            ]" />
-                    </div>
-                    <div class="g-col-3">
-                        <x-dru.chart title="WC (WEALTH CREATION)" type="mixed" chart-id="wc_allocation"
-                            :colors="[
-                                'bar' => '#17db79',
-                                'line' => '#119c58',
-                            ]" :infos="[
-                                'bar' => [17, 15, 37, 22],
-                                'line' => [25180874.47, 24955737.94, 36950800.0, 12341495.25],
-                            ]" />
-                    </div>
+                    @foreach ($components as $component)
+                        <div class="g-col-12 g-col-md-6">
+                            <x-dru.chart :title="$component->code . ' (' . $component->description_1 . ')'" type="mixed"
+                                :chart-id="strtolower($component->code) . '_allocation'" :colors="[
+                                    'bar' => $styles[$component->code]['bar'] ?? '#25d1e3',
+                                    'line' => $styles[$component->code]['line'] ?? '#1597a5',
+                                ]"
+                                :infos="$dashboard['trends'][$component->code]" :labels="$dashboard['years']" />
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="grid grid-cols-12 gap-3 mt-5">
+                <div class="g-col-12 card">
+                    <h5 class="chart-title text-center p-2">TOP 10 FUNDING PROGRAMMES BY ALLOCATION</h5>
+                    <x-dru.chart type="basic_bar" chart-id="top_10_fund" :colors="['#1597a5']" :infos="$dashboard['top_programmes']" />
                 </div>
             </div>
         </div>

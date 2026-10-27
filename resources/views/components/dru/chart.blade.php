@@ -72,9 +72,7 @@
                             }
                         }
                     },
-                    labels: [
-                        2022, 2023, 2024, 2025
-                    ],
+                    labels: @json($labels),
                     yaxis: {
                         title: {
                             text: 'Percentage Point (pp)',
@@ -197,9 +195,7 @@
                             }
                         }
                     },
-                    labels: [
-                        2022, 2023, 2024, 2025
-                    ],
+                    labels: @json($labels),
                     yaxis: [{
                             title: {
                                 text: 'No. of Programmes',
@@ -279,9 +275,7 @@
                         },
                     }, ],
                     xaxis: {
-                        categories: [
-                            2022, 2023, 2024, 2025
-                        ],
+                        categories: @json($labels),
                     },
                     yaxis: [{
                         title: {

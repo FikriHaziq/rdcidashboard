@@ -454,4 +454,93 @@ trait GraphDanaRUTrait {
             "pie_expenses"=>$allocation_pie_expenses,
         ];
     }
+
+    // RU Fund Dashboard (BPKI / MRUN) from masterlist_dru_allocations
+    // $column : 'bpki_id' or 'program_id'
+    // $components : parameters (getBpkiList() / getMrunList())
+    public function allocationDashboard($column, $components, $year_from, $year_to) {
+        // Transfer rows (type 4/5) may have no BPKI/MRUN, inherit from another row with the same project
+        $component_sql = "COALESCE(NULLIF(mda.".$column.", 0), (SELECT x.".$column." FROM masterlist_dru_allocations x WHERE x.project = mda.project AND x.".$column." > 0 LIMIT 1)) AS component_id";
+        $rows = DB::table('masterlist_dru_allocations AS mda')
+            ->select('mda.year', 'mda.type', 'mda.ptj', 'mda.jenis_agihan', 'mda.amount', DB::raw($component_sql))
+            ->whereBetween('mda.year', [$year_from, $year_to])
+            ->get();
+
+        // All types are summed (net), but only Agihan Utama/Tambahan/Semula rows count as programmes
+        $programmes = $rows->whereIn('type', [1, 2, 3]);
+        $years = range($year_from, $year_to);
+        $grand_total = (float)$rows->sum('amount');
+        $grand_count = $programmes->count();
+
+        $year_total = [];
+        foreach ($years as $year) {
+            $year_total[$year] = (float)$rows->where('year', $year)->sum('amount');
+        }
+
+        $total_by_year = [
+            'bar' => array_map(function($year) use ($programmes) { return $programmes->where('year', $year)->count(); }, $years),
+            'line' => array_map(function($year) use ($year_total) { return round($year_total[$year], 2); }, $years),
+        ];
+
+        $cards = [];
+        $trends = [];
+        $composition = [];
+        $variance = [];
+        foreach ($components as $component) {
+            $component_rows = $rows->where('component_id', $component->id);
+            $component_programmes = $programmes->where('component_id', $component->id);
+            $total = (float)$component_rows->sum('amount');
+            $count = $component_programmes->count();
+
+            $cards[$component->code] = [
+                'total_allocation' => $total,
+                'total_programmes' => $count,
+                'allocation_share' => $grand_total != 0 ? $total / $grand_total * 100 : 0,
+                'avg_allocation_programme' => $count > 0 ? $total / $count : 0,
+                'programmes_share' => $grand_count > 0 ? $count / $grand_count * 100 : 0,
+            ];
+
+            $trend_bar = [];
+            $trend_line = [];
+            $composition_data = [];
+            $variance_data = [];
+            foreach ($years as $year) {
+                $amount = (float)$component_rows->where('year', $year)->sum('amount');
+                $percent = $year_total[$year] != 0 ? $amount / $year_total[$year] * 100 : 0;
+                $trend_bar[] = $component_programmes->where('year', $year)->count();
+                $trend_line[] = round($amount, 2);
+                // Years with no net allocation are left empty instead of 0%
+                $composition_data[] = $year_total[$year] != 0 ? round($percent, 2) : null;
+                $variance_data[] = $year_total[$year] != 0 ? round($percent - (float)$component->description_2, 1) : null;
+            }
+            $trends[$component->code] = ['bar' => $trend_bar, 'line' => $trend_line];
+            $composition[] = [
+                'name' => $component->code.($component->description_2 ? ' (Target '.$component->description_2.'%)' : ''),
+                'data' => $composition_data,
+            ];
+            if($component->description_2){
+                $variance[] = ['name' => $component->code.' Variance (pp)', 'data' => $variance_data];
+            }
+        }
+
+        $top_programmes = $rows->groupBy('jenis_agihan')->map(function($items) { return (float)$items->sum('amount'); })->sortDesc()->take(10);
+        $top_ptj = $rows->groupBy('ptj')->map(function($items) { return (float)$items->sum('amount'); })->sortDesc()->take(10);
+
+        return [
+            'years' => $years,
+            'cards' => $cards,
+            'total_by_year' => $total_by_year,
+            'composition' => $composition,
+            'variance' => $variance,
+            'trends' => $trends,
+            'top_programmes' => [
+                'categories' => $top_programmes->keys()->map(function($name) { return strtoupper($name); })->values(),
+                'values' => [['name' => 'Allocation (RM)', 'data' => $top_programmes->values()->map(function($amount) { return round($amount, 2); })]],
+            ],
+            'top_ptj' => [
+                'categories' => $top_ptj->keys()->values(),
+                'values' => [['name' => 'Allocation (RM)', 'data' => $top_ptj->values()->map(function($amount) { return round($amount, 2); })]],
+            ],
+        ];
+    }
 }

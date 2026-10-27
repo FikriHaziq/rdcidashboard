@@ -11,18 +11,20 @@ class Chart extends Component
     public $colors;
     public $infos;
     public $title;
+    public $labels;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type,  $chartId, $colors, $infos, $title = null)
+    public function __construct($type,  $chartId, $colors, $infos, $title = null, $labels = [])
     {
         $this->type = $type;
         $this->chartId = $chartId;
         $this->colors = $colors;
         $this->infos = $infos;
         $this->title = $title;
+        $this->labels = $labels;
     }
 
     /**

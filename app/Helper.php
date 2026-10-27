@@ -1085,3 +1085,27 @@ if (!function_exists('renderPdf')) {
         return $dompdf->output();
     }
 }
+
+if (!function_exists('allocationTypes')) {
+    // masterlist_dru_allocations.type shown in Carian (type 4 & 5 are excluded)
+    function allocationTypes()
+    {
+        return [
+            1 => 'Agihan Utama',
+            2 => 'Agihan Tambahan',
+            3 => 'Agihan Semula',
+        ];
+    }
+}
+
+if (!function_exists('planTypes')) {
+    // dru_distribution_plans.type shown in Carian (see getPlanType(), 4 Pindahan & 5 Pengumpulan Dana are excluded)
+    function planTypes()
+    {
+        return [
+            1 => 'Cadangan Agihan',
+            2 => 'Agihan Tambahan',
+            3 => 'Agihan Semula',
+        ];
+    }
+}
