@@ -141,8 +141,8 @@ Route::middleware(['auth', 'user-role:super_admin'])->group(function () {
     });
 });
 
-Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
-    Route::name('masterlist.')->prefix('masterlist')->group(function(){
+Route::name("dana-ru.")->prefix("dana-ru")->middleware('auth')->group(function () {
+    Route::name('masterlist.')->prefix('masterlist')->middleware('dru-access:dru_pa')->group(function(){
         Route::name('allocation')->get('/allocation', [DruMasterlistController::class, 'allocationIndex']);
         Route::name('allocation.year')->get('/allocation/year/{year?}', [DruMasterlistController::class, 'allocationYearIndex']);
         Route::name("allocation.import")->get('/allocation/import/{id}', [DruMasterlistController::class, "allocationImport"]);
@@ -156,7 +156,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
 
         Route::name("process")->get('/process/{fund_type}/{type}/{year}', [DruMasterlistController::class, "processData"]);
     });
-    Route::name('maintenance.')->prefix('maintenance')->group(function(){
+    Route::name('maintenance.')->prefix('maintenance')->middleware('dru-access:dru_pa')->group(function(){
         Route::name('tabung-induk')->get('/tabung-induk', [MaintenanceController::class, 'tabungIndukIndex']);
         Route::name('tabung-induk.create')->get('/tabung-induk/create', [MaintenanceController::class, 'tabungIndukCreate']);
         Route::name('tabung-induk.store')->post('/tabung-induk/store', [MaintenanceController::class, 'tabungIndukStore']);
@@ -274,7 +274,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
         Route::name('expenses-record')->get('/expenses-record/{plan_id}', [AgihanController::class, 'expensesRecord']);
     });
 
-    Route::name('carian.')->prefix('carian')->group(function(){
+    Route::name('carian.')->prefix('carian')->middleware('dru-access')->group(function(){
         Route::name('index')->get('/', [SearchController::class, 'index']);
         Route::name('cadangan-agihan')->get('/cadangan-agihan', [SearchController::class, 'cadanganAgihanList']);
         Route::name('allocation')->get('/allocation', [SearchController::class, 'allocationList']);
@@ -284,7 +284,7 @@ Route::name("dana-ru.")->prefix("dana-ru")->group(function () {
     // });
 });
 
-Route::name('doc-generator.')->prefix('doc-generator')->group(function () {
+Route::name('doc-generator.')->prefix('doc-generator')->middleware('auth')->group(function () {
     Route::name('kertas-kerja')->get('/kertas-kerja/{plan_id}', [DocGeneratorController::class, 'KertasKerja']);
     Route::name('lampiran-a')->get('/lampiran-a/{plan_id}', [DocGeneratorController::class, 'LampiranA']);
 });
@@ -310,7 +310,7 @@ Route::name('doc-generator.')->prefix('doc-generator')->group(function () {
 //     Route::name('talent')->get('talent', [ResearchProcessController::class, "talent"]);
 // });
 
-Route::name('ajax.')->prefix('ajax')->group(function () {
+Route::name('ajax.')->prefix('ajax')->middleware('auth')->group(function () {
     Route::name("grant-mestec")->post('grant-mestec/', [AjaxController::class, 'getGrantMestec']);
     Route::name("selectData")->get('select/data/{id}', [AjaxController::class, 'selectData']);
     Route::name("updateMyraData")->post('update-myra-data', [AjaxController::class, 'updateMyraMark']);

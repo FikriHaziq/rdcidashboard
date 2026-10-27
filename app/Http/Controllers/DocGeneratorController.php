@@ -16,7 +16,6 @@ use App\Models\Parameter;
 use App\Models\DocTemplate;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
 use Purifier;
@@ -709,10 +708,8 @@ class DocGeneratorController extends Controller
             $filename = 'Q_'. getAppendedPtjCode($form->ptj_code, 7) . '_' . $form->ddf_code . '_' . getProjectSecondCode($form->ddf_code_2).'_'.date('d_m_Y');
         }
 
-        $pdf1 = Pdf::loadView('components.pdf.lampiran-a', compact('form', 'chargeline', 'main_dist'))
-                  ->setPaper('a4', 'portrait')->output(); // A4 size
-        $pdf2 = Pdf::loadView('components.pdf.lampiran-a-portrait', compact('form', 'chargeline', 'main_dist'))
-                ->setPaper('a4', 'landscape')->output();
+        $pdf1 = renderPdf('components.pdf.lampiran-a', compact('form', 'chargeline', 'main_dist'), 'portrait'); // A4 size
+        $pdf2 = renderPdf('components.pdf.lampiran-a-portrait', compact('form', 'chargeline', 'main_dist'), 'landscape');
 
         $merger = new Merger;
         $merger->addRaw($pdf1);

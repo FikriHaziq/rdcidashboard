@@ -1075,3 +1075,13 @@ if (!function_exists('getStatusBySort')) {
         }
     }
 }
+if (!function_exists('renderPdf')) {
+    function renderPdf($view, $data = [], $orientation = 'portrait')
+    {
+        $dompdf = new \Dompdf\Dompdf(['isRemoteEnabled' => false]);
+        $dompdf->loadHtml(view($view, $data)->render());
+        $dompdf->setPaper('a4', $orientation);
+        $dompdf->render();
+        return $dompdf->output();
+    }
+}

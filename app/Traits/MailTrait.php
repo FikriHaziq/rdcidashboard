@@ -10,7 +10,6 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use App\Models\DanaRU\DruDistributionPlanForm;
 use App\Models\DanaRU\DruMailTemplate;
 use App\Models\DanaRU\DruDataAttachment;
-use Barryvdh\DomPDF\Facade\Pdf;
 use iio\libmergepdf\Merger;
 use iio\libmergepdf\Pages;
 use Illuminate\Support\Facades\Storage;
@@ -112,10 +111,8 @@ trait MailTrait
             $filename = $form->ptj_short. '_'. $form->ddf_title . '_' . $form->plan_year;
         }
 
-        $pdf1 = Pdf::loadView('components.pdf.lampiran-a', compact('form', 'chargeline', 'main_dist'))
-                  ->setPaper('a4', 'portrait')->output(); // A4 size
-        $pdf2 = Pdf::loadView('components.pdf.lampiran-a-portrait', compact('form', 'chargeline', 'main_dist'))
-                ->setPaper('a4', 'landscape')->output();
+        $pdf1 = renderPdf('components.pdf.lampiran-a', compact('form', 'chargeline', 'main_dist'), 'portrait'); // A4 size
+        $pdf2 = renderPdf('components.pdf.lampiran-a-portrait', compact('form', 'chargeline', 'main_dist'), 'landscape');
 
         $merger = new Merger;
         $merger->addRaw($pdf1);
