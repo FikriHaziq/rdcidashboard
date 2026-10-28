@@ -275,9 +275,11 @@ class UpgradeSmokeTest extends TestCase
     {
         if ($json && is_array($data = json_decode($content, true))) {
             unset($data['input'], $data['queries'], $data['draw']);
-            $content = json_encode($data);
+            $content = json_encode($data, JSON_UNESCAPED_SLASHES);
         }
-        else {
+        // URLs (plain or JSON-escaped http:\/\/...) depend on APP_URL, not on data
+        $content = preg_replace('#https?:\\\\?/\\\\?/[^\s"\'<>)]+#', '', $content);
+        if (!$json) {
             $content = preg_replace([
                 '/<meta name="csrf-token"[^>]*>/',
                 '/name="_token"[^>]*>/',
