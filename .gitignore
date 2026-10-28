@@ -13,6 +13,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-composer.lock
 .DS_Store
 /.phpunit.cache
