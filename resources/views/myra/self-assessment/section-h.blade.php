@@ -146,17 +146,17 @@
                                     <td class="border border-slate-600 fw-bold">Total Number of Laboratories/Research Facilities Accreditated to Good Manufacturing Practice (GMP), Good Regulatory Practice (GRP), Good Laboratory Practice (GLP), ISO17025, ISO15189, etc that are fully operational</td>
                                     {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra1_1[0] }}</td>
                                     <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_1[0] == 'YES') myra-yes @else myra-no @endif">{{ $data->calculation->myra2_1[0] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra_year_1[0], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra_year_1[0], 0) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra1_weightage_1 }}%</td> --}}
-                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_target_1[0], 2) }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_benchmark_mark_1[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra1_mark_1[0], 2) }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra1_achievement_1[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra1_benchmark_target_1[0], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra1_benchmark_mark_1[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra1_mark_1[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ myraNumberFormat($data->calculation->myra1_achievement_1[0], 2) }}%</td> --}}
                                     {{-- <td class="border border-slate-600 fw-bold">{{ $data->calculation->myra2_weightage_1 }}%</td> --}}
-                                    {{-- <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_target_1[0], 2) }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_benchmark_mark_1[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->myra2_mark_1[0], 2) }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ number_format($data->calculation->myra2_achievement_1[0], 2) }}%</td> --}}
+                                    {{-- <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra2_benchmark_target_1[0], 2) }}</td> --}}
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra2_benchmark_mark_1[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->myra2_mark_1[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink">{{ myraNumberFormat($data->calculation->myra2_achievement_1[0], 2) }}%</td> --}}
                                 </tr>
                                 <tr class="text-center">
                                     <td class="border border-slate-600 fw-bold" rowspan="3">2</td>
@@ -164,12 +164,12 @@
                                     <td class="border border-slate-600 fw-bold">a. Total Number of Titles of Books (Hardcopy)</td>
                                     {{-- <td class="border border-slate-600 fw-bold @if($data->calculation->myra1_2[0] == 'YES') myra-yes @else myra-no @endif" rowspan="3">{{ $data->calculation->myra1_2[0] }}</td>
                                     <td class="border border-slate-600 fw-bold @if($data->calculation->myra2_2[0] == 'YES') myra-yes @else myra-no @endif" rowspan="3">{{ $data->calculation->myra2_2[0] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ number_format($data->calculation->myra_year_2[0], 0) }}</td>
+                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ myraNumberFormat($data->calculation->myra_year_2[0], 0) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold" rowspan="3">{{ $data->calculation->myra1_weightage_2 }}%</td> --}}
                                     {{-- <td class="border border-slate-600 fw-bold" rowspan="3">{{ $data->calculation->myra1_benchmark_target_2[0] }}</td> --}}
-                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ number_format($data->calculation->myra1_benchmark_mark_2[0], 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ number_format($data->calculation->myra1_mark_2[0], 2) }}</td>
-                                    {{-- <td class="border border-slate-600 fw-bold myra-pink" rowspan="3">{{ number_format($data->calculation->myra1_achievement_2[0], 2) }}%</td> --}}
+                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ myraNumberFormat($data->calculation->myra1_benchmark_mark_2[0], 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold" rowspan="3">{{ myraNumberFormat($data->calculation->myra1_mark_2[0], 2) }}</td>
+                                    {{-- <td class="border border-slate-600 fw-bold myra-pink" rowspan="3">{{ myraNumberFormat($data->calculation->myra1_achievement_2[0], 2) }}%</td> --}}
                                     <td class="border border-slate-600 fw-bold myra-dark-gray" rowspan="3"></td>
                                     <td class="border border-slate-600 fw-bold myra-dark-gray" rowspan="3"></td>
                                     {{-- <td class="border border-slate-600 fw-bold myra-dark-gray" rowspan="3"></td>
@@ -184,11 +184,11 @@
                                 </tr>
                                 <tr class="text-center total-mark">
                                     <td class="border border-slate-600 fw-bold" colspan="4">Total Mark for Section H</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra1_benchmark_mark, 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra1_mark, 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->total_myra1_benchmark_mark, 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->total_myra1_mark, 2) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold"></td> --}}
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra2_benchmark_mark, 2) }}</td>
-                                    <td class="border border-slate-600 fw-bold">{{ number_format($data->calculation->total_myra2_mark, 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->total_myra2_benchmark_mark, 2) }}</td>
+                                    <td class="border border-slate-600 fw-bold">{{ myraNumberFormat($data->calculation->total_myra2_mark, 2) }}</td>
                                     {{-- <td class="border border-slate-600 fw-bold"></td> --}}
                                 </tr>
                             </tbody>

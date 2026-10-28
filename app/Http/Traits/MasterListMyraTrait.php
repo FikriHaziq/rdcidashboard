@@ -490,7 +490,7 @@ trait MasterListMyraTrait {
         $active_st_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'ST')->whereIn('status3', $this->status_fulltime('parttime'))->whereIn('status1', $this->status_active('active'))->count();
         $active_st = $active_st_fulltime+$active_st_parttime;
         $active_nonst = MasterlistAcademicStaff::where('ml_end_year', $year)->where('st', 'SS')->whereIn('status1', $this->status_active('active'))->count();
-        $percentage_active_st = $active_staff > 0 ? (float)number_format($active_st/$active_staff * 100, 2) : 0;
+        $percentage_active_st = $active_staff > 0 ? (float)myraNumberFormat($active_st/$active_staff * 100, 2) : 0;
         $active_foreign_fulltime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', $this->status_fulltime('fulltime'))->whereIn('status1', $this->status_active('active'))->count();
         $active_foreign_parttime = MasterlistAcademicStaff::where('ml_end_year', $year)->whereIn('citizenship', $this->filter_citizenship('foreign'))->whereIn('status3', $this->status_fulltime('parttime'))->whereIn('status1', $this->status_active('active'))->count();
         $active_foreign = $active_foreign_fulltime+$active_foreign_parttime;
@@ -732,7 +732,7 @@ trait MasterListMyraTrait {
         $joint_national = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('publication_type', ['journal', 'proceeding'])->whereNational('Y')->count();
         $citation = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('citation')->first()->citation_total ?? 0;
         $q1_q2 = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('journal')->whereIn('quartile', ['Q1','Q2'])->count();
-        $q1_q2_percent = $journal > 0 ? number_format($q1_q2/$journal*100, 2) : 0;
+        $q1_q2_percent = $journal > 0 ? myraNumberFormat($q1_q2/$journal*100, 2) : 0;
         $others_journal = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('others_journal')->count();
         $mycite = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('mycite')->count();
         $book = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('research_book')->count();
@@ -746,20 +746,20 @@ trait MasterListMyraTrait {
         $policy_paper = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('policy_paper')->count();
         $other = MasterlistPublication::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->wherePublicationType('other')->count();
         // dd(MasterlistResearchGrant::where('ml_end_year', 2018)->select('sponsor_category')->distinct()->get()->toArray());
-        $home_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
-        $home_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->sum('amount_received'), 2, '.', '');
-        $private_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('private'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
-        $private_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('private'))->sum('amount_received'), 2, '.', '');
-        $international_pledge_new = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('international'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
-        $international_receive_active = (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('international'))->sum('amount_received'), 2, '.', '');
-        $research_grant_received = (float)number_format($home_receive_active+$private_receive_active+$international_receive_active, 2, '.', '');
-        // dd(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->count(), (float)number_format(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received'), 2, '.', ''));
+        $home_pledge_new = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
+        $home_receive_active = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', ['UNIVERSITY', 'NATIONAL'])->sum('amount_received'), 2, '.', '');
+        $private_pledge_new = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('private'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
+        $private_receive_active = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('private'))->sum('amount_received'), 2, '.', '');
+        $international_pledge_new = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('international'))->whereYear('start_date', '>=', $year)->sum('amount_pledged'), 2, '.', '');
+        $international_receive_active = (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('sponsor_category', $this->sponsor_category('international'))->sum('amount_received'), 2, '.', '');
+        $research_grant_received = (float)myraNumberFormat($home_receive_active+$private_receive_active+$international_receive_active, 2, '.', '');
+        // dd(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->count(), (float)myraNumberFormat(MasterlistResearchGrant::where('ml_end_year', $year)->whereIn('sponsor_category', ['UNIVERSITY'])->sum('amount_received'), 2, '.', ''));
         $project_without_ext = MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->where('project_extension', 'NO')->where('project_status', 'COMPLETED')->count();
         $project_with_ext = MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->where('project_extension', 'YES')->where('project_status', 'COMPLETED')->count();
         $total_project = MasterlistMonitoringProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
-        $project_complete_on_time = $total_project > 0 ? (float)number_format($project_without_ext/$total_project*100, 2) : 0;
-        $expenditure_received = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_received'), 2, '.', '');
-        $expenditure_spent = (float)number_format(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_spent'), 2, '.', '');
+        $project_complete_on_time = $total_project > 0 ? (float)myraNumberFormat($project_without_ext/$total_project*100, 2) : 0;
+        $expenditure_received = (float)myraNumberFormat(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_received'), 2, '.', '');
+        $expenditure_spent = (float)myraNumberFormat(MasterlistExpenditureProject::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_spent'), 2, '.', '');
         
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('status1', $this->status_active('active'))->count();
@@ -852,35 +852,35 @@ trait MasterListMyraTrait {
         $phd_local = MasterlistPhdGraduate::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('citizenship', ['TEMPATAN', 'LOCAL'])->count();
         $phd_foreign = MasterlistPhdGraduate::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('citizenship', ['ANTARABANGSA', 'FOREIGN'])->count();
         $academic_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('status1', $this->status_active('active'))->count();
-        $phd_ratio = $academic_staff > 0? (float)number_format($total_phd/$academic_staff, 2) : 0;
+        $phd_ratio = $academic_staff > 0? (float)myraNumberFormat($total_phd/$academic_staff, 2) : 0;
         $phd_graduate_7 = MasterlistPhdGraduate::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('got', $this->got('yes'))->count();
-        $phd_graduate_7_percent =$total_phd > 0 ? (float)number_format($phd_graduate_7/$total_phd*100, 2) : 0;
+        $phd_graduate_7_percent =$total_phd > 0 ? (float)myraNumberFormat($phd_graduate_7/$total_phd*100, 2) : 0;
 
         $total_master = MasterlistMasterGraduate::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
 
         $total_phd_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
-        $phd_enrolled_ratio = $academic_staff > 0? (float)number_format($total_phd_enrolled/$academic_staff, 2) : 0;
+        $phd_enrolled_ratio = $academic_staff > 0? (float)myraNumberFormat($total_phd_enrolled/$academic_staff, 2) : 0;
         $total_phd_st_enrolled = MasterlistPhdEnroll::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('st', ['ST', 'S&T'])->count();
 
         $pg_enrolled = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
         // dd($pg_enrolled, $academic_staff);
-        $pg_enrolled_ratio = $academic_staff > 0 ? (float)number_format($pg_enrolled/$academic_staff, 2) : 0;
+        $pg_enrolled_ratio = $academic_staff > 0 ? (float)myraNumberFormat($pg_enrolled/$academic_staff, 2) : 0;
         $pg_enrolled_mixed_mode = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('study_mode', $this->student_study_mode('research'))->count();
         $ug_enrolled = MasterlistUgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
-        $pg_enrolled_mixed_mode_ratio = $ug_enrolled > 0 ? (float)number_format($pg_enrolled_mixed_mode/$ug_enrolled, 2) : 0;
+        $pg_enrolled_mixed_mode_ratio = $ug_enrolled > 0 ? (float)myraNumberFormat($pg_enrolled_mixed_mode/$ug_enrolled, 2) : 0;
 
         $int_pg_enrolled = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
-        $int_pg_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
+        $int_pg_enrolled_percent = $pg_enrolled > 0 ? (float)myraNumberFormat($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
 
         $entry_enrolled = MasterlistEntryQualification::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
-        $entry_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($entry_enrolled/$pg_enrolled*100, 2) : 0;
+        $entry_enrolled_percent = $pg_enrolled > 0 ? (float)myraNumberFormat($entry_enrolled/$pg_enrolled*100, 2) : 0;
 
         $master_research_local = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', $this->filter_citizenship('local'))->count();
         $master_research_foreign = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->whereIn('citizenship', ['FOREIGN', 'ANTARABANGSA'])->count();
         $phd = MasterlistPgStudent::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->where('degree_registered_for', 'PHD')->count();
         $pg_research = $phd + $master_research_local + $master_research_foreign;
         $fellowship_enrolled = MasterlistFellowship::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->count();
-        $fellowship_enrolled_percent = $pg_enrolled > 0 ? (float)number_format($fellowship_enrolled/$pg_research*100, 2) : 0;
+        $fellowship_enrolled_percent = $pg_enrolled > 0 ? (float)myraNumberFormat($fellowship_enrolled/$pg_research*100, 2) : 0;
         // dd(MasterlistPgStudent::where('ml_end_year', 2021)->whereIn('study_mode', ["PENYELIDIKAN", "K KUR & PENYELIDIKAN"])->count());
         // dd(MasterlistPgStudent::where('ml_end_year', 2021)->select('study_mode')->distinct()->get()->toArray());
         $local_post_doc = MasterlistPostDoc::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('citizenship', $this->filter_citizenship('local'))->count();
@@ -1017,19 +1017,19 @@ trait MasterListMyraTrait {
     public function myraSectionF($year, $faculty = null, $school = null) {
         $faculties = [];
         $schools = [];
-        $training_course = (float)number_format(MasterlistTrainingCourse::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $pg_fee = (float)number_format(MasterlistPgFee::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $conference = (float)number_format(MasterlistConference::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $product_comm = (float)number_format(MasterlistProductCommRef::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $tech_know_how = (float)number_format(MasterlistTechKnowHow::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $consultancy = (float)number_format(MasterlistConsultancy::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $training_course = (float)myraNumberFormat(MasterlistTrainingCourse::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $pg_fee = (float)myraNumberFormat(MasterlistPgFee::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $conference = (float)myraNumberFormat(MasterlistConference::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $product_comm = (float)myraNumberFormat(MasterlistProductCommRef::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $tech_know_how = (float)myraNumberFormat(MasterlistTechKnowHow::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $consultancy = (float)myraNumberFormat(MasterlistConsultancy::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
         $hospital = 0;
-        $lab_service = (float)number_format(MasterlistLabService::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
-        $new_endowment = (float)number_format(MasterlistNewEndowment::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_endowed_percent_research'), 0, '.', '');
-        $existing_endowment = (float)number_format(MasterlistIncomeDividend::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('dividend'), 0, '.', '');
-        $gift = (float)number_format(MasterlistGift::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('value'), 0, '.', '');
-        $oe_expenditure = (float)number_format(MasterlistOperationalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount'), 0, '.', '');
-        $rd_expenditure = (float)number_format(MasterlistTotalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount'), 0, '.', '');
+        $lab_service = (float)myraNumberFormat(MasterlistLabService::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('gross_income'), 0, '.', '');
+        $new_endowment = (float)myraNumberFormat(MasterlistNewEndowment::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount_endowed_percent_research'), 0, '.', '');
+        $existing_endowment = (float)myraNumberFormat(MasterlistIncomeDividend::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('dividend'), 0, '.', '');
+        $gift = (float)myraNumberFormat(MasterlistGift::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('value'), 0, '.', '');
+        $oe_expenditure = (float)myraNumberFormat(MasterlistOperationalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount'), 0, '.', '');
+        $rd_expenditure = (float)myraNumberFormat(MasterlistTotalExpenditure::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->sum('amount'), 0, '.', '');
 
         //Calculation
         $active_acad_staff = MasterlistAcademicStaff::where('ml_end_year', $year)->where(function ($q) use ($faculty, $year, $school) {if($faculty){$q->where('faculty_code', $faculty);}if($school){$q->where('school_code', $school);}})->whereIn('status1', $this->status_active('active'))->count();
@@ -1229,68 +1229,68 @@ trait MasterListMyraTrait {
             'data_entry_label' => $data_entry_flag == 7 ? 'COMPLETE' : 'NOT COMPLETE',
             'data_entry_color' => $data_entry_flag == 7 ? 'green' : 'red',
             'section_b' => (object)[
-                'myra1_mark' => (float)number_format($section_b->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_b->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_b->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_b->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_b->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_b->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_b->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_b->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_b->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_b->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_b->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_b->myra2_achievement ?? 0, 2),
             ],
             'section_c' => (object)[
-                'myra1_mark' => (float)number_format($section_c->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_c->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_c->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_c->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_c->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_c->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_c->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_c->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_c->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_c->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_c->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_c->myra2_achievement ?? 0, 2),
             ],
             'section_d' => (object)[
-                'myra1_mark' => (float)number_format($section_d->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_d->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_d->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_d->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_d->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_d->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_d->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_d->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_d->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_d->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_d->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_d->myra2_achievement ?? 0, 2),
             ],
             'section_e' => (object)[
-                'myra1_mark' => (float)number_format($section_e->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_e->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_e->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_e->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_e->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_e->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_e->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_e->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_e->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_e->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_e->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_e->myra2_achievement ?? 0, 2),
             ],
             'section_f' => (object)[
-                'myra1_mark' => (float)number_format($section_f->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_f->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_f->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_f->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_f->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_f->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_f->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_f->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_f->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_f->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_f->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_f->myra2_achievement ?? 0, 2),
             ],
             'section_g' => (object)[
-                'myra1_mark' => (float)number_format($section_g->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_g->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_g->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_g->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_g->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_g->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_g->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_g->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_g->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_g->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_g->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_g->myra2_achievement ?? 0, 2),
             ],
             'section_h' => (object)[
-                'myra1_mark' => (float)number_format($section_h->myra1_mark ?? 0, 2),
-                'myra1_benchmark_mark' => (float)number_format($section_h->myra1_benchmark_mark ?? 0, 2),
-                'myra1_achievement' => (float)number_format($section_h->myra1_achievement ?? 0, 2),
-                'myra2_mark' => (float)number_format($section_h->myra2_mark ?? 0, 2),
-                'myra2_benchmark_mark' => (float)number_format($section_h->myra2_benchmark_mark ?? 0, 2),
-                'myra2_achievement' => (float)number_format($section_h->myra2_achievement ?? 0, 2),
+                'myra1_mark' => (float)myraNumberFormat($section_h->myra1_mark ?? 0, 2),
+                'myra1_benchmark_mark' => (float)myraNumberFormat($section_h->myra1_benchmark_mark ?? 0, 2),
+                'myra1_achievement' => (float)myraNumberFormat($section_h->myra1_achievement ?? 0, 2),
+                'myra2_mark' => (float)myraNumberFormat($section_h->myra2_mark ?? 0, 2),
+                'myra2_benchmark_mark' => (float)myraNumberFormat($section_h->myra2_benchmark_mark ?? 0, 2),
+                'myra2_achievement' => (float)myraNumberFormat($section_h->myra2_achievement ?? 0, 2),
             ],
         ];
         $myra1_total_mark = $data->section_b->myra1_mark+$data->section_c->myra1_mark+$data->section_d->myra1_mark+$data->section_e->myra1_mark+$data->section_f->myra1_mark+$data->section_g->myra1_mark+$data->section_h->myra1_mark;
         $myra1_total_benchmark_mark = $data->section_b->myra1_benchmark_mark+$data->section_c->myra1_benchmark_mark+$data->section_d->myra1_benchmark_mark+$data->section_e->myra1_benchmark_mark+$data->section_f->myra1_benchmark_mark+$data->section_g->myra1_benchmark_mark+$data->section_h->myra1_benchmark_mark;
-        $myra1_total_achievement = $myra1_total_benchmark_mark > 0? (float)number_format($myra1_total_mark/$myra1_total_benchmark_mark*100, 2) : 0.00;
+        $myra1_total_achievement = $myra1_total_benchmark_mark > 0? (float)myraNumberFormat($myra1_total_mark/$myra1_total_benchmark_mark*100, 2) : 0.00;
         $myra2_total_mark = $data->section_b->myra2_mark+$data->section_c->myra2_mark+$data->section_d->myra2_mark+$data->section_e->myra2_mark+$data->section_f->myra2_mark+$data->section_g->myra2_mark+$data->section_h->myra2_mark;
         $myra2_total_benchmark_mark = $data->section_b->myra2_benchmark_mark+$data->section_c->myra2_benchmark_mark+$data->section_d->myra2_benchmark_mark+$data->section_e->myra2_benchmark_mark+$data->section_f->myra2_benchmark_mark+$data->section_g->myra2_benchmark_mark+$data->section_h->myra2_benchmark_mark;
-        $myra2_total_achievement = $myra2_total_benchmark_mark > 0? (float)number_format($myra2_total_mark/$myra2_total_benchmark_mark*100, 2) : 0.00;
+        $myra2_total_achievement = $myra2_total_benchmark_mark > 0? (float)myraNumberFormat($myra2_total_mark/$myra2_total_benchmark_mark*100, 2) : 0.00;
         $data->total = (object)[
             'myra1_total_mark' => $myra1_total_mark,
             'myra1_total_benchmark_mark' => $myra1_total_benchmark_mark,

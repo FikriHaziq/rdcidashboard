@@ -1109,3 +1109,20 @@ if (!function_exists('planTypes')) {
         ];
     }
 }
+
+if (!function_exists('myraRound')) {
+    // PHP 8.4 dropped round()'s "pre-rounding": 0.7 * 2605 = 1823.4999999999998 now rounds to 1823 instead of 1824.
+    // Take the value to 15 significant digits first (the intended decimal, like PHP 8.3 did), then round normally.
+    function myraRound($value, $precision = 0)
+    {
+        return round((float)sprintf('%.15g', (float)$value), $precision);
+    }
+}
+
+if (!function_exists('myraNumberFormat')) {
+    // number_format() with the same PHP 8.4 fix as myraRound(): 3.465 (stored as 3.4649999...) shows 3.47 like PHP 8.3 did
+    function myraNumberFormat($value, $decimals = 0, $decimal_separator = '.', $thousands_separator = ',')
+    {
+        return number_format((float)sprintf('%.15g', (float)$value), $decimals, $decimal_separator, $thousands_separator);
+    }
+}

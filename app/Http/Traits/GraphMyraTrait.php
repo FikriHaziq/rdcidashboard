@@ -157,38 +157,38 @@ trait GraphMyraTrait {
             $benchmark_mark_myra2_h = $section_h->myra2_benchmark_mark ?? 0;
 
             array_push($year_range, (int)$i);
-            array_push($line_1->data_1, (float)number_format(($total_myra1), 2));
-            array_push($line_1->data_2, (float)number_format(($total_myra2), 2));
-            array_push($line_1->data_3, (float)number_format(($total_myra1_benchmark_mark), 2));
-            array_push($line_1->data_4, (float)number_format(($total_myra2_benchmark_mark), 2));
-            array_push($line_2->data_1, (float)number_format(($percent_myra1_b ?? 0), 2));
-            array_push($line_2->data_2, (float)number_format(($percent_myra2_b ?? 0), 2));
-            array_push($line_2->data_3, (float)number_format(($benchmark_mark_myra1_b ?? 0), 2));
-            array_push($line_2->data_4, (float)number_format(($benchmark_mark_myra2_b ?? 0), 2));
-            array_push($line_3->data_1, (float)number_format(($percent_myra1_c ?? 0), 2));
-            array_push($line_3->data_2, (float)number_format(($percent_myra2_c ?? 0), 2));
-            array_push($line_3->data_3, (float)number_format(($benchmark_mark_myra1_c ?? 0), 2));
-            array_push($line_3->data_4, (float)number_format(($benchmark_mark_myra2_c ?? 0), 2));
-            array_push($line_4->data_1, (float)number_format(($percent_myra1_d ?? 0), 2));
-            array_push($line_4->data_2, (float)number_format(($percent_myra2_d ?? 0), 2));
-            array_push($line_4->data_3, (float)number_format(($benchmark_mark_myra1_d ?? 0), 2));
-            array_push($line_4->data_4, (float)number_format(($benchmark_mark_myra2_d ?? 0), 2));
-            array_push($line_5->data_1, (float)number_format(($percent_myra1_e ?? 0), 2));
-            array_push($line_5->data_2, (float)number_format(($percent_myra2_e ?? 0), 2));
-            array_push($line_5->data_3, (float)number_format(($benchmark_mark_myra1_e ?? 0), 2));
-            array_push($line_5->data_4, (float)number_format(($benchmark_mark_myra2_e ?? 0), 2));
-            array_push($line_6->data_1, (float)number_format(($percent_myra1_f ?? 0), 2));
-            array_push($line_6->data_2, (float)number_format(($percent_myra2_f ?? 0), 2));
-            array_push($line_6->data_3, (float)number_format(($benchmark_mark_myra1_f ?? 0), 2));
-            array_push($line_6->data_4, (float)number_format(($benchmark_mark_myra2_f ?? 0), 2));
-            array_push($line_7->data_1, (float)number_format(($percent_myra1_g ?? 0), 2));
-            array_push($line_7->data_2, (float)number_format(($percent_myra2_g ?? 0), 2));
-            array_push($line_7->data_3, (float)number_format(($benchmark_mark_myra1_g ?? 0), 2));
-            array_push($line_7->data_4, (float)number_format(($benchmark_mark_myra2_g ?? 0), 2));
-            array_push($line_8->data_1, (float)number_format(($percent_myra1_h ?? 0), 2));
-            array_push($line_8->data_2, (float)number_format(($percent_myra2_h ?? 0), 2));
-            array_push($line_8->data_3, (float)number_format(($benchmark_mark_myra1_h ?? 0), 2));
-            array_push($line_8->data_4, (float)number_format(($benchmark_mark_myra2_h ?? 0), 2));
+            array_push($line_1->data_1, (float)myraNumberFormat(($total_myra1), 2));
+            array_push($line_1->data_2, (float)myraNumberFormat(($total_myra2), 2));
+            array_push($line_1->data_3, (float)myraNumberFormat(($total_myra1_benchmark_mark), 2));
+            array_push($line_1->data_4, (float)myraNumberFormat(($total_myra2_benchmark_mark), 2));
+            array_push($line_2->data_1, (float)myraNumberFormat(($percent_myra1_b ?? 0), 2));
+            array_push($line_2->data_2, (float)myraNumberFormat(($percent_myra2_b ?? 0), 2));
+            array_push($line_2->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_b ?? 0), 2));
+            array_push($line_2->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_b ?? 0), 2));
+            array_push($line_3->data_1, (float)myraNumberFormat(($percent_myra1_c ?? 0), 2));
+            array_push($line_3->data_2, (float)myraNumberFormat(($percent_myra2_c ?? 0), 2));
+            array_push($line_3->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_c ?? 0), 2));
+            array_push($line_3->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_c ?? 0), 2));
+            array_push($line_4->data_1, (float)myraNumberFormat(($percent_myra1_d ?? 0), 2));
+            array_push($line_4->data_2, (float)myraNumberFormat(($percent_myra2_d ?? 0), 2));
+            array_push($line_4->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_d ?? 0), 2));
+            array_push($line_4->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_d ?? 0), 2));
+            array_push($line_5->data_1, (float)myraNumberFormat(($percent_myra1_e ?? 0), 2));
+            array_push($line_5->data_2, (float)myraNumberFormat(($percent_myra2_e ?? 0), 2));
+            array_push($line_5->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_e ?? 0), 2));
+            array_push($line_5->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_e ?? 0), 2));
+            array_push($line_6->data_1, (float)myraNumberFormat(($percent_myra1_f ?? 0), 2));
+            array_push($line_6->data_2, (float)myraNumberFormat(($percent_myra2_f ?? 0), 2));
+            array_push($line_6->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_f ?? 0), 2));
+            array_push($line_6->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_f ?? 0), 2));
+            array_push($line_7->data_1, (float)myraNumberFormat(($percent_myra1_g ?? 0), 2));
+            array_push($line_7->data_2, (float)myraNumberFormat(($percent_myra2_g ?? 0), 2));
+            array_push($line_7->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_g ?? 0), 2));
+            array_push($line_7->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_g ?? 0), 2));
+            array_push($line_8->data_1, (float)myraNumberFormat(($percent_myra1_h ?? 0), 2));
+            array_push($line_8->data_2, (float)myraNumberFormat(($percent_myra2_h ?? 0), 2));
+            array_push($line_8->data_3, (float)myraNumberFormat(($benchmark_mark_myra1_h ?? 0), 2));
+            array_push($line_8->data_4, (float)myraNumberFormat(($benchmark_mark_myra2_h ?? 0), 2));
 
         }
         
@@ -478,9 +478,9 @@ trait GraphMyraTrait {
             $bar1_2 = $section_b_data->a40;
             $bar1_3 = $section_b_data->a50;
             $total_cohort = $bar1_1 + $bar1_2 + $bar1_3;
-            $bar1_4 = $total_cohort > 0 ? (float)number_format($bar1_1/$total_cohort*100, 2, '.', '') : 0;
-            $bar1_5 = $total_cohort > 0 ? (float)number_format($bar1_2/$total_cohort*100, 2, '.', '') : 0;
-            $bar1_6 = $total_cohort > 0 ? (float)number_format($bar1_3/$total_cohort*100, 2, '.', '') : 0;
+            $bar1_4 = $total_cohort > 0 ? (float)myraNumberFormat($bar1_1/$total_cohort*100, 2, '.', '') : 0;
+            $bar1_5 = $total_cohort > 0 ? (float)myraNumberFormat($bar1_2/$total_cohort*100, 2, '.', '') : 0;
+            $bar1_6 = $total_cohort > 0 ? (float)myraNumberFormat($bar1_3/$total_cohort*100, 2, '.', '') : 0;
             $bar2_1 = $section_b_data->phd;
             $bar2_2 = (int)($section_b_data->calculation->myra2_benchmark_target_2[0] ?? 0);
             $bar3_1 = $section_b_data->pro;
@@ -873,14 +873,14 @@ trait GraphMyraTrait {
             array_push($year_range, (int)$i);
             array_push($line_1->data_1, $line1_1);
             array_push($line_1->data_2, $line1_2);
-            array_push($bar_1->data_1, (float)number_format($bar1_1, 2));
+            array_push($bar_1->data_1, (float)myraNumberFormat($bar1_1, 2));
             array_push($bar_1->data_2, $bar1_2);
-            array_push($bar_2->data_1, (float)number_format($bar2_1, 2));
+            array_push($bar_2->data_1, (float)myraNumberFormat($bar2_1, 2));
             array_push($bar_2->data_2, $bar2_2);
-            array_push($bar_3->data_1, (float)number_format($bar3_1, 2));
-            array_push($bar_3->data_2, $active_acad_staff > 0 ? (float)number_format($bar3_2/$active_acad_staff, 2)  : 0);
-            array_push($bar_4->data_1, (float)number_format($bar4_1, 2));
-            array_push($bar_4->data_2, $active_acad_staff > 0 ? (float)number_format($bar4_2/$active_acad_staff, 2)  : 0);
+            array_push($bar_3->data_1, (float)myraNumberFormat($bar3_1, 2));
+            array_push($bar_3->data_2, $active_acad_staff > 0 ? (float)myraNumberFormat($bar3_2/$active_acad_staff, 2)  : 0);
+            array_push($bar_4->data_1, (float)myraNumberFormat($bar4_1, 2));
+            array_push($bar_4->data_2, $active_acad_staff > 0 ? (float)myraNumberFormat($bar4_2/$active_acad_staff, 2)  : 0);
         }
 
         return (object)[
@@ -918,15 +918,15 @@ trait GraphMyraTrait {
                 $section_d_data = $this->myraSectionD($i, $request_data->faculty, $request_data->school);
                 $pg_enrolled = $section_d_data->pg_enrolled;
                 $int_pg_enrolled = $section_d_data->int_pg_enrolled;
-                $bar1_1 = $pg_enrolled > 0 ? (float)number_format($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
+                $bar1_1 = $pg_enrolled > 0 ? (float)myraNumberFormat($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
                 $bar1_2 = (int)($section_d_data->calculation->myra1_benchmark_target_5[0] ?? 0);
-                $bar2_1 = $pg_enrolled > 0 ? (float)number_format($section_d_data->entry_enrolled/$pg_enrolled*100, 2) : 0;
+                $bar2_1 = $pg_enrolled > 0 ? (float)myraNumberFormat($section_d_data->entry_enrolled/$pg_enrolled*100, 2) : 0;
                 $bar2_2 = (int)($section_d_data->calculation->myra1_benchmark_target_6[0] ?? 0);
                 $pg_research = $section_d_data->fellowship_enrolled;
                 $pg_master_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
                 $pg_phd_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('phd'))->count();
                 $pg_research_enrolled = $pg_master_research + $pg_phd_research;
-                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_research_enrolled*100, 2) : 0;
+                $bar3_1 = $pg_enrolled > 0 ? (float)myraNumberFormat($pg_research/$pg_research_enrolled*100, 2) : 0;
                 $bar3_2 = (int)($section_d_data->calculation->myra1_benchmark_target_7[0] ?? 0);
                 $bar4_1 = MasterlistPostDoc::where('ml_end_year', $i)->where(function ($q) use ($request_data, $i) {if($request_data->faculty){$q->where('faculty_code', $request_data->faculty);}if($request_data->school)$q->where('school_code', $request_data->school);})->count();
                 $bar4_2 = (int)($section_d_data->calculation->myra2_benchmark_target_8[0] ?? 0);
@@ -934,16 +934,16 @@ trait GraphMyraTrait {
             else{
                 $pg_enrolled = MasterlistPgStudent::where('ml_end_year', $i)->count();
                 $int_pg_enrolled = MasterlistPgStudent::where('ml_end_year', $i)->whereIn('citizenship', $this->filter_citizenship('foreign'))->count();
-                $bar1_1 = $pg_enrolled > 0 ? (float)number_format($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
+                $bar1_1 = $pg_enrolled > 0 ? (float)myraNumberFormat($int_pg_enrolled/$pg_enrolled*100, 2) : 0;
                 $bar1_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_international.percentage_enrolled.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra1_benchmark_target ?? 0);
-                $bar2_1 = $pg_enrolled > 0 ? (float)number_format(MasterlistEntryQualification::where('ml_end_year', $i)->count()/$pg_enrolled*100, 2) : 0;
+                $bar2_1 = $pg_enrolled > 0 ? (float)myraNumberFormat(MasterlistEntryQualification::where('ml_end_year', $i)->count()/$pg_enrolled*100, 2) : 0;
                 $bar2_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_entry.percentage_enrolled.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra1_benchmark_target ?? 0);
                 $pg_research = MasterlistFellowship::where('ml_end_year', $i)->count();
 
                 $pg_master_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('master'))->whereIn('study_mode', $this->student_study_mode('research'))->count();
                 $pg_phd_research = MasterlistPgStudent::where('ml_end_year', $i)->where('degree_registered_for', $this->student_degree('phd'))->count();
                 $pg_research_enrolled = $pg_master_research + $pg_phd_research;
-                $bar3_1 = $pg_enrolled > 0 ? (float)number_format($pg_research/$pg_research_enrolled*100, 2) : 0;
+                $bar3_1 = $pg_enrolled > 0 ? (float)myraNumberFormat($pg_research/$pg_research_enrolled*100, 2) : 0;
                 // dd($bar3_1);
                 $bar3_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.pg_research.percentage_enrolled.myra1_benchmark_target')as myra1_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra1_benchmark_target ?? 0);
                 // dd($bar3_2/6763*100);
@@ -951,12 +951,12 @@ trait GraphMyraTrait {
                 $bar4_2 = (int)(MyraCalculation::select([DB::raw("JSON_EXTRACT(benchmark_target, '$.postdoc.percentage_enrolled.myra2_benchmark_target')as myra2_benchmark_target")])->where('year', $i)->whereType('section_d')->first()->myra2_benchmark_target ?? 0);
             }
             array_push($year_range, (int)$i);
-            array_push($bar_1->data_1, (float)number_format($bar1_1, 2));
-            array_push($bar_1->data_2, $pg_enrolled > 0 ? number_format($bar1_2/$pg_enrolled*100, 2)  : 0);
-            array_push($bar_2->data_1, (float)number_format($bar2_1, 2));
-            array_push($bar_2->data_2, $pg_enrolled > 0 ? number_format($bar2_2/$pg_enrolled*100, 2)  : 0);
-            array_push($bar_3->data_1, (float)number_format($bar3_1, 2));
-            array_push($bar_3->data_2, $pg_research_enrolled > 0 ? number_format($bar3_2/$pg_research_enrolled*100, 2)  : 0);
+            array_push($bar_1->data_1, (float)myraNumberFormat($bar1_1, 2));
+            array_push($bar_1->data_2, $pg_enrolled > 0 ? myraNumberFormat($bar1_2/$pg_enrolled*100, 2)  : 0);
+            array_push($bar_2->data_1, (float)myraNumberFormat($bar2_1, 2));
+            array_push($bar_2->data_2, $pg_enrolled > 0 ? myraNumberFormat($bar2_2/$pg_enrolled*100, 2)  : 0);
+            array_push($bar_3->data_1, (float)myraNumberFormat($bar3_1, 2));
+            array_push($bar_3->data_2, $pg_research_enrolled > 0 ? myraNumberFormat($bar3_2/$pg_research_enrolled*100, 2)  : 0);
             array_push($bar_4->data_1, (int)$bar4_1);
             array_push($bar_4->data_2, $bar4_2);
 
@@ -1089,32 +1089,32 @@ trait GraphMyraTrait {
                 $label = 'UTM';
             }
             $section_f_data = $this->myraSectionF($i, $request_data->faculty, $request_data->school);
-            $bar1_1 = (float)number_format($section_f_data->training_course, 2, '.', '');
+            $bar1_1 = (float)myraNumberFormat($section_f_data->training_course, 2, '.', '');
             $bar1_2 = 5000000;
             $bar1_3 = $bar1_2*2;
-            $bar2_1 = (float)number_format($section_f_data->pg_fee, 2, '.', '');
+            $bar2_1 = (float)myraNumberFormat($section_f_data->pg_fee, 2, '.', '');
             $bar2_2 = (int)($section_f_data->calculation->myra2_benchmark_1[0] ?? 0) - $bar1_2;
             $bar2_3 = $bar2_2*2;
-            $bar3_1 = (float)number_format($section_f_data->conference, 2, '.', '');
+            $bar3_1 = (float)myraNumberFormat($section_f_data->conference, 2, '.', '');
             $bar3_2 = (int)($section_f_data->calculation->myra2_benchmark_2[0] ?? 0);
             $bar3_3 = $bar3_2*2;
-            $bar4_1 = (float)number_format($section_f_data->product_comm + $section_f_data->tech_know_how, 2, '.', '');
+            $bar4_1 = (float)myraNumberFormat($section_f_data->product_comm + $section_f_data->tech_know_how, 2, '.', '');
             $bar4_2 = (int)($section_f_data->calculation->myra2_benchmark_3[0] ?? 0);
             $bar4_3 = $bar4_2*2;
-            $bar5_1 = (float)number_format($section_f_data->consultancy, 2, '.', '');
+            $bar5_1 = (float)myraNumberFormat($section_f_data->consultancy, 2, '.', '');
             $bar5_2 = $i <= 2018 ? 6000000 : (int)($section_f_data->calculation->myra2_benchmark_4[0] ?? 0);
             $bar5_3 = $bar5_2*2;
-            $bar6_1 = (float)number_format($section_f_data->lab_service, 2, '.', '');
+            $bar6_1 = (float)myraNumberFormat($section_f_data->lab_service, 2, '.', '');
             $bar6_2 = $i <= 2018 ? 6000000 : (int)($section_f_data->calculation->myra2_benchmark_4[2] ?? 0);
             $bar6_3 = $bar6_2*2;
-            $bar7_1 = (float)number_format($section_f_data->new_endowment, 2, '.', '');
+            $bar7_1 = (float)myraNumberFormat($section_f_data->new_endowment, 2, '.', '');
             $bar7_2 = (int)($section_f_data->calculation->myra2_benchmark_5[0] ?? 0);
             $bar7_3 = $bar7_2*2;
-            $bar8_1 = (float)number_format($section_f_data->gift, 2, '.', '');
+            $bar8_1 = (float)myraNumberFormat($section_f_data->gift, 2, '.', '');
             $bar8_2 = (int)($section_f_data->calculation->myra2_benchmark_6[0] ?? 0);
             $bar8_3 = $bar8_2*2;
-            $bar9_1 = (float)number_format($section_f_data->existing_endowment, 2, '.', '');
-            $bar10_1 = (float)number_format($section_f_data->oe_expenditure, 2, '.', '') > 0 ?  (float)number_format($section_f_data->rd_expenditure, 2, '.', '')/ (float)number_format($section_f_data->oe_expenditure, 2, '.', '') * 100 : 0;
+            $bar9_1 = (float)myraNumberFormat($section_f_data->existing_endowment, 2, '.', '');
+            $bar10_1 = (float)myraNumberFormat($section_f_data->oe_expenditure, 2, '.', '') > 0 ?  (float)myraNumberFormat($section_f_data->rd_expenditure, 2, '.', '')/ (float)myraNumberFormat($section_f_data->oe_expenditure, 2, '.', '') * 100 : 0;
             $bar10_2 = (float)($section_f_data->calculation->myra2_benchmark_7[0] ?? 0)*100;
             $bar10_3 = $bar10_2*2;
             
@@ -1146,7 +1146,7 @@ trait GraphMyraTrait {
             array_push($bar_8->data_2, $bar8_2);
             array_push($bar_8->data_3, $bar8_3);
             array_push($bar_9->data_1, $bar9_1);
-            array_push($bar_10->data_1, (float)number_format($bar10_1, 2, '.', ''));
+            array_push($bar_10->data_1, (float)myraNumberFormat($bar10_1, 2, '.', ''));
             array_push($bar_10->data_2, $bar10_2);
             array_push($bar_10->data_3, $bar10_3);
         }
